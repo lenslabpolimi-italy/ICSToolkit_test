@@ -70,35 +70,39 @@ const QualitativeEvaluation: React.FC = () => {
       </p>
 
       <Tabs defaultValue={strategies[0]?.id || "no-strategies"} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch"> {/* Added items-stretch */}
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
           {strategies.map((strategy) => (
-            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center"> {/* Added flex, items-center, justify-center, text-center */}
+            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center">
               {strategy.id}. {strategy.name}
             </TabsTrigger>
           ))}
         </TabsList>
         {strategies.map((strategy) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
-            <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
-            <div className="flex items-center gap-4 mb-8">
-              <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
-              <Select
-                value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
-                onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
-                  ...prev,
-                  [strategy.id]: { ...prev[strategy.id], priority: value }
-                }))}
-              >
-                <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
-                  <SelectValue placeholder="Select Priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="High">High</SelectItem>
-                  <SelectItem value="Mid">Mid</SelectItem>
-                  <SelectItem value="Low">Low</SelectItem>
-                  <SelectItem value="None">None</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex justify-between items-center mb-8"> {/* New flex container for title and priority */}
+              <h3 className="text-2xl font-palanquin font-semibold text-app-header">
+                {strategy.id}. {strategy.name}
+              </h3>
+              <div className="flex items-center gap-4">
+                <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
+                <Select
+                  value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
+                  onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
+                    ...prev,
+                    [strategy.id]: { ...prev[strategy.id], priority: value }
+                  }))}
+                >
+                  <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
+                    <SelectValue placeholder="Select Priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="High">High</SelectItem>
+                    <SelectItem value="Mid">Mid</SelectItem>
+                    <SelectItem value="Low">Low</SelectItem>
+                    <SelectItem value="None">None</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Sub-strategies section */}
@@ -111,7 +115,7 @@ const QualitativeEvaluation: React.FC = () => {
                     </h4>
                     <div className="flex items-center gap-4">
                       <Label htmlFor={`sub-strategy-priority-${subStrategy.id}`} className="text-app-body-text">
-                        Priority:
+                        Sub-strategy Priority: {/* Changed label here */}
                       </Label>
                       <Select
                         value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None'}
