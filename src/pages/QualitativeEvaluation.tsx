@@ -205,7 +205,8 @@ const QualitativeEvaluation: React.FC = () => {
                 </div>
               ) : (
                 // Existing rendering for other strategies
-                <> {/* Added React Fragment here */}
+                <>
+                  {/* Removed the unnecessary IIFE wrapper */}
                   {(() => {
                     let hasRendered1_4_1_5 = false;
                     let hasRendered2_2_2_3 = false;
@@ -416,7 +417,7 @@ const QualitativeEvaluation: React.FC = () => {
                       );
                     });
                   })()}
-                </> {/* Closed React Fragment here */}
+                </>
               )}
             </div>
           </TabsContent>
