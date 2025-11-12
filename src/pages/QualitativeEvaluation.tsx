@@ -304,7 +304,7 @@ const QualitativeEvaluation: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Combined Guiding Questions Box (left) */}
                     <div className="bg-orange-50 p-4 rounded-md border border-orange-200 flex flex-col">
-                      <h4 className="font-palanquin font-semibold text-app-header mb-3">Guiding Questions for Strategy {strategy.id}:</h4>
+                      {/* Removed the h4 header here */}
                       {strategy.subStrategies.map((subStrategy) => (
                         <div key={subStrategy.id} className="mb-4 last:mb-0">
                           <h5 className="font-palanquin font-medium text-app-header mb-1">
