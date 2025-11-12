@@ -217,29 +217,12 @@ const EvaluationChecklists: React.FC = () => {
               {/* Strategy Level Evaluation */}
               <div className="mb-6 p-4 border rounded-md bg-gray-50">
                 <h4 className="text-xl font-palanquin font-medium text-app-header mb-3">Strategy Evaluation:</h4>
-                <div className="flex items-center gap-4">
-                  <Label className="min-w-[150px] text-app-body-text">{currentStrategy.name}</Label>
-                  <Select
-                    value={
-                      (currentChecklistLevel === 'Normal' || currentChecklistLevel === 'Detailed')
-                        ? calculateAggregateEvaluation(
-                            currentStrategy.subStrategies.map(ss => evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A')
-                          )
-                        : (evaluationChecklists[selectedConcept]?.strategies[currentStrategy.id] || 'N/A')
-                    }
-                    onValueChange={(value: EvaluationLevel) => handleEvaluationChange('strategy', currentStrategy.id, value)}
-                    disabled={currentChecklistLevel === 'Normal' || currentChecklistLevel === 'Detailed'}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {evaluationOptions.map(option => (
-                        <SelectItem key={option} value={option}>{option}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {renderEvaluationSelectors(
+                  'strategy',
+                  currentStrategy.id,
+                  currentStrategy.name,
+                  evaluationChecklists[selectedConcept]?.strategies[currentStrategy.id] || 'N/A'
+                )}
               </div>
 
               {/* Sub-strategy Level Evaluation */}
