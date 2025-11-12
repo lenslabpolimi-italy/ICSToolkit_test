@@ -53,7 +53,7 @@ const EcoIdeasBoards: React.FC = () => {
       </p>
 
       <Tabs value={selectedStrategyId} onValueChange={setSelectedStrategyId} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2"> {/* Changed h-10 p-1 to h-auto p-2 */}
           {strategies.map((strategy) => (
             <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed">
               {strategy.id}. {strategy.name}
@@ -61,7 +61,7 @@ const EcoIdeasBoards: React.FC = () => {
           ))}
         </TabsList>
         {strategies.map((strategy) => (
-          <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4"> {/* Added pt-4 here */}
+          <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
             <div className="mb-6 p-4 border rounded-md bg-gray-50">

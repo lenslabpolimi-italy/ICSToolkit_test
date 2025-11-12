@@ -176,7 +176,7 @@ const EvaluationChecklists: React.FC = () => {
       </div>
 
       <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2"> {/* Changed h-10 p-1 to h-auto p-2 */}
           {strategies.map((strategy) => (
             <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed">
               {strategy.id}. {strategy.name}
@@ -184,7 +184,7 @@ const EvaluationChecklists: React.FC = () => {
           ))}
         </TabsList>
         {currentStrategy && (
-          <TabsContent value={currentStrategy.id} className="mt-6 pt-4"> {/* Added pt-4 here */}
+          <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{currentStrategy.id}. {currentStrategy.name}</h3>
 
             {/* Strategy Level Evaluation */}

@@ -6,7 +6,7 @@ import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea'; // Import Textarea
+import { Textarea } from '@/components/ui/textarea';
 import { PriorityLevel } from '@/types/lcd';
 
 // Placeholder guiding questions for sub-strategies
@@ -70,7 +70,7 @@ const QualitativeEvaluation: React.FC = () => {
       </p>
 
       <Tabs defaultValue={strategies[0]?.id || "no-strategies"} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2"> {/* Changed h-10 p-1 to h-auto p-2 */}
           {strategies.map((strategy) => (
             <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed">
               {strategy.id}. {strategy.name}
@@ -78,7 +78,7 @@ const QualitativeEvaluation: React.FC = () => {
           ))}
         </TabsList>
         {strategies.map((strategy) => (
-          <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4"> {/* Added pt-4 here */}
+          <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
             <div className="flex items-center gap-4 mb-8">
               <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
