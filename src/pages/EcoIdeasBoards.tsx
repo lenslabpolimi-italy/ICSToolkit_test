@@ -47,7 +47,7 @@ const EcoIdeasBoards: React.FC = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
-      <h2 className="text-3xl font-palanquin font-bold text-app-header mb-6">Eco-Ideas Boards</h2>
+      <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Eco-Ideas Boards</h2>
       <p className="text-app-body-text mb-8">
         Brainstorm and create digital sticky notes with ideas inspired by the LCD strategies and guidelines.
       </p>
@@ -61,7 +61,7 @@ const EcoIdeasBoards: React.FC = () => {
           ))}
         </TabsList>
         {strategies.map((strategy) => (
-          <TabsContent key={strategy.id} value={strategy.id} className="mt-6">
+          <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4"> {/* Added pt-4 here */}
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
             <div className="mb-6 p-4 border rounded-md bg-gray-50">

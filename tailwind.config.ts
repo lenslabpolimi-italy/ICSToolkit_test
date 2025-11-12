@@ -19,7 +19,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        'palanquin': ['"Palanquin Dark"', 'sans-serif'],
+        'palanquin': ['Palanquin', 'sans-serif'], // Changed from "Palanquin Dark"
         'roboto': ['Roboto', 'sans-serif'],
         'roboto-condensed': ['"Roboto Condensed"', 'sans-serif'],
       },

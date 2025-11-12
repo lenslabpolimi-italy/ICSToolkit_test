@@ -15,7 +15,7 @@ const Menu: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-160px)] p-4 font-roboto">
-      <h2 className="text-4xl font-palanquin font-bold text-app-header mb-8 text-center">Life Cycle Design Toolkit</h2>
+      <h2 className="text-4xl font-palanquin font-semibold text-app-header mb-8 text-center">Life Cycle Design Toolkit</h2>
       <p className="text-xl text-app-body-text mb-12 text-center max-w-2xl">
         Welcome to your toolkit for practicing Life Cycle Design. Select a section below to get started.
       </p>
