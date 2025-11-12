@@ -27,15 +27,17 @@ export async function parseLcdStrategies(filePath: string): Promise<Strategy[]> 
       } else if (line.match(/^\d+\.\d+\./)) {
         // This is a sub-strategy (e.g., "1.1.Sub-strategy name")
         if (currentStrategy) {
-          const [idNum, name] = line.split('.', 2); // Split only on the first dot to get "1.1" and "Sub-strategy name"
-          const fullId = idNum.trim();
-          const subStrategyName = name.trim();
-          currentSubStrategy = {
-            id: fullId,
-            name: subStrategyName,
-            guidelines: [],
-          };
-          currentStrategy.subStrategies.push(currentSubStrategy);
+          const match = line.match(/^(\d+\.\d+)\.(.*)$/); // Use regex to correctly capture ID and name
+          if (match) {
+            const fullId = match[1].trim();
+            const subStrategyName = match[2].trim();
+            currentSubStrategy = {
+              id: fullId,
+              name: subStrategyName,
+              guidelines: [],
+            };
+            currentStrategy.subStrategies.push(currentSubStrategy);
+          }
         }
       } else if (line.match(/^[A-Za-z]/)) {
         // This is a guideline
