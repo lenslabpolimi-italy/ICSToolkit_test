@@ -86,6 +86,38 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
     "Are key components easily swapped out for newer versions?",
     "Can the product be returned to a 'like-new' state through simple processes?"
   ],
+  // Strategy 6 specific guiding questions
+  '6.1': [
+    "How can the product be designed to minimize environmental impact during manufacturing?",
+    "Are there opportunities to reduce waste, energy, or water in production?",
+    "What manufacturing processes or materials have the highest environmental footprint?"
+  ],
+  '6.2': [
+    "How can the product be designed to minimize environmental impact during transport?",
+    "Can the product's size, weight, or packaging be optimized for efficient logistics?",
+    "Are there opportunities for local sourcing or production?"
+  ],
+  '6.3': [
+    "How can the product be designed to minimize environmental impact during packaging?",
+    "Can packaging materials be reduced, reused, or recycled?",
+    "Is the packaging designed to protect the product adequately with minimal material?"
+  ],
+  // Strategy 7 specific guiding questions
+  '7.1': [
+    "How can the product be designed to communicate its environmental benefits to users?",
+    "Are there clear labels, instructions, or digital interfaces that highlight sustainability features?",
+    "How can users be informed about the product's life cycle and end-of-life options?"
+  ],
+  '7.2': [
+    "How can the product be designed to encourage sustainable user behavior?",
+    "Does the design promote energy efficiency, water conservation, or responsible disposal?",
+    "Are there features that make sustainable choices easy and intuitive for the user?"
+  ],
+  '7.3': [
+    "How can the product be designed to support new sustainable business models?",
+    "Does the product facilitate sharing, leasing, or product-as-a-service models?",
+    "Are there opportunities for take-back programs or extended producer responsibility?"
+  ],
   // Add more placeholder questions for other sub-strategies as needed
   // For now, a generic set will be used if a specific one isn't found
 };
@@ -166,13 +198,12 @@ const QualitativeEvaluation: React.FC = () => {
 
             {/* Sub-strategies section */}
             <div className="space-y-8">
-              {strategy.id === '5' ? (
-                // Special rendering for Strategy 5
+              {strategy.id === '5' || strategy.id === '6' ? ( // Combined logic for Strategy 5 and 6
                 <div className="border-t pt-6 first:border-t-0 first:pt-0">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Combined Guiding Questions Box (left) */}
                     <div className="bg-orange-50 p-4 rounded-md border border-orange-200 flex flex-col">
-                      <h4 className="font-palanquin font-semibold text-app-header mb-3">Guiding Questions for Strategy 5:</h4>
+                      <h4 className="font-palanquin font-semibold text-app-header mb-3">Guiding Questions for Strategy {strategy.id}:</h4>
                       {strategy.subStrategies.map((subStrategy) => (
                         <div key={subStrategy.id} className="mb-4 last:mb-0">
                           <h5 className="font-palanquin font-medium text-app-header mb-1">
@@ -194,19 +225,18 @@ const QualitativeEvaluation: React.FC = () => {
                     {/* Single Answer Textarea (right, stretches to bottom) */}
                     <div className="flex-1 flex flex-col">
                       <Textarea
-                        placeholder={`Write your answers for Strategy 5 here, covering all its sub-strategies...`}
+                        placeholder={`Write your answers for Strategy ${strategy.id} here, covering all its sub-strategies...`}
                         rows={10} // Adjust rows as needed for a "long text box"
                         className="w-full flex-grow min-h-[150px]"
-                        value={qualitativeEvaluation[strategy.id]?.subStrategies['5.1']?.answer || ''} // Store under 5.1
-                        onChange={(e) => handleAnswerChange(strategy.id, '5.1', e.target.value)}
+                        value={qualitativeEvaluation[strategy.id]?.subStrategies[`${strategy.id}.1`]?.answer || ''} // Store under X.1
+                        onChange={(e) => handleAnswerChange(strategy.id, `${strategy.id}.1`, e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
               ) : (
-                // Existing rendering for other strategies
+                // Existing rendering for other strategies (1, 2, 3, 4, 7)
                 <>
-                  {/* Removed the unnecessary IIFE wrapper */}
                   {(() => {
                     let hasRendered1_4_1_5 = false;
                     let hasRendered2_2_2_3 = false;
