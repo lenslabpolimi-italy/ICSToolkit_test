@@ -41,19 +41,19 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
     "What features can be added to make the product more durable or timeless?",
     "Are there opportunities for modularity or upgradability?",
   ],
-  '2.2': [
-    "Can the product be designed for easier maintenance and repair?",
+  '2.2_2.3_combined': [
+    "How can the product be designed for easier maintenance and repair?",
     "Are spare parts readily available, and is repair information accessible?",
     "How can common failure points be addressed through design?",
-  ],
-  '2.3_2.4_combined': [
     "How can the product be designed for easier reuse or redistribution?",
     "Are there components or sub-assemblies that could have a second life?",
     "What systems or services could support product reuse?",
+    "Consider the combined impact of maintenance, repair, and reuse in your evaluation."
+  ],
+  '2.4': [
     "How can the product be designed for easier remanufacturing or refurbishment?",
     "Are components easily accessible for cleaning, inspection, and replacement?",
     "What design features facilitate the restoration of a product to 'like-new' condition?",
-    "Consider the combined impact of reuse and remanufacturing in your evaluation."
   ],
   '2.5': [
     "How can the product be designed for easier recycling of its materials?",
@@ -142,7 +142,7 @@ const QualitativeEvaluation: React.FC = () => {
             <div className="space-y-8">
               {(() => {
                 let hasRendered1_4_1_5 = false;
-                let hasRendered2_3_2_4 = false;
+                let hasRendered2_2_2_3 = false; // New flag for 2.2 and 2.3
                 return strategy.subStrategies.map((subStrategy) => {
                   // Handle 1.4 and 1.5 combination
                   if (strategy.id === '1' && subStrategy.id === '1.5') {
@@ -218,32 +218,32 @@ const QualitativeEvaluation: React.FC = () => {
                     );
                   }
 
-                  // Handle 2.3 and 2.4 combination
-                  if (strategy.id === '2' && subStrategy.id === '2.4') {
-                    return null; // Skip rendering 2.4 separately as it's combined with 2.3
+                  // Handle 2.2 and 2.3 combination
+                  if (strategy.id === '2' && subStrategy.id === '2.3') {
+                    return null; // Skip rendering 2.3 separately as it's combined with 2.2
                   }
 
-                  if (strategy.id === '2' && subStrategy.id === '2.3' && !hasRendered2_3_2_4) {
-                    hasRendered2_3_2_4 = true;
+                  if (strategy.id === '2' && subStrategy.id === '2.2' && !hasRendered2_2_2_3) {
+                    hasRendered2_2_2_3 = true;
+                    const subStrategy2_2_obj = strategy.subStrategies.find(ss => ss.id === '2.2');
                     const subStrategy2_3_obj = strategy.subStrategies.find(ss => ss.id === '2.3');
-                    const subStrategy2_4_obj = strategy.subStrategies.find(ss => ss.id === '2.4');
 
-                    if (!subStrategy2_3_obj || !subStrategy2_4_obj) return null;
+                    if (!subStrategy2_2_obj || !subStrategy2_3_obj) return null;
 
-                    const combinedId = '2.3'; // Use 2.3's ID for state management of the combined block
-                    const combinedGuidingQuestions = subStrategyGuidingQuestions['2.3_2.4_combined'] || [
-                      `How do sub-strategies "${subStrategy2_3_obj.name}" and "${subStrategy2_4_obj.name}" apply to your product?`,
+                    const combinedId = '2.2'; // Use 2.2's ID for state management of the combined block
+                    const combinedGuidingQuestions = subStrategyGuidingQuestions['2.2_2.3_combined'] || [
+                      `How do sub-strategies "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" apply to your product?`,
                       "What are the main challenges and opportunities for these combined sub-strategies?",
                       "Consider the environmental, social, and economic aspects related to both.",
                     ];
 
                     return (
-                      <div key="2.3-2.4-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                      <div key="2.2-2.3-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
                         <div className="flex justify-between items-center mb-4">
                           <h4 className="text-xl font-palanquin font-medium text-app-header">
-                            {subStrategy2_3_obj.id}. {subStrategy2_3_obj.name}
+                            {subStrategy2_2_obj.id}. {subStrategy2_2_obj.name}
                             <br />
-                            {subStrategy2_4_obj.id}. {subStrategy2_4_obj.name}
+                            {subStrategy2_3_obj.id}. {subStrategy2_3_obj.name}
                           </h4>
                           <div className="flex items-center gap-4">
                             <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
@@ -280,7 +280,7 @@ const QualitativeEvaluation: React.FC = () => {
                           {/* Answer Textarea (right, stretches) */}
                           <div className="flex-1">
                             <Textarea
-                              placeholder={`Write your answers for "${subStrategy2_3_obj.name}" and "${subStrategy2_4_obj.name}" here...`}
+                              placeholder={`Write your answers for "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" here...`}
                               rows={6}
                               className="w-full min-h-[150px]"
                               value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
