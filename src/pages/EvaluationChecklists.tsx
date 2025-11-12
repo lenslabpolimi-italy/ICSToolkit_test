@@ -249,7 +249,7 @@ const EvaluationChecklists: React.FC = () => {
             );
           })}
         </div>
-      ) : ( // Existing Tabs for Detailed level
+      ) : ( // Detailed level
         <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {filteredStrategies.map((strategy) => (
@@ -260,66 +260,66 @@ const EvaluationChecklists: React.FC = () => {
           </TabsList>
           {currentStrategy && (
             <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
-              <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{currentStrategy.id}. {currentStrategy.name}</h3>
-
-              {/* Strategy Level Evaluation */}
-              <div className="mb-6 p-4 border rounded-md bg-gray-50">
-                <h4 className="text-xl font-palanquin font-medium text-app-header mb-3">Strategy Evaluation:</h4>
-                {renderEvaluationSelectors(
-                  'strategy',
-                  currentStrategy.id,
-                  currentStrategy.name,
-                  evaluationChecklists[selectedConcept]?.strategies[currentStrategy.id] || 'N/A'
-                )}
+              {/* Strategy Header with calculated average */}
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-palanquin font-semibold text-app-header">
+                  {currentStrategy.id}. {currentStrategy.name}
+                </h3>
+                {(() => {
+                  const subStrategyEvals = currentStrategy.subStrategies.map(ss => {
+                    const guidelineEvals = ss.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
+                    return calculateAggregateEvaluation(guidelineEvals);
+                  });
+                  const calculatedStrategyAverage = calculateAggregateEvaluation(subStrategyEvals);
+                  return renderEvaluationSelectors(
+                    'strategy',
+                    currentStrategy.id,
+                    '', // No label, as the h3 is the label
+                    calculatedStrategyAverage,
+                    true // Disabled, as it's calculated
+                  );
+                })()}
               </div>
 
-              {/* Sub-strategy Level Evaluation */}
-              {(currentChecklistLevel === 'Normal' || currentChecklistLevel === 'Detailed') && (
-                <div className="mb-6 p-4 border rounded-md bg-gray-50">
-                  <h4 className="text-xl font-palanquin font-medium text-app-header mb-3">Sub-strategy Evaluation:</h4>
-                  <div className="space-y-4">
-                    {currentStrategy.subStrategies.map(subStrategy => (
-                      <div key={subStrategy.id} className={cn(
-                        "pl-4",
-                        currentChecklistLevel === 'Detailed' && "opacity-60 pointer-events-none" // Disable if detailed
-                      )}>
-                        {renderEvaluationSelectors(
+              {/* Sub-strategy and Guideline Level Evaluation */}
+              <div className="space-y-8">
+                {currentStrategy.subStrategies.map(subStrategy => (
+                  <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+                    {/* Sub-strategy Header with calculated average */}
+                    <div className="flex justify-between items-center mb-4">
+                      <h4 className="text-xl font-palanquin font-medium text-app-header">
+                        {subStrategy.id}. {subStrategy.name}
+                      </h4>
+                      {(() => {
+                        const guidelineEvals = subStrategy.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
+                        const calculatedSubStrategyAverage = calculateAggregateEvaluation(guidelineEvals);
+                        return renderEvaluationSelectors(
                           'subStrategy',
                           subStrategy.id,
-                          `${subStrategy.id}. ${subStrategy.name}`,
-                          evaluationChecklists[selectedConcept]?.subStrategies[subStrategy.id] || 'N/A'
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                          '', // No label, as the h4 is the label
+                          calculatedSubStrategyAverage,
+                          true // Disabled, as it's calculated
+                        );
+                      })()}
+                    </div>
 
-              {/* Guideline Level Evaluation */}
-              {currentChecklistLevel === 'Detailed' && (
-                <div className="mb-6 p-4 border rounded-md bg-gray-50">
-                  <h4 className="text-xl font-palanquin font-medium text-app-header mb-3">Guideline Evaluation:</h4>
-                  <div className="space-y-4">
-                    {currentStrategy.subStrategies.map(subStrategy => (
-                      <div key={subStrategy.id} className="pl-4">
-                        <h5 className="text-lg font-palanquin font-medium text-app-body-text mb-2">{subStrategy.id}. {subStrategy.name}</h5>
-                        <div className="space-y-2 pl-4">
-                          {subStrategy.guidelines.map(guideline => (
-                            <div key={guideline.id}>
-                              {renderEvaluationSelectors(
-                                'guideline',
-                                guideline.id,
-                                guideline.name,
-                                evaluationChecklists[selectedConcept]?.guidelines[guideline.id] || 'N/A'
-                              )}
-                            </div>
-                          ))}
+                    {/* Guidelines with individual selectors */}
+                    <div className="space-y-4 pl-4">
+                      {subStrategy.guidelines.map(guideline => (
+                        <div key={guideline.id}>
+                          {renderEvaluationSelectors(
+                            'guideline',
+                            guideline.id,
+                            guideline.name,
+                            evaluationChecklists[selectedConcept]?.guidelines[guideline.id] || 'N/A',
+                            false // Not disabled, user can select
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
             </TabsContent>
           )}
         </Tabs>
