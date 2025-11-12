@@ -5,7 +5,7 @@ import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label'; // Added this import
+import { Label } from '@/components/ui/label'; // Confirmed import
 import { PriorityLevel } from '@/types/lcd';
 
 const guidingQuestions = [
