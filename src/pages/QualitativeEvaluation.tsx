@@ -219,6 +219,21 @@ const QualitativeEvaluation: React.FC = () => {
           return;
         }
       }
+      // For strategy 7, combine 7.1-7.5 and 7.6-7.8
+      if (currentStrategyId === '7') {
+        if (['7.2', '7.3', '7.4', '7.5'].includes(ss.id)) {
+          if (currentStrategy.subStrategies.some(s => s.id === '7.1')) {
+            subStrategyIdsToProcess.add('7.1'); // Use 7.1 as the key for the combined block
+          }
+          return;
+        }
+        if (['7.7', '7.8'].includes(ss.id)) {
+          if (currentStrategy.subStrategies.some(s => s.id === '7.6')) {
+            subStrategyIdsToProcess.add('7.6'); // Use 7.6 as the key for the combined block
+          }
+          return;
+        }
+      }
       subStrategyIdsToProcess.add(ss.id);
     });
 
@@ -234,8 +249,40 @@ const QualitativeEvaluation: React.FC = () => {
     return highestPriority;
   };
 
-  // Filter out Strategy 7 for this page
-  const filteredStrategies = strategies.filter(s => s.id !== '7');
+  // Helper function to split strategy names for better wrapping in tabs
+  const splitStrategyName = (name: string) => {
+    const words = name.split(' ');
+    if (words.length <= 3) return name; // Don't split short names
+    
+    const middleIndex = Math.floor(words.length / 2);
+    let splitPoint = -1;
+
+    // Try to find a good split point near the middle
+    // Prioritize splitting after a conjunction or preposition if possible
+    const preferredSplitters = ['of', 'and', 'for', 'the', 'with', 'in', 'or'];
+    for (let i = 0; i < words.length; i++) {
+      if (preferredSplitters.includes(words[i].toLowerCase()) && Math.abs(i - middleIndex) <= 2) {
+        splitPoint = i + 1;
+        break;
+      }
+    }
+
+    if (splitPoint === -1) {
+      // If no preferred splitter found, just split at the middle word
+      splitPoint = middleIndex;
+    }
+
+    const firstLine = words.slice(0, splitPoint).join(' ');
+    const secondLine = words.slice(splitPoint).join(' ');
+
+    return (
+      <>
+        {firstLine}
+        <br />
+        {secondLine}
+      </>
+    );
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -244,15 +291,19 @@ const QualitativeEvaluation: React.FC = () => {
         Define the priority level for each LCD strategy and sub-strategy, and answer guiding questions to elaborate on your choices.
       </p>
 
-      <Tabs defaultValue={filteredStrategies[0]?.id || "no-strategies"} className="w-full">
+      <Tabs defaultValue={strategies[0]?.id || "no-strategies"} className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
-          {filteredStrategies.map((strategy) => (
-            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center">
-              {strategy.id}. {strategy.name}
+          {strategies.map((strategy) => (
+            <TabsTrigger 
+              key={strategy.id} 
+              value={strategy.id} 
+              className="whitespace-normal h-auto min-h-[80px] font-roboto-condensed flex items-center justify-center text-center"
+            >
+              {strategy.id}. {splitStrategyName(strategy.name)}
             </TabsTrigger>
           ))}
         </TabsList>
-        {filteredStrategies.map((strategy) => (
+        {strategies.map((strategy) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-palanquin font-semibold text-app-header">
@@ -260,7 +311,7 @@ const QualitativeEvaluation: React.FC = () => {
               </h3>
               <div className="flex items-center gap-4">
                 <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
-                {['1', '2', '3', '4'].includes(strategy.id) ? (
+                {['1', '2', '3', '4', '7'].includes(strategy.id) ? ( // Strategy 7 also has calculated priority
                   <Select
                     value={calculateHighestSubStrategyPriority(strategy.id)}
                   >
@@ -335,6 +386,108 @@ const QualitativeEvaluation: React.FC = () => {
                     </div>
                   </div>
                 </div>
+              ) : strategy.id === '7' ? ( // Combined logic for Strategy 7
+                <>
+                  {/* Combined 7.1-7.5 */}
+                  <div key="7.1-7.5-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                    <div className="flex justify-between items-center mb-4">
+                      <h4 className="text-xl font-palanquin font-medium text-app-header">
+                        7.1. Communication and Information<br />
+                        7.2. User Behavior<br />
+                        7.3. New Business Models<br />
+                        7.4. Circular Economy<br />
+                        7.5. End-of-Life Participation
+                      </h4>
+                      <div className="flex items-center gap-4">
+                        <Label htmlFor={`sub-strategy-priority-7.1`} className="text-app-body-text">
+                          Sub-strategy Priority:
+                        </Label>
+                        <Select
+                          value={qualitativeEvaluation[strategy.id]?.subStrategies['7.1']?.priority || 'None'}
+                          onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, '7.1', value)}
+                        >
+                          <SelectTrigger id={`sub-strategy-priority-7.1`} className="w-[180px]">
+                            <SelectValue placeholder="Select Priority" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="High">High</SelectItem>
+                            <SelectItem value="Mid">Mid</SelectItem>
+                            <SelectItem value="Low">Low</SelectItem>
+                            <SelectItem value="None">None</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                        <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                          {(subStrategyGuidingQuestions['7.1_7.5_combined'] || []).map((q, idx) => (
+                            <li key={idx}>{q}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="flex-1">
+                        <Textarea
+                          placeholder={`Write your answers for sub-strategies 7.1 to 7.5 here...`}
+                          rows={6}
+                          className="w-full min-h-[150px]"
+                          value={qualitativeEvaluation[strategy.id]?.subStrategies['7.1']?.answer || ''}
+                          onChange={(e) => handleAnswerChange(strategy.id, '7.1', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Combined 7.6-7.8 */}
+                  <div key="7.6-7.8-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                    <div className="flex justify-between items-center mb-4">
+                      <h4 className="text-xl font-palanquin font-medium text-app-header">
+                        7.6. Production<br />
+                        7.7. Distribution<br />
+                        7.8. Packaging
+                      </h4>
+                      <div className="flex items-center gap-4">
+                        <Label htmlFor={`sub-strategy-priority-7.6`} className="text-app-body-text">
+                          Sub-strategy Priority:
+                        </Label>
+                        <Select
+                          value={qualitativeEvaluation[strategy.id]?.subStrategies['7.6']?.priority || 'None'}
+                          onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, '7.6', value)}
+                        >
+                          <SelectTrigger id={`sub-strategy-priority-7.6`} className="w-[180px]">
+                            <SelectValue placeholder="Select Priority" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="High">High</SelectItem>
+                            <SelectItem value="Mid">Mid</SelectItem>
+                            <SelectItem value="Low">Low</SelectItem>
+                            <SelectItem value="None">None</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                        <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                          {(subStrategyGuidingQuestions['7.6_7.8_combined'] || []).map((q, idx) => (
+                            <li key={idx}>{q}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="flex-1">
+                        <Textarea
+                          placeholder={`Write your answers for sub-strategies 7.6 to 7.8 here...`}
+                          rows={6}
+                          className="w-full min-h-[150px]"
+                          value={qualitativeEvaluation[strategy.id]?.subStrategies['7.6']?.answer || ''}
+                          onChange={(e) => handleAnswerChange(strategy.id, '7.6', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
               ) : (
                 // Existing rendering for other strategies (1, 2, 3, 4)
                 <>

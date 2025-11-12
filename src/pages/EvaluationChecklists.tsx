@@ -144,6 +144,41 @@ const EvaluationChecklists: React.FC = () => {
     );
   };
 
+  // Helper function to split strategy names for better wrapping in tabs
+  const splitStrategyName = (name: string) => {
+    const words = name.split(' ');
+    if (words.length <= 3) return name; // Don't split short names
+    
+    const middleIndex = Math.floor(words.length / 2);
+    let splitPoint = -1;
+
+    // Try to find a good split point near the middle
+    // Prioritize splitting after a conjunction or preposition if possible
+    const preferredSplitters = ['of', 'and', 'for', 'the', 'with', 'in', 'or'];
+    for (let i = 0; i < words.length; i++) {
+      if (preferredSplitters.includes(words[i].toLowerCase()) && Math.abs(i - middleIndex) <= 2) {
+        splitPoint = i + 1;
+        break;
+      }
+    }
+
+    if (splitPoint === -1) {
+      // If no preferred splitter found, just split at the middle word
+      splitPoint = middleIndex;
+    }
+
+    const firstLine = words.slice(0, splitPoint).join(' ');
+    const secondLine = words.slice(splitPoint).join(' ');
+
+    return (
+      <>
+        {firstLine}
+        <br />
+        {secondLine}
+      </>
+    );
+  };
+
   const currentStrategy = useMemo(() => allStrategies.find(s => s.id === selectedStrategyTab), [allStrategies, selectedStrategyTab]);
 
   return (
@@ -281,8 +316,12 @@ const EvaluationChecklists: React.FC = () => {
         <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {allStrategies.map((strategy) => (
-              <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center">
-                {strategy.id}. {strategy.name}
+              <TabsTrigger 
+                key={strategy.id} 
+                value={strategy.id} 
+                className="whitespace-normal h-auto min-h-[80px] font-roboto-condensed flex items-center justify-center text-center"
+              >
+                {strategy.id}. {splitStrategyName(strategy.name)}
               </TabsTrigger>
             ))}
           </TabsList>
