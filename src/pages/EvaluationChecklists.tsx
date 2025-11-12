@@ -284,11 +284,18 @@ const EvaluationChecklists: React.FC = () => {
                   {currentStrategy.id}. {currentStrategy.name}
                 </h3>
                 {(() => {
-                  const subStrategyEvals = currentStrategy.subStrategies.map(ss => {
-                    const guidelineEvals = ss.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
-                    return calculateAggregateEvaluation(guidelineEvals);
+                  const subStrategyEvalsForStrategyAggregation = currentStrategy.subStrategies.map(ss => {
+                    const isDirectlyEvaluatedSubStrategy = currentStrategy.id === '7' && (ss.id === '7.7' || ss.id === '7.8');
+                    if (isDirectlyEvaluatedSubStrategy) {
+                      // For 7.7 and 7.8, their contribution to strategy average is their direct 'guideline' evaluation
+                      return evaluationChecklists[selectedConcept]?.guidelines[ss.id] || 'N/A';
+                    } else {
+                      // For other sub-strategies, calculate based on their guidelines
+                      const guidelineEvals = ss.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
+                      return calculateAggregateEvaluation(guidelineEvals);
+                    }
                   });
-                  const calculatedStrategyAverage = calculateAggregateEvaluation(subStrategyEvals);
+                  const calculatedStrategyAverage = calculateAggregateEvaluation(subStrategyEvalsForStrategyAggregation);
                   return renderEvaluationSelectors(
                     'strategy',
                     currentStrategy.id,
@@ -300,41 +307,65 @@ const EvaluationChecklists: React.FC = () => {
 
               {/* Sub-strategy and Guideline Level Evaluation */}
               <div className="space-y-8">
-                {currentStrategy.subStrategies.map(subStrategy => (
-                  <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                    {/* Sub-strategy Header with calculated average */}
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-xl font-palanquin font-medium text-app-header">
-                        {subStrategy.id}. {subStrategy.name}
-                      </h4>
-                      {(() => {
-                        const guidelineEvals = subStrategy.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
-                        const calculatedSubStrategyAverage = calculateAggregateEvaluation(guidelineEvals);
-                        return renderEvaluationSelectors(
+                {currentStrategy.subStrategies.map(subStrategy => {
+                  const isDirectlyEvaluatedSubStrategy = currentStrategy.id === '7' && (subStrategy.id === '7.7' || subStrategy.id === '7.8');
+
+                  let calculatedSubStrategyAverage: EvaluationLevel;
+                  if (isDirectlyEvaluatedSubStrategy) {
+                    // For 7.7 and 7.8, their "average" is their own direct evaluation (stored as a guideline)
+                    calculatedSubStrategyAverage = evaluationChecklists[selectedConcept]?.guidelines[subStrategy.id] || 'N/A';
+                  } else {
+                    // For other sub-strategies, calculate based on their guidelines
+                    const guidelineEvals = subStrategy.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
+                    calculatedSubStrategyAverage = calculateAggregateEvaluation(guidelineEvals);
+                  }
+
+                  return (
+                    <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+                      {/* Sub-strategy Header with calculated average */}
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="text-xl font-palanquin font-medium text-app-header">
+                          {subStrategy.id}. {subStrategy.name}
+                        </h4>
+                        {renderEvaluationSelectors(
                           'subStrategy',
                           subStrategy.id,
                           calculatedSubStrategyAverage,
-                          true // Disabled, as it's calculated
-                        );
-                      })()}
-                    </div>
+                          true // Always disabled for sub-strategy header, as it's calculated
+                        )}
+                      </div>
 
-                    {/* Guidelines with individual selectors */}
-                    <div className="space-y-4 pl-4">
-                      {subStrategy.guidelines.map(guideline => (
-                        <div key={guideline.id} className="flex justify-between items-center">
-                          <Label className="text-app-body-text">{guideline.name}</Label>
-                          {renderEvaluationSelectors(
-                            'guideline',
-                            guideline.id,
-                            evaluationChecklists[selectedConcept]?.guidelines[guideline.id] || 'N/A',
-                            false // Not disabled, user can select
-                          )}
-                        </div>
-                      ))}
+                      {/* Guidelines with individual selectors OR direct sub-strategy selector */}
+                      <div className="space-y-4 pl-4">
+                        {isDirectlyEvaluatedSubStrategy ? (
+                          // Render a single guideline-style selector for 7.7 and 7.8
+                          <div className="flex justify-between items-center">
+                            <Label className="text-app-body-text">Pursuit Level:</Label>
+                            {renderEvaluationSelectors(
+                              'guideline', // Treat as a guideline for evaluation type
+                              subStrategy.id, // Use sub-strategy ID as the guideline ID
+                              evaluationChecklists[selectedConcept]?.guidelines[subStrategy.id] || 'N/A',
+                              false // Not disabled, user can select
+                            )}
+                          </div>
+                        ) : (
+                          // Render actual guidelines for other sub-strategies
+                          subStrategy.guidelines.map(guideline => (
+                            <div key={guideline.id} className="flex justify-between items-center">
+                              <Label className="text-app-body-text">{guideline.name}</Label>
+                              {renderEvaluationSelectors(
+                                'guideline',
+                                guideline.id,
+                                evaluationChecklists[selectedConcept]?.guidelines[guideline.id] || 'N/A',
+                                false // Not disabled, user can select
+                              )}
+                            </div>
+                          ))
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </TabsContent>
           )}
