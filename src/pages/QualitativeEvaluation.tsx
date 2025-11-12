@@ -9,6 +9,48 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { PriorityLevel } from '@/types/lcd';
 
+// Helper function to split strategy names for better wrapping in tabs
+const splitStrategyName = (fullText: string) => {
+  const parts = fullText.split('. ', 2); // Split "1. Strategy Name" into ["1", "Strategy Name"]
+  const id = parts[0];
+  const name = parts.length > 1 ? parts[1] : id; // Handle case where there's no dot
+
+  const words = name.split(' ');
+  if (words.length <= 2 && name.length < 20) { // Don't split very short names
+    return fullText;
+  }
+
+  // Find a good split point for longer names
+  let splitPoint = -1;
+  let currentLength = 0;
+  for (let i = 0; i < words.length; i++) {
+    currentLength += words[i].length + 1; // +1 for space
+    if (currentLength > name.length / 2 && i > 0) { // Try to split near the middle, but not the very first word
+      splitPoint = i;
+      break;
+    }
+  }
+
+  if (splitPoint === -1) { // Fallback if no good middle split found, or only one long word
+    splitPoint = 1; // Split after the first word
+  }
+
+  const firstLineWords = words.slice(0, splitPoint);
+  const secondLineWords = words.slice(splitPoint);
+
+  if (firstLineWords.length === 0 || secondLineWords.length === 0) {
+    return fullText; // Avoid empty lines if splitting logic fails
+  }
+
+  return (
+    <>
+      {id}. {firstLineWords.join(' ')}
+      <br />
+      {secondLineWords.join(' ')}
+    </>
+  );
+};
+
 // Placeholder guiding questions for sub-strategies
 const subStrategyGuidingQuestions: { [key: string]: string[] } = {
   // Example for Strategy 1, Sub-strategy 1.1
@@ -247,8 +289,8 @@ const QualitativeEvaluation: React.FC = () => {
       <Tabs defaultValue={filteredStrategies[0]?.id || "no-strategies"} className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
           {filteredStrategies.map((strategy) => (
-            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center">
-              {strategy.id}. {strategy.name}
+            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center min-h-[60px]">
+              {splitStrategyName(`${strategy.id}. ${strategy.name}`)}
             </TabsTrigger>
           ))}
         </TabsList>
