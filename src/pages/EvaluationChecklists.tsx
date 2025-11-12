@@ -171,10 +171,26 @@ const EvaluationChecklists: React.FC = () => {
             onValueChange={(value: ConceptType) => value && setSelectedConcept(value)}
             className="flex"
           >
-            <ToggleGroupItem value="A" aria-label="Toggle Concept A">
+            <ToggleGroupItem
+              value="A"
+              aria-label="Toggle Concept A"
+              className={cn(
+                "data-[state=on]:bg-app-concept-a-base data-[state=on]:text-white",
+                "data-[state=on]:hover:bg-app-concept-a-dark",
+                "text-app-concept-a-base hover:bg-app-concept-a-light/20"
+              )}
+            >
               Concept A
             </ToggleGroupItem>
-            <ToggleGroupItem value="B" aria-label="Toggle Concept B">
+            <ToggleGroupItem
+              value="B"
+              aria-label="Toggle Concept B"
+              className={cn(
+                "data-[state=on]:bg-app-concept-b-base data-[state=on]:text-white",
+                "data-[state=on]:hover:bg-app-concept-b-dark",
+                "text-app-concept-b-base hover:bg-app-concept-b-light/20"
+              )}
+            >
               Concept B
             </ToggleGroupItem>
           </ToggleGroup>

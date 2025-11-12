@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 
 const EvaluationRadar: React.FC = () => {
   const { strategies, evaluationChecklists, setRadarChartData, radarChartData } = useLcd();
-  const [selectedConcept, setSelectedConcept] = useState<'A' | 'B'>('A');
+  // Removed selectedConcept state as both concepts will always be displayed
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -19,6 +19,9 @@ const EvaluationRadar: React.FC = () => {
     'Good': 3,
     'Excellent': 4,
     'N/A': 0, // N/A will be treated as 0 or not shown
+    'Yes': 4,
+    'Partially': 2.5,
+    'No': 1,
   };
 
   // Function to calculate the average evaluation for a strategy
@@ -64,15 +67,19 @@ const EvaluationRadar: React.FC = () => {
   };
 
   useEffect(() => {
-    const newRadarData: { [key: string]: number } = {};
+    const newRadarDataA: { [key: string]: number } = {};
+    const newRadarDataB: { [key: string]: number } = {};
+
     strategies.forEach(strategy => {
-      newRadarData[strategy.id] = calculateStrategyAverage(selectedConcept, strategy.id);
+      newRadarDataA[strategy.id] = calculateStrategyAverage('A', strategy.id);
+      newRadarDataB[strategy.id] = calculateStrategyAverage('B', strategy.id);
     });
-    setRadarChartData(prev => ({
-      ...prev,
-      [selectedConcept]: newRadarData,
-    }));
-  }, [evaluationChecklists, strategies, selectedConcept, setRadarChartData]);
+
+    setRadarChartData({
+      A: newRadarDataA,
+      B: newRadarDataB,
+    });
+  }, [evaluationChecklists, strategies, setRadarChartData]);
 
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
@@ -89,23 +96,7 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section.
       </p>
 
-      <div className="mb-8">
-        <h3 className="text-xl font-palanquin font-semibold text-app-header mb-3">Select Concept to Highlight:</h3>
-        <RadioGroup
-          value={selectedConcept}
-          onValueChange={(value: 'A' | 'B') => setSelectedConcept(value)}
-          className="flex space-x-4"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="A" id="radar-concept-a" />
-            <Label htmlFor="radar-concept-a" className="text-app-body-text">Concept/Product A</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="B" id="radar-concept-b" />
-            <Label htmlFor="radar-concept-b" className="text-app-body-text">Concept/Product B</Label>
-          </div>
-        </RadioGroup>
-      </div>
+      {/* Removed "Select Concept to Highlight" section */}
 
       <div className="w-full h-[500px] flex justify-center items-center">
         {strategies.length > 0 ? (
@@ -114,8 +105,8 @@ const EvaluationRadar: React.FC = () => {
               <PolarGrid stroke="#e0e0e0" />
               <PolarAngleAxis dataKey="strategyName" stroke="#333" tick={{ fill: '#333', fontSize: 12, fontFamily: 'Roboto Condensed' }} />
               <PolarRadiusAxis angle={90} domain={[0, 4]} tickCount={5} stroke="#333" tick={{ fill: '#333', fontSize: 10, fontFamily: 'Roboto' }} />
-              <Radar name="Concept A" dataKey="A" stroke="#003366" fill="#003366" fillOpacity={0.6} />
-              <Radar name="Concept B" dataKey="B" stroke="#ff8c00" fill="#ff8c00" fillOpacity={0.6} />
+              <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+              <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
               <Legend />
             </RadarChart>
           </ResponsiveContainer>

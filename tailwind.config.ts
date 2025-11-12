@@ -72,6 +72,12 @@ export default {
         'app-body-text': '#333333', // Dark grey for body text
         'app-accent': '#ff8c00',
         'app-page-background': 'hsl(var(--app-page-background))', // New custom background color
+        'app-concept-a-base': '#B02418', // Base red for Concept A
+        'app-concept-a-light': '#E05040', // Lighter red for fill
+        'app-concept-a-dark': '#8C1C14',  // Darker red for stroke
+        'app-concept-b-base': '#2F6EBA', // Base blue for Concept B
+        'app-concept-b-light': '#5FA0E0', // Lighter blue for fill
+        'app-concept-b-dark': '#245590',  // Darker blue for stroke
       },
       borderRadius: {
         lg: "var(--radius)",
