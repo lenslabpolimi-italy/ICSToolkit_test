@@ -178,16 +178,25 @@ const EvaluationChecklists: React.FC = () => {
         <div className="space-y-8 mt-6 pt-4">
           {filteredStrategies.map((strategy) => (
             <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-palanquin font-semibold text-app-header">
-                  {strategy.id}. {strategy.name}
-                </h3>
-                {renderEvaluationSelectors(
-                  'strategy',
-                  strategy.id,
-                  '', // Label is handled by the h3, so pass empty string
-                  evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
-                )}
+              <div className="flex flex-col mb-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-xl font-palanquin font-semibold text-app-header">
+                    {strategy.id}. {strategy.name}
+                  </h3>
+                  {renderEvaluationSelectors(
+                    'strategy',
+                    strategy.id,
+                    '', // Label is handled by the h3, so pass empty string
+                    evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
+                  )}
+                </div>
+                <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
+                  {strategy.subStrategies.map(subStrategy => (
+                    <p key={subStrategy.id} className="mb-1">
+                      {subStrategy.id}. {subStrategy.name}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
