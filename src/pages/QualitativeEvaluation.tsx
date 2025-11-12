@@ -70,9 +70,9 @@ const QualitativeEvaluation: React.FC = () => {
       </p>
 
       <Tabs defaultValue={strategies[0]?.id || "no-strategies"} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2"> {/* Changed h-10 p-1 to h-auto p-2 */}
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch"> {/* Added items-stretch */}
           {strategies.map((strategy) => (
-            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed">
+            <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center"> {/* Added flex, items-center, justify-center, text-center */}
               {strategy.id}. {strategy.name}
             </TabsTrigger>
           ))}

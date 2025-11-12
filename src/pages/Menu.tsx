@@ -15,14 +15,16 @@ const Menu: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-160px)] p-4 font-roboto">
-      <h2 className="text-4xl font-palanquin font-semibold text-app-header mb-8 text-center">Life Cycle Design Toolkit</h2>
+      <h2 className="text-4xl font-palanquin font-semibold text-app-header mb-8 text-center">ICS Toolkit</h2>
       <p className="text-xl text-app-body-text mb-12 text-center max-w-2xl">
         Welcome to your toolkit for practicing Life Cycle Design. Select a section below to get started.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl items-stretch">
         {menuItems.map((item) => (
-          <Button asChild key={item.path} className="h-auto p-6 text-lg text-left bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed">
-            <Link to={item.path}>{item.label}</Link>
+          <Button asChild key={item.path} className="h-auto p-6 text-lg text-left bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed flex flex-col justify-between">
+            <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-center text-center">
+              {item.label}
+            </Link>
           </Button>
         ))}
       </div>

@@ -11,7 +11,6 @@ interface LayoutProps {
 }
 
 const navItems = [
-  { path: '/', label: 'Menu' },
   { path: '/project-data', label: 'Project Data Sheet' },
   { path: '/qualitative-evaluation', label: 'Qualitative Evaluation' },
   { path: '/eco-ideas', label: 'Eco-Ideas Boards' },
@@ -25,10 +24,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-white text-app-body-text font-roboto">
       <header className="bg-app-header text-white p-4 shadow-md">
-        <div className="container mx-auto flex flex-wrap justify-between items-center">
-          <h1 className="text-2xl font-palanquin font-semibold text-app-accent">Life Cycle Design Toolkit</h1>
+        <div className="container mx-auto flex flex-col md:flex-row items-center md:justify-between">
+          <h1 className="text-2xl font-palanquin font-semibold text-app-accent text-center md:text-left mb-2 md:mb-0">ICS Toolkit</h1>
           <nav className="mt-2 md:mt-0">
-            <ul className="flex flex-wrap gap-2 md:gap-4">
+            <ul className="flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start">
               {navItems.map((item) => (
                 <li key={item.path}>
                   <Button asChild variant="ghost" className={cn(
