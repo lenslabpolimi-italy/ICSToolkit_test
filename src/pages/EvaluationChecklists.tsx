@@ -103,30 +103,27 @@ const EvaluationChecklists: React.FC = () => {
     return 'Poor';
   };
 
+  // Refactored to only return the Select component
   const renderEvaluationSelectors = (
     type: 'strategy' | 'subStrategy' | 'guideline',
     id: string,
-    name: string,
     currentValue: EvaluationLevel,
     disabled: boolean = false
   ) => (
-    <div className="flex items-center gap-4">
-      {name && <Label className="min-w-[150px] text-app-body-text">{name}</Label>}
-      <Select
-        value={currentValue}
-        onValueChange={(value: EvaluationLevel) => handleEvaluationChange(type, id, value)}
-        disabled={disabled}
-      >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select Level" />
-        </SelectTrigger>
-        <SelectContent>
-          {evaluationOptions.map(option => (
-            <SelectItem key={option} value={option}>{option}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select
+      value={currentValue}
+      onValueChange={(value: EvaluationLevel) => handleEvaluationChange(type, id, value)}
+      disabled={disabled}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select Level" />
+      </SelectTrigger>
+      <SelectContent>
+        {evaluationOptions.map(option => (
+          <SelectItem key={option} value={option}>{option}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 
   const currentStrategy = useMemo(() => filteredStrategies.find(s => s.id === selectedStrategyTab), [filteredStrategies, selectedStrategyTab]);
@@ -188,7 +185,6 @@ const EvaluationChecklists: React.FC = () => {
                   {renderEvaluationSelectors(
                     'strategy',
                     strategy.id,
-                    '', // Label is handled by the h3, so pass empty string
                     evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
                   )}
                 </div>
@@ -223,7 +219,6 @@ const EvaluationChecklists: React.FC = () => {
                     {renderEvaluationSelectors(
                       'strategy',
                       strategy.id,
-                      '', // No label, as the h3 is the label
                       calculatedStrategyAverage,
                       true // Disabled, as it's calculated
                     )}
@@ -238,7 +233,6 @@ const EvaluationChecklists: React.FC = () => {
                         {renderEvaluationSelectors(
                           'subStrategy',
                           subStrategy.id,
-                          '', // No label, as the h4 is the label
                           evaluationChecklists[selectedConcept]?.subStrategies[subStrategy.id] || 'N/A'
                         )}
                       </div>
@@ -274,7 +268,6 @@ const EvaluationChecklists: React.FC = () => {
                   return renderEvaluationSelectors(
                     'strategy',
                     currentStrategy.id,
-                    '', // No label, as the h3 is the label
                     calculatedStrategyAverage,
                     true // Disabled, as it's calculated
                   );
@@ -296,7 +289,6 @@ const EvaluationChecklists: React.FC = () => {
                         return renderEvaluationSelectors(
                           'subStrategy',
                           subStrategy.id,
-                          '', // No label, as the h4 is the label
                           calculatedSubStrategyAverage,
                           true // Disabled, as it's calculated
                         );
@@ -306,11 +298,11 @@ const EvaluationChecklists: React.FC = () => {
                     {/* Guidelines with individual selectors */}
                     <div className="space-y-4 pl-4">
                       {subStrategy.guidelines.map(guideline => (
-                        <div key={guideline.id}>
+                        <div key={guideline.id} className="flex justify-between items-center"> {/* Added flex classes */}
+                          <Label className="text-app-body-text">{guideline.name}</Label> {/* Moved label here */}
                           {renderEvaluationSelectors(
                             'guideline',
                             guideline.id,
-                            guideline.name,
                             evaluationChecklists[selectedConcept]?.guidelines[guideline.id] || 'N/A',
                             false // Not disabled, user can select
                           )}
