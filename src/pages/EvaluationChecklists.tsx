@@ -14,15 +14,15 @@ const EvaluationChecklists: React.FC = () => {
   const { strategies, evaluationChecklists, setEvaluationChecklists } = useLcd();
   const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A');
   
-  // Filter out Strategy 7 for this page
-  const filteredStrategies = strategies.filter(s => s.id !== '7');
-  const [selectedStrategyTab, setSelectedStrategyTab] = useState(filteredStrategies[0]?.id || '');
+  // Use all strategies, no filtering for this page
+  const allStrategies = strategies;
+  const [selectedStrategyTab, setSelectedStrategyTab] = useState(allStrategies[0]?.id || '');
 
   React.useEffect(() => {
-    if (filteredStrategies.length > 0 && !selectedStrategyTab) {
-      setSelectedStrategyTab(filteredStrategies[0].id);
+    if (allStrategies.length > 0 && !selectedStrategyTab) {
+      setSelectedStrategyTab(allStrategies[0].id);
     }
-  }, [filteredStrategies, selectedStrategyTab]);
+  }, [allStrategies, selectedStrategyTab]);
 
   const currentChecklistLevel = evaluationChecklists[selectedConcept]?.level || 'Simplified';
 
@@ -57,7 +57,7 @@ const EvaluationChecklists: React.FC = () => {
       // This would be more complex in a real scenario, considering weights etc.
       if (type === 'guideline' && conceptData.level === 'Detailed') {
         const subStrategyId = id.split('.').slice(0, 2).join('.'); // e.g., "1.1.1" -> "1.1"
-        const subStrategy = strategies.flatMap(s => s.subStrategies).find(ss => ss.id === subStrategyId);
+        const subStrategy = allStrategies.flatMap(s => s.subStrategies).find(ss => ss.id === subStrategyId);
         if (subStrategy) {
           const guidelineEvals = subStrategy.guidelines.map(g => conceptData.guidelines[g.id] || 'N/A');
           conceptData.subStrategies[subStrategyId] = calculateAggregateEvaluation(guidelineEvals);
@@ -66,7 +66,7 @@ const EvaluationChecklists: React.FC = () => {
 
       if ((type === 'subStrategy' && conceptData.level === 'Normal') || (type === 'guideline' && conceptData.level === 'Detailed')) {
         const strategyId = id.split('.')[0]; // e.g., "1.1" -> "1"
-        const strategy = strategies.find(s => s.id === strategyId);
+        const strategy = allStrategies.find(s => s.id === strategyId);
         if (strategy) {
           const subStrategyEvals = strategy.subStrategies.map(ss => conceptData.subStrategies[ss.id] || 'N/A');
           conceptData.strategies[strategyId] = calculateAggregateEvaluation(subStrategyEvals);
@@ -134,7 +134,7 @@ const EvaluationChecklists: React.FC = () => {
     );
   };
 
-  const currentStrategy = useMemo(() => filteredStrategies.find(s => s.id === selectedStrategyTab), [filteredStrategies, selectedStrategyTab]);
+  const currentStrategy = useMemo(() => allStrategies.find(s => s.id === selectedStrategyTab), [allStrategies, selectedStrategyTab]);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -199,7 +199,7 @@ const EvaluationChecklists: React.FC = () => {
 
       {currentChecklistLevel === 'Simplified' ? (
         <div className="space-y-8 mt-6 pt-4">
-          {filteredStrategies.map((strategy) => (
+          {allStrategies.map((strategy) => (
             <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
               <div className="flex flex-col mb-4">
                 <div className="flex justify-between items-center mb-2">
@@ -225,7 +225,7 @@ const EvaluationChecklists: React.FC = () => {
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
         <div className="space-y-8 mt-6 pt-4">
-          {filteredStrategies.map((strategy) => {
+          {allStrategies.map((strategy) => {
             // Calculate average for strategy based on its sub-strategies
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
@@ -270,7 +270,7 @@ const EvaluationChecklists: React.FC = () => {
       ) : ( // Detailed level
         <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
-            {filteredStrategies.map((strategy) => (
+            {allStrategies.map((strategy) => (
               <TabsTrigger key={strategy.id} value={strategy.id} className="whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center">
                 {strategy.id}. {strategy.name}
               </TabsTrigger>
