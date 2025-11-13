@@ -44,25 +44,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </div>
       </header>
-      <main className="flex-grow container mx-auto p-4 pb-28 relative"> {/* Added pb-28 for bottom padding */}
+      <main className="flex-grow container mx-auto p-4 pb-28 relative"> {/* pb-28 for bottom padding */}
         {children}
       </main>
       <footer className="relative w-full"> {/* Made footer relative for absolute positioning of logos */}
         <MadeWithDyad />
         {/* LeNSlab Logo */}
-        <div className="absolute bottom-4 left-4">
+        <div className="absolute bottom-7 left-4"> {/* Moved up to bottom-7 */}
           <img
             src="/white- LeNSlab_logo 3-03.png"
             alt="LeNSlab Logo"
-            className="h-14" // LeNSlab logo a bit bigger
+            className="h-16" // LeNSlab logo made bigger
           />
         </div>
         {/* Creative Commons Logo */}
-        <div className="absolute bottom-4 right-4">
+        <div className="absolute bottom-7 right-4"> {/* Moved up to bottom-7 */}
           <img
             src="/Creative Commons Logo - CC_by.svg"
             alt="Creative Commons Logo"
-            className="h-9" // CC logo a bit smaller
+            className="h-9" // CC logo remains smaller
           />
         </div>
       </footer>
