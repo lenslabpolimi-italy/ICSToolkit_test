@@ -210,29 +210,39 @@ const EvaluationChecklists: React.FC = () => {
 
       {currentChecklistLevel === 'Simplified' ? (
         <div className="space-y-8 mt-6 pt-4">
-          {allStrategies.map((strategy) => (
-            <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-              <div className="flex flex-col mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-xl font-palanquin font-semibold text-app-header">
-                    {strategy.id}. {strategy.name}
-                  </h3>
-                  {renderEvaluationSelectors(
-                    'strategy',
-                    strategy.id,
-                    evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
-                  )}
-                </div>
-                <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
-                  {strategy.subStrategies.map(subStrategy => (
-                    <p key={subStrategy.id} className="mb-1">
-                      {subStrategy.id}. {subStrategy.name}
-                    </p>
-                  ))}
+          {allStrategies.map((strategy) => {
+            const displayPriority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+            const tagClasses = getPriorityTagClasses(displayPriority);
+            return (
+              <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+                <div className="flex flex-col mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
+                      <span className={cn(
+                        "text-xs font-roboto-condensed px-1 rounded-sm",
+                        tagClasses
+                      )}>
+                        {displayPriority}
+                      </span>
+                      {strategy.id}. {strategy.name}
+                    </h3>
+                    {renderEvaluationSelectors(
+                      'strategy',
+                      strategy.id,
+                      evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
+                    )}
+                  </div>
+                  <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
+                    {strategy.subStrategies.map(subStrategy => (
+                      <p key={subStrategy.id} className="mb-1">
+                        {subStrategy.id}. {subStrategy.name}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
         <div className="space-y-8 mt-6 pt-4">
@@ -242,13 +252,21 @@ const EvaluationChecklists: React.FC = () => {
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
             );
             const calculatedStrategyAverage = calculateAggregateEvaluation(subStrategyEvals);
+            const displayPriority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+            const tagClasses = getPriorityTagClasses(displayPriority);
 
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
                 <div className="flex flex-col mb-4">
                   {/* Strategy Header with calculated average */}
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-xl font-palanquin font-semibold text-app-header">
+                    <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
+                      <span className={cn(
+                        "text-xs font-roboto-condensed px-1 rounded-sm",
+                        tagClasses
+                      )}>
+                        {displayPriority}
+                      </span>
                       {strategy.id}. {strategy.name}
                     </h3>
                     {renderEvaluationSelectors(
@@ -289,12 +307,12 @@ const EvaluationChecklists: React.FC = () => {
                   key={strategy.id}
                   value={strategy.id}
                   className={cn(
-                    "whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center relative pt-2 pb-4", // Added relative and padding
+                    "whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center relative pt-3 pb-5", // Adjusted padding
                   )}
                 >
                   {strategy.id}. {strategy.name}
                   <span className={cn(
-                    "absolute bottom-0.5 right-0.5 text-xs font-roboto-condensed px-1 rounded-sm",
+                    "absolute bottom-1.5 right-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Adjusted bottom position
                     tagClasses
                   )}>
                     {displayPriority}

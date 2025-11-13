@@ -256,12 +256,12 @@ const QualitativeEvaluation: React.FC = () => {
                 key={strategy.id}
                 value={strategy.id}
                 className={cn(
-                  "whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center relative pt-2 pb-4", // Added relative and padding
+                  "whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center relative pt-3 pb-5", // Adjusted padding
                 )}
               >
                 {strategy.id}. {strategy.name}
                 <span className={cn(
-                  "absolute bottom-0.5 right-0.5 text-xs font-roboto-condensed px-1 rounded-sm",
+                  "absolute bottom-1.5 right-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Adjusted bottom position
                   tagClasses
                 )}>
                   {displayPriority}
