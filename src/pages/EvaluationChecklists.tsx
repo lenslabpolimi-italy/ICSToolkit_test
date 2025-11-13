@@ -304,12 +304,14 @@ const EvaluationChecklists: React.FC = () => {
                   key={strategy.id}
                   value={strategy.id}
                   className={cn(
-                    "whitespace-normal h-auto font-roboto-condensed flex items-center justify-center text-center relative pt-3 pb-5", // Adjusted padding
+                    "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5", // Changed to flex-col and items-center
                   )}
                 >
-                  {strategy.id}. {strategy.name}
+                  <span className="mb-1"> {/* Added span for title and margin-bottom */}
+                    {strategy.id}. {strategy.name}
+                  </span>
                   <span className={cn(
-                    "absolute bottom-1.5 right-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Adjusted bottom position
+                    "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Removed left/right and translate-x-1/2, flex-col handles centering
                     classes
                   )}>
                     {displayText}
