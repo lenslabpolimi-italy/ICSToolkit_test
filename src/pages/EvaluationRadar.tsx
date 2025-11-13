@@ -118,12 +118,6 @@ const EvaluationRadar: React.FC = () => {
       const canvasWidth = canvasRect.width;
       const canvasHeight = canvasRect.height;
 
-      // Ensure chart wrapper has valid dimensions before proceeding
-      if (chartWrapperRect.width === 0 || chartWrapperRect.height === 0) {
-        console.warn("Recharts wrapper has zero dimensions, delaying layout calculation.");
-        return;
-      }
-
       // Offset of rechartsWrapperRef from radarCanvasRef's top-left corner
       const chartOffsetX = chartWrapperRect.left - canvasRect.left;
       const chartOffsetY = chartWrapperRect.top - canvasRect.top;
@@ -146,17 +140,10 @@ const EvaluationRadar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Add a small delay to allow ResponsiveContainer to render and size itself
-    const timeoutId = setTimeout(() => {
-      calculateChartLayout();
-    }, 100); 
-
+    calculateChartLayout();
     window.addEventListener('resize', calculateChartLayout);
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('resize', calculateChartLayout);
-    };
-  }, [calculateChartLayout, strategies]); // Added strategies to dependency array
+    return () => window.removeEventListener('resize', calculateChartLayout);
+  }, [calculateChartLayout]);
 
   const getRadarPointCoordinates = useCallback((strategyIndex: number) => {
     if (strategies.length === 0 || !chartLayout.canvasWidth) return { x: 0, y: 0 };
