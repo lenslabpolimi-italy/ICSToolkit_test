@@ -21,20 +21,31 @@ const navItems = [
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
 
+  // Combine "ICS Toolkit" with other nav items for consistent button styling
+  const headerNavItems = [
+    { path: '/', label: 'ICS Toolkit' }, // Added ICS Toolkit as a nav item
+    ...navItems,
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-app-page-background text-app-body-text font-roboto">
-      <header className="bg-app-header text-white p-4 shadow-md">
+      <header className="bg-white text-app-header p-4 shadow-md"> {/* Changed background to white, text to app-header */}
         <div className="container mx-auto flex flex-col md:flex-row items-center md:justify-between">
-          <Link to="/" className="text-2xl font-palanquin font-semibold text-app-accent text-center md:text-left mb-2 md:mb-0">
-            ICS Toolkit
-          </Link>
+          {/* LeNSlab Logo - Moved to header */}
+          <div className="flex items-center mb-2 md:mb-0">
+            <img
+              src="/white- LeNSlab_logo 3-03.png"
+              alt="LeNSlab Logo"
+              className="h-10 mr-4 drop-shadow-sm" // Made smaller and added shadow for visibility on white
+            />
+          </div>
           <nav className="mt-2 md:mt-0">
             <ul className="flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start">
-              {navItems.map((item) => (
+              {headerNavItems.map((item) => (
                 <li key={item.path}>
                   <Button asChild variant="ghost" className={cn(
-                    "text-white hover:bg-app-accent hover:text-app-header font-roboto-condensed",
-                    location.pathname === item.path && "bg-app-accent text-app-header"
+                    "text-app-header hover:bg-app-accent hover:text-white font-roboto-condensed", // Adjusted colors for white background
+                    location.pathname === item.path && "bg-app-accent text-white" // Adjusted active state colors
                   )}>
                     <Link to={item.path}>{item.label}</Link>
                   </Button>
@@ -47,22 +58,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="flex-grow container mx-auto p-4 pb-28 relative"> {/* pb-28 for bottom padding */}
         {children}
       </main>
-      <footer className="relative w-full"> {/* Made footer relative for absolute positioning of logos */}
+      <footer className="relative w-full">
         <MadeWithDyad />
-        {/* LeNSlab Logo */}
-        <div className="absolute bottom-7 left-4"> {/* Moved up to bottom-7 */}
-          <img
-            src="/white- LeNSlab_logo 3-03.png"
-            alt="LeNSlab Logo"
-            className="h-16" // LeNSlab logo made bigger
-          />
-        </div>
-        {/* Creative Commons Logo */}
-        <div className="absolute bottom-14 right-4"> {/* Adjusted to bottom-14 to align tops */}
+        {/* Creative Commons Logo - Adjusted position */}
+        <div className="absolute bottom-4 right-4"> {/* Aligned with MadeWithDyad */}
           <img
             src="/Creative Commons Logo - CC_by.svg"
             alt="Creative Commons Logo"
-            className="h-9" // CC logo remains smaller
+            className="h-9"
           />
         </div>
       </footer>
