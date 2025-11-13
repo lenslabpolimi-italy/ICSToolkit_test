@@ -16,7 +16,7 @@ export interface Strategy {
 }
 
 export type PriorityLevel = 'High' | 'Mid' | 'Low' | 'None';
-export type EvaluationLevel = 'Excellent' | 'Good' | 'Mediocre' | 'Poor' | 'N/A';
+export type EvaluationLevel = 'Excellent' | 'Good' | 'Mediocre' | 'Poor' | 'N/A' | 'Yes' | 'Partially' | 'No'; // Added Yes, Partially, No
 
 export interface ProjectData {
   projectName: string;
@@ -32,7 +32,7 @@ export interface QualitativeEvaluationData {
     subStrategies: {
       [subStrategyId: string]: {
         priority: PriorityLevel;
-        answer: string; // Added this field
+        answer: string;
       };
     };
   };
@@ -44,6 +44,8 @@ export interface EcoIdea {
   strategyId: string;
   subStrategyId?: string;
   guidelineId?: string;
+  x: number; // Added for position
+  y: number; // Added for position
 }
 
 export type ChecklistLevel = 'Simplified' | 'Normal' | 'Detailed';

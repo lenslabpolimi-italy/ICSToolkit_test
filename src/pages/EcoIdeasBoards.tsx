@@ -4,15 +4,13 @@ import React, { useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea'; // Keeping imports for now, even if UI is removed
-import { Button } from '@/components/ui/button'; // Keeping imports for now, even if UI is removed
-import { PlusCircle, Trash2 } from 'lucide-react'; // Keeping imports for now, even if UI is removed
+import StickyNote from '@/components/StickyNote'; // Import the new StickyNote component
+import { PlusCircle } from 'lucide-react'; // Keeping imports for now, even if UI is removed
 import { EcoIdea } from '@/types/lcd';
 import { toast } from 'sonner';
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas } = useLcd();
-  const [newIdeaText, setNewIdeaText] = useState(''); // Keeping state for potential future use
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
 
   React.useEffect(() => {
@@ -21,31 +19,36 @@ const EcoIdeasBoards: React.FC = () => {
     }
   }, [strategies, selectedStrategyId]);
 
-  // Keeping addIdea and deleteIdea functions, even if their UI is removed
-  const addIdea = (strategyId: string, subStrategyId?: string, guidelineId?: string) => {
-    if (newIdeaText.trim() === '') {
-      toast.error("Idea cannot be empty.");
-      return;
-    }
-    const newIdea: EcoIdea = {
-      id: `idea-${Date.now()}`,
-      text: newIdeaText,
-      strategyId,
-      subStrategyId,
-      guidelineId,
+  const addStickyNote = () => {
+    const newNote: EcoIdea = {
+      id: `note-${Date.now()}`,
+      text: '',
+      strategyId: selectedStrategyId,
+      x: 50, // Initial X position (relative to the canvas)
+      y: 50, // Initial Y position (relative to the canvas)
     };
-    setEcoIdeas(prev => [...prev, newIdea]);
-    setNewIdeaText('');
-    toast.success("Idea added!");
+    setEcoIdeas(prev => [...prev, newNote]);
+    toast.success("New sticky note added!");
   };
 
-  const deleteIdea = (id: string) => {
-    setEcoIdeas(prev => prev.filter(idea => idea.id !== id));
-    toast.info("Idea removed.");
+  const handleNoteDragStop = (id: string, x: number, y: number) => {
+    setEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
   };
 
-  // filteredIdeas is no longer used in the render, but keeping the variable for context
-  // const filteredIdeas = ecoIdeas.filter(idea => idea.strategyId === selectedStrategyId);
+  const handleNoteTextChange = (id: string, newText: string) => {
+    setEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+  };
+
+  const handleNoteDelete = (id: string) => {
+    setEcoIdeas(prev => prev.filter(note => note.id !== id));
+    toast.info("Sticky note removed.");
+  };
+
+  const filteredNotes = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -66,8 +69,18 @@ const EcoIdeasBoards: React.FC = () => {
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
-            {/* The new "large blank canvas" area */}
-            <div className="flex flex-col items-center justify-start min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50">
+            {/* The "large blank canvas" area */}
+            <div className="relative flex flex-col items-center justify-start min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
+              {/* Stack of infinite digital sticky notes */}
+              <div
+                className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+                onClick={addStickyNote}
+                style={{ width: '60px', height: '60px', zIndex: 101 }}
+                title="Drag out a new sticky note"
+              >
+                <PlusCircle size={32} className="text-gray-700" />
+              </div>
+
               <div className="w-full max-w-3xl text-center"> {/* Centrally aligned content */}
                 {strategy.subStrategies.map((subStrategy) => (
                   <div key={subStrategy.id} className="mb-6">
@@ -84,6 +97,23 @@ const EcoIdeasBoards: React.FC = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Render existing sticky notes */}
+              {filteredNotes.map(note => (
+                <StickyNote
+                  key={note.id}
+                  id={note.id}
+                  x={note.x}
+                  y={note.y}
+                  text={note.text}
+                  strategyId={note.strategyId}
+                  subStrategyId={note.subStrategyId}
+                  guidelineId={note.guidelineId}
+                  onDragStop={handleNoteDragStop}
+                  onTextChange={handleNoteTextChange}
+                  onDelete={handleNoteDelete}
+                />
+              ))}
             </div>
           </TabsContent>
         ))}

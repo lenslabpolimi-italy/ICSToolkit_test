@@ -120,7 +120,7 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
         setQualitativeEvaluation(resetQualitative);
         break;
       case 'ecoIdeas':
-        setEcoIdeas(initialEcoIdeas);
+        setEcoIdeas(initialEcoIdeas); // Resets to an empty array, clearing all notes
         break;
       case 'evaluationChecklists':
         setEvaluationChecklists(initialEvaluationChecklists);
