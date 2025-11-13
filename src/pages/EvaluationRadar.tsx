@@ -5,12 +5,11 @@ import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 import { EvaluationLevel } from '@/types/lcd';
-import StrategyInsightBox from '@/components/StrategyInsightBox'; // NEW: Import StrategyInsightBox
-import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils'; // Already imported
+import StrategyInsightBox from '@/components/StrategyInsightBox';
+import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
 
 const EvaluationRadar: React.FC = () => {
   const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights } = useLcd();
-  // Removed selectedConcept state as both concepts will always be displayed
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -96,15 +95,19 @@ const EvaluationRadar: React.FC = () => {
   };
 
   // Define positions for the insight boxes around the radar chart
-  // These are approximate and might need fine-tuning based on actual rendering
+  // The parent container is max-w-7xl (1280px) and h-[800px].
+  // The ResponsiveContainer for the radar is width="50%", so it's 640px wide, centered.
+  // This leaves (1280 - 640) / 2 = 320px on each side.
+  // The StrategyInsightBox is w-64 (256px).
+  // So, there's (320 - 256) / 2 = 32px padding on each side of the boxes.
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-    '1': { top: '0%', left: '50%', transform: 'translate(-50%, -100%)' }, // Top center
-    '2': { top: '25%', right: '0%', transform: 'translate(100%, -50%)' }, // Mid-right
-    '3': { top: '75%', right: '0%', transform: 'translate(100%, -50%)' }, // Bottom-right
-    '4': { bottom: '0%', left: '50%', transform: 'translate(-50%, 100%)' }, // Bottom center
-    '5': { top: '75%', left: '0%', transform: 'translate(-100%, -50%)' }, // Bottom-left
-    '6': { top: '25%', left: '0%', transform: 'translate(-100%, -50%)' }, // Mid-left
-    '7': { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }, // Center (if needed, otherwise adjust others)
+    '1': { top: '0', left: '50%', transform: 'translateX(-50%)' }, // Top center
+    '2': { top: '10%', left: 'calc(75% + 32px)' }, // Right side, upper
+    '3': { top: '40%', left: 'calc(75% + 32px)' }, // Right side, middle
+    '4': { top: '70%', left: 'calc(75% + 32px)' }, // Right side, lower
+    '5': { top: '70%', right: 'calc(75% + 32px)' }, // Left side, lower
+    '6': { top: '40%', right: 'calc(75% + 32px)' }, // Left side, middle
+    '7': { top: '10%', right: 'calc(75% + 32px)' }, // Left side, upper
   };
 
   return (
@@ -115,10 +118,10 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
 
-      <div className="relative w-full h-[600px] flex justify-center items-center"> {/* Increased height for more space */}
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center"> {/* Increased height and max-width */}
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="60%" height="100%"> {/* Radar takes 60% width */}
+            <ResponsiveContainer width="50%" height="100%"> {/* Radar takes 50% width */}
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis dataKey="strategyName" stroke="#333" tick={{ fill: '#333', fontSize: 12, fontFamily: 'Roboto Condensed' }} />
