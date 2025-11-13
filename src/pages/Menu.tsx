@@ -14,19 +14,37 @@ const Menu: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-160px)] p-4 font-roboto">
+    <div className="relative flex flex-col items-center justify-center min-h-[calc(100vh-160px)] p-4 font-roboto">
       <h2 className="text-4xl font-palanquin font-semibold text-app-header mb-8 text-center">ICS Toolkit</h2>
       <p className="text-xl text-app-body-text mb-12 text-center max-w-2xl">
         Welcome to your toolkit for practicing Life Cycle Design. Select a section below to get started.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl items-stretch">
+      <div className="flex flex-col gap-4 w-full max-w-md items-stretch"> {/* Changed to flex-col for stacking */}
         {menuItems.map((item) => (
-          <Button asChild key={item.path} className="h-auto p-6 text-lg text-left bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed flex flex-col justify-between">
-            <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-center text-center">
+          <Button asChild key={item.path} className="h-auto p-4 text-lg text-center bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed">
+            <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-center">
               {item.label}
             </Link>
           </Button>
         ))}
+      </div>
+
+      {/* LeNSlab Logo */}
+      <div className="absolute bottom-4 left-4">
+        <img
+          src="/white- LeNSlab_logo 3-03.png"
+          alt="LeNSlab Logo"
+          className="h-12" // Adjust height as needed
+        />
+      </div>
+
+      {/* Creative Commons Logo */}
+      <div className="absolute bottom-4 right-4">
+        <img
+          src="/Creative Commons Logo - CC_by.svg"
+          alt="Creative Commons Logo"
+          className="h-10" // Adjust height as needed
+        />
       </div>
     </div>
   );
