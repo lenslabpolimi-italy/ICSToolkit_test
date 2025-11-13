@@ -49,9 +49,9 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
     case 'High':
       return 'bg-red-600 text-white';
     case 'Mid':
-      return 'bg-yellow-500 text-gray-900';
+      return 'bg-orange-500 text-white'; // Changed to orange with white text
     case 'Low':
-      return 'bg-blue-500 text-white';
+      return 'bg-yellow-300 text-gray-800'; // Changed to yellow with dark text
     case 'None':
     default:
       return 'bg-gray-300 text-gray-700';
