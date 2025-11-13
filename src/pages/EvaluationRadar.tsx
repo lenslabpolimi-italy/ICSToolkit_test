@@ -122,16 +122,16 @@ const EvaluationRadar: React.FC = () => {
   // The parent container is max-w-7xl (1280px) and h-[800px].
   // The ResponsiveContainer for the radar is width="50%", so it's 640px wide, centered.
   // This leaves (1280 - 640) / 2 = 320px on each side.
-  // The StrategyInsightBox is w-64 (256px).
-  // So, there's (320 - 256) / 2 = 32px padding on each side of the boxes.
+  // The StrategyInsightBox is w-72 (288px).
+  // So, there's (320 - 288) / 2 = 16px padding on each side of the boxes.
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
     '1': { top: '0', left: '50%', transform: 'translateX(-50%)' }, // Top center
-    '2': { top: '10%', left: 'calc(75% + 32px)' }, // Right side, upper
-    '3': { top: '40%', left: 'calc(75% + 32px)' }, // Right side, middle
-    '4': { top: '70%', left: 'calc(75% + 32px)' }, // Right side, lower
-    '5': { top: '70%', right: 'calc(75% + 32px)' }, // Left side, lower
-    '6': { top: '40%', right: 'calc(75% + 32px)' }, // Left side, middle
-    '7': { top: '10%', right: 'calc(75% + 32px)' }, // Left side, upper
+    '2': { top: '10%', left: 'calc(75% + 16px)' }, // Right side, upper
+    '3': { top: '40%', left: 'calc(75% + 16px)' }, // Right side, middle
+    '4': { top: '70%', left: 'calc(75% + 16px)' }, // Right side, lower
+    '5': { top: '70%', right: 'calc(75% + 16px)' }, // Left side, lower
+    '6': { top: '40%', right: 'calc(75% + 16px)' }, // Left side, middle
+    '7': { top: '10%', right: 'calc(75% + 16px)' }, // Left side, upper
   };
 
   return (
@@ -146,9 +146,9 @@ const EvaluationRadar: React.FC = () => {
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%"> {/* Radar takes 50% width */}
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+              <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}> {/* Adjusted cy to 42% */}
                 <PolarGrid stroke="#e0e0e0" />
-                <PolarAngleAxis tick={false} /> {/* Removed dataKey and set tick to false */}
+                <PolarAngleAxis tick={false} />
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 4]}
