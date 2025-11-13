@@ -19,10 +19,11 @@ const Menu: React.FC = () => {
       <p className="text-xl text-app-body-text mb-12 text-center max-w-2xl">
         Welcome to your toolkit for practicing Life Cycle Design. Select a section below to get started.
       </p>
-      <div className="flex flex-col gap-4 w-full max-w-md items-stretch"> {/* Changed to flex-col for stacking */}
+      {/* Removed max-w-md and w-full from this div to allow buttons to size based on content */}
+      <div className="flex flex-col gap-4 items-center"> 
         {menuItems.map((item) => (
-          <Button asChild key={item.path} className="h-auto p-4 text-lg text-center bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed">
-            <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-center">
+          <Button asChild key={item.path} className="h-auto p-4 text-lg text-center bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed max-w-full">
+            <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-center px-4"> {/* Added px-4 for internal padding */}
               {item.label}
             </Link>
           </Button>
