@@ -68,7 +68,7 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         // Custom colors for the app
-        'app-header': '#003366',
+        'app-header': '#135C95',
         'app-body-text': '#333333', // Dark grey for body text
         'app-accent': '#ff8c00',
         'app-page-background': 'hsl(var(--app-page-background))', // New custom background color
