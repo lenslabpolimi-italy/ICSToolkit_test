@@ -14,7 +14,7 @@ const Menu: React.FC = () => {
   ];
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[calc(100vh-160px)] p-4 pb-24 font-roboto"> {/* Added pb-24 for bottom padding */}
+    <div className="relative flex flex-col items-center justify-center min-h-[calc(100vh-160px)] p-4 font-roboto">
       <h2 className="text-4xl font-palanquin font-semibold text-app-header mb-8 text-center">ICS Toolkit</h2>
       <p className="text-xl text-app-body-text mb-12 text-center max-w-2xl">
         Welcome to your toolkit for practicing Life Cycle Design. Select a section below to get started.
@@ -31,24 +31,6 @@ const Menu: React.FC = () => {
             </Button>
           ))}
         </div>
-      </div>
-
-      {/* LeNSlab Logo */}
-      <div className="absolute bottom-4 left-4">
-        <img
-          src="/white- LeNSlab_logo 3-03.png"
-          alt="LeNSlab Logo"
-          className="h-12" // Set to h-12
-        />
-      </div>
-
-      {/* Creative Commons Logo */}
-      <div className="absolute bottom-4 right-4">
-        <img
-          src="/Creative Commons Logo - CC_by.svg"
-          alt="Creative Commons Logo"
-          className="h-12" // Set to h-12 for consistency
-        />
       </div>
     </div>
   );
