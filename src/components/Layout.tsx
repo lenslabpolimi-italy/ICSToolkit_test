@@ -58,7 +58,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           />
         </div>
         {/* Creative Commons Logo */}
-        <div className="absolute bottom-7 right-4"> {/* Moved up to bottom-7 */}
+        <div className="absolute bottom-14 right-4"> {/* Adjusted to bottom-14 to align tops */}
           <img
             src="/Creative Commons Logo - CC_by.svg"
             alt="Creative Commons Logo"
