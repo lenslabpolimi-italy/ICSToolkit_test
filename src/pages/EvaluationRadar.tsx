@@ -8,6 +8,30 @@ import { EvaluationLevel } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
 import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
 
+// Custom tick component for the PolarRadiusAxis
+const CustomRadiusTick = ({ x, y, payload }: any) => {
+  const scoreToLabel: Record<number, string> = {
+    1: 'Poor',
+    2: 'Mediocre',
+    3: 'Good',
+    4: 'Excellent',
+  };
+  const label = scoreToLabel[payload.value];
+
+  // Only render labels for scores 1-4
+  if (!label) {
+    return null;
+  }
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={-10} y={0} dy={4} textAnchor="end" fill="#333" fontSize={10} fontFamily="Roboto">
+        {label}
+      </text>
+    </g>
+  );
+};
+
 const EvaluationRadar: React.FC = () => {
   const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights } = useLcd();
 
@@ -125,7 +149,13 @@ const EvaluationRadar: React.FC = () => {
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis tick={false} /> {/* Removed dataKey and set tick to false */}
-                <PolarRadiusAxis angle={90} domain={[0, 4]} tickCount={5} stroke="#333" tick={{ fill: '#333', fontSize: 10, fontFamily: 'Roboto' }} />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 4]}
+                  tickCount={5}
+                  stroke="#333"
+                  tick={CustomRadiusTick} // Use the custom tick component
+                />
                 <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
                 <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
                 <Legend />
