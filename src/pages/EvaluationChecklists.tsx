@@ -119,7 +119,7 @@ const EvaluationChecklists: React.FC = () => {
     return 'Poor';
   };
 
-  // Refactored to only return the Select component
+  // Refactored to use ToggleGroup for evaluation selectors
   const renderEvaluationSelectors = (
     type: 'strategy' | 'subStrategy' | 'guideline',
     id: string,
@@ -128,20 +128,30 @@ const EvaluationChecklists: React.FC = () => {
   ) => {
     const options = type === 'guideline' ? guidelineEvaluationOptions : aggregateEvaluationOptions;
     return (
-      <Select
+      <ToggleGroup
+        type="single"
         value={currentValue}
-        onValueChange={(value: EvaluationLevel) => handleEvaluationChange(type, id, value)}
+        onValueChange={(value: EvaluationLevel) => value && handleEvaluationChange(type, id, value)}
         disabled={disabled}
+        className="flex flex-wrap justify-end gap-1" // Added flex-wrap and gap for better layout
       >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select Level" />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map(option => (
-            <SelectItem key={option} value={option}>{option}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        {options.map(option => (
+          <ToggleGroupItem
+            key={option}
+            value={option}
+            aria-label={`Select ${option}`}
+            className={cn(
+              "h-8 px-2 text-xs", // Smaller buttons for evaluation
+              "data-[state=on]:bg-app-primary data-[state=on]:text-white",
+              "data-[state=on]:hover:bg-app-primary-dark",
+              "text-app-primary hover:bg-app-primary-light/20",
+              disabled && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            {option}
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
     );
   };
 
