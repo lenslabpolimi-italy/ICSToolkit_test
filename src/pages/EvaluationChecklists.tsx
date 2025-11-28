@@ -6,7 +6,7 @@ import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Progress } from '@/components/ui/progress'; // Import Progress component
+import { CustomProgress } from '@/components/CustomProgress'; // Import the new CustomProgress component
 import { ChecklistLevel, ConceptType, EvaluationLevel } from '@/types/lcd';
 import { cn } from '@/lib/utils';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // Import new utilities
@@ -193,7 +193,7 @@ const EvaluationChecklists: React.FC = () => {
           <span>Completion Progress</span>
           <span>{completionPercentage}%</span>
         </div>
-        <Progress value={completionPercentage} className="w-full h-2 bg-gray-200" indicatorClassName="!bg-app-accent" />
+        <CustomProgress value={completionPercentage} className="w-full h-2 bg-gray-200" />
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
