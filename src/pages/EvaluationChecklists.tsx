@@ -193,7 +193,7 @@ const EvaluationChecklists: React.FC = () => {
           <span>Completion Progress</span>
           <span>{completionPercentage}%</span>
         </div>
-        <Progress value={completionPercentage} className="w-full h-2 bg-gray-200" indicatorClassName="bg-app-accent" />
+        <Progress value={completionPercentage} className="w-full h-2 bg-gray-200" indicatorClassName="!bg-app-accent" />
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
