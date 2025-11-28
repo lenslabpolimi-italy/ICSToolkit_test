@@ -118,44 +118,14 @@ const EvaluationRadar: React.FC = () => {
     }));
   };
 
-  // Define positions for the insight boxes around the radar chart
-  // The parent container is max-w-7xl (1280px) and h-[800px].
-  // The ResponsiveContainer for the radar is width="50%", so it's 640px wide, centered.
-  // This leaves (1280 - 640) / 2 = 320px on each side.
-  // The StrategyInsightBox is w-72 (288px).
-  // Desired margin from radar edge: 32px.
-  // Radar right edge is at 75% of parent width (1280px * 0.75 = 960px).
-  // So, for right-side boxes, left = 960px + 32px = 992px. (992/1280 = 0.775 = 77.5%)
-  // Radar left edge is at 25% of parent width (1280px * 0.25 = 320px).
-  // For left-side boxes, the box's right edge should be at 320px - 32px = 288px from the left.
-  // This means its 'right' property should be 1280px - 288px = 992px from the right. (992/1280 = 0.775 = 77.5%)
-  // No, this is incorrect. If right edge of box is at 288px from left, then right property is (1280 - 288) = 992px.
-  // This is not right.
-  // If the box is on the left, its right edge should be 32px from the radar's left edge.
-  // Radar left edge is at 25% from parent left.
-  // So, right property of box should be (100% - 25%) + 32px = 75% + 32px.
-  // This is the same as the previous calc.
-  // Let's re-evaluate:
-  // Radar left edge is at 25% of parent width.
-  // For boxes on the left, their right edge should be at 25% + 32px from the left of the parent.
-  // So, `right` property should be `100% - (25% + 32px) = 75% - 32px`.
-  // Let's use explicit pixel values for clarity and convert to percentage.
-  // Parent width = 1280px.
-  // Radar left edge = 320px. Radar right edge = 960px.
-  // For right-side boxes (2,3,4): `left` should be `960px + 32px = 992px`.
-  // `992px / 1280px = 0.775 = 77.5%`. So, `left: '77.5%'`.
-  // For left-side boxes (5,6,7): The box's right edge should be at `320px - 32px = 288px` from the left of the parent.
-  // This means its `right` property should be `1280px - 288px = 992px`.
-  // `992px / 1280px = 0.775 = 77.5%`. So, `right: '77.5%'`.
-
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
     '1': { top: '0', left: '50%', transform: 'translateX(-50%)' }, // Top center
-    '2': { top: '5%', left: '77.5%' }, // Right side, upper
+    '2': { top: '0%', left: '77.5%' }, // Right side, upper (adjusted from 5% to 0%)
     '3': { top: '40%', left: '77.5%' }, // Right side, middle
     '4': { top: '70%', left: '77.5%' }, // Right side, lower
     '5': { top: '70%', right: '77.5%' }, // Left side, lower
     '6': { top: '40%', right: '77.5%' }, // Left side, middle
-    '7': { top: '5%', right: '77.5%' }, // Left side, upper
+    '7': { top: '0%', right: '77.5%' }, // Left side, upper (adjusted from 5% to 0% for symmetry)
   };
 
   return (
