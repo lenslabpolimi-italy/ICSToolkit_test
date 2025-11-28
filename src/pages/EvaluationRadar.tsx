@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } => 'react';
+import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -123,15 +123,15 @@ const EvaluationRadar: React.FC = () => {
     // Strategy 1 box positioned above the radar chart
     '1': { top: '-193px', left: '50%', transform: 'translateX(-50%)' },
 
-    // Right side of the radar chart (radar chart occupies 25% to 75% of parent width)
-    '2': { top: '0%', left: 'calc(75% + 20px)' }, // Top-right, 20px offset from radar edge
-    '3': { top: '25%', left: 'calc(75% + 20px)' }, // Upper-mid-right
-    '4': { top: '50%', left: 'calc(75% + 20px)' }, // Lower-mid-right
+    // Right side of the radar chart (aligned with radar's vertical extent)
+    '2': { top: '32px', left: 'calc(75% + 20px)' },
+    '3': { top: '240px', left: 'calc(75% + 20px)' },
+    '4': { top: '448px', left: 'calc(75% + 20px)' },
 
-    // Left side of the radar chart
-    '7': { top: '0%', right: 'calc(75% + 20px)' }, // Top-left, 20px offset from radar edge
-    '6': { top: '25%', right: 'calc(75% + 20px)' }, // Upper-mid-left
-    '5': { top: '50%', right: 'calc(75% + 20px)' }, // Lower-mid-left
+    // Left side of the radar chart (aligned with radar's vertical extent)
+    '7': { top: '32px', right: 'calc(75% + 20px)' },
+    '6': { top: '240px', right: 'calc(75% + 20px)' },
+    '5': { top: '448px', right: 'calc(75% + 20px)' },
   };
 
   return (
@@ -142,10 +142,10 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-end mb-px">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center"> {/* Changed items-end to items-center and removed mb-px */}
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="50%" height="100%" className="mt-px">
+            <ResponsiveContainer width="50%" height="100%"> {/* Removed mt-px */}
               <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}>
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis tick={false} />
