@@ -118,15 +118,18 @@ const EvaluationRadar: React.FC = () => {
     }));
   };
 
-  // Adjusted positions to place boxes relative to the radar chart's boundaries
+  // Adjusted positions to place boxes in two columns around the radar chart
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-    '1': { top: '0', left: '50%', transform: 'translateX(-50%)' }, // Top center
-    '2': { top: '0%', left: '75%' }, // Right side, upper, aligned with radar container's right edge
-    '3': { top: '40%', left: '75%' }, // Right side, middle
-    '4': { top: '70%', left: '75%' }, // Right side, lower
-    '5': { top: '70%', right: '75%' }, // Left side, lower, aligned with radar container's left edge
-    '6': { top: '40%', right: '75%' }, // Left side, middle
-    '7': { top: '0%', right: '75%' }, // Left side, upper
+    // Right side of the radar chart (radar chart occupies 25% to 75% of parent width)
+    '1': { top: '0%', left: 'calc(75% + 20px)' }, // Top-right, 20px offset from radar edge
+    '2': { top: '25%', left: 'calc(75% + 20px)' }, // Upper-mid-right
+    '3': { top: '50%', left: 'calc(75% + 20px)' }, // Lower-mid-right
+    '4': { top: '75%', left: 'calc(75% + 20px)' }, // Bottom-right
+
+    // Left side of the radar chart
+    '7': { top: '0%', right: 'calc(75% + 20px)' }, // Top-left, 20px offset from radar edge
+    '6': { top: '25%', right: 'calc(75% + 20px)' }, // Upper-mid-left
+    '5': { top: '50%', right: 'calc(75% + 20px)' }, // Lower-mid-left
   };
 
   return (
@@ -137,11 +140,11 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-end mb-px"> {/* Changed items-center to items-end and added mb-px */}
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-end mb-px">
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="50%" height="100%" className="mt-px"> {/* Added mt-px for 1px top margin */}
-              <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}> {/* Adjusted cy to 42% */}
+            <ResponsiveContainer width="50%" height="100%" className="mt-px">
+              <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}>
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis tick={false} />
                 <PolarRadiusAxis
@@ -149,7 +152,7 @@ const EvaluationRadar: React.FC = () => {
                   domain={[0, 4]}
                   tickCount={5}
                   stroke="#333"
-                  tick={CustomRadiusTick} // Use the custom tick component
+                  tick={CustomRadiusTick}
                 />
                 <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
                 <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
@@ -160,7 +163,7 @@ const EvaluationRadar: React.FC = () => {
             {/* Render StrategyInsightBoxes */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-              const positionStyle = insightBoxPositions[strategy.id] || {}; // Get predefined position
+              const positionStyle = insightBoxPositions[strategy.id] || {};
 
               return (
                 <StrategyInsightBox
@@ -169,7 +172,7 @@ const EvaluationRadar: React.FC = () => {
                   priority={priority}
                   text={radarInsights[strategy.id] || ''}
                   onTextChange={handleInsightTextChange}
-                  className="absolute" // Use absolute positioning
+                  className="absolute"
                   style={positionStyle}
                 />
               );
