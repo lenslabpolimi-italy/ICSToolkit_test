@@ -120,8 +120,8 @@ const EvaluationRadar: React.FC = () => {
 
   // Adjusted positions to place boxes in two columns around the radar chart
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-    // Strategy 1 box positioned above the radar chart
-    '1': { top: '-193px', left: '50%', transform: 'translateX(-50%)' },
+    // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
+    '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
 
     // Right side of the radar chart (aligned with radar's vertical extent)
     '2': { top: '32px', left: 'calc(75% + 20px)' },
@@ -142,10 +142,10 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center"> {/* Changed items-end to items-center and removed mb-px */}
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center">
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="50%" height="100%"> {/* Removed mt-px */}
+            <ResponsiveContainer width="50%" height="100%">
               <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}>
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis tick={false} />
