@@ -145,7 +145,7 @@ const EvaluationRadar: React.FC = () => {
       <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center"> {/* Increased height and max-width */}
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="50%" height="100%"> {/* Radar takes 50% width */}
+            <ResponsiveContainer width="50%" height="100%" className="mt-px"> {/* Added mt-px for 1px top margin */}
               <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}> {/* Adjusted cy to 42% */}
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis tick={false} />
