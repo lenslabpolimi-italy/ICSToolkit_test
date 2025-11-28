@@ -214,13 +214,7 @@ const EvaluationChecklists: React.FC = () => {
                       evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
                     )}
                   </div>
-                  <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
-                    {strategy.subStrategies.map(subStrategy => (
-                      <p key={subStrategy.id} className="mb-1 font-palanquin font-bold"> {/* Added font-palanquin font-bold */}
-                        {subStrategy.id}. {subStrategy.name}
-                      </p>
-                    ))}
-                  </div>
+                  {/* Removed the div displaying sub-strategy names */}
                 </div>
               </div>
             );
