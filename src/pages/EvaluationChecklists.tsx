@@ -233,7 +233,7 @@ const EvaluationChecklists: React.FC = () => {
                   </div>
                   <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
                     {strategy.subStrategies.map(subStrategy => (
-                      <p key={subStrategy.id} className="mb-1">
+                      <p key={subStrategy.id} className="mb-1 font-palanquin font-bold"> {/* Added font-palanquin font-bold */}
                         {subStrategy.id}. {subStrategy.name}
                       </p>
                     ))}
@@ -278,7 +278,7 @@ const EvaluationChecklists: React.FC = () => {
                   <div className="pl-4 space-y-2">
                     {strategy.subStrategies.map(subStrategy => (
                       <div key={subStrategy.id} className="flex justify-between items-center">
-                        <h4 className="text-lg font-palanquin font-bold text-app-body-text"> {/* Added font-bold */}
+                        <h4 className="text-lg font-palanquin font-bold text-app-body-text"> {/* Already has font-palanquin font-bold */}
                           {subStrategy.id}. {subStrategy.name}
                         </h4>
                         {renderEvaluationSelectors(
@@ -352,7 +352,7 @@ const EvaluationChecklists: React.FC = () => {
                   <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
                     {/* Sub-strategy Header with calculated average or editable selector for 7.7/7.8 */}
                     <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-xl font-palanquin font-bold text-app-header"> {/* Added font-bold */}
+                      <h4 className="text-xl font-palanquin font-bold text-app-header"> {/* Already has font-palanquin font-bold */}
                         {subStrategy.id}. {subStrategy.name}
                       </h4>
                       {(() => {
