@@ -155,22 +155,49 @@ const EvaluationChecklists: React.FC = () => {
       </p>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        {/* Checklist Level Dropdown */}
+        {/* Checklist Level Toggle Group */}
         <div className="flex items-center gap-4">
           <h3 className="text-xl font-palanquin font-semibold text-app-header">Checklist Level:</h3>
-          <Select
+          <ToggleGroup
+            type="single"
             value={currentChecklistLevel}
-            onValueChange={(value: ChecklistLevel) => handleChecklistLevelChange(value)}
+            onValueChange={(value: ChecklistLevel) => value && handleChecklistLevelChange(value)}
+            className="flex"
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Level" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Simplified">Simplified</SelectItem>
-              <SelectItem value="Normal">Normal</SelectItem>
-              <SelectItem value="Detailed">Detailed</SelectItem>
-            </SelectContent>
-          </Select>
+            <ToggleGroupItem
+              value="Simplified"
+              aria-label="Toggle Simplified Checklist"
+              className={cn(
+                "data-[state=on]:bg-app-primary data-[state=on]:text-white",
+                "data-[state=on]:hover:bg-app-primary-dark",
+                "text-app-primary hover:bg-app-primary-light/20"
+              )}
+            >
+              Simplified
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="Normal"
+              aria-label="Toggle Normal Checklist"
+              className={cn(
+                "data-[state=on]:bg-app-primary data-[state=on]:text-white",
+                "data-[state=on]:hover:bg-app-primary-dark",
+                "text-app-primary hover:bg-app-primary-light/20"
+              )}
+            >
+              Normal
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="Detailed"
+              aria-label="Toggle Detailed Checklist"
+              className={cn(
+                "data-[state=on]:bg-app-primary data-[state=on]:text-white",
+                "data-[state=on]:hover:bg-app-primary-dark",
+                "text-app-primary hover:bg-app-primary-light/20"
+              )}
+            >
+              Detailed
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
 
         {/* Concept Toggle Button */}
@@ -314,7 +341,7 @@ const EvaluationChecklists: React.FC = () => {
                     "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Removed left/right and translate-x-1/2, flex-col handles centering
                     classes
                   )}>
-                    {displayText}
+                    displayText}
                   </span>
                 </TabsTrigger>
               );
