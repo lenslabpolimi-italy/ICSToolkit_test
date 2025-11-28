@@ -310,23 +310,7 @@ const EvaluationChecklists: React.FC = () => {
                 <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                   {currentStrategy.id}. {currentStrategy.name}
                 </h3>
-                {(() => {
-                  const subStrategyEvals = currentStrategy.subStrategies.map(ss => {
-                    // For 7.7 and 7.8, use their directly set value if in Detailed mode
-                    if (ss.id === '7.7' || ss.id === '7.8') {
-                      return evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A';
-                    }
-                    const guidelineEvals = ss.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
-                    return calculateAggregateEvaluation(guidelineEvals);
-                  });
-                  const calculatedStrategyAverage = calculateAggregateEvaluation(subStrategyEvals);
-                  return renderEvaluationSelectors(
-                    'strategy',
-                    currentStrategy.id,
-                    calculatedStrategyAverage,
-                    true // Disabled, as it's calculated
-                  );
-                })()}
+                {/* Removed renderEvaluationSelectors for strategy here */}
               </div>
 
               {/* Sub-strategy and Guideline Level Evaluation */}
@@ -338,18 +322,7 @@ const EvaluationChecklists: React.FC = () => {
                       <h4 className="text-xl font-palanquin font-bold text-gray-600"> {/* Changed to text-gray-600 */}
                         {subStrategy.id}. {subStrategy.name}
                       </h4>
-                      {(() => {
-                        const isEditable = (subStrategy.id === '7.7' || subStrategy.id === '7.8');
-                        const guidelineEvals = subStrategy.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A');
-                        const calculatedSubStrategyAverage = calculateAggregateEvaluation(guidelineEvals);
-                        
-                        return renderEvaluationSelectors(
-                          'subStrategy',
-                          subStrategy.id,
-                          isEditable ? (evaluationChecklists[selectedConcept]?.subStrategies[subStrategy.id] || 'N/A') : calculatedSubStrategyAverage,
-                          !isEditable // Disabled if not editable (i.e., not 7.7 or 7.8)
-                        );
-                      })()}
+                      {/* Removed renderEvaluationSelectors for subStrategy here */}
                     </div>
 
                     {/* Guidelines with individual selectors */}
