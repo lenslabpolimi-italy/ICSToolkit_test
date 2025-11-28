@@ -150,8 +150,8 @@ const QualitativeEvaluation: React.FC = () => {
     return highestPriority;
   };
 
-  // Filter out Strategy 7 for this page
-  const filteredStrategies = strategies.filter(s => s.id !== '7');
+  // No longer filtering out Strategy 7
+  const allStrategies = strategies;
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -160,9 +160,9 @@ const QualitativeEvaluation: React.FC = () => {
         Define the priority level for each LCD strategy and sub-strategy, and answer guiding questions to elaborate on your choices.
       </p>
 
-      <Tabs defaultValue={filteredStrategies[0]?.id || "no-strategies"} className="w-full">
+      <Tabs defaultValue={allStrategies[0]?.id || "no-strategies"} className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
-          {filteredStrategies.map((strategy) => {
+          {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
               <TabsTrigger
@@ -185,7 +185,7 @@ const QualitativeEvaluation: React.FC = () => {
             );
           })}
         </TabsList>
-        {filteredStrategies.map((strategy) => (
+        {allStrategies.map((strategy) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-palanquin font-semibold text-app-header">
