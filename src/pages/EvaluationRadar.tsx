@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } => 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -120,11 +120,13 @@ const EvaluationRadar: React.FC = () => {
 
   // Adjusted positions to place boxes in two columns around the radar chart
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
+    // Strategy 1 box positioned above the radar chart
+    '1': { top: '-193px', left: '50%', transform: 'translateX(-50%)' },
+
     // Right side of the radar chart (radar chart occupies 25% to 75% of parent width)
-    '1': { top: '0%', left: 'calc(75% + 20px)' }, // Top-right, 20px offset from radar edge
-    '2': { top: '25%', left: 'calc(75% + 20px)' }, // Upper-mid-right
-    '3': { top: '50%', left: 'calc(75% + 20px)' }, // Lower-mid-right
-    '4': { top: '75%', left: 'calc(75% + 20px)' }, // Bottom-right
+    '2': { top: '0%', left: 'calc(75% + 20px)' }, // Top-right, 20px offset from radar edge
+    '3': { top: '25%', left: 'calc(75% + 20px)' }, // Upper-mid-right
+    '4': { top: '50%', left: 'calc(75% + 20px)' }, // Lower-mid-right
 
     // Left side of the radar chart
     '7': { top: '0%', right: 'calc(75% + 20px)' }, // Top-left, 20px offset from radar edge
