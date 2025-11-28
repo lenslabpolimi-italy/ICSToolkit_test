@@ -356,7 +356,7 @@ const EvaluationChecklists: React.FC = () => {
                     <div className="space-y-4 pl-4">
                       {subStrategy.guidelines.map(guideline => (
                         <div key={guideline.id} className="flex justify-between items-center">
-                          <Label className="text-app-body-text">{guideline.name}</Label>
+                          <Label className="text-app-body-text font-roboto-condensed">{guideline.name}</Label>
                           {renderEvaluationSelectors(
                             'guideline',
                             guideline.id,
