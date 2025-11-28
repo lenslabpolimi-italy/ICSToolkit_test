@@ -29,8 +29,7 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
     <div className={cn(
       "bg-white p-3 rounded-lg shadow-md border border-gray-200 flex flex-col",
       "w-72 h-48",
-      "absolute top-0 right-0", // Added absolute positioning to place it at the top right
-      className
+      className // Removed the direct absolute positioning here
     )} style={style}>
       <div className="flex items-center mb-2">
         <span className={cn(

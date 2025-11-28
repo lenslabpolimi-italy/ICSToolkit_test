@@ -118,14 +118,15 @@ const EvaluationRadar: React.FC = () => {
     }));
   };
 
+  // Adjusted positions to place boxes relative to the radar chart's boundaries
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
     '1': { top: '0', left: '50%', transform: 'translateX(-50%)' }, // Top center
-    '2': { top: '0%', left: '77.5%' }, // Right side, upper (adjusted from 5% to 0%)
-    '3': { top: '40%', left: '77.5%' }, // Right side, middle
-    '4': { top: '70%', left: '77.5%' }, // Right side, lower
-    '5': { top: '70%', right: '77.5%' }, // Left side, lower
-    '6': { top: '40%', right: '77.5%' }, // Left side, middle
-    '7': { top: '0%', right: '77.5%' }, // Left side, upper (adjusted from 5% to 0% for symmetry)
+    '2': { top: '0%', left: '75%' }, // Right side, upper, aligned with radar container's right edge
+    '3': { top: '40%', left: '75%' }, // Right side, middle
+    '4': { top: '70%', left: '75%' }, // Right side, lower
+    '5': { top: '70%', right: '75%' }, // Left side, lower, aligned with radar container's left edge
+    '6': { top: '40%', right: '75%' }, // Left side, middle
+    '7': { top: '0%', right: '75%' }, // Left side, upper
   };
 
   return (
