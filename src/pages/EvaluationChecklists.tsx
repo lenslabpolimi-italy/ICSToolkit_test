@@ -289,6 +289,10 @@ const EvaluationChecklists: React.FC = () => {
                         {displayText}
                       </span>
                       {strategy.id}. {strategy.name}
+                      {/* Display calculated average for Normal level */}
+                      <span className="ml-2 text-base font-roboto-condensed text-gray-500">
+                        (Avg: {calculatedStrategyAverage})
+                      </span>
                     </h3>
                   </div>
                   <div className="pl-4 space-y-2">
@@ -339,8 +343,16 @@ const EvaluationChecklists: React.FC = () => {
           {currentStrategy && (
             <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-palanquin font-semibold text-app-header">
+                <h3 className="text-2xl font-palanquin font-semibold text-app-header flex items-center gap-2">
                   {currentStrategy.id}. {currentStrategy.name}
+                  {/* Display calculated average for Detailed level */}
+                  <span className="ml-2 text-base font-roboto-condensed text-gray-500">
+                    (Avg: {calculateAggregateEvaluation(
+                      currentStrategy.subStrategies.flatMap(ss => 
+                        ss.guidelines.map(g => evaluationChecklists[selectedConcept]?.guidelines[g.id] || 'N/A')
+                      )
+                    )})
+                  </span>
                 </h3>
               </div>
 
