@@ -142,7 +142,7 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48"> {/* Added mt-48 here */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%">
