@@ -6,16 +6,15 @@ import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'; // Keep ToggleGroupItem for now, might be removed if not used elsewhere
+import { Progress } from '@/components/ui/progress'; // Import Progress component
 import { ChecklistLevel, ConceptType, EvaluationLevel } from '@/types/lcd';
 import { cn } from '@/lib/utils';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // Import new utilities
 
 const EvaluationChecklists: React.FC = () => {
-  const { strategies, evaluationChecklists, setEvaluationChecklists, qualitativeEvaluation } = useLcd(); // Added qualitativeEvaluation
+  const { strategies, evaluationChecklists, setEvaluationChecklists, qualitativeEvaluation } = useLcd();
   const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A');
   
-  // Use all strategies, no filtering for this page
   const allStrategies = strategies;
   const [selectedStrategyTab, setSelectedStrategyTab] = useState(allStrategies[0]?.id || '');
 
@@ -54,14 +53,11 @@ const EvaluationChecklists: React.FC = () => {
         conceptData.guidelines = { ...conceptData.guidelines, [id]: value };
       }
 
-      // Automatic calculation logic (simplified for now)
-      // This would be more complex in a real scenario, considering weights etc.
       if (type === 'guideline' && conceptData.level === 'Detailed') {
-        const subStrategyId = id.split('.').slice(0, 2).join('.'); // e.g., "1.1.1" -> "1.1"
+        const subStrategyId = id.split('.').slice(0, 2).join('.');
         const subStrategy = allStrategies.flatMap(s => s.subStrategies).find(ss => ss.id === subStrategyId);
         if (subStrategy) {
           const guidelineEvals = subStrategy.guidelines.map(g => conceptData.guidelines[g.id] || 'N/A');
-          // Only update if the sub-strategy is not 7.7 or 7.8 (which are now directly editable)
           if (subStrategyId !== '7.7' && subStrategyId !== '7.8') {
             conceptData.subStrategies[subStrategyId] = calculateAggregateEvaluation(guidelineEvals);
           }
@@ -69,14 +65,12 @@ const EvaluationChecklists: React.FC = () => {
       }
 
       if ((type === 'subStrategy' && conceptData.level === 'Normal') || (type === 'guideline' && conceptData.level === 'Detailed')) {
-        const strategyId = id.split('.')[0]; // e.g., "1.1" -> "1"
+        const strategyId = id.split('.')[0];
         const strategy = allStrategies.find(s => s.id === strategyId);
         if (strategy) {
-          // For Detailed level, calculate strategy average from sub-strategies,
-          // taking into account that 7.7 and 7.8 might be directly set.
           const subStrategyEvals = strategy.subStrategies.map(ss => {
             if (conceptData.level === 'Detailed' && (ss.id === '7.7' || ss.id === '7.8')) {
-              return conceptData.subStrategies[ss.id] || 'N/A'; // Use directly set value for 7.7/7.8
+              return conceptData.subStrategies[ss.id] || 'N/A';
             }
             return conceptData.subStrategies[ss.id] || 'N/A';
           });
@@ -101,12 +95,12 @@ const EvaluationChecklists: React.FC = () => {
       'Mediocre': 2,
       'Poor': 1,
       'Yes': 4,
-      'Partially': 2.5, // Mid-point to allow for 'Good' or 'Mediocre' depending on average
+      'Partially': 2.5,
       'No': 1,
       'N/A': 0,
     };
 
-    const scores = evaluations.map(evalLevel => scoreMap[evalLevel]).filter(score => score > 0); // Filter out N/A (score 0)
+    const scores = evaluations.map(evalLevel => scoreMap[evalLevel]).filter(score => score > 0);
     
     if (scores.length === 0) return 'N/A';
 
@@ -119,7 +113,6 @@ const EvaluationChecklists: React.FC = () => {
     return 'Poor';
   };
 
-  // Refactored to only return the Select component
   const renderEvaluationSelectors = (
     type: 'strategy' | 'subStrategy' | 'guideline',
     id: string,
@@ -147,12 +140,61 @@ const EvaluationChecklists: React.FC = () => {
 
   const currentStrategy = useMemo(() => allStrategies.find(s => s.id === selectedStrategyTab), [allStrategies, selectedStrategyTab]);
 
+  // Calculate completion percentage
+  const completionPercentage = useMemo(() => {
+    let totalItems = 0;
+    let completedItems = 0;
+    const currentConceptData = evaluationChecklists[selectedConcept];
+
+    if (!currentConceptData) return 0;
+
+    if (currentChecklistLevel === 'Simplified') {
+      totalItems = allStrategies.length;
+      allStrategies.forEach(strategy => {
+        if (currentConceptData.strategies[strategy.id] && currentConceptData.strategies[strategy.id] !== 'N/A') {
+          completedItems++;
+        }
+      });
+    } else if (currentChecklistLevel === 'Normal') {
+      allStrategies.forEach(strategy => {
+        strategy.subStrategies.forEach(subStrategy => {
+          totalItems++;
+          if (currentConceptData.subStrategies[subStrategy.id] && currentConceptData.subStrategies[subStrategy.id] !== 'N/A') {
+            completedItems++;
+          }
+        });
+      });
+    } else if (currentChecklistLevel === 'Detailed') {
+      allStrategies.forEach(strategy => {
+        strategy.subStrategies.forEach(subStrategy => {
+          subStrategy.guidelines.forEach(guideline => {
+            totalItems++;
+            if (currentConceptData.guidelines[guideline.id] && currentConceptData.guidelines[guideline.id] !== 'N/A') {
+              completedItems++;
+            }
+          });
+        });
+      });
+    }
+
+    return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+  }, [evaluationChecklists, selectedConcept, currentChecklistLevel, allStrategies]);
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation of the Implementation of Life Cycle Design Strategies</h2>
       <p className="text-app-body-text mb-4">
         Evaluate how much each strategy, sub-strategy, and guideline has been pursued for Concept {selectedConcept}.
       </p>
+
+      {/* Completion Bar */}
+      <div className="mb-8">
+        <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <span>Completion Progress</span>
+          <span>{completionPercentage}%</span>
+        </div>
+        <Progress value={completionPercentage} className="w-full h-2 bg-gray-200" indicatorClassName="bg-app-accent" />
+      </div>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         {/* Checklist Level Selector */}
@@ -216,7 +258,7 @@ const EvaluationChecklists: React.FC = () => {
                   </div>
                   <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
                     {strategy.subStrategies.map(subStrategy => (
-                      <p key={subStrategy.id} className="mb-1 font-palanquin font-bold"> {/* Added font-palanquin font-bold */}
+                      <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
                         {subStrategy.id}. {subStrategy.name}
                       </p>
                     ))}
@@ -229,7 +271,6 @@ const EvaluationChecklists: React.FC = () => {
       ) : currentChecklistLevel === 'Normal' ? (
         <div className="space-y-8 mt-6 pt-4">
           {allStrategies.map((strategy) => {
-            // Calculate average for strategy based on its sub-strategies
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
             );
@@ -239,7 +280,6 @@ const EvaluationChecklists: React.FC = () => {
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
                 <div className="flex flex-col mb-4">
-                  {/* Strategy Header with calculated average */}
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
                       <span className={cn(
@@ -250,13 +290,11 @@ const EvaluationChecklists: React.FC = () => {
                       </span>
                       {strategy.id}. {strategy.name}
                     </h3>
-                    {/* Removed renderEvaluationSelectors for strategy here */}
                   </div>
-                  {/* Sub-strategies with their own selectors */}
                   <div className="pl-4 space-y-2">
                     {strategy.subStrategies.map(subStrategy => (
                       <div key={subStrategy.id} className="flex justify-between items-center">
-                        <h4 className="text-lg font-palanquin font-bold text-gray-600"> {/* Changed to text-gray-600 */}
+                        <h4 className="text-lg font-palanquin font-bold text-gray-600">
                           {subStrategy.id}. {subStrategy.name}
                         </h4>
                         {renderEvaluationSelectors(
@@ -282,14 +320,14 @@ const EvaluationChecklists: React.FC = () => {
                   key={strategy.id}
                   value={strategy.id}
                   className={cn(
-                    "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5", // Changed to flex-col and items-center
+                    "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
                   )}
                 >
-                  <span className="mb-1"> {/* Added span for title and margin-bottom */}
+                  <span className="mb-1">
                     {strategy.id}. {strategy.name}
                   </span>
                   <span className={cn(
-                    "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Removed left/right and translate-x-1/2, flex-col handles centering
+                    "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
                     classes
                   )}>
                     {displayText}
@@ -300,27 +338,21 @@ const EvaluationChecklists: React.FC = () => {
           </TabsList>
           {currentStrategy && (
             <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
-              {/* Strategy Header with calculated average */}
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                   {currentStrategy.id}. {currentStrategy.name}
                 </h3>
-                {/* Removed renderEvaluationSelectors for strategy here */}
               </div>
 
-              {/* Sub-strategy and Guideline Level Evaluation */}
               <div className="space-y-8">
                 {currentStrategy.subStrategies.map(subStrategy => (
                   <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                    {/* Sub-strategy Header with calculated average or editable selector for 7.7/7.8 */}
                     <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-xl font-palanquin font-bold text-gray-600"> {/* Changed to text-gray-600 */}
+                      <h4 className="text-xl font-palanquin font-bold text-gray-600">
                         {subStrategy.id}. {subStrategy.name}
                       </h4>
-                      {/* Removed renderEvaluationSelectors for subStrategy here */}
                     </div>
 
-                    {/* Guidelines with individual selectors */}
                     <div className="space-y-4 pl-4">
                       {subStrategy.guidelines.map(guideline => (
                         <div key={guideline.id} className="flex justify-between items-center">
@@ -329,7 +361,7 @@ const EvaluationChecklists: React.FC = () => {
                             'guideline',
                             guideline.id,
                             evaluationChecklists[selectedConcept]?.guidelines[guideline.id] || 'N/A',
-                            false // Not disabled, user can select
+                            false
                           )}
                         </div>
                       ))}
