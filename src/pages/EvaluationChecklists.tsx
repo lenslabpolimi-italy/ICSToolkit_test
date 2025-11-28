@@ -250,12 +250,7 @@ const EvaluationChecklists: React.FC = () => {
                       </span>
                       {strategy.id}. {strategy.name}
                     </h3>
-                    {renderEvaluationSelectors(
-                      'strategy',
-                      strategy.id,
-                      calculatedStrategyAverage,
-                      true // Disabled, as it's calculated
-                    )}
+                    {/* Removed renderEvaluationSelectors for strategy here */}
                   </div>
                   {/* Sub-strategies with their own selectors */}
                   <div className="pl-4 space-y-2">
