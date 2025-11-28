@@ -10,7 +10,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { PriorityLevel } from '@/types/lcd';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'; // Import ToggleGroup components
 
 const subStrategyGuidingQuestions: { [key: string]: string[] } = {
   '1.1': ["Is the (system) product highly material-intensive (oversized)? If the (system) product is a means of transport or requires transport during use, is it oversized?"],
@@ -90,13 +89,6 @@ const QualitativeEvaluation: React.FC = () => {
     });
   };
 
-  const handleStrategyPriorityChange = (strategyId: string, value: PriorityLevel) => {
-    setQualitativeEvaluation(prev => ({
-      ...prev,
-      [strategyId]: { ...prev[strategyId], priority: value }
-    }));
-  };
-
   const handleAnswerChange = (strategyId: string, subStrategyId: string, value: string) => {
     setQualitativeEvaluation(prev => {
       const newEvaluation = { ...prev };
@@ -158,42 +150,6 @@ const QualitativeEvaluation: React.FC = () => {
     return highestPriority;
   };
 
-  // Helper function to render priority selectors as ToggleGroup
-  const renderPrioritySelectors = (
-    id: string,
-    currentValue: PriorityLevel,
-    onValueChange: (value: PriorityLevel) => void,
-    disabled: boolean = false
-  ) => {
-    const options: PriorityLevel[] = ['High', 'Mid', 'Low', 'None'];
-    return (
-      <ToggleGroup
-        type="single"
-        value={currentValue}
-        onValueChange={(value: PriorityLevel) => value && onValueChange(value)}
-        disabled={disabled}
-        className="flex flex-wrap justify-end gap-1"
-      >
-        {options.map(option => (
-          <ToggleGroupItem
-            key={option}
-            value={option}
-            aria-label={`Set priority to ${option}`}
-            className={cn(
-              "px-2 py-1 text-xs rounded-md",
-              "data-[state=on]:bg-app-accent data-[state=on]:text-white",
-              "data-[state=on]:hover:bg-app-accent/90",
-              "text-app-body-text hover:bg-gray-100",
-              disabled && "opacity-50 cursor-not-allowed"
-            )}
-          >
-            {option === 'None' ? 'No priority' : `${option} priority`}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-    );
-  };
-
   // No longer filtering out Strategy 7
   const allStrategies = strategies;
 
@@ -238,18 +194,37 @@ const QualitativeEvaluation: React.FC = () => {
               <div className="flex items-center gap-4">
                 <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
                 {['1', '2', '3', '4'].includes(strategy.id) ? (
-                  renderPrioritySelectors(
-                    `strategy-priority-${strategy.id}`,
-                    calculateHighestSubStrategyPriority(strategy.id),
-                    () => {}, // No-op for disabled
-                    true // Disabled
-                  )
+                  <Select
+                    value={calculateHighestSubStrategyPriority(strategy.id)}
+                  >
+                    <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]" disabled>
+                      <SelectValue placeholder="Calculated Priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="High">High priority</SelectItem>
+                      <SelectItem value="Mid">Mid priority</SelectItem>
+                      <SelectItem value="Low">Low priority</SelectItem>
+                      <SelectItem value="None">No priority</SelectItem>
+                    </SelectContent>
+                  </Select>
                 ) : (
-                  renderPrioritySelectors(
-                    `strategy-priority-${strategy.id}`,
-                    qualitativeEvaluation[strategy.id]?.priority || 'None',
-                    (value) => handleStrategyPriorityChange(strategy.id, value)
-                  )
+                  <Select
+                    value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
+                    onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
+                      ...prev,
+                      [strategy.id]: { ...prev[strategy.id], priority: value }
+                    }))}
+                  >
+                    <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
+                      <SelectValue placeholder="Select Priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="High">High priority</SelectItem>
+                      <SelectItem value="Mid">Mid priority</SelectItem>
+                      <SelectItem value="Low">Low priority</SelectItem>
+                      <SelectItem value="None">No priority</SelectItem>
+                    </SelectContent>
+                  </Select>
                 )}
               </div>
             </div>
@@ -289,11 +264,20 @@ const QualitativeEvaluation: React.FC = () => {
                             <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
                               Sub-strategy Priority:
                             </Label>
-                            {renderPrioritySelectors(
-                              `sub-strategy-priority-${combinedId}`,
-                              qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None',
-                              (value) => handlePriorityChange(strategy.id, combinedId, value)
-                            )}
+                            <Select
+                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                            >
+                              <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                <SelectValue placeholder="Select Priority" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="High">High priority</SelectItem>
+                                <SelectItem value="Mid">Mid priority</SelectItem>
+                                <SelectItem value="Low">Low priority</SelectItem>
+                                <SelectItem value="None">No priority</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
 
@@ -350,11 +334,20 @@ const QualitativeEvaluation: React.FC = () => {
                             <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
                               Sub-strategy Priority:
                             </Label>
-                            {renderPrioritySelectors(
-                              `sub-strategy-priority-${combinedId}`,
-                              qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None',
-                              (value) => handlePriorityChange(strategy.id, combinedId, value)
-                            )}
+                            <Select
+                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                            >
+                              <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                <SelectValue placeholder="Select Priority" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="High">High priority</SelectItem>
+                                <SelectItem value="Mid">Mid priority</SelectItem>
+                                <SelectItem value="Low">Low priority</SelectItem>
+                                <SelectItem value="None">No priority</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
 
@@ -391,11 +384,20 @@ const QualitativeEvaluation: React.FC = () => {
                           <Label htmlFor={`sub-strategy-priority-${subStrategy.id}`} className="text-app-body-text">
                             Sub-strategy Priority:
                           </Label>
-                          {renderPrioritySelectors(
-                            `sub-strategy-priority-${subStrategy.id}`,
-                            qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None',
-                            (value) => handlePriorityChange(strategy.id, subStrategy.id, value)
-                          )}
+                          <Select
+                            value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None'}
+                            onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, subStrategy.id, value)}
+                          >
+                            <SelectTrigger id={`sub-strategy-priority-${subStrategy.id}`} className="w-[180px]">
+                              <SelectValue placeholder="Select Priority" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="High">High priority</SelectItem>
+                              <SelectItem value="Mid">Mid priority</SelectItem>
+                              <SelectItem value="Low">Low priority</SelectItem>
+                              <SelectItem value="None">No priority</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
 
