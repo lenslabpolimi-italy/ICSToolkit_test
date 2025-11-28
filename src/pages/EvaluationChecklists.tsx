@@ -6,7 +6,7 @@ import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'; // Keep ToggleGroupItem for now, might be removed if not used elsewhere
 import { ChecklistLevel, ConceptType, EvaluationLevel } from '@/types/lcd';
 import { cn } from '@/lib/utils';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // Import new utilities
@@ -155,83 +155,39 @@ const EvaluationChecklists: React.FC = () => {
       </p>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        {/* Checklist Level Toggle Group */}
+        {/* Checklist Level Selector */}
         <div className="flex items-center gap-4">
           <h3 className="text-xl font-palanquin font-semibold text-app-header">Checklist Level:</h3>
-          <ToggleGroup
-            type="single"
+          <Select
             value={currentChecklistLevel}
-            onValueChange={(value: ChecklistLevel) => value && handleChecklistLevelChange(value)}
-            className="flex"
+            onValueChange={(value: ChecklistLevel) => handleChecklistLevelChange(value)}
           >
-            <ToggleGroupItem
-              value="Simplified"
-              aria-label="Toggle Simplified Checklist"
-              className={cn(
-                "data-[state=on]:bg-app-primary data-[state=on]:text-white",
-                "data-[state=on]:hover:bg-app-primary-dark",
-                "text-app-primary hover:bg-app-primary-light/20"
-              )}
-            >
-              Simplified
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="Normal"
-              aria-label="Toggle Normal Checklist"
-              className={cn(
-                "data-[state=on]:bg-app-primary data-[state=on]:text-white",
-                "data-[state=on]:hover:bg-app-primary-dark",
-                "text-app-primary hover:bg-app-primary-light/20"
-              )}
-            >
-              Normal
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="Detailed"
-              aria-label="Toggle Detailed Checklist"
-              className={cn(
-                "data-[state=on]:bg-app-primary data-[state=on]:text-white",
-                "data-[state=on]:hover:bg-app-primary-dark",
-                "text-app-primary hover:bg-app-primary-light/20"
-              )}
-            >
-              Detailed
-            </ToggleGroupItem>
-          </ToggleGroup>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Level" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Simplified">Simplified</SelectItem>
+              <SelectItem value="Normal">Normal</SelectItem>
+              <SelectItem value="Detailed">Detailed</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Concept Toggle Button */}
+        {/* Concept Selector */}
         <div className="flex items-center gap-4">
           <h3 className="text-xl font-palanquin font-semibold text-app-header">Concept:</h3>
-          <ToggleGroup
-            type="single"
+          <Select
             value={selectedConcept}
-            onValueChange={(value: ConceptType) => value && setSelectedConcept(value)}
-            className="flex"
+            onValueChange={(value: ConceptType) => setSelectedConcept(value)}
           >
-            <ToggleGroupItem
-              value="A"
-              aria-label="Toggle Concept A"
-              className={cn(
-                "data-[state=on]:bg-app-concept-a-base data-[state=on]:text-white",
-                "data-[state=on]:hover:bg-app-concept-a-dark",
-                "text-app-concept-a-base hover:bg-app-concept-a-light/20"
-              )}
-            >
-              Concept A
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="B"
-              aria-label="Toggle Concept B"
-              className={cn(
-                "data-[state=on]:bg-app-concept-b-base data-[state=on]:text-white",
-                "data-[state=on]:hover:bg-app-concept-b-dark",
-                "text-app-concept-b-base hover:bg-app-concept-b-light/20"
-              )}
-            >
-              Concept B
-            </ToggleGroupItem>
-          </ToggleGroup>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Concept" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="A">Concept A</SelectItem>
+              <SelectItem value="B">Concept B</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
