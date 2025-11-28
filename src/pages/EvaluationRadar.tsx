@@ -126,12 +126,12 @@ const EvaluationRadar: React.FC = () => {
   // So, there's (320 - 288) / 2 = 16px padding on each side of the boxes.
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
     '1': { top: '0', left: '50%', transform: 'translateX(-50%)' }, // Top center
-    '2': { top: '5%', left: 'calc(75% + 16px)' }, // Right side, upper (adjusted from 10%)
-    '3': { top: '40%', left: 'calc(75% + 16px)' }, // Right side, middle
-    '4': { top: '70%', left: 'calc(75% + 16px)' }, // Right side, lower
-    '5': { top: '70%', right: 'calc(75% + 16px)' }, // Left side, lower
-    '6': { top: '40%', right: 'calc(75% + 16px)' }, // Left side, middle
-    '7': { top: '5%', right: 'calc(75% + 16px)' }, // Left side, upper (adjusted from 10%)
+    '2': { top: '5%', left: 'calc(75% + 32px)' }, // Right side, upper (adjusted from 10% to 5%, and 16px to 32px)
+    '3': { top: '40%', left: 'calc(75% + 32px)' }, // Right side, middle (adjusted 16px to 32px)
+    '4': { top: '70%', left: 'calc(75% + 32px)' }, // Right side, lower (adjusted 16px to 32px)
+    '5': { top: '70%', right: 'calc(75% + 32px)' }, // Left side, lower (adjusted 16px to 32px)
+    '6': { top: '40%', right: 'calc(75% + 32px)' }, // Left side, middle (adjusted 16px to 32px)
+    '7': { top: '5%', right: 'calc(75% + 32px)' }, // Left side, upper (adjusted from 10% to 5%, and 16px to 32px)
   };
 
   return (
