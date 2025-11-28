@@ -341,7 +341,7 @@ const EvaluationChecklists: React.FC = () => {
                     "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Removed left/right and translate-x-1/2, flex-col handles centering
                     classes
                   )}>
-                    displayText}
+                    {displayText}
                   </span>
                 </TabsTrigger>
               );
