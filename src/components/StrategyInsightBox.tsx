@@ -28,7 +28,7 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
   return (
     <div className={cn(
       "bg-white p-3 rounded-lg shadow-md border border-gray-200 flex flex-col",
-      "w-72 h-48", // Changed width from w-64 to w-72
+      "w-72 h-48 mb-px", // Added mb-px for 1px bottom margin
       className
     )} style={style}>
       <div className="flex items-center mb-2">
