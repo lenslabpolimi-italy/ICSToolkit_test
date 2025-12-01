@@ -9,7 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import ConfirmedIdeasBox from '@/components/ConfirmedIdeasBox'; // NEW: Import ConfirmedIdeasBox
+import StaticStickyNote from '@/components/StaticStickyNote'; // NEW: Import StaticStickyNote
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -150,9 +150,9 @@ const EvaluationRadar: React.FC = () => {
     (idea) => idea.strategyId === '1' && idea.isConfirmed
   );
 
-  // Calculate position for ConfirmedIdeasBox for Strategy 1
+  // Calculate position for the container of StaticStickyNotes for Strategy 1
   const strategy1BoxPosition = insightBoxPositions['1'];
-  const confirmedIdeasBoxStyle: React.CSSProperties = strategy1BoxPosition
+  const staticNotesContainerStyle: React.CSSProperties = strategy1BoxPosition
     ? {
         top: (parseFloat(strategy1BoxPosition.top as string) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP) + 'px',
         left: strategy1BoxPosition.left,
@@ -217,13 +217,13 @@ const EvaluationRadar: React.FC = () => {
               );
             })}
 
-            {/* NEW: Render ConfirmedIdeasBox for Strategy 1 */}
+            {/* NEW: Render StaticStickyNotes for Strategy 1 */}
             {confirmedStrategy1EcoIdeas.length > 0 && (
-              <ConfirmedIdeasBox
-                ideas={confirmedStrategy1EcoIdeas}
-                className="absolute"
-                style={confirmedIdeasBoxStyle}
-              />
+              <div className="absolute flex flex-col gap-2" style={staticNotesContainerStyle}>
+                {confirmedStrategy1EcoIdeas.map(idea => (
+                  <StaticStickyNote key={idea.id} idea={idea} />
+                ))}
+              </div>
             )}
           </>
         ) : (
