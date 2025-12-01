@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from 'react'; // Import ReactNode
+import React, { ReactNode } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Strategy, PriorityLevel } from '@/types/lcd';
@@ -13,7 +13,7 @@ interface StrategyInsightBoxProps {
   onTextChange: (strategyId: string, newText: string) => void;
   className?: string;
   style?: React.CSSProperties;
-  children?: ReactNode; // NEW: Add children prop
+  children?: ReactNode;
 }
 
 const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
@@ -23,15 +23,15 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
   onTextChange,
   className,
   style,
-  children // Destructure children
+  children
 }) => {
   const { displayText, classes } = getPriorityTagClasses(priority);
 
   return (
     <div className={cn(
-      "flex flex-col", // Keep flex-col for internal layout
-      "w-72 h-auto min-h-48", // Keep width/height for consistent sizing
-      className // For absolute positioning
+      "flex flex-col",
+      "w-72 h-auto min-h-48",
+      className
     )} style={style}>
       <div className="flex items-center mb-2">
         <span className={cn(
@@ -47,10 +47,9 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
       <Textarea
         value={text}
         onChange={(e) => onTextChange(strategy.id, e.target.value)}
-        placeholder="Write your insights here..."
         className="flex-grow resize-none text-sm font-roboto-condensed"
       />
-      {children} {/* Render children here */}
+      {children}
     </div>
   );
 };
