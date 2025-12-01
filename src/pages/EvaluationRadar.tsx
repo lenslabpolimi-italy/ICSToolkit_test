@@ -56,7 +56,7 @@ const BOX_HEIGHT = 80; // h-20 is 80px
 const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
 
 const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-  '1': { top: 60, left: '50%', transform: 'translateX(-50%)' }, // Adjusted from -40 to 60 for a bigger gap
+  '1': { top: -40, left: '50%', transform: 'translateX(-50%)' }, // Adjusted from -160 to -40
   '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
   '3': { top: 240, left: 'calc(75% + 20px)' },
   '4': { top: 448, left: 'calc(75% + 20px)' },
