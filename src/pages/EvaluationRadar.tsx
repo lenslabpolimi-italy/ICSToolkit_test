@@ -174,6 +174,7 @@ const EvaluationRadar: React.FC = () => {
         y: startY,
       });
     } else {
+      // Fallback if no initial position is defined for the strategy
       positionedRadarEcoIdeas.push(note);
     }
   });

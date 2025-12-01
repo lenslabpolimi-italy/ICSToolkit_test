@@ -73,32 +73,33 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
 // Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   // Strategy 1 box positioned above the radar chart
-  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' }, // Moved up by 24px from previous -76px
+  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' },
 
   // Right side of the radar chart
-  '2': { top: '148px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 124px
-  '3': { top: '348px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 324px
-  '4': { top: '548px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
+  '2': { top: '148px', left: 'calc(75% + 20px)' },
+  '3': { top: '348px', left: 'calc(75% + 20px)' },
+  '4': { top: '548px', left: 'calc(75% + 20px)' },
 
   // Left side of the radar chart
-  '7': { top: '148px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 124px
-  '6': { top: '348px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 324px
-  '5': { top: '548px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
+  '7': { top: '148px', right: 'calc(75% + 20px)' },
+  '6': { top: '348px', right: 'calc(75% + 20px)' },
+  '5': { top: '548px', right: 'calc(75% + 20px)' },
 };
 
 // Define initial positions for RadarEcoIdeaNote components relative to the h-[800px] container (max-w-7xl = 1280px)
-// These positions are chosen to be near their respective StrategyInsightBox components.
+// These positions are chosen to be near their respective StrategyInsightBox components,
+// with a vertical offset to avoid overlapping the insight box title.
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  // Strategy 1 (top center) - placed below and aligned left with its insight box
-  '1': { x: 496, y: 102 }, 
+  // Strategy 1 (Top center) - placed below the insight box
+  '1': { x: 496, y: 112 }, // Insight box bottom is at 92px, +20px gap
 
-  // Strategies 2, 3, 4 (right side) - placed to the left of their insight boxes
-  '2': { x: 778, y: 148 }, 
-  '3': { x: 778, y: 348 }, 
-  '4': { x: 778, y: 548 }, 
+  // Strategies 2, 3, 4 (Right side) - placed to the left of their insight boxes, vertically offset
+  '2': { x: 768, y: 188 }, // Insight box top is 148px, +40px offset for title area
+  '3': { x: 768, y: 388 }, // Insight box top is 348px, +40px offset for title area
+  '4': { x: 768, y: 588 }, // Insight box top is 548px, +40px offset for title area
 
-  // Strategies 5, 6, 7 (left side) - placed to the right of their insight boxes
-  '7': { x: 310, y: 148 }, 
-  '6': { x: 310, y: 348 }, 
-  '5': { x: 310, y: 548 }, 
+  // Strategies 5, 6, 7 (Left side) - placed to the right of their insight boxes, vertically offset
+  '7': { x: 608, y: 188 }, // Insight box top is 148px, +40px offset for title area
+  '6': { x: 608, y: 388 }, // Insight box top is 348px, +40px offset for title area
+  '5': { x: 608, y: 588 }, // Insight box top is 548px, +40px offset for title area
 };
