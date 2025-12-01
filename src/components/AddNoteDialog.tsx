@@ -41,7 +41,7 @@ const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ isOpen, onClose, onSave, 
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className={cn("font-palanquin", headerColorClass)}>Add New Note for Strategy {strategyId}</DialogTitle>
+          <DialogTitle className={cn("font-palanquin", headerColorClass)}>Add Your New Idea</DialogTitle>
           <DialogDescription className="font-roboto">
             Type your evaluation note below. It will appear on the board after you save.
           </DialogDescription>
