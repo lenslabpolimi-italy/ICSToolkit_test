@@ -34,7 +34,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 // Custom tick component for the PolarAngleAxis to display strategy name and priority
-const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation, cx, cy, angle, radius }: any) => {
+const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation }: any) => {
   const strategyId = payload.value.split('.')[0]; // Extract strategy ID from "1. Strategy Name"
   const strategy = strategies.find((s: Strategy) => s.id === strategyId);
 
@@ -43,36 +43,12 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation,
   const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
   const { displayText, classes } = getPriorityTagClasses(priority);
 
-  // Calculate new coordinates to push text further out from the radar chart's outer edge
-  const textOffset = 25; // Pixels to push text outwards
-  const angleRad = angle * (Math.PI / 180); // Convert angle to radians
-
-  const newX = cx + (radius + textOffset) * Math.cos(angleRad);
-  const newY = cy + (radius + textOffset) * Math.sin(angleRad);
-
-  // Determine text anchor based on angle for better positioning
-  let textAnchor = 'middle';
-  if (angle > 45 && angle <= 135) { // Top-right quadrant
-    textAnchor = 'start';
-  } else if (angle > 135 && angle <= 225) { // Bottom-right quadrant
-    textAnchor = 'end';
-  } else if (angle > 225 && angle <= 315) { // Bottom-left quadrant
-    textAnchor = 'end';
-  } else if (angle > 315 || angle <= 45) { // Top-left quadrant (and 0/360)
-    textAnchor = 'start';
-  }
-
-  // Adjust dy for vertical positioning of strategy name and priority tag
-  // Strategy name slightly above the calculated point, priority below it
-  const strategyNameDy = -5;
-  const priorityTagDy = 10; // Relative to the newY
-
   return (
-    <g>
-      <text x={newX} y={newY} dy={strategyNameDy} textAnchor={textAnchor} fill="#333" fontSize={12} fontFamily="Roboto">
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto">
         {payload.value} {/* Strategy ID and Name */}
       </text>
-      <text x={newX} y={newY} dy={priorityTagDy} textAnchor={textAnchor} fill="#666" fontSize={10} fontFamily="Roboto">
+      <text x={0} y={0} dy={40} textAnchor="middle" fill="#666" fontSize={10} fontFamily="Roboto">
         <tspan className={cn("px-1 rounded-sm", classes)}>{displayText}</tspan> {/* Priority */}
       </text>
     </g>
