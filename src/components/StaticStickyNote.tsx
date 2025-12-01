@@ -7,9 +7,10 @@ import { EcoIdea } from '@/types/lcd';
 interface StaticStickyNoteProps {
   idea: EcoIdea;
   className?: string;
+  onTextChange: (id: string, newText: string) => void; // NEW: Added onTextChange prop
 }
 
-const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className }) => {
+const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className, onTextChange }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Adjust textarea height based on content
@@ -33,7 +34,7 @@ const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className }) 
         ref={textareaRef}
         className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto"
         value={idea.text}
-        readOnly // Make it read-only
+        onChange={(e) => onTextChange(idea.id, e.target.value)} // NEW: Added onChange handler
         rows={3} // Initial rows
         style={{ minHeight: '70px' }} // Minimum height for the textarea
       />

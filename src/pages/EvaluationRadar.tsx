@@ -9,7 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import StaticStickyNote from '@/components/StaticStickyNote'; // NEW: Import StaticStickyNote
+import StaticStickyNote from '@/components/StaticStickyNote';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -67,7 +67,7 @@ const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas, setEcoIdeas } = useLcd(); // NEW: Added setEcoIdeas
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -160,6 +160,12 @@ const EvaluationRadar: React.FC = () => {
       }
     : {};
 
+  // Handler for text changes in StaticStickyNote
+  const handleStaticNoteTextChange = (id: string, newText: string) => {
+    setEcoIdeas(prev =>
+      prev.map(idea => (idea.id === id ? { ...idea, text: newText } : idea))
+    );
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -221,7 +227,11 @@ const EvaluationRadar: React.FC = () => {
             {confirmedStrategy1EcoIdeas.length > 0 && (
               <div className="absolute flex flex-col gap-2" style={staticNotesContainerStyle}>
                 {confirmedStrategy1EcoIdeas.map(idea => (
-                  <StaticStickyNote key={idea.id} idea={idea} />
+                  <StaticStickyNote
+                    key={idea.id}
+                    idea={idea}
+                    onTextChange={handleStaticNoteTextChange} // Pass the handler
+                  />
                 ))}
               </div>
             )}
