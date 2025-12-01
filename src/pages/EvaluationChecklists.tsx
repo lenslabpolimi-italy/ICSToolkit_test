@@ -222,32 +222,40 @@ const EvaluationChecklists: React.FC = () => {
     note => note.strategyId === selectedStrategyTab && note.conceptType === selectedConcept
   );
 
-  const renderNotesArea = (strategyId: string) => (
-    <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"> {/* Removed mt-8, kept mb-8 for spacing below */}
-      <div
-        className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
-        onClick={addEvaluationNote}
-        style={{ width: '60px', height: '60px', zIndex: 101 }}
-        title={`Add a new note for Concept ${selectedConcept}`}
-      >
-        <PlusCircle size={32} className="text-gray-700" />
+  const renderNotesArea = (strategyId: string) => {
+    const buttonBgClass = selectedConcept === 'A' ? 'bg-app-concept-a-light hover:bg-app-concept-a-dark' : 'bg-app-concept-b-light hover:bg-app-concept-b-dark';
+    const iconColorClass = 'text-white'; // Ensure icon is visible on colored background
+
+    return (
+      <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"> {/* Removed mt-8, kept mb-8 for spacing below */}
+        <div
+          className={cn(
+            "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
+            buttonBgClass
+          )}
+          onClick={addEvaluationNote}
+          style={{ width: '60px', height: '60px', zIndex: 101 }}
+          title={`Add a new note for Concept ${selectedConcept}`}
+        >
+          <PlusCircle size={32} className={iconColorClass} />
+        </div>
+        {filteredEvaluationNotes.map(note => (
+          <EvaluationNote
+            key={note.id}
+            id={note.id}
+            x={note.x}
+            y={note.y}
+            text={note.text}
+            strategyId={note.strategyId}
+            conceptType={note.conceptType}
+            onDragStop={handleNoteDragStop}
+            onTextChange={handleNoteTextChange}
+            onDelete={handleNoteDelete}
+          />
+        ))}
       </div>
-      {filteredEvaluationNotes.map(note => (
-        <EvaluationNote
-          key={note.id}
-          id={note.id}
-          x={note.x}
-          y={note.y}
-          text={note.text}
-          strategyId={note.strategyId}
-          conceptType={note.conceptType}
-          onDragStop={handleNoteDragStop}
-          onTextChange={handleNoteTextChange}
-          onDelete={handleNoteDelete}
-        />
-      ))}
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
