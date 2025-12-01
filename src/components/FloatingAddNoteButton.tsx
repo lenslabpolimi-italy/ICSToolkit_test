@@ -19,9 +19,11 @@ const FloatingAddNoteButton: React.FC<FloatingAddNoteButtonProps> = ({ onClick, 
     <Button
       onClick={onClick}
       disabled={disabled}
+      variant="ghost" // Set variant to ghost to remove default button styling
+      size="icon"    // Set size to icon as a base for a square button
       className={cn(
-        "fixed bottom-8 right-8 rounded-md p-2 shadow-lg z-50", // Changed rounded-lg to rounded-md
-        "h-[60px] w-[60px] flex items-center justify-center", // Changed h-14 w-14 to h-[60px] w-[60px]
+        "fixed bottom-8 right-8 rounded-md p-2 shadow-lg z-50",
+        "h-[60px] w-[60px] flex items-center justify-center",
         "transition-all duration-200 ease-in-out",
         buttonColorClass,
         disabled && "opacity-50 cursor-not-allowed"
