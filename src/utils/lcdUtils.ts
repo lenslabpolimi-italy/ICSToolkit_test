@@ -73,27 +73,28 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
 // Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   // Strategy 1 box positioned above the radar chart
-  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' }, // Moved up by 24px from previous -76px
+  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' },
 
   // Right side of the radar chart
-  '2': { top: '148px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 124px
-  '3': { top: '348px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 324px
-  '4': { top: '548px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
+  '2': { top: '148px', left: 'calc(75% + 20px)' },
+  '3': { top: '348px', left: 'calc(75% + 20px)' },
+  '4': { top: '548px', left: 'calc(75% + 20px)' },
 
   // Left side of the radar chart
-  '7': { top: '148px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 124px
-  '6': { top: '348px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 324px
-  '5': { top: '548px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
+  '7': { top: '148px', right: 'calc(75% + 20px)' },
+  '6': { top: '348px', right: 'calc(75% + 20px)' },
+  '5': { top: '548px', right: 'calc(75% + 20px)' },
 };
 
 // Define initial positions for RadarEcoIdeaNote components
 // These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
+// Positions are calculated to be 20px below the bottom of their respective StrategyInsightBox
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  '1': { x: 544, y: 128 },   // Adjusted up by 24px to match Strategy 1 insight box
-  '2': { x: 980, y: 176 },   // Adjusted down by 24px to match Strategy 2 insight box
-  '3': { x: 980, y: 376 },  // Adjusted down by 24px to match Strategy 3 insight box
-  '4': { x: 980, y: 576 },  // Adjusted down by 24px to match Strategy 4 insight box
-  '7': { x: 300, y: 176 },   // Adjusted down by 24px to match Strategy 7 insight box
-  '6': { x: 300, y: 376 },  // Adjusted down by 24px to match Strategy 6 insight box
-  '5': { x: 300, y: 576 },  // Adjusted down by 24px to match Strategy 5 insight box
+  '1': { x: 496, y: 112 },
+  '2': { x: 980, y: 360 },
+  '3': { x: 980, y: 560 },
+  '4': { x: 980, y: 760 },
+  '7': { x: 12, y: 360 },
+  '6': { x: 12, y: 560 },
+  '5': { x: 12, y: 760 },
 };
