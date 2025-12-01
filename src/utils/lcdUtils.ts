@@ -72,8 +72,8 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
 
 // Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-  // Strategy 1 box positioned above the radar chart
-  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' },
+  // Strategy 1 box positioned at the top center of the radar chart container
+  '1': { top: '0px', left: '50%', transform: 'translateX(-50%)' },
 
   // Right side of the radar chart
   '2': { top: '148px', left: 'calc(75% + 20px)' },
@@ -90,11 +90,11 @@ export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 // These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
 // Positions are calculated to be 20px below the bottom of their respective StrategyInsightBox
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  '1': { x: 496, y: 112 },
-  '2': { x: 980, y: 360 },
-  '3': { x: 980, y: 560 },
-  '4': { x: 980, y: 760 },
-  '7': { x: 12, y: 360 },
-  '6': { x: 12, y: 560 },
-  '5': { x: 12, y: 760 },
+  '1': { x: 544, y: 212 }, // Centered (1280/2 - 192/2), 20px below 192px height box at top:0
+  '2': { x: 980, y: 360 }, // 20px below 192px height box at top:148px, left:980px
+  '3': { x: 980, y: 560 }, // 20px below 192px height box at top:348px, left:980px
+  '4': { x: 980, y: 760 }, // 20px below 192px height box at top:548px, left:980px
+  '7': { x: 12, y: 360 },  // 20px below 192px height box at top:148px, left:12px
+  '6': { x: 12, y: 560 },  // 20px below 192px height box at top:348px, left:12px
+  '5': { x: 12, y: 760 },  // 20px below 192px height box at top:548px, left:12px
 };

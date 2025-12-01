@@ -146,7 +146,7 @@ const EvaluationRadar: React.FC = () => {
         Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] mt-48"> {/* Removed flex justify-center items-center */}
+      <div className="relative max-w-7xl mx-auto h-[800px]"> {/* Removed mt-48 */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%" className="mx-auto"> {/* Added mx-auto to center */}
