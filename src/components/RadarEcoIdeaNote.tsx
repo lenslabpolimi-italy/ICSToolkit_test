@@ -48,7 +48,7 @@ const RadarEcoIdeaNote: React.FC<RadarEcoIdeaNoteProps> = ({
     >
       <div
         className={cn(
-          "absolute p-2 rounded-md shadow-md cursor-grab border",
+          "p-2 rounded-md shadow-md cursor-grab border", // Removed 'absolute' here
           "w-48 min-h-[100px] max-h-[200px] flex flex-col group",
           noteColorClasses
         )}
