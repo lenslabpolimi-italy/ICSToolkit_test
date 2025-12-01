@@ -7,6 +7,8 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { EvaluationLevel } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
 import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'; // Import Card components
+import { Badge } from '@/components/ui/badge'; // Import Badge component
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -33,7 +35,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, ecoIdeas } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -134,6 +136,17 @@ const EvaluationRadar: React.FC = () => {
     '5': { top: '448px', right: 'calc(75% + 20px)' },
   };
 
+  // Filter and group confirmed eco-ideas
+  const confirmedEcoIdeas = ecoIdeas.filter(idea => idea.isConfirmed);
+  const groupedConfirmedIdeas = confirmedEcoIdeas.reduce((acc, idea) => {
+    if (!acc[idea.strategyId]) {
+      acc[idea.strategyId] = [];
+    }
+    acc[idea.strategyId].push(idea);
+    return acc;
+  }, {} as { [strategyId: string]: typeof confirmedEcoIdeas });
+
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
@@ -184,6 +197,38 @@ const EvaluationRadar: React.FC = () => {
           <p className="text-app-body-text">Loading strategies...</p>
         )}
       </div>
+
+      {/* NEW: Section for Confirmed Eco-Ideas */}
+      {Object.keys(groupedConfirmedIdeas).length > 0 && (
+        <div className="mt-16 pt-8 border-t border-gray-200">
+          <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Confirmed Eco-Ideas</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {strategies.map(strategy => {
+              const ideasForStrategy = groupedConfirmedIdeas[strategy.id];
+              if (ideasForStrategy && ideasForStrategy.length > 0) {
+                return (
+                  <Card key={strategy.id} className="bg-yellow-50 border-yellow-200 shadow-sm">
+                    <CardHeader>
+                      <CardTitle className="text-lg font-palanquin text-app-header">
+                        {strategy.id}. {strategy.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {ideasForStrategy.map(idea => (
+                        <div key={idea.id} className="p-3 bg-yellow-100 rounded-md border border-yellow-300 text-sm text-gray-800 font-roboto-condensed">
+                          {idea.text || "Empty idea"}
+                          <Badge variant="secondary" className="ml-2 bg-yellow-400 text-gray-900">Confirmed</Badge>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      )}
 
       <WipeContentButton sectionKey="radarChart" />
     </div>
