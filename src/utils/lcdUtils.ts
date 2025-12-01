@@ -73,17 +73,17 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
 // Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
-  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' }, // Adjusted top
+  '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
 
   // Right side of the radar chart (aligned with radar's vertical extent)
-  '2': { top: '0px', left: 'calc(75% + 50px)' }, // Adjusted top and left
-  '3': { top: '240px', left: 'calc(75% + 50px)' }, // Adjusted left
-  '4': { top: '480px', left: 'calc(75% + 50px)' }, // Adjusted top and left
+  '2': { top: '32px', left: 'calc(75% + 20px)' },
+  '3': { top: '240px', left: 'calc(75% + 20px)' },
+  '4': { top: '448px', left: 'calc(75% + 20px)' },
 
   // Left side of the radar chart (aligned with radar's vertical extent)
-  '7': { top: '0px', right: 'calc(75% + 50px)' }, // Adjusted top and right
-  '6': { top: '240px', right: 'calc(75% + 50px)' }, // Adjusted right
-  '5': { top: '480px', right: 'calc(75% + 50px)' }, // Adjusted top and right
+  '7': { top: '32px', right: 'calc(75% + 20px)' },
+  '6': { top: '240px', right: 'calc(75% + 20px)' },
+  '5': { top: '448px', right: 'calc(75% + 20px)' },
 };
 
 // NEW: Define initial positions for RadarEcoIdeaNote components

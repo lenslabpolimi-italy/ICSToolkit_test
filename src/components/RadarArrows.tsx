@@ -3,64 +3,10 @@
 import React from 'react';
 import { Strategy } from '@/types/lcd';
 
-interface Point { x: number; y: number; }
-interface Rect { left: number; top: number; right: number; bottom: number; }
-
-// Helper function to find the intersection of a ray with a rectangle
-function getLineRectIntersection(lineStart: Point, lineDirection: Point, rect: Rect): Point | null {
-  const { x: sx, y: sy } = lineStart;
-  const { x: dx, y: dy } = lineDirection;
-  const { left, top, right, bottom } = rect;
-
-  let minT = Infinity;
-  let intersectionPoint: Point | null = null;
-
-  // Check intersection with left edge
-  if (dx < 0) { // Only if ray points left
-    const t = (left - sx) / dx;
-    const iy = sy + t * dy;
-    if (t >= 0 && iy >= top && iy <= bottom && t < minT) {
-      minT = t;
-      intersectionPoint = { x: left, y: iy };
-    }
-  }
-
-  // Check intersection with right edge
-  if (dx > 0) { // Only if ray points right
-    const t = (right - sx) / dx;
-    const iy = sy + t * dy;
-    if (t >= 0 && iy >= top && iy <= bottom && t < minT) {
-      minT = t;
-      intersectionPoint = { x: right, y: iy };
-    }
-  }
-
-  // Check intersection with top edge
-  if (dy < 0) { // Only if ray points up
-    const t = (top - sy) / dy;
-    const ix = sx + t * dx;
-    if (t >= 0 && ix >= left && ix <= right && t < minT) {
-      minT = t;
-      intersectionPoint = { x: ix, y: top };
-    }
-  }
-
-  // Check intersection with bottom edge
-  if (dy > 0) { // Only if ray points down
-    const t = (bottom - sy) / dy;
-    const ix = sx + t * dx;
-    if (t >= 0 && ix >= left && ix <= right && t < minT) {
-      minT = t;
-      intersectionPoint = { x: ix, y: bottom };
-    }
-  }
-
-  return intersectionPoint;
-}
-
 interface RadarArrowsProps {
   strategies: Strategy[];
   radarChartCenter: { x: number; y: number }; // Center of the radar chart in viewport coords
+  radarChartOuterRadius: number; // Outer radius of the radar chart
   insightBoxRects: Map<string, DOMRect>; // Bounding rects of insight boxes in viewport coords
   containerRect: DOMRect | null; // Bounding rect of the main radar container in viewport coords
 }
@@ -68,60 +14,85 @@ interface RadarArrowsProps {
 const RadarArrows: React.FC<RadarArrowsProps> = ({
   strategies,
   radarChartCenter,
+  radarChartOuterRadius,
   insightBoxRects,
   containerRect,
 }) => {
-  if (!containerRect || !radarChartCenter) {
+  if (!containerRect || !radarChartCenter || radarChartOuterRadius === 0) {
     return null;
   }
-
-  // Convert radarChartCenter from viewport to container-relative coordinates
-  const radarCenter_container = {
-    x: radarChartCenter.x - containerRect.left,
-    y: radarChartCenter.y - containerRect.top,
-  };
 
   const arrows = strategies.map((strategy, index) => {
     const insightBoxRect = insightBoxRects.get(strategy.id);
     if (!insightBoxRect) return null;
 
-    // Calculate the angle for the strategy's radial line
+    // Calculate start point on the radar chart's outer edge
+    // Assuming 7 strategies, evenly spaced, starting with strategy 1 at the top (90 degrees)
     // Recharts RadarChart default: first axis at 90 degrees (top), then counter-clockwise.
     const angleDeg = 90 - (index * (360 / strategies.length));
     const angleRad = angleDeg * (Math.PI / 180);
 
-    // Direction vector for the radial line
-    const dirX = Math.cos(angleRad);
-    const dirY = -Math.sin(angleRad); // SVG Y-axis is inverted
+    const startX_viewport = radarChartCenter.x + radarChartOuterRadius * Math.cos(angleRad);
+    const startY_viewport = radarChartCenter.y - radarChartOuterRadius * Math.sin(angleRad); // SVG Y-axis is inverted
 
-    // Convert insight box rect from viewport to container-relative coordinates
-    const boxRect_container = {
-      left: insightBoxRect.left - containerRect.left,
-      top: insightBoxRect.top - containerRect.top,
-      right: insightBoxRect.right - containerRect.left,
-      bottom: insightBoxRect.bottom - containerRect.top,
-    };
+    // Convert viewport coordinates to coordinates relative to the containerRect
+    const startX = startX_viewport - containerRect.left;
+    const startY = startY_viewport - containerRect.top;
 
-    // Find the intersection point of the radial line with the insight box
-    const intersectionPoint = getLineRectIntersection(
-      radarCenter_container,
-      { x: dirX, y: dirY },
-      boxRect_container
-    );
+    // Calculate end point on the insight box
+    // Convert insight box viewport coordinates to container-relative coordinates
+    const boxLeft = insightBoxRect.left - containerRect.left;
+    const boxRight = insightBoxRect.right - containerRect.left;
+    const boxTop = insightBoxRect.top - containerRect.top;
+    const boxBottom = insightBoxRect.bottom - containerRect.top;
+    const boxCenterX = boxLeft + insightBoxRect.width / 2;
+    const boxCenterY = boxTop + insightBoxRect.height / 2;
 
-    if (!intersectionPoint) return null;
+    let endX, endY;
 
-    const arrowOffset = 10; // Distance to offset the arrowhead from the box edge
+    // Heuristic to find the closest edge of the insight box to the radar point
+    const points = [
+      { x: boxLeft, y: boxCenterY }, // Left
+      { x: boxRight, y: boxCenterY }, // Right
+      { x: boxCenterX, y: boxTop }, // Top
+      { x: boxCenterX, y: boxBottom }, // Bottom
+    ];
 
-    // Calculate the actual end point of the arrow, pulled back from the intersection
-    const adjustedEndX = intersectionPoint.x - dirX * arrowOffset;
-    const adjustedEndY = intersectionPoint.y - dirY * arrowOffset;
+    let minDistance = Infinity;
+    let closestPoint = points[0];
+
+    for (const p of points) {
+      const dist = Math.sqrt(Math.pow(startX - p.x, 2) + Math.pow(startY - p.y, 2));
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestPoint = p;
+      }
+    }
+    endX = closestPoint.x;
+    endY = closestPoint.y;
+
+    // Adjust start and end points slightly to prevent overlap with radar/box
+    const arrowOffset = 10; // Distance to offset the arrow from the radar edge and box edge
+    const dx = endX - startX;
+    const dy = endY - startY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist === 0) return null; // Avoid division by zero
+
+    const unitDx = dx / dist;
+    const unitDy = dy / dist;
+
+    const adjustedStartX = startX + unitDx * arrowOffset;
+    const adjustedStartY = startY + unitDy * arrowOffset;
+
+    const adjustedEndX = endX - unitDx * arrowOffset;
+    const adjustedEndY = endY - unitDy * arrowOffset;
 
     return (
       <line
         key={strategy.id}
-        x1={radarCenter_container.x}
-        y1={radarCenter_container.y}
+        x1={adjustedStartX}
+        y1={adjustedStartY}
         x2={adjustedEndX}
         y2={adjustedEndY}
         stroke="#888"
