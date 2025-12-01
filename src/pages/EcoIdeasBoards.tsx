@@ -158,7 +158,7 @@ const EcoIdeasBoards: React.FC = () => {
               <div className="relative w-1/2 pl-8">
                 {/* Removed the h4 tag for "Eco-Ideas" */}
                 <div
-                  className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+                  className="absolute top-4 right-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
                   onClick={addStickyNote}
                   style={{ width: '60px', height: '60px', zIndex: 101 }}
                   title="Drag out a new eco-idea sticky note"
