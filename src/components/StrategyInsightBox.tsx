@@ -47,7 +47,7 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
       <Textarea
         value={text}
         onChange={(e) => onTextChange(strategy.id, e.target.value)}
-        className="flex-grow resize-none text-sm font-roboto-condensed"
+        className="flex-grow resize-none text-sm font-roboto-condensed border-none focus-visible:ring-0 focus-visible:ring-offset-0" // Removed border and ring
       />
       {children}
     </div>
