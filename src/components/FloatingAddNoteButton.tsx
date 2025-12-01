@@ -8,22 +8,26 @@ import { cn } from '@/lib/utils';
 
 interface FloatingAddNoteButtonProps {
   onClick: () => void;
-  conceptType: ConceptType;
+  conceptType: ConceptType; // Keeping conceptType for potential future use, though color is now fixed
   disabled?: boolean;
 }
 
 const FloatingAddNoteButton: React.FC<FloatingAddNoteButtonProps> = ({ onClick, conceptType, disabled }) => {
-  const buttonColorClass = conceptType === 'A' ? 'bg-app-concept-a-base hover:bg-app-concept-a-dark' : 'bg-app-concept-b-base hover:bg-app-concept-b-dark';
+  // Using a fixed red color from app-concept-a-light for the button background
+  // and app-concept-a-base for the hover state, as per the image.
+  const buttonBaseColorClass = 'bg-app-concept-a-light';
+  const buttonHoverColorClass = 'hover:bg-app-concept-a-base';
 
   return (
     <Button
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "fixed bottom-8 right-8 rounded-full p-4 shadow-lg z-50",
+        "fixed bottom-8 right-8 rounded-lg p-4 shadow-lg z-50", // Changed to rounded-lg for square with rounded corners
         "h-14 w-14 flex items-center justify-center",
         "transition-all duration-200 ease-in-out",
-        buttonColorClass,
+        buttonBaseColorClass,
+        buttonHoverColorClass,
         disabled && "opacity-50 cursor-not-allowed"
       )}
       aria-label="Add new evaluation note"
