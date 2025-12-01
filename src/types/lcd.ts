@@ -47,6 +47,7 @@ export interface EcoIdea {
   x: number; // Added for position
   y: number; // Added for position
   isConfirmed: boolean; // NEW: Added to track if the idea is confirmed
+  conceptType: ConceptType; // NEW: Added to link idea to a concept
 }
 
 export type ChecklistLevel = 'Simplified' | 'Normal' | 'Detailed';

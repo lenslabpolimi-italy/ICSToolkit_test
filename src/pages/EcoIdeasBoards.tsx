@@ -7,15 +7,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea } from '@/types/lcd';
+import { EcoIdea, ConceptType } from '@/types/lcd'; // Import ConceptType
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Import Select components
 
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
+  const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A'); // NEW: State for selected concept
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -30,10 +32,11 @@ const EcoIdeasBoards: React.FC = () => {
       strategyId: selectedStrategyId,
       x: 20, // Initial X position relative to the Eco-Ideas board
       y: 20, // Initial Y position relative to the Eco-Ideas board
-      isConfirmed: false, // NEW: Initialize as unconfirmed
+      isConfirmed: false,
+      conceptType: selectedConcept, // NEW: Assign selected concept
     };
     setEcoIdeas(prev => [...prev, newNote]);
-    toast.success("New eco-idea sticky note added!");
+    toast.success(`New eco-idea sticky note added for Concept ${selectedConcept}!`);
   };
 
   const handleEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -53,7 +56,6 @@ const EcoIdeasBoards: React.FC = () => {
     toast.info("Eco-idea sticky note removed.");
   };
 
-  // NEW: Handler for toggling confirmation status
   const handleEcoIdeaConfirmToggle = (id: string) => {
     setEcoIdeas(prev =>
       prev.map(note =>
@@ -63,7 +65,6 @@ const EcoIdeasBoards: React.FC = () => {
     toast.info("Eco-idea confirmation status updated!");
   };
 
-  // Handlers for Evaluation Notes (only drag, text change, delete remain)
   const handleEvaluationNoteDragStop = (id: string, x: number, y: number) => {
     setEvaluationNotes(prev =>
       prev.map(note => (note.id === id ? { ...note, x, y } : note))
@@ -81,9 +82,9 @@ const EcoIdeasBoards: React.FC = () => {
     toast.info("Evaluation note removed.");
   };
 
-  const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
-  // Filter evaluation notes only by strategyId, not by conceptType
-  const allEvaluationNotes = evaluationNotes; // Display all evaluation notes
+  // Filter eco-ideas by selected strategy AND selected concept
+  const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId && note.conceptType === selectedConcept);
+  const allEvaluationNotes = evaluationNotes;
 
 
   return (
@@ -99,7 +100,6 @@ const EcoIdeasBoards: React.FC = () => {
       {/* Evaluation Notes Board - Moved to the top, removed concept selector and add button */}
       <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mb-8">
         <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
-        {/* Removed the "Add Note" button from here */}
         {allEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
@@ -108,13 +108,30 @@ const EcoIdeasBoards: React.FC = () => {
             y={note.y}
             text={note.text}
             strategyId={note.strategyId}
-            conceptType={note.conceptType} // Keep conceptType for styling
+            conceptType={note.conceptType}
             onDragStop={handleEvaluationNoteDragStop}
             onTextChange={handleEvaluationNoteTextChange}
             onDelete={handleEvaluationNoteDelete}
           />
         ))}
         <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
+      </div>
+
+      {/* Concept Selector for Eco-Ideas */}
+      <div className="flex items-center gap-4 mb-8">
+        <h3 className="text-xl font-palanquin font-semibold text-app-header">Concept for Eco-Ideas:</h3>
+        <Select
+          value={selectedConcept}
+          onValueChange={(value: ConceptType) => setSelectedConcept(value)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select Concept" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="A">Concept A</SelectItem>
+            <SelectItem value="B">Concept B</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <Tabs value={selectedStrategyId} onValueChange={setSelectedStrategyId} className="w-full">
@@ -167,7 +184,6 @@ const EcoIdeasBoards: React.FC = () => {
 
               {/* Right Column for Eco-Ideas Board */}
               <div className="relative w-1/2 pl-8">
-                {/* Removed the h4 tag for "Eco-Ideas" */}
                 <div
                   className="absolute top-4 right-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
                   onClick={addStickyNote}
@@ -177,7 +193,6 @@ const EcoIdeasBoards: React.FC = () => {
                   <PlusCircle size={32} className="text-gray-700" />
                 </div>
 
-                {/* Render existing EcoIdea sticky notes */}
                 {filteredEcoIdeas.map(note => (
                   <StickyNote
                     key={note.id}
@@ -188,11 +203,11 @@ const EcoIdeasBoards: React.FC = () => {
                     strategyId={note.strategyId}
                     subStrategyId={note.subStrategyId}
                     guidelineId={note.guidelineId}
-                    isConfirmed={note.isConfirmed} // Pass isConfirmed prop
+                    isConfirmed={note.isConfirmed}
                     onDragStop={handleEcoIdeaDragStop}
                     onTextChange={handleEcoIdeaTextChange}
                     onDelete={handleEcoIdeaDelete}
-                    onConfirmToggle={handleEcoIdeaConfirmToggle} // Pass new handler
+                    onConfirmToggle={handleEcoIdeaConfirmToggle}
                   />
                 ))}
                 <WipeContentButton sectionKey="ecoIdeas" label="Wipe Eco-Ideas" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
