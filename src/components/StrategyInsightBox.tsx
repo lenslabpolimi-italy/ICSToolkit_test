@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode } from 'react';
-import { Textarea } from '@/components/ui/textarea';
+// Removed import for Textarea as it's no longer used
 import { cn } from '@/lib/utils';
 import { Strategy, PriorityLevel } from '@/types/lcd';
 import { getPriorityTagClasses } from '@/utils/lcdUtils';
@@ -9,8 +9,8 @@ import { getPriorityTagClasses } from '@/utils/lcdUtils';
 interface StrategyInsightBoxProps {
   strategy: Strategy;
   priority: PriorityLevel;
-  text: string;
-  onTextChange: (strategyId: string, newText: string) => void;
+  text: string; // Keeping text prop for potential future display or re-introduction of editing
+  // Removed onTextChange prop
   className?: string;
   style?: React.CSSProperties;
   children?: ReactNode;
@@ -20,7 +20,7 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
   strategy,
   priority,
   text,
-  onTextChange,
+  // Removed onTextChange from destructuring
   className,
   style,
   children
@@ -44,11 +44,7 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
           {strategy.id}. {strategy.name}
         </h4>
       </div>
-      <Textarea
-        value={text}
-        onChange={(e) => onTextChange(strategy.id, e.target.value)}
-        className="flex-grow resize-none text-sm font-roboto-condensed border-none focus-visible:ring-0 focus-visible:ring-offset-0" // Removed border and ring
-      />
+      {/* Textarea component removed as requested */}
       {children}
     </div>
   );

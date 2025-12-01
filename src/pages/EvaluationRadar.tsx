@@ -6,8 +6,8 @@ import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 import { EvaluationLevel, ConceptType } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote'; // NEW: Import RadarEcoIdeaNote
-import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils'; // Import insightBoxPositions
+import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote';
+import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
@@ -35,7 +35,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd(); // Get radarEcoIdeas and setRadarEcoIdeas
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -113,12 +113,7 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  const handleInsightTextChange = (strategyId: string, newText: string) => {
-    setRadarInsights(prev => ({
-      ...prev,
-      [strategyId]: newText,
-    }));
-  };
+  // Removed handleInsightTextChange function as it's no longer used
 
   // Handlers for RadarEcoIdeaNote
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -182,7 +177,7 @@ const EvaluationRadar: React.FC = () => {
                   strategy={strategy}
                   priority={priority}
                   text={radarInsights[strategy.id] || ''}
-                  onTextChange={handleInsightTextChange}
+                  // Removed onTextChange prop
                   className="absolute"
                   style={positionStyle}
                 />
