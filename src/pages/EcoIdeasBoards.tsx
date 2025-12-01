@@ -4,15 +4,16 @@ import React, { useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import StickyNote from '@/components/StickyNote'; // Import the new StickyNote component
-import { PlusCircle } from 'lucide-react'; // Keeping imports for now, even if UI is removed
+import StickyNote from '@/components/StickyNote';
+import EvaluationNote from '@/components/EvaluationNote'; // Import EvaluationNote
+import { PlusCircle } from 'lucide-react';
 import { EcoIdea } from '@/types/lcd';
 import { toast } from 'sonner';
-import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // Import new utilities
-import { cn } from '@/lib/utils'; // Import cn for conditional class merging
+import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
+import { cn } from '@/lib/utils';
 
 const EcoIdeasBoards: React.FC = () => {
-  const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation } = useLcd(); // Added qualitativeEvaluation
+  const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
 
   React.useEffect(() => {
@@ -26,8 +27,8 @@ const EcoIdeasBoards: React.FC = () => {
       id: `note-${Date.now()}`,
       text: '',
       strategyId: selectedStrategyId,
-      x: 50, // Initial X position (relative to the canvas)
-      y: 50, // Initial Y position (relative to the canvas)
+      x: 20, // Initial X position relative to the right column
+      y: 20, // Initial Y position relative to the right column
     };
     setEcoIdeas(prev => [...prev, newNote]);
     toast.success("New sticky note added!");
@@ -50,13 +51,32 @@ const EcoIdeasBoards: React.FC = () => {
     toast.info("Sticky note removed.");
   };
 
-  const filteredNotes = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
+  // Handlers for Evaluation Notes
+  const handleEvaluationNoteDragStop = (id: string, x: number, y: number) => {
+    setEvaluationNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+  };
+
+  const handleEvaluationNoteTextChange = (id: string, newText: string) => {
+    setEvaluationNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+  };
+
+  const handleEvaluationNoteDelete = (id: string) => {
+    setEvaluationNotes(prev => prev.filter(note => note.id !== id));
+    toast.info("Evaluation note removed.");
+  };
+
+  const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
+  const filteredEvaluationNotes = evaluationNotes.filter(note => note.strategyId === selectedStrategyId);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Eco-Ideas Boards</h2>
       <p className="text-app-body-text mb-8">
-        Brainstorm and create digital sticky notes with ideas inspired by the LCD strategies and guidelines.
+        Brainstorm and create digital sticky notes with ideas inspired by the LCD strategies and guidelines. Evaluation notes from the 'Evaluation Checklists' page will also appear here.
       </p>
 
       <Tabs value={selectedStrategyId} onValueChange={setSelectedStrategyId} className="w-full">
@@ -68,14 +88,14 @@ const EcoIdeasBoards: React.FC = () => {
                 key={strategy.id}
                 value={strategy.id}
                 className={cn(
-                  "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5", // Changed to flex-col and items-center
+                  "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
                 )}
               >
-                <span className="mb-1"> {/* Added span for title and margin-bottom */}
+                <span className="mb-1">
                   {strategy.id}. {strategy.name}
                 </span>
                 <span className={cn(
-                  "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm", // Removed left/right and translate-x-1/2, flex-col handles centering
+                  "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
                   classes
                 )}>
                   {displayText}
@@ -88,19 +108,10 @@ const EcoIdeasBoards: React.FC = () => {
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
-            {/* The "large blank canvas" area */}
-            <div className="relative flex flex-col items-center justify-start min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
-              {/* Stack of infinite digital sticky notes */}
-              <div
-                className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
-                onClick={addStickyNote}
-                style={{ width: '60px', height: '60px', zIndex: 101 }}
-                title="Drag out a new sticky note"
-              >
-                <PlusCircle size={32} className="text-gray-700" />
-              </div>
-
-              <div className="w-full max-w-3xl text-center"> {/* Centrally aligned content */}
+            {/* The "large blank canvas" area with two columns */}
+            <div className="relative flex min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
+              {/* Left Column for Strategy Text */}
+              <div className="w-1/2 pr-8"> {/* Added pr-8 for spacing */}
                 {strategy.subStrategies.map((subStrategy) => (
                   <div key={subStrategy.id} className="mb-6">
                     <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
@@ -117,28 +128,58 @@ const EcoIdeasBoards: React.FC = () => {
                 ))}
               </div>
 
-              {/* Render existing sticky notes */}
-              {filteredNotes.map(note => (
-                <StickyNote
-                  key={note.id}
-                  id={note.id}
-                  x={note.x}
-                  y={note.y}
-                  text={note.text}
-                  strategyId={note.strategyId}
-                  subStrategyId={note.subStrategyId}
-                  guidelineId={note.guidelineId}
-                  onDragStop={handleNoteDragStop}
-                  onTextChange={handleNoteTextChange}
-                  onDelete={handleNoteDelete}
-                />
-              ))}
+              {/* Right Column for Sticky Notes */}
+              <div className="relative w-1/2 pl-8 border-l border-gray-200"> {/* Added pl-8 and border-l for separation */}
+                {/* Add Sticky Note button for EcoIdeas */}
+                <div
+                  className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+                  onClick={addStickyNote}
+                  style={{ width: '60px', height: '60px', zIndex: 101 }}
+                  title="Drag out a new eco-idea sticky note"
+                >
+                  <PlusCircle size={32} className="text-gray-700" />
+                </div>
+
+                {/* Render existing EcoIdea sticky notes */}
+                {filteredEcoIdeas.map(note => (
+                  <StickyNote
+                    key={note.id}
+                    id={note.id}
+                    x={note.x}
+                    y={note.y}
+                    text={note.text}
+                    strategyId={note.strategyId}
+                    subStrategyId={note.subStrategyId}
+                    guidelineId={note.guidelineId}
+                    onDragStop={handleNoteDragStop}
+                    onTextChange={handleNoteTextChange}
+                    onDelete={handleNoteDelete}
+                  />
+                ))}
+
+                {/* Render existing Evaluation Notes */}
+                {filteredEvaluationNotes.map(note => (
+                  <EvaluationNote
+                    key={note.id}
+                    id={note.id}
+                    x={note.x}
+                    y={note.y}
+                    text={note.text}
+                    strategyId={note.strategyId}
+                    conceptType={note.conceptType}
+                    onDragStop={handleEvaluationNoteDragStop}
+                    onTextChange={handleEvaluationNoteTextChange}
+                    onDelete={handleEvaluationNoteDelete}
+                  />
+                ))}
+              </div>
             </div>
           </TabsContent>
         ))}
       </Tabs>
 
       <WipeContentButton sectionKey="ecoIdeas" />
+      <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="absolute bottom-4 right-36 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
     </div>
   );
 };
