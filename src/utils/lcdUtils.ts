@@ -72,28 +72,28 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
 
 // Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-  // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
-  '1': { top: '-76px', left: '50%', transform: 'translateX(-50%)' }, // Pulled down by 24px
+  // Strategy 1 box positioned above the radar chart
+  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' }, // Moved up by 24px from previous -76px
 
-  // Right side of the radar chart (aligned with radar's vertical extent)
-  '2': { top: '124px', left: 'calc(75% + 20px)' }, // Pulled down by 24px
-  '3': { top: '324px', left: 'calc(75% + 20px)' }, // Pulled down by 24px
-  '4': { top: '524px', left: 'calc(75% + 20px)' }, // Pulled down by 24px
+  // Right side of the radar chart
+  '2': { top: '148px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 124px
+  '3': { top: '348px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 324px
+  '4': { top: '548px', left: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
 
-  // Left side of the radar chart (aligned with radar's vertical extent)
-  '7': { top: '124px', right: 'calc(75% + 20px)' }, // Pulled down by 24px
-  '6': { top: '324px', right: 'calc(75% + 20px)' }, // Pulled down by 24px
-  '5': { top: '524px', right: 'calc(75% + 20px)' }, // Pulled down by 24px
+  // Left side of the radar chart
+  '7': { top: '148px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 124px
+  '6': { top: '348px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 324px
+  '5': { top: '548px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
 };
 
 // Define initial positions for RadarEcoIdeaNote components
 // These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  '1': { x: 544, y: 152 },   // Centered, below Strategy 1 insight box (pulled down by 24px)
-  '2': { x: 980, y: 152 },   // Top right, below Strategy 2 insight box (pulled down by 24px)
-  '3': { x: 980, y: 352 },  // Mid right, below Strategy 3 insight box (pulled down by 24px)
-  '4': { x: 980, y: 552 },  // Bottom right, below Strategy 4 insight box (pulled down by 24px)
-  '7': { x: 300, y: 152 },   // Top left, below Strategy 7 insight box (pulled down by 24px)
-  '6': { x: 300, y: 352 },  // Mid left, below Strategy 6 insight box (pulled down by 24px)
-  '5': { x: 300, y: 552 },  // Bottom left, below Strategy 5 insight box (pulled down by 24px)
+  '1': { x: 544, y: 128 },   // Adjusted up by 24px to match Strategy 1 insight box
+  '2': { x: 980, y: 176 },   // Adjusted down by 24px to match Strategy 2 insight box
+  '3': { x: 980, y: 376 },  // Adjusted down by 24px to match Strategy 3 insight box
+  '4': { x: 980, y: 576 },  // Adjusted down by 24px to match Strategy 4 insight box
+  '7': { x: 300, y: 176 },   // Adjusted down by 24px to match Strategy 7 insight box
+  '6': { x: 300, y: 376 },  // Adjusted down by 24px to match Strategy 6 insight box
+  '5': { x: 300, y: 576 },  // Adjusted down by 24px to match Strategy 5 insight box
 };
