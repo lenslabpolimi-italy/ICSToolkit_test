@@ -135,7 +135,7 @@ const EcoIdeasBoards: React.FC = () => {
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
-            <div className="relative flex min-h-[400px] p-8 rounded-lg overflow-hidden">
+            <div className="relative flex min-h-[400px] p-8 rounded-lg bg-gray-50 overflow-hidden">
               {/* Left Column for Strategy Text */}
               <div className="w-1/2 pr-8">
                 {strategy.subStrategies.map((subStrategy) => (
