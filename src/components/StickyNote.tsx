@@ -110,7 +110,11 @@ const StickyNote: React.FC<StickyNoteProps> = ({
           onClose={() => setIsConfirmDialogOpen(false)}
           onConfirm={handleConfirmDialogConfirm}
           title={isConfirmed ? "Unconfirm this idea?" : "Confirm this idea?"}
-          description={isConfirmed ? "Are you sure you want to unmark this idea as chosen?" : "Are you sure you want to mark this idea as chosen?"}
+          description={
+            isConfirmed
+              ? "Are you sure you want to unmark this idea as chosen?"
+              : "Are you sure you want to mark this idea as chosen? Confirmed ideas will be sent to the Evaluation Radar."
+          }
           confirmButtonText={isConfirmed ? "Unconfirm" : "Confirm"}
           confirmButtonVariant={isConfirmed ? "destructive" : "default"} // Red for unconfirm, default for confirm
         />
