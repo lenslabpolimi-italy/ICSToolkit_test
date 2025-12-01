@@ -79,11 +79,21 @@ export interface RadarInsight {
   text: string;
 }
 
-export interface EvaluationNote { // NEW: Interface for evaluation notes
+export interface EvaluationNote { // Interface for evaluation notes (used in EvaluationChecklists)
   id: string;
   text: string;
   strategyId: string;
   conceptType: ConceptType;
   x: number;
   y: number;
+}
+
+export interface RadarEcoIdea { // NEW: Interface for eco-ideas copied to the radar
+  id: string; // Unique ID for this radar copy
+  originalEcoIdeaId: string; // Link back to the original EcoIdea
+  text: string;
+  strategyId: string;
+  conceptType: ConceptType;
+  x: number; // Position on radar board
+  y: number; // Position on radar board
 }

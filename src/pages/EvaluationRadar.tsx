@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, ConceptType } from '@/types/lcd'; // Import ConceptType
+import { EvaluationLevel, ConceptType } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
+import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote'; // NEW: Import RadarEcoIdeaNote
 import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
-import { cn } from '@/lib/utils'; // Import cn for utility classes
+import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -34,7 +35,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, ecoIdeas } = useLcd(); // Get ecoIdeas from context
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd(); // Get radarEcoIdeas and setRadarEcoIdeas
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -119,6 +120,26 @@ const EvaluationRadar: React.FC = () => {
     }));
   };
 
+  // Handlers for RadarEcoIdeaNote
+  const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+  };
+
+  const handleRadarEcoIdeaTextChange = (id: string, newText: string) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+  };
+
+  const handleRadarEcoIdeaDelete = (id: string) => {
+    setRadarEcoIdeas(prev => prev.filter(note => note.id !== id));
+    // Optionally, you might want to unconfirm the original eco-idea here as well
+    // For now, we'll just delete the copy from the radar.
+    toast.info("Eco-idea copy removed from radar.");
+  };
+
   // Adjusted positions to place boxes in two columns around the radar chart
   const insightBoxPositions: { [key: string]: React.CSSProperties } = {
     // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
@@ -171,15 +192,6 @@ const EvaluationRadar: React.FC = () => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const positionStyle = insightBoxPositions[strategy.id] || {};
 
-              // Filter confirmed eco-ideas for this strategy and concept A
-              const confirmedIdeasA = ecoIdeas.filter(
-                idea => idea.isConfirmed && idea.strategyId === strategy.id && idea.conceptType === 'A'
-              );
-              // Filter confirmed eco-ideas for this strategy and concept B
-              const confirmedIdeasB = ecoIdeas.filter(
-                idea => idea.isConfirmed && idea.strategyId === strategy.id && idea.conceptType === 'B'
-              );
-
               return (
                 <StrategyInsightBox
                   key={strategy.id}
@@ -189,32 +201,25 @@ const EvaluationRadar: React.FC = () => {
                   onTextChange={handleInsightTextChange}
                   className="absolute"
                   style={positionStyle}
-                >
-                  {/* Display confirmed ideas for Concept A */}
-                  {confirmedIdeasA.length > 0 && (
-                    <div className="mt-2 pt-2 border-t border-gray-100">
-                      <h5 className="text-xs font-palanquin font-semibold text-app-concept-a-base mb-1">Concept A Ideas:</h5>
-                      <ul className="list-disc list-inside text-xs text-gray-700 space-y-0.5">
-                        {confirmedIdeasA.map(idea => (
-                          <li key={idea.id} className="truncate">{idea.text}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {/* Display confirmed ideas for Concept B */}
-                  {confirmedIdeasB.length > 0 && (
-                    <div className={cn("mt-2 pt-2 border-t border-gray-100", confirmedIdeasA.length === 0 && "mt-0 pt-0 border-t-0")}>
-                      <h5 className="text-xs font-palanquin font-semibold text-app-concept-b-base mb-1">Concept B Ideas:</h5>
-                      <ul className="list-disc list-inside text-xs text-gray-700 space-y-0.5">
-                        {confirmedIdeasB.map(idea => (
-                          <li key={idea.id} className="truncate">{idea.text}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </StrategyInsightBox>
+                />
               );
             })}
+
+            {/* Render RadarEcoIdeaNotes */}
+            {radarEcoIdeas.map(note => (
+              <RadarEcoIdeaNote
+                key={note.id}
+                id={note.id}
+                x={note.x}
+                y={note.y}
+                text={note.text}
+                strategyId={note.strategyId}
+                conceptType={note.conceptType}
+                onDragStop={handleRadarEcoIdeaDragStop}
+                onTextChange={handleRadarEcoIdeaTextChange}
+                onDelete={handleRadarEcoIdeaDelete}
+              />
+            ))}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>

@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea, ConceptType } from '@/types/lcd'; // Import ConceptType
+import { EcoIdea, ConceptType, RadarEcoIdea } from '@/types/lcd'; // Import RadarEcoIdea
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
@@ -15,9 +15,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 
 const EcoIdeasBoards: React.FC = () => {
-  const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
+  const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes, setRadarEcoIdeas } = useLcd(); // Get setRadarEcoIdeas
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
-  const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A'); // NEW: State for selected concept
+  const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A');
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -30,10 +30,10 @@ const EcoIdeasBoards: React.FC = () => {
       id: `eco-note-${Date.now()}`,
       text: '',
       strategyId: selectedStrategyId,
-      x: 20, // Initial X position relative to the Eco-Ideas board
-      y: 20, // Initial Y position relative to the Eco-Ideas board
+      x: 20,
+      y: 20,
       isConfirmed: false,
-      conceptType: selectedConcept, // NEW: Assign selected concept
+      conceptType: selectedConcept,
     };
     setEcoIdeas(prev => [...prev, newNote]);
     toast.success(`New eco-idea sticky note added for Concept ${selectedConcept}!`);
@@ -53,16 +53,41 @@ const EcoIdeasBoards: React.FC = () => {
 
   const handleEcoIdeaDelete = (id: string) => {
     setEcoIdeas(prev => prev.filter(note => note.id !== id));
+    // Also remove from radar if it was confirmed
+    setRadarEcoIdeas(prev => prev.filter(radarNote => radarNote.originalEcoIdeaId !== id));
     toast.info("Eco-idea sticky note removed.");
   };
 
   const handleEcoIdeaConfirmToggle = (id: string) => {
-    setEcoIdeas(prev =>
-      prev.map(note =>
+    setEcoIdeas(prevEcoIdeas => {
+      const updatedEcoIdeas = prevEcoIdeas.map(note =>
         note.id === id ? { ...note, isConfirmed: !note.isConfirmed } : note
-      )
-    );
-    toast.info("Eco-idea confirmation status updated!");
+      );
+
+      const toggledNote = updatedEcoIdeas.find(note => note.id === id);
+
+      if (toggledNote) {
+        if (toggledNote.isConfirmed) {
+          // Add a copy to radarEcoIdeas
+          const newRadarEcoIdea: RadarEcoIdea = {
+            id: `radar-copy-${toggledNote.id}`, // Unique ID for the radar copy
+            originalEcoIdeaId: toggledNote.id,
+            text: toggledNote.text,
+            strategyId: toggledNote.strategyId,
+            conceptType: toggledNote.conceptType,
+            x: 0, // Initial X position on radar board
+            y: 0, // Initial Y position on radar board
+          };
+          setRadarEcoIdeas(prevRadar => [...prevRadar, newRadarEcoIdea]);
+          toast.success("Eco-idea confirmed and copied to Evaluation Radar!");
+        } else {
+          // Remove from radarEcoIdeas
+          setRadarEcoIdeas(prevRadar => prevRadar.filter(radarNote => radarNote.originalEcoIdeaId !== toggledNote.id));
+          toast.info("Eco-idea unconfirmed and removed from Evaluation Radar.");
+        }
+      }
+      return updatedEcoIdeas;
+    });
   };
 
   const handleEvaluationNoteDragStop = (id: string, x: number, y: number) => {
