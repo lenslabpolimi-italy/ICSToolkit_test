@@ -192,11 +192,16 @@ const EvaluationRadar: React.FC = () => {
     );
   };
 
-  // NEW: Handler for drag stop on StaticStickyNote
+  // Handler for drag stop on StaticStickyNote
   const handleStaticNoteDragStop = (id: string, x: number, y: number) => {
     setRadarEcoIdeas(prev =>
       prev.map(idea => (idea.id === id ? { ...idea, x, y } : idea))
     );
+  };
+
+  // NEW: Handler for deleting StaticStickyNote
+  const handleStaticNoteDelete = (id: string) => {
+    setRadarEcoIdeas(prev => prev.filter(idea => idea.id !== id));
   };
 
   return (
@@ -263,7 +268,8 @@ const EvaluationRadar: React.FC = () => {
                     key={idea.id}
                     idea={idea}
                     onTextChange={handleStaticNoteTextChange}
-                    onDragStop={handleStaticNoteDragStop} // NEW: Pass the drag stop handler
+                    onDragStop={handleStaticNoteDragStop}
+                    onDelete={handleStaticNoteDelete} // NEW: Pass the delete handler
                   />
                 ))}
               </div>
