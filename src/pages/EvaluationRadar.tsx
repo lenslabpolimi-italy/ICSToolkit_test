@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, Strategy } from '@/types/lcd';
-import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { EvaluationLevel, ConceptType, RadarEcoIdea } from '@/types/lcd';
+import StrategyInsightBox from '@/components/StrategyInsightBox';
+import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote';
+import { getStrategyPriorityForDisplay, insightBoxPositions, radarEcoIdeaNoteInitialPositions } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
@@ -33,54 +34,8 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
   );
 };
 
-// Custom tick component for the PolarAngleAxis to display strategy name and priority
-const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation, cx, cy, angle, radius }: any) => {
-  const strategyId = payload.value.split('.')[0]; // Extract strategy ID from "1. Strategy Name"
-  const strategy = strategies.find((s: Strategy) => s.id === strategyId);
-
-  if (!strategy) return null;
-
-  const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-  const { displayText, classes } = getPriorityTagClasses(priority);
-
-  // Calculate new coordinates to push text further out from the radar chart's outer edge
-  const textOffset = 25; // Pixels to push text outwards
-  const angleRad = angle * (Math.PI / 180); // Convert angle to radians
-
-  const newX = cx + (radius + textOffset) * Math.cos(angleRad);
-  const newY = cy + (radius + textOffset) * Math.sin(angleRad);
-
-  // Determine text anchor based on angle for better positioning
-  let textAnchor = 'middle';
-  if (angle > 45 && angle <= 135) { // Top-right quadrant
-    textAnchor = 'start';
-  } else if (angle > 135 && angle <= 225) { // Bottom-right quadrant
-    textAnchor = 'end';
-  } else if (angle > 225 && angle <= 315) { // Bottom-left quadrant
-    textAnchor = 'end';
-  } else if (angle > 315 || angle <= 45) { // Top-left quadrant (and 0/360)
-    textAnchor = 'start';
-  }
-
-  // Adjust dy for vertical positioning of strategy name and priority tag
-  // Strategy name slightly above the calculated point, priority below it
-  const strategyNameDy = -5;
-  const priorityTagDy = 10; // Relative to the newY
-
-  return (
-    <g>
-      <text x={newX} y={newY} dy={strategyNameDy} textAnchor={textAnchor} fill="#333" fontSize={12} fontFamily="Roboto">
-        {payload.value} {/* Strategy ID and Name */}
-      </text>
-      <text x={newX} y={newY} dy={priorityTagDy} textAnchor={textAnchor} fill="#666" fontSize={10} fontFamily="Roboto">
-        <tspan className={cn("px-1 rounded-sm", classes)}>{displayText}</tspan> {/* Priority */}
-      </text>
-    </g>
-  );
-};
-
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -158,80 +113,140 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
+  // Handler for insight text changes
+  const handleInsightTextChange = (strategyId: string, newText: string) => {
+    setRadarInsights(prev => ({
+      ...prev,
+      [strategyId]: newText,
+    }));
+  };
+
+  // Handlers for RadarEcoIdeaNote
+  const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+  };
+
+  const handleRadarEcoIdeaTextChange = (id: string, newText: string) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+  };
+
+  const handleRadarEcoIdeaDelete = (id: string) => {
+    setRadarEcoIdeas(prev => prev.filter(note => note.id !== id));
+    // Optionally, you might want to unconfirm the original eco-idea here as well
+    // For now, we'll just delete the copy from the radar.
+    toast.info("Eco-idea copy removed from radar.");
+  };
+
+  // NEW: Logic to dynamically position radar eco-ideas
+  const positionedRadarEcoIdeas: RadarEcoIdea[] = [];
+  const strategyANoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept A per strategy
+  const strategyBNoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept B per strategy
+
+  radarEcoIdeas.forEach(note => {
+    const initialPos = radarEcoIdeaNoteInitialPositions[note.strategyId];
+    if (initialPos) {
+      let currentOffsetIndex = 0;
+      let startX = initialPos.x;
+      let startY = initialPos.y;
+      const noteHeightWithPadding = 110; // Approx. note height (100px) + padding (10px)
+      const conceptBSeparationX = 200; // Horizontal separation for Concept B notes
+
+      if (note.conceptType === 'A') {
+        strategyANoteCounts[note.strategyId] = (strategyANoteCounts[note.strategyId] || 0) + 1;
+        currentOffsetIndex = strategyANoteCounts[note.strategyId] - 1;
+        // Stack Concept A notes vertically
+        startY += currentOffsetIndex * noteHeightWithPadding;
+      } else { // Concept B
+        strategyBNoteCounts[note.strategyId] = (strategyBNoteCounts[note.strategyId] || 0) + 1;
+        currentOffsetIndex = strategyBNoteCounts[note.strategyId] - 1;
+        // Start Concept B notes at an offset X, then stack vertically
+        startX += conceptBSeparationX;
+        startY += currentOffsetIndex * noteHeightWithPadding;
+      }
+
+      positionedRadarEcoIdeas.push({
+        ...note,
+        x: startX,
+        y: startY,
+      });
+    } else {
+      // Fallback if no initial position is defined for the strategy
+      positionedRadarEcoIdeas.push(note);
+    }
+  });
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
-        based on your evaluations in the "Evaluation Checklists" section.
+        based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
       <p className="text-app-body-text mb-8">
-        Below, you'll find the insights you've written for each strategy.
+        Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-12">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48">
         {strategies.length > 0 ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-              <PolarGrid stroke="#e0e0e0" />
-              <PolarAngleAxis
-                dataKey="strategyName"
-                tick={(props) => (
-                  <CustomAngleAxisTick
-                    {...props}
-                    strategies={strategies}
-                    qualitativeEvaluation={qualitativeEvaluation}
-                  />
-                )}
+          <>
+            <ResponsiveContainer width="50%" height="100%">
+              <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}>
+                <PolarGrid stroke="#e0e0e0" />
+                <PolarAngleAxis tick={false} />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 4]}
+                  tickCount={5}
+                  stroke="#333"
+                  tick={CustomRadiusTick}
+                />
+                <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+                <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
+
+            {/* Render StrategyInsightBoxes */}
+            {strategies.map(strategy => {
+              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+              const positionStyle = insightBoxPositions[strategy.id] || {};
+
+              return (
+                <StrategyInsightBox
+                  key={strategy.id}
+                  strategy={strategy}
+                  priority={priority}
+                  text={radarInsights[strategy.id] || ''}
+                  onTextChange={handleInsightTextChange}
+                  className="absolute"
+                  style={positionStyle}
+                />
+              );
+            })}
+
+            {/* Render RadarEcoIdeaNotes with dynamic positioning */}
+            {positionedRadarEcoIdeas.map(note => (
+              <RadarEcoIdeaNote
+                key={note.id}
+                id={note.id}
+                x={note.x}
+                y={note.y}
+                text={note.text}
+                strategyId={note.strategyId}
+                conceptType={note.conceptType}
+                onDragStop={handleRadarEcoIdeaDragStop}
+                onTextChange={handleRadarEcoIdeaTextChange}
+                onDelete={handleRadarEcoIdeaDelete}
               />
-              <PolarRadiusAxis
-                angle={90}
-                domain={[0, 4]}
-                tickCount={5}
-                stroke="#333"
-                tick={CustomRadiusTick}
-              />
-              <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
-              <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
+            ))}
+          </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
         )}
-      </div>
-
-      {/* Display Strategy Insights as static text */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {strategies.map(strategy => {
-            const insightText = radarInsights[strategy.id];
-            if (!insightText) return null; // Only show cards for strategies with insights
-
-            const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-            const { displayText, classes } = getPriorityTagClasses(priority);
-
-            return (
-              <Card key={strategy.id} className="shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-palanquin font-semibold text-app-header flex items-center gap-2">
-                    <span className={cn(
-                      "text-xs font-roboto-condensed px-1 rounded-sm",
-                      classes
-                    )}>
-                      {displayText}
-                    </span>
-                    {strategy.id}. {strategy.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-app-body-text font-roboto-condensed">
-                  {insightText}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
       </div>
 
       <WipeContentButton sectionKey="radarChart" />
