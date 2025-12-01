@@ -160,7 +160,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-24"> {/* Changed mt-12 to mt-24 */}
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32"> {/* Changed mt-24 to mt-32 */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
@@ -239,7 +239,7 @@ const EvaluationRadar: React.FC = () => {
                 </CardContent>
               </Card>
             );
-          })}
+            })}
         </div>
       </div>
 
