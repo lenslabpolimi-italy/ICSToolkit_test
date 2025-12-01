@@ -151,7 +151,7 @@ const EvaluationRadar: React.FC = () => {
         Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48">
+      <div className="relative max-w-7xl mx-auto min-h-[1200px] flex justify-center items-center mt-48"> {/* Changed h-[800px] to min-h-[1200px] */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%">
@@ -182,7 +182,6 @@ const EvaluationRadar: React.FC = () => {
                   strategy={strategy}
                   priority={priority}
                   text={radarInsights[strategy.id] || ''}
-                  onTextChange={handleInsightTextChange}
                   className="absolute"
                   style={positionStyle}
                 />

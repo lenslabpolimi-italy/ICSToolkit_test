@@ -70,30 +70,30 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
   return { displayText, classes };
 };
 
-// Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
+// Define positions for StrategyInsightBox components relative to the radar container (min-h-[1200px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
   '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
 
   // Right side of the radar chart (aligned with radar's vertical extent)
-  '2': { top: '32px', left: 'calc(75% + 20px)' },
-  '3': { top: '250px', left: 'calc(75% + 20px)' }, // Adjusted position for Strategy 3
-  '4': { top: '480px', left: 'calc(75% + 20px)' }, // Adjusted position for Strategy 4
+  '2': { top: '200px', left: 'calc(75% + 20px)' },
+  '3': { top: '500px', left: 'calc(75% + 20px)' },
+  '4': { top: '800px', left: 'calc(75% + 20px)' },
 
   // Left side of the radar chart (aligned with radar's vertical extent)
-  '7': { top: '32px', right: 'calc(75% + 20px)' },
-  '6': { top: '240px', right: 'calc(75% + 20px)' },
-  '5': { top: '448px', right: 'calc(75% + 20px)' },
+  '7': { top: '200px', right: 'calc(75% + 20px)' },
+  '6': { top: '500px', right: 'calc(75% + 20px)' },
+  '5': { top: '800px', right: 'calc(75% + 20px)' },
 };
 
 // Define initial positions for RadarEcoIdeaNote components
-// These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
+// These are approximate pixel values relative to the min-h-[1200px] container, assuming max-w-7xl (1280px)
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
   '1': { x: 544, y: 60 },   // Centered, below Strategy 1 insight box
-  '2': { x: 980, y: 60 },   // Top right, below Strategy 2 insight box
-  '3': { x: 980, y: 452 },  // Adjusted position for Strategy 3 eco-idea notes
-  '4': { x: 980, y: 682 },  // Adjusted position for Strategy 4 eco-idea notes
-  '7': { x: 300, y: 60 },   // Top left, below Strategy 7 insight box
-  '6': { x: 300, y: 268 },  // Mid left, below Strategy 6 insight box
-  '5': { x: 300, y: 476 },  // Bottom left, below Strategy 5 insight box
+  '2': { x: 980, y: 220 },   // Top right, below Strategy 2 insight box
+  '3': { x: 980, y: 520 },  // Mid right, below Strategy 3 insight box
+  '4': { x: 980, y: 820 },  // Bottom right, below Strategy 4 insight box
+  '7': { x: 300, y: 220 },   // Top left, below Strategy 7 insight box
+  '6': { x: 300, y: 520 },  // Mid left, below Strategy 6 insight box
+  '5': { x: 300, y: 820 },  // Bottom left, below Strategy 5 insight box
 };
