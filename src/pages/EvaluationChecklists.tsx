@@ -260,7 +260,7 @@ const EvaluationChecklists: React.FC = () => {
 
       {/* Completion Bar */}
       <div className="mb-8">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2"> {/* Changed justify-between to items-center gap-2 */}
           <span>Completion Progress</span>
           <span>{completionPercentage}%</span>
         </div>
