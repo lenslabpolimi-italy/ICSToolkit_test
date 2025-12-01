@@ -45,11 +45,10 @@ const RadarEcoIdeaNote: React.FC<RadarEcoIdeaNoteProps> = ({
       handle=".handle"
       defaultPosition={{ x, y }}
       onStop={(e, data) => onDragStop(id, data.x, data.y)}
-      className="absolute" // Added absolute positioning here
     >
       <div
         className={cn(
-          "p-2 rounded-md shadow-md cursor-grab border",
+          "absolute p-2 rounded-md shadow-md cursor-grab border",
           "w-48 min-h-[100px] max-h-[200px] flex flex-col group",
           noteColorClasses
         )}
