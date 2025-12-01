@@ -110,7 +110,8 @@ const EcoIdeasBoards: React.FC = () => {
   };
 
   // Filter eco-ideas by selected strategy AND selected concept
-  const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId && note.conceptType === selectedConcept);
+  // This variable is no longer used directly for rendering inside TabsContent
+  // const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId && note.conceptType === selectedConcept);
   const allEvaluationNotes = evaluationNotes;
 
 
@@ -220,7 +221,10 @@ const EcoIdeasBoards: React.FC = () => {
                   <PlusCircle size={32} className="text-gray-700" />
                 </div>
 
-                {filteredEcoIdeas.map(note => (
+                {/* Corrected filtering: filter ecoIdeas for the current strategy.id */}
+                {ecoIdeas
+                  .filter(note => note.strategyId === strategy.id && note.conceptType === selectedConcept)
+                  .map(note => (
                   <StickyNote
                     key={note.id}
                     id={note.id}
