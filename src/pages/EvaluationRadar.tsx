@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, Strategy, EcoIdea } from '@/types/lcd';
+import { EvaluationLevel, Strategy } from '@/types/lcd';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -80,7 +80,7 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation,
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -158,17 +158,6 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // Group confirmed eco-ideas by strategyId
-  const confirmedEcoIdeasByStrategy = useMemo(() => {
-    return ecoIdeas.filter(idea => idea.isConfirmed).reduce((acc, idea) => {
-      if (!acc[idea.strategyId]) {
-        acc[idea.strategyId] = [];
-      }
-      acc[idea.strategyId].push(idea);
-      return acc;
-    }, {} as { [strategyId: string]: EcoIdea[] });
-  }, [ecoIdeas]);
-
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
@@ -177,7 +166,7 @@ const EvaluationRadar: React.FC = () => {
         based on your evaluations in the "Evaluation Checklists" section.
       </p>
       <p className="text-app-body-text mb-8">
-        Below, you'll find the insights you've written for each strategy, along with any confirmed eco-ideas from the "Eco-Ideas Boards".
+        Below, you'll find the insights you've written for each strategy.
       </p>
 
       <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-12">
@@ -212,16 +201,13 @@ const EvaluationRadar: React.FC = () => {
         )}
       </div>
 
-      {/* Display Strategy Insights and Confirmed Eco-Ideas */}
+      {/* Display Strategy Insights as static text */}
       <div className="mt-12 pt-8 border-t border-gray-200">
-        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights & Confirmed Eco-Ideas</h3>
+        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {strategies.map(strategy => {
             const insightText = radarInsights[strategy.id];
-            const confirmedIdeas = confirmedEcoIdeasByStrategy[strategy.id] || [];
-
-            // Only render a card if there's an insight or confirmed ideas
-            if (!insightText && confirmedIdeas.length === 0) return null;
+            if (!insightText) return null; // Only show cards for strategies with insights
 
             const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
             const { displayText, classes } = getPriorityTagClasses(priority);
@@ -240,24 +226,7 @@ const EvaluationRadar: React.FC = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-sm text-app-body-text font-roboto-condensed">
-                  {insightText && (
-                    <div className="mb-4">
-                      <h4 className="font-bold text-app-body-text mb-1">Insight:</h4>
-                      <p>{insightText}</p>
-                    </div>
-                  )}
-                  {confirmedIdeas.length > 0 && (
-                    <div>
-                      <h4 className="font-bold text-app-body-text mb-1">Confirmed Eco-Ideas:</h4>
-                      <ul className="list-disc list-inside space-y-1">
-                        {confirmedIdeas.map((idea, index) => (
-                          <li key={idea.id || index} className="text-gray-700">
-                            {idea.text || "Empty eco-idea"}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {insightText}
                 </CardContent>
               </Card>
             );
