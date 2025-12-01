@@ -58,9 +58,9 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
       classes = 'bg-orange-400 text-white'; // Changed to orange
       break;
     case 'Low':
-      displayText = 'Low priority';
-      classes = 'bg-yellow-300 text-gray-800'; // Changed to yellow with dark text
-      break;
+    displayText = 'Low priority';
+    classes = 'bg-yellow-300 text-gray-800'; // Changed to yellow with dark text
+    break;
     case 'None':
     default:
       displayText = 'No priority';
@@ -68,4 +68,20 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
       break;
   }
   return { displayText, classes };
+};
+
+// NEW: Define insightBoxPositions here for shared access
+export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
+  // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
+  '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
+
+  // Right side of the radar chart (aligned with radar's vertical extent)
+  '2': { top: '32px', left: 'calc(75% + 20px)' },
+  '3': { top: '240px', left: 'calc(75% + 20px)' },
+  '4': { top: '448px', left: 'calc(75% + 20px)' },
+
+  // Left side of the radar chart (aligned with radar's vertical extent)
+  '7': { top: '32px', right: 'calc(75% + 20px)' },
+  '6': { top: '240px', right: 'calc(75% + 20px)' },
+  '5': { top: '448px', right: 'calc(75% + 20px)' },
 };

@@ -7,7 +7,7 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { EvaluationLevel, ConceptType } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
 import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote'; // NEW: Import RadarEcoIdeaNote
-import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
+import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils'; // Import insightBoxPositions
 import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
@@ -138,22 +138,6 @@ const EvaluationRadar: React.FC = () => {
     // Optionally, you might want to unconfirm the original eco-idea here as well
     // For now, we'll just delete the copy from the radar.
     toast.info("Eco-idea copy removed from radar.");
-  };
-
-  // Adjusted positions to place boxes in two columns around the radar chart
-  const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-    // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
-    '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
-
-    // Right side of the radar chart (aligned with radar's vertical extent)
-    '2': { top: '32px', left: 'calc(75% + 20px)' },
-    '3': { top: '240px', left: 'calc(75% + 20px)' },
-    '4': { top: '448px', left: 'calc(75% + 20px)' },
-
-    // Left side of the radar chart (aligned with radar's vertical extent)
-    '7': { top: '32px', right: 'calc(75% + 20px)' },
-    '6': { top: '240px', right: 'calc(75% + 20px)' },
-    '5': { top: '448px', right: 'calc(75% + 20px)' },
   };
 
   return (

@@ -37,9 +37,8 @@ const RadarEcoIdeaNote: React.FC<RadarEcoIdeaNoteProps> = ({
     }
   }, [text]);
 
-  const noteColorClasses = conceptType === 'A'
-    ? 'bg-app-concept-a-light text-app-concept-a-dark border-app-concept-a-base'
-    : 'bg-app-concept-b-light text-app-concept-b-dark border-app-concept-b-base';
+  // Changed to use yellow colors consistently for radar notes
+  const noteColorClasses = 'bg-yellow-300 text-gray-800 border-yellow-400';
 
   return (
     <Draggable

@@ -9,7 +9,7 @@ import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
 import { EcoIdea, ConceptType, RadarEcoIdea } from '@/types/lcd'; // Import RadarEcoIdea
 import { toast } from 'sonner';
-import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
+import { getStrategyPriorityForDisplay, getPriorityTagClasses, insightBoxPositions } from '@/utils/lcdUtils'; // Import insightBoxPositions
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Import Select components
 
@@ -68,15 +68,43 @@ const EcoIdeasBoards: React.FC = () => {
 
       if (toggledNote) {
         if (toggledNote.isConfirmed) {
-          // Add a copy to radarEcoIdeas
+          // Calculate initial position for the radar note
+          const strategyPosition = insightBoxPositions[toggledNote.strategyId];
+          let initialX = 0;
+          let initialY = 0;
+
+          // Simple logic to place it near the insight box.
+          // This will need more sophisticated calculation if the layout is complex.
+          if (strategyPosition) {
+            // Convert CSS properties to numbers for calculation
+            const top = parseFloat(strategyPosition.top as string || '0');
+            const left = parseFloat(strategyPosition.left as string || '0');
+            const right = parseFloat(strategyPosition.right as string || '0');
+
+            // Default offset from the insight box
+            const offsetX = 20;
+            const offsetY = 180; // Place below the insight box (min-h-48 + some margin)
+
+            if (strategyPosition.left) { // For left-aligned boxes (1, 2, 3, 4)
+              initialX = left + offsetX;
+              if (strategyPosition.transform && (strategyPosition.transform as string).includes('translateX(-50%)')) {
+                // For strategy 1, which is centered, adjust X
+                initialX = 300 + offsetX; // Approximate center of the radar container + offset
+              }
+            } else if (strategyPosition.right) { // For right-aligned boxes (5, 6, 7)
+              initialX = 800 - right - 200 - offsetX; // Approximate width of radar container - right offset - note width - offset
+            }
+            initialY = top + offsetY;
+          }
+
           const newRadarEcoIdea: RadarEcoIdea = {
             id: `radar-copy-${toggledNote.id}`, // Unique ID for the radar copy
             originalEcoIdeaId: toggledNote.id,
             text: toggledNote.text,
             strategyId: toggledNote.strategyId,
             conceptType: toggledNote.conceptType,
-            x: 0, // Initial X position on radar board
-            y: 0, // Initial Y position on radar board
+            x: initialX, // Initial X position on radar board
+            y: initialY, // Initial Y position on radar board
           };
           setRadarEcoIdeas(prevRadar => [...prevRadar, newRadarEcoIdea]);
           toast.success("Eco-idea confirmed and copied to Evaluation Radar!");
