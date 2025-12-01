@@ -200,7 +200,7 @@ const EvaluationChecklists: React.FC = () => {
       y: 50, // Default position
     };
     setEvaluationNotes(prev => [...prev, newNote]);
-    toast.success(`New note added for Concept ${selectedConcept} - Strategy ${selectedStrategyTab}!`);
+    toast.success(`New note added for Concept ${selectedConcept}!`); // Removed strategy ID
   };
 
   const handleNoteDragStop = (id: string, x: number, y: number) => {
