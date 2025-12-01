@@ -143,26 +143,37 @@ const EvaluationRadar: React.FC = () => {
 
   // NEW: Logic to dynamically position radar eco-ideas
   const positionedRadarEcoIdeas: RadarEcoIdea[] = [];
-  const strategyConceptNoteCounts: { [key: string]: number } = {}; // Tracks notes per strategy-concept pair
+  const strategyANoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept A per strategy
+  const strategyBNoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept B per strategy
 
   radarEcoIdeas.forEach(note => {
     const initialPos = radarEcoIdeaNoteInitialPositions[note.strategyId];
     if (initialPos) {
-      const countKey = `${note.strategyId}-${note.conceptType}`;
-      strategyConceptNoteCounts[countKey] = (strategyConceptNoteCounts[countKey] || 0) + 1;
-      const offsetIndex = strategyConceptNoteCounts[countKey] - 1; // 0 for first, 1 for second, etc.
+      let currentOffsetIndex = 0;
+      let startX = initialPos.x;
+      let startY = initialPos.y;
+      const noteHeightWithPadding = 110; // Approx. note height (100px) + padding (10px)
+      const conceptBSeparationX = 200; // Horizontal separation for Concept B notes
 
-      // Apply an offset for subsequent notes
-      const offsetX = offsetIndex * 20; // Adjust these values as needed for desired spacing
-      const offsetY = offsetIndex * 20;
+      if (note.conceptType === 'A') {
+        strategyANoteCounts[note.strategyId] = (strategyANoteCounts[note.strategyId] || 0) + 1;
+        currentOffsetIndex = strategyANoteCounts[note.strategyId] - 1;
+        // Stack Concept A notes vertically
+        startY += currentOffsetIndex * noteHeightWithPadding;
+      } else { // Concept B
+        strategyBNoteCounts[note.strategyId] = (strategyBNoteCounts[note.strategyId] || 0) + 1;
+        currentOffsetIndex = strategyBNoteCounts[note.strategyId] - 1;
+        // Start Concept B notes at an offset X, then stack vertically
+        startX += conceptBSeparationX;
+        startY += currentOffsetIndex * noteHeightWithPadding;
+      }
 
       positionedRadarEcoIdeas.push({
         ...note,
-        x: initialPos.x + offsetX,
-        y: initialPos.y + offsetY,
+        x: startX,
+        y: startY,
       });
     } else {
-      // Fallback if no initial position is defined for the strategy
       positionedRadarEcoIdeas.push(note);
     }
   });

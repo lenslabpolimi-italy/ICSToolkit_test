@@ -86,14 +86,19 @@ export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   '5': { top: '548px', right: 'calc(75% + 20px)' }, // Moved down by 24px from previous 524px
 };
 
-// Define initial positions for RadarEcoIdeaNote components
-// These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
+// Define initial positions for RadarEcoIdeaNote components relative to the h-[800px] container (max-w-7xl = 1280px)
+// These positions are chosen to be near their respective StrategyInsightBox components.
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  '1': { x: 544, y: 128 },   // Adjusted up by 24px to match Strategy 1 insight box
-  '2': { x: 980, y: 176 },   // Adjusted down by 24px to match Strategy 2 insight box
-  '3': { x: 980, y: 376 },  // Adjusted down by 24px to match Strategy 3 insight box
-  '4': { x: 980, y: 576 },  // Adjusted down by 24px to match Strategy 4 insight box
-  '7': { x: 300, y: 176 },   // Adjusted down by 24px to match Strategy 7 insight box
-  '6': { x: 300, y: 376 },  // Adjusted down by 24px to match Strategy 6 insight box
-  '5': { x: 300, y: 576 },  // Adjusted down by 24px to match Strategy 5 insight box
+  // Strategy 1 (top center) - placed below and aligned left with its insight box
+  '1': { x: 496, y: 102 }, 
+
+  // Strategies 2, 3, 4 (right side) - placed to the left of their insight boxes
+  '2': { x: 778, y: 148 }, 
+  '3': { x: 778, y: 348 }, 
+  '4': { x: 778, y: 548 }, 
+
+  // Strategies 5, 6, 7 (left side) - placed to the right of their insight boxes
+  '7': { x: 310, y: 148 }, 
+  '6': { x: 310, y: 348 }, 
+  '5': { x: 310, y: 548 }, 
 };
