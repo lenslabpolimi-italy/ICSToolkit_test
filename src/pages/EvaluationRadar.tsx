@@ -5,8 +5,9 @@ import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 import { EvaluationLevel, ConceptType } from '@/types/lcd';
-import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote';
-import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils'; // Removed insightBoxPositions import
+import StrategyInsightBox from '@/components/StrategyInsightBox';
+import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote'; // NEW: Import RadarEcoIdeaNote
+import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils'; // Import insightBoxPositions
 import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
@@ -34,7 +35,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd(); // Get radarEcoIdeas and setRadarEcoIdeas
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -112,8 +113,12 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // Removed handleInsightTextChange as StrategyInsightBox is removed
-  // Removed radarInsights state and its setter as it's no longer used
+  const handleInsightTextChange = (strategyId: string, newText: string) => {
+    setRadarInsights(prev => ({
+      ...prev,
+      [strategyId]: newText,
+    }));
+  };
 
   // Handlers for RadarEcoIdeaNote
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -140,7 +145,7 @@ const EvaluationRadar: React.FC = () => {
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
-        based on your evaluations in the "Evaluation Checklists" section.
+        based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
       <p className="text-app-body-text mb-8">
         Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
@@ -166,7 +171,23 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Removed rendering of StrategyInsightBoxes */}
+            {/* Render StrategyInsightBoxes */}
+            {strategies.map(strategy => {
+              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+              const positionStyle = insightBoxPositions[strategy.id] || {};
+
+              return (
+                <StrategyInsightBox
+                  key={strategy.id}
+                  strategy={strategy}
+                  priority={priority}
+                  text={radarInsights[strategy.id] || ''}
+                  onTextChange={handleInsightTextChange}
+                  className="absolute"
+                  style={positionStyle}
+                />
+              );
+            })}
 
             {/* Render RadarEcoIdeaNotes */}
             {radarEcoIdeas.map(note => (
