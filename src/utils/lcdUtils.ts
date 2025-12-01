@@ -91,15 +91,15 @@ export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 // with a vertical offset to avoid overlapping the insight box title.
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
   // Strategy 1 (Top center) - placed below the insight box
-  '1': { x: 496, y: 212 }, // Adjusted Y: 112 + 100
+  '1': { x: 496, y: 112 }, // Insight box bottom is at 92px, +20px gap
 
   // Strategies 2, 3, 4 (Right side) - placed to the left of their insight boxes, vertically offset
-  '2': { x: 768, y: 288 }, // Adjusted Y: 188 + 100
-  '3': { x: 768, y: 488 }, // Adjusted Y: 388 + 100
-  '4': { x: 768, y: 688 }, // Adjusted Y: 588 + 100
+  '2': { x: 768, y: 188 }, // Insight box top is 148px, +40px offset for title area
+  '3': { x: 768, y: 388 }, // Insight box top is 348px, +40px offset for title area
+  '4': { x: 768, y: 588 }, // Insight box top is 548px, +40px offset for title area
 
   // Strategies 5, 6, 7 (Left side) - placed to the right of their insight boxes, vertically offset
-  '7': { x: 608, y: 288 }, // Adjusted Y: 188 + 100
-  '6': { x: 608, y: 488 }, // Adjusted Y: 388 + 100
-  '5': { x: 608, y: 688 }, // Adjusted Y: 588 + 100
+  '7': { x: 608, y: 188 }, // Insight box top is 148px, +40px offset for title area
+  '6': { x: 608, y: 388 }, // Insight box top is 348px, +40px offset for title area
+  '5': { x: 608, y: 588 }, // Insight box top is 548px, +40px offset for title area
 };

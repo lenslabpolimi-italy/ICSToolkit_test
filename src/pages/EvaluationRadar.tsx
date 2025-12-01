@@ -153,7 +153,7 @@ const EvaluationRadar: React.FC = () => {
       let startX = initialPos.x;
       let startY = initialPos.y;
       const noteHeightWithPadding = 110; // Approx. note height (100px) + padding (10px)
-      const conceptBSeparationX = 220; // Adjusted horizontal separation for Concept B notes
+      const conceptBSeparationX = 250; // Increased horizontal separation for Concept B notes
 
       if (note.conceptType === 'A') {
         strategyANoteCounts[note.strategyId] = (strategyANoteCounts[note.strategyId] || 0) + 1;
@@ -174,7 +174,6 @@ const EvaluationRadar: React.FC = () => {
         y: startY,
       });
     } else {
-      // Fallback if no initial position is defined for the strategy
       positionedRadarEcoIdeas.push(note);
     }
   });
@@ -190,7 +189,7 @@ const EvaluationRadar: React.FC = () => {
         Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] mt-48"> {/* Removed flex, justify-center, items-center */}
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48">
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%">
