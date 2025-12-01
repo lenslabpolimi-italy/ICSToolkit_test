@@ -228,8 +228,8 @@ const EvaluationChecklists: React.FC = () => {
 
     return (
       <div className={cn(
-        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8",
-        "sticky top-0 z-50" // Added sticky positioning
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"
+        // Removed sticky positioning
       )}>
         <div
           className={cn(
@@ -314,11 +314,8 @@ const EvaluationChecklists: React.FC = () => {
         </div>
       </div>
 
-      {/* Evaluation Notes board moved here, above the Tabs component */}
-      {selectedStrategyTab && renderNotesArea(selectedStrategyTab)}
-
       {currentChecklistLevel === 'Simplified' ? (
-        <div className="space-y-8 mt-[232px] pt-4"> {/* Added mt-[232px] */}
+        <div className="space-y-8 pt-4"> {/* Removed mt-[232px] */}
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
@@ -353,7 +350,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
-        <div className="space-y-8 mt-[232px] pt-4"> {/* Added mt-[232px] */}
+        <div className="space-y-8 pt-4"> {/* Removed mt-[232px] */}
           {allStrategies.map((strategy) => {
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
@@ -395,7 +392,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : ( // Detailed level
-        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full mt-[232px]"> {/* Added mt-[232px] */}
+        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {allStrategies.map((strategy) => {
               const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
@@ -456,6 +453,9 @@ const EvaluationChecklists: React.FC = () => {
           )}
         </Tabs>
       )}
+
+      {/* Evaluation Notes board moved to the bottom */}
+      {selectedStrategyTab && renderNotesArea(selectedStrategyTab)}
 
       <WipeContentButton sectionKey="evaluationChecklists" />
     </div>
