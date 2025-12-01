@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel } from '@/types/lcd';
-import StrategyInsightBox from '@/components/StrategyInsightBox';
-import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
+import { EvaluationLevel, Strategy } from '@/types/lcd';
+import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
+import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -32,8 +32,30 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
   );
 };
 
+// Custom tick component for the PolarAngleAxis to display strategy name and priority
+const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation }: any) => {
+  const strategyId = payload.value.split('.')[0]; // Extract strategy ID from "1. Strategy Name"
+  const strategy = strategies.find((s: Strategy) => s.id === strategyId);
+
+  if (!strategy) return null;
+
+  const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+  const { displayText, classes } = getPriorityTagClasses(priority);
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto">
+        {payload.value} {/* Strategy ID and Name */}
+      </text>
+      <text x={0} y={0} dy={40} textAnchor="middle" fill="#666" fontSize={10} fontFamily="Roboto">
+        <tspan className={cn("px-1 rounded-sm", classes)}>{displayText}</tspan> {/* Priority */}
+      </text>
+    </g>
+  );
+};
+
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -111,75 +133,41 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  const handleInsightTextChange = (strategyId: string, newText: string) => {
-    setRadarInsights(prev => ({
-      ...prev,
-      [strategyId]: newText,
-    }));
-  };
-
-  // Adjusted positions to place boxes in two columns around the radar chart
-  const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-    // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
-    '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
-
-    // Right side of the radar chart (aligned with radar's vertical extent)
-    '2': { top: '32px', left: 'calc(75% + 20px)' },
-    '3': { top: '240px', left: 'calc(75% + 20px)' },
-    '4': { top: '448px', left: 'calc(75% + 20px)' },
-
-    // Left side of the radar chart (aligned with radar's vertical extent)
-    '7': { top: '32px', right: 'calc(75% + 20px)' },
-    '6': { top: '240px', right: 'calc(75% + 20px)' },
-    '5': { top: '448px', right: 'calc(75% + 20px)' },
-  };
-
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
-        based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
+        based on your evaluations in the "Evaluation Checklists" section.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48"> {/* Added mt-48 here */}
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-12">
         {strategies.length > 0 ? (
-          <>
-            <ResponsiveContainer width="50%" height="100%">
-              <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}>
-                <PolarGrid stroke="#e0e0e0" />
-                <PolarAngleAxis tick={false} />
-                <PolarRadiusAxis
-                  angle={90}
-                  domain={[0, 4]}
-                  tickCount={5}
-                  stroke="#333"
-                  tick={CustomRadiusTick}
-                />
-                <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
-                <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-                <Legend />
-              </RadarChart>
-            </ResponsiveContainer>
-
-            {/* Render StrategyInsightBoxes */}
-            {strategies.map(strategy => {
-              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-              const positionStyle = insightBoxPositions[strategy.id] || {};
-
-              return (
-                <StrategyInsightBox
-                  key={strategy.id}
-                  strategy={strategy}
-                  priority={priority}
-                  text={radarInsights[strategy.id] || ''}
-                  onTextChange={handleInsightTextChange}
-                  className="absolute"
-                  style={positionStyle}
-                />
-              );
-            })}
-          </>
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+              <PolarGrid stroke="#e0e0e0" />
+              <PolarAngleAxis
+                dataKey="strategyName"
+                tick={(props) => (
+                  <CustomAngleAxisTick
+                    {...props}
+                    strategies={strategies}
+                    qualitativeEvaluation={qualitativeEvaluation}
+                  />
+                )}
+              />
+              <PolarRadiusAxis
+                angle={90}
+                domain={[0, 4]}
+                tickCount={5}
+                stroke="#333"
+                tick={CustomRadiusTick}
+              />
+              <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+              <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
+              <Legend />
+            </RadarChart>
+          </ResponsiveContainer>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
         )}
