@@ -89,11 +89,11 @@ export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 // NEW: Define initial positions for RadarEcoIdeaNote components
 // These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  '1': { x: 544, y: -100 }, // Centered, above the container, below Strategy 1 insight box
-  '2': { x: 768, y: 52 },   // Top right, below Strategy 2 insight box
-  '3': { x: 768, y: 260 },  // Mid right, below Strategy 3 insight box
-  '4': { x: 768, y: 468 },  // Bottom right, below Strategy 4 insight box
-  '7': { x: 320, y: 52 },   // Top left, below Strategy 7 insight box
-  '6': { x: 320, y: 260 },  // Mid left, below Strategy 6 insight box
-  '5': { x: 320, y: 468 },  // Bottom left, below Strategy 5 insight box
+  '1': { x: 544, y: 60 },   // Centered, below Strategy 1 insight box
+  '2': { x: 980, y: 60 },   // Top right, below Strategy 2 insight box
+  '3': { x: 980, y: 268 },  // Mid right, below Strategy 3 insight box
+  '4': { x: 980, y: 476 },  // Bottom right, below Strategy 4 insight box
+  '7': { x: 300, y: 60 },   // Top left, below Strategy 7 insight box
+  '6': { x: 300, y: 268 },  // Mid left, below Strategy 6 insight box
+  '5': { x: 300, y: 476 },  // Bottom left, below Strategy 5 insight box
 };
