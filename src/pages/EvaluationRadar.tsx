@@ -49,7 +49,7 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
       <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto">
         {payload.value} {/* Strategy ID and Name */}
       </text>
-      <text x={0} y={0} dy={25} textAnchor="middle" fill="#666" fontSize={10} fontFamily="Roboto">
+      <text x={0} y={0} dy={40} textAnchor="middle" fill="#666" fontSize={10} fontFamily="Roboto"> {/* Increased dy from 25 to 40 */}
         <tspan className={cn("px-1 rounded-sm", classes)}>{displayText}</tspan> {/* Priority */}
       </text>
     </g>
