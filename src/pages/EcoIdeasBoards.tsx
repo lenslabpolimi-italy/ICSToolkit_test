@@ -72,7 +72,7 @@ const EcoIdeasBoards: React.FC = () => {
 
   const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
   // Filter evaluation notes only by strategyId, not by conceptType
-  const filteredEvaluationNotes = evaluationNotes.filter(note => note.strategyId === selectedStrategyId);
+  const allEvaluationNotes = evaluationNotes; // Display all evaluation notes
 
 
   return (
@@ -89,7 +89,7 @@ const EcoIdeasBoards: React.FC = () => {
       <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mb-8">
         <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
         {/* Removed the "Add Note" button from here */}
-        {filteredEvaluationNotes.map(note => (
+        {allEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
             id={note.id}
