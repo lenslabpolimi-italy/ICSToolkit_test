@@ -192,6 +192,13 @@ const EvaluationRadar: React.FC = () => {
     );
   };
 
+  // NEW: Handler for drag stop on StaticStickyNote
+  const handleStaticNoteDragStop = (id: string, x: number, y: number) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(idea => (idea.id === id ? { ...idea, x, y } : idea))
+    );
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
@@ -255,7 +262,8 @@ const EvaluationRadar: React.FC = () => {
                   <StaticStickyNote
                     key={idea.id}
                     idea={idea}
-                    onTextChange={handleStaticNoteTextChange} // Pass the handler
+                    onTextChange={handleStaticNoteTextChange}
+                    onDragStop={handleStaticNoteDragStop} // NEW: Pass the drag stop handler
                   />
                 ))}
               </div>
