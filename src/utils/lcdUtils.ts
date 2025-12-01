@@ -73,27 +73,27 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
 // Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
-  '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
+  '1': { top: '-100px', left: '50%', transform: 'translateX(-50%)' }, // Pulled down
 
   // Right side of the radar chart (aligned with radar's vertical extent)
-  '2': { top: '32px', left: 'calc(75% + 20px)' },
-  '3': { top: '250px', left: 'calc(75% + 20px)' }, // Adjusted position for Strategy 3
-  '4': { top: '480px', left: 'calc(75% + 20px)' }, // Adjusted position for Strategy 4
+  '2': { top: '100px', left: 'calc(75% + 20px)' }, // Pulled down
+  '3': { top: '300px', left: 'calc(75% + 20px)' }, // Pulled down
+  '4': { top: '500px', left: 'calc(75% + 20px)' }, // Pulled down
 
   // Left side of the radar chart (aligned with radar's vertical extent)
-  '7': { top: '32px', right: 'calc(75% + 20px)' },
-  '6': { top: '240px', right: 'calc(75% + 20px)' },
-  '5': { top: '448px', right: 'calc(75% + 20px)' },
+  '7': { top: '100px', right: 'calc(75% + 20px)' }, // Pulled down
+  '6': { top: '300px', right: 'calc(75% + 20px)' }, // Pulled down
+  '5': { top: '500px', right: 'calc(75% + 20px)' }, // Pulled down
 };
 
 // Define initial positions for RadarEcoIdeaNote components
 // These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
 export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  '1': { x: 544, y: 60 },   // Centered, below Strategy 1 insight box
-  '2': { x: 980, y: 60 },   // Top right, below Strategy 2 insight box
-  '3': { x: 980, y: 452 },  // Adjusted position for Strategy 3 eco-idea notes
-  '4': { x: 980, y: 682 },  // Adjusted position for Strategy 4 eco-idea notes
-  '7': { x: 300, y: 60 },   // Top left, below Strategy 7 insight box
-  '6': { x: 300, y: 268 },  // Mid left, below Strategy 6 insight box
-  '5': { x: 300, y: 476 },  // Bottom left, below Strategy 5 insight box
+  '1': { x: 544, y: 128 },   // Centered, below Strategy 1 insight box
+  '2': { x: 980, y: 128 },   // Top right, below Strategy 2 insight box
+  '3': { x: 980, y: 328 },  // Mid right, below Strategy 3 insight box
+  '4': { x: 980, y: 528 },  // Bottom right, below Strategy 4 insight box
+  '7': { x: 300, y: 128 },   // Top left, below Strategy 7 insight box
+  '6': { x: 300, y: 328 },  // Mid left, below Strategy 6 insight box
+  '5': { x: 300, y: 528 },  // Bottom left, below Strategy 5 insight box
 };
