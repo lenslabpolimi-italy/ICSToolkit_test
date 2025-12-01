@@ -16,6 +16,7 @@ interface EvaluationNoteProps {
   onDragStop: (id: string, x: number, y: number) => void;
   onTextChange: (id: string, newText: string) => void;
   onDelete: (id: string) => void;
+  onFinishWriting?: (id: string, text: string, x: number, y: number) => void; // NEW: Optional prop for when writing is finished
 }
 
 const EvaluationNote: React.FC<EvaluationNoteProps> = ({
@@ -27,6 +28,7 @@ const EvaluationNote: React.FC<EvaluationNoteProps> = ({
   onDragStop,
   onTextChange,
   onDelete,
+  onFinishWriting, // NEW
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -72,6 +74,7 @@ const EvaluationNote: React.FC<EvaluationNoteProps> = ({
           className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto pr-6"
           value={text}
           onChange={(e) => onTextChange(id, e.target.value)}
+          onBlur={(e) => onFinishWriting && onFinishWriting(id, e.target.value, x, y)} // NEW: Call onFinishWriting on blur
           placeholder="Write your idea here..."
           rows={3} // Initial rows
           style={{ minHeight: '70px' }} // Minimum height for the textarea

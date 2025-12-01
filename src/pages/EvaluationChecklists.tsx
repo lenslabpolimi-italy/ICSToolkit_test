@@ -7,11 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CustomProgress } from '@/components/CustomProgress';
-import { ChecklistLevel, ConceptType, EvaluationLevel, EvaluationNote as EvaluationNoteType } from '@/types/lcd'; // Import EvaluationNoteType
+import { ChecklistLevel, ConceptType, EvaluationLevel, EvaluationNote as EvaluationNoteType } from '@/types/lcd';
 import { cn } from '@/lib/utils';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
-import EvaluationNote from '@/components/EvaluationNote'; // Import the new EvaluationNote component
-import { PlusCircle } from 'lucide-react';
+import EvaluationNote from '@/components/EvaluationNote';
+import FloatingAddNoteButton from '@/components/FloatingAddNoteButton'; // NEW: Import FloatingAddNoteButton
 import { toast } from 'sonner';
 
 const EvaluationChecklists: React.FC = () => {
@@ -20,6 +20,7 @@ const EvaluationChecklists: React.FC = () => {
   
   const allStrategies = strategies;
   const [selectedStrategyTab, setSelectedStrategyTab] = useState(allStrategies[0]?.id || '');
+  const [tempEvaluationNote, setTempEvaluationNote] = useState<EvaluationNoteType | null>(null); // NEW: State for temporary note
 
   React.useEffect(() => {
     if (allStrategies.length > 0 && !selectedStrategyTab) {
@@ -183,65 +184,72 @@ const EvaluationChecklists: React.FC = () => {
     return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   }, [evaluationChecklists, selectedConcept, currentChecklistLevel, allStrategies]);
 
-  // NEW: Sticky note functionality for EvaluationChecklists
-  const addEvaluationNote = () => {
+  // NEW: Handlers for the floating add note button and temporary note
+  const handleAddFloatingNote = () => {
     if (!selectedStrategyTab) {
-      toast.error("Please select a strategy first.");
+      toast.error("Please select a strategy first to add a note.");
       return;
     }
-    const newNote: EvaluationNoteType = {
-      id: `eval-note-${Date.now()}`,
+    setTempEvaluationNote({
+      id: `temp-eval-note-${Date.now()}`,
       text: '',
       strategyId: selectedStrategyTab,
       conceptType: selectedConcept,
-      x: 50,
-      y: 50,
-    };
-    setEvaluationNotes(prev => [...prev, newNote]);
-    toast.success(`New note added for Concept ${selectedConcept} - Strategy ${selectedStrategyTab}!`);
+      x: 100, // Initial position for the temporary note
+      y: 100,
+    });
+    toast.info("Start writing your note!");
   };
 
-  const handleNoteDragStop = (id: string, x: number, y: number) => {
-    setEvaluationNotes(prev =>
-      prev.map(note => (note.id === id ? { ...note, x, y } : note))
-    );
+  const handleTempNoteDragStop = (id: string, x: number, y: number) => {
+    if (tempEvaluationNote && tempEvaluationNote.id === id) {
+      setTempEvaluationNote(prev => prev ? { ...prev, x, y } : null);
+    }
   };
 
-  const handleNoteTextChange = (id: string, newText: string) => {
-    setEvaluationNotes(prev =>
-      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
-    );
+  const handleTempNoteTextChange = (id: string, newText: string) => {
+    if (tempEvaluationNote && tempEvaluationNote.id === id) {
+      setTempEvaluationNote(prev => prev ? { ...prev, text: newText } : null);
+    }
   };
 
-  const handleNoteDelete = (id: string) => {
-    setEvaluationNotes(prev => prev.filter(note => note.id !== id));
-    toast.info("Evaluation note removed.");
+  const handleTempNoteDelete = (id: string) => {
+    if (tempEvaluationNote && tempEvaluationNote.id === id) {
+      setTempEvaluationNote(null); // Just dismiss the temporary note
+      toast.info("Temporary note discarded.");
+    }
+  };
+
+  const handleTempNoteFinishWriting = (id: string, text: string, x: number, y: number) => {
+    if (tempEvaluationNote && tempEvaluationNote.id === id) {
+      if (text.trim()) {
+        // If text is not empty, add it to the permanent notes
+        setEvaluationNotes(prev => [...prev, {
+          id: `eval-note-${Date.now()}`, // Generate a new ID for the permanent note
+          text: text.trim(),
+          strategyId: tempEvaluationNote.strategyId,
+          conceptType: tempEvaluationNote.conceptType,
+          x,
+          y,
+        }]);
+        toast.success("Note added to the board!");
+      } else {
+        toast.info("Empty note discarded.");
+      }
+      setTempEvaluationNote(null); // Clear the temporary note
+    }
   };
 
   const filteredEvaluationNotes = evaluationNotes.filter(
     note => note.strategyId === selectedStrategyTab && note.conceptType === selectedConcept
   );
 
-  const renderNotesArea = (strategyId: string) => {
-    const buttonBgClass = selectedConcept === 'A' ? 'bg-app-concept-a-light hover:bg-app-concept-a-dark' : 'bg-app-concept-b-light hover:bg-app-concept-b-dark';
-    const iconColorClass = 'text-white'; // Ensure icon is visible on colored background
-
+  const renderNotesArea = () => { // Removed strategyId parameter as it's now handled by selectedStrategyTab
     return (
       <div className={cn(
         "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"
-        // Removed sticky positioning
       )}>
-        <div
-          className={cn(
-            "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
-            buttonBgClass
-          )}
-          onClick={addEvaluationNote}
-          style={{ width: '60px', height: '60px', zIndex: 101 }}
-          title={`Add a new note for Concept ${selectedConcept}`}
-        >
-          <PlusCircle size={32} className={iconColorClass} />
-        </div>
+        <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes for Concept {selectedConcept} - Strategy {selectedStrategyTab}</h4>
         {filteredEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
@@ -315,7 +323,7 @@ const EvaluationChecklists: React.FC = () => {
       </div>
 
       {currentChecklistLevel === 'Simplified' ? (
-        <div className="space-y-8 pt-4"> {/* Removed mt-[232px] */}
+        <div className="space-y-8 pt-4">
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
@@ -350,7 +358,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
-        <div className="space-y-8 pt-4"> {/* Removed mt-[232px] */}
+        <div className="space-y-8 pt-4">
           {allStrategies.map((strategy) => {
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
@@ -454,8 +462,30 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
+      {/* Floating Add Note Button */}
+      {selectedStrategyTab && (
+        <FloatingAddNoteButton onClick={handleAddFloatingNote} conceptType={selectedConcept} />
+      )}
+
+      {/* Temporary Evaluation Note (appears when floating button is clicked) */}
+      {tempEvaluationNote && (
+        <EvaluationNote
+          key={tempEvaluationNote.id}
+          id={tempEvaluationNote.id}
+          x={tempEvaluationNote.x}
+          y={tempEvaluationNote.y}
+          text={tempEvaluationNote.text}
+          strategyId={tempEvaluationNote.strategyId}
+          conceptType={tempEvaluationNote.conceptType}
+          onDragStop={handleTempNoteDragStop}
+          onTextChange={handleTempNoteTextChange}
+          onDelete={handleTempNoteDelete}
+          onFinishWriting={handleTempNoteFinishWriting}
+        />
+      )}
+
       {/* Evaluation Notes board moved to the bottom */}
-      {selectedStrategyTab && renderNotesArea(selectedStrategyTab)}
+      {selectedStrategyTab && renderNotesArea()}
 
       <WipeContentButton sectionKey="evaluationChecklists" />
     </div>
