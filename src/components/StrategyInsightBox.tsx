@@ -16,19 +16,14 @@ interface StrategyInsightBoxProps {
   children?: ReactNode;
 }
 
-const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
-  strategy,
-  priority,
-  text,
-  onTextChange,
-  className,
-  style,
-  children
-}) => {
+const StrategyInsightBox = React.forwardRef<
+  HTMLDivElement, // Type for the ref
+  StrategyInsightBoxProps
+>(({ strategy, priority, text, onTextChange, className, style, children }, ref) => {
   const { displayText, classes } = getPriorityTagClasses(priority);
 
   return (
-    <div className={cn(
+    <div ref={ref} className={cn( // Attach ref to the outermost div
       "flex flex-col",
       "w-72 h-auto min-h-48",
       className
@@ -47,11 +42,12 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
       <Textarea
         value={text}
         onChange={(e) => onTextChange(strategy.id, e.target.value)}
-        className="flex-grow resize-none text-sm font-roboto-condensed border-none focus-visible:ring-0 focus-visible:ring-offset-0" // Removed border and ring
+        className="flex-grow resize-none text-sm font-roboto-condensed border-none focus-visible:ring-0 focus-visible:ring-offset-0"
       />
       {children}
     </div>
   );
-};
+});
 
+StrategyInsightBox.displayName = 'StrategyInsightBox'; // Add display name for forwardRef
 export default StrategyInsightBox;

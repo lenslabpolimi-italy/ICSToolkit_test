@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 import { EvaluationLevel, ConceptType } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote'; // NEW: Import RadarEcoIdeaNote
-import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils'; // Import insightBoxPositions
+import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote';
+import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
+import RadarArrows from '@/components/RadarArrows'; // NEW: Import RadarArrows
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -35,7 +36,15 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd(); // Get radarEcoIdeas and setRadarEcoIdeas
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
+
+  const radarContainerRef = useRef<HTMLDivElement>(null);
+  const insightBoxRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  const [radarChartCenter, setRadarChartCenter] = useState<{ x: number; y: number } | null>(null);
+  const [radarChartOuterRadius, setRadarChartOuterRadius] = useState<number>(0);
+  const [insightBoxRects, setInsightBoxRects] = useState<Map<string, DOMRect>>(new Map());
+  const [containerRect, setContainerRect] = useState<DOMRect | null>(null);
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -43,7 +52,7 @@ const EvaluationRadar: React.FC = () => {
     'Mediocre': 2,
     'Good': 3,
     'Excellent': 4,
-    'N/A': 0, // N/A will be treated as 0 or not shown
+    'N/A': 0,
     'Yes': 4,
     'Partially': 2.5,
     'No': 1,
@@ -106,6 +115,49 @@ const EvaluationRadar: React.FC = () => {
     });
   }, [evaluationChecklists, strategies, setRadarChartData]);
 
+  // NEW: useEffect to measure dimensions for arrows
+  useEffect(() => {
+    const measureElements = () => {
+      if (radarContainerRef.current) {
+        const container = radarContainerRef.current;
+        const currentContainerRect = container.getBoundingClientRect();
+        setContainerRect(currentContainerRect);
+
+        // The ResponsiveContainer is 50% width and 100% height of `container`.
+        // It's also horizontally centered due to `flex justify-center`.
+        const radarSvgWidth = currentContainerRect.width * 0.5;
+        const radarSvgHeight = currentContainerRect.height;
+
+        // RadarChart's cx and cy are relative to its own SVG.
+        // cx="50%" means 0.5 * radarSvgWidth
+        // cy="42%" means 0.42 * radarSvgHeight
+        // outerRadius="80%" means 0.8 * Math.min(radarSvgWidth / 2, radarSvgHeight / 2)
+
+        // Calculate radar chart center and radius in viewport coordinates
+        const radarChartCenterViewportX = currentContainerRect.left + (currentContainerRect.width - radarSvgWidth) / 2 + (0.5 * radarSvgWidth);
+        const radarChartCenterViewportY = currentContainerRect.top + (0.42 * radarSvgHeight);
+        const radarChartOuterRadiusValue = 0.8 * Math.min(radarSvgWidth / 2, radarSvgHeight / 2);
+
+        setRadarChartCenter({ x: radarChartCenterViewportX, y: radarChartCenterViewportY });
+        setRadarChartOuterRadius(radarChartOuterRadiusValue);
+
+        const newInsightBoxRects = new Map<string, DOMRect>();
+        strategies.forEach(strategy => {
+          const ref = insightBoxRefs.current.get(strategy.id);
+          if (ref) {
+            newInsightBoxRects.set(strategy.id, ref.getBoundingClientRect());
+          }
+        });
+        setInsightBoxRects(newInsightBoxRects);
+      }
+    };
+
+    // Run on mount and resize
+    measureElements();
+    window.addEventListener('resize', measureElements);
+    return () => window.removeEventListener('resize', measureElements);
+  }, [strategies, radarChartData]); // Re-measure if strategies or radar data changes
+
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
     A: radarChartData.A[strategy.id] || 0,
@@ -135,8 +187,6 @@ const EvaluationRadar: React.FC = () => {
 
   const handleRadarEcoIdeaDelete = (id: string) => {
     setRadarEcoIdeas(prev => prev.filter(note => note.id !== id));
-    // Optionally, you might want to unconfirm the original eco-idea here as well
-    // For now, we'll just delete the copy from the radar.
     toast.info("Eco-idea copy removed from radar.");
   };
 
@@ -151,7 +201,7 @@ const EvaluationRadar: React.FC = () => {
         Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48">
+      <div ref={radarContainerRef} className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48">
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%">
@@ -185,9 +235,24 @@ const EvaluationRadar: React.FC = () => {
                   onTextChange={handleInsightTextChange}
                   className="absolute"
                   style={positionStyle}
+                  ref={el => { // Attach ref to each insight box
+                    if (el) insightBoxRefs.current.set(strategy.id, el);
+                    else insightBoxRefs.current.delete(strategy.id);
+                  }}
                 />
               );
             })}
+
+            {/* NEW: Render RadarArrows */}
+            {radarChartCenter && radarChartOuterRadius > 0 && containerRect && (
+              <RadarArrows
+                strategies={strategies}
+                radarChartCenter={radarChartCenter}
+                radarChartOuterRadius={radarChartOuterRadius}
+                insightBoxRects={insightBoxRects}
+                containerRect={containerRect}
+              />
+            )}
 
             {/* Render RadarEcoIdeaNotes */}
             {radarEcoIdeas.map(note => (
