@@ -70,7 +70,7 @@ export const getPriorityTagClasses = (priority: PriorityLevel) => {
   return { displayText, classes };
 };
 
-// NEW: Define insightBoxPositions here for shared access
+// Define positions for StrategyInsightBox components relative to the radar container (h-[800px])
 export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
   '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
@@ -84,4 +84,16 @@ export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   '7': { top: '32px', right: 'calc(75% + 20px)' },
   '6': { top: '240px', right: 'calc(75% + 20px)' },
   '5': { top: '448px', right: 'calc(75% + 20px)' },
+};
+
+// NEW: Define initial positions for RadarEcoIdeaNote components
+// These are approximate pixel values relative to the h-[800px] container, assuming max-w-7xl (1280px)
+export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
+  '1': { x: 544, y: -100 }, // Centered, above the container, below Strategy 1 insight box
+  '2': { x: 768, y: 52 },   // Top right, below Strategy 2 insight box
+  '3': { x: 768, y: 260 },  // Mid right, below Strategy 3 insight box
+  '4': { x: 768, y: 468 },  // Bottom right, below Strategy 4 insight box
+  '7': { x: 320, y: 52 },   // Top left, below Strategy 7 insight box
+  '6': { x: 320, y: 260 },  // Mid left, below Strategy 6 insight box
+  '5': { x: 320, y: 468 },  // Bottom left, below Strategy 5 insight box
 };
