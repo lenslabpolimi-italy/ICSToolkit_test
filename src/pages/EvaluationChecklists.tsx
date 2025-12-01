@@ -227,9 +227,11 @@ const EvaluationChecklists: React.FC = () => {
   const renderNotesArea = () => {
     return (
       <div className={cn(
-        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8",
-        "sticky top-0 z-50"
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8" // Removed sticky, added mt-8
       )}>
+        <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">
+          Evaluation Notes for Concept {selectedConcept} - Strategy {selectedStrategyTab}
+        </h3>
         {filteredEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
@@ -302,11 +304,8 @@ const EvaluationChecklists: React.FC = () => {
         </div>
       </div>
 
-      {/* Evaluation Notes board moved here, above the Tabs component */}
-      {selectedStrategyTab && renderNotesArea()}
-
       {currentChecklistLevel === 'Simplified' ? (
-        <div className="space-y-8 mt-[232px] pt-4">
+        <div className="space-y-8 pt-4">
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
@@ -341,7 +340,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
-        <div className="space-y-8 mt-[232px] pt-4">
+        <div className="space-y-8 pt-4">
           {allStrategies.map((strategy) => {
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
@@ -383,7 +382,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : ( // Detailed level
-        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full mt-[232px]">
+        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {allStrategies.map((strategy) => {
               const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
@@ -462,6 +461,9 @@ const EvaluationChecklists: React.FC = () => {
         conceptType={selectedConcept}
         strategyId={selectedStrategyTab}
       />
+
+      {/* Evaluation Notes board moved here, at the very bottom */}
+      {selectedStrategyTab && renderNotesArea()}
     </div>
   );
 };
