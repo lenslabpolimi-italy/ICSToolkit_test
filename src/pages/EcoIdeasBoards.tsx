@@ -135,28 +135,9 @@ const EcoIdeasBoards: React.FC = () => {
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
-            <div className="relative flex min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
-              {/* Left Column for Strategy Text */}
-              <div className="w-1/2 pr-8">
-                {strategy.subStrategies.map((subStrategy) => (
-                  <div key={subStrategy.id} className="mb-6">
-                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
-                      {subStrategy.id}. {subStrategy.name}
-                    </h4>
-                    <ul className="list-none space-y-1">
-                      {subStrategy.guidelines.map((guideline) => (
-                        <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
-                          {guideline.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              {/* Right Column for Eco-Ideas Board */}
-              <div className="relative w-1/2 pl-8 border-l border-gray-200">
-                {/* Removed the h4 tag for "Eco-Ideas" */}
+            <div className="relative min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
+              {/* Eco-Ideas Board (now full width) */}
+              <div className="relative w-full h-full">
                 <div
                   className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
                   onClick={addStickyNote}
