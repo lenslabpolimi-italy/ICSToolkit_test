@@ -30,6 +30,7 @@ const EcoIdeasBoards: React.FC = () => {
       strategyId: selectedStrategyId,
       x: 20, // Initial X position relative to the Eco-Ideas board
       y: 20, // Initial Y position relative to the Eco-Ideas board
+      isConfirmed: false, // NEW: Initialize as unconfirmed
     };
     setEcoIdeas(prev => [...prev, newNote]);
     toast.success("New eco-idea sticky note added!");
@@ -50,6 +51,16 @@ const EcoIdeasBoards: React.FC = () => {
   const handleEcoIdeaDelete = (id: string) => {
     setEcoIdeas(prev => prev.filter(note => note.id !== id));
     toast.info("Eco-idea sticky note removed.");
+  };
+
+  // NEW: Handler for toggling confirmation status
+  const handleEcoIdeaConfirmToggle = (id: string) => {
+    setEcoIdeas(prev =>
+      prev.map(note =>
+        note.id === id ? { ...note, isConfirmed: !note.isConfirmed } : note
+      )
+    );
+    toast.info("Eco-idea confirmation status updated!");
   };
 
   // Handlers for Evaluation Notes (only drag, text change, delete remain)
@@ -177,9 +188,11 @@ const EcoIdeasBoards: React.FC = () => {
                     strategyId={note.strategyId}
                     subStrategyId={note.subStrategyId}
                     guidelineId={note.guidelineId}
+                    isConfirmed={note.isConfirmed} // Pass isConfirmed prop
                     onDragStop={handleEcoIdeaDragStop}
                     onTextChange={handleEcoIdeaTextChange}
                     onDelete={handleEcoIdeaDelete}
+                    onConfirmToggle={handleEcoIdeaConfirmToggle} // Pass new handler
                   />
                 ))}
                 <WipeContentButton sectionKey="ecoIdeas" label="Wipe Eco-Ideas" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { XCircle } from 'lucide-react';
+import { XCircle, CheckCircle2 } from 'lucide-react'; // Import CheckCircle2 icon
 import { cn } from '@/lib/utils';
 
 interface StickyNoteProps {
@@ -13,9 +13,11 @@ interface StickyNoteProps {
   strategyId: string;
   subStrategyId?: string;
   guidelineId?: string;
+  isConfirmed: boolean; // NEW: Add isConfirmed prop
   onDragStop: (id: string, x: number, y: number) => void;
   onTextChange: (id: string, newText: string) => void;
   onDelete: (id: string) => void;
+  onConfirmToggle: (id: string) => void; // NEW: Add onConfirmToggle prop
 }
 
 const StickyNote: React.FC<StickyNoteProps> = ({
@@ -23,9 +25,11 @@ const StickyNote: React.FC<StickyNoteProps> = ({
   x,
   y,
   text,
+  isConfirmed, // Destructure new prop
   onDragStop,
   onTextChange,
   onDelete,
+  onConfirmToggle, // Destructure new prop
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,6 +41,10 @@ const StickyNote: React.FC<StickyNoteProps> = ({
     }
   }, [text]);
 
+  const noteColorClass = isConfirmed
+    ? 'bg-yellow-400 text-gray-900 border-yellow-500' // Sharper, more saturated yellow
+    : 'bg-yellow-200 text-gray-800 border-yellow-300'; // Light yellow
+
   return (
     <Draggable
       handle=".handle"
@@ -46,8 +54,9 @@ const StickyNote: React.FC<StickyNoteProps> = ({
     >
       <div
         className={cn(
-          "absolute bg-yellow-200 p-2 rounded-md shadow-md cursor-grab",
-          "w-48 min-h-[100px] max-h-[200px] flex flex-col group" // Added group for hover effects
+          "absolute p-2 rounded-md shadow-md cursor-grab border",
+          "w-48 min-h-[100px] max-h-[200px] flex flex-col group", // Added group for hover effects
+          noteColorClass // Apply dynamic color class
         )}
         style={{ zIndex: 100 }} // Ensure notes are on top
       >
@@ -61,9 +70,22 @@ const StickyNote: React.FC<StickyNoteProps> = ({
           <XCircle size={18} />
         </button>
 
+        {/* NEW: Confirmation button */}
+        <button
+          onClick={() => onConfirmToggle(id)}
+          className={cn(
+            "absolute top-1 left-1 text-gray-500 hover:text-green-600 opacity-0 group-hover:opacity-100 transition-opacity",
+            isConfirmed && "opacity-100 text-green-600 hover:text-green-700" // Always visible and green if confirmed
+          )}
+          aria-label={isConfirmed ? "Unconfirm idea" : "Confirm idea"}
+          title={isConfirmed ? "Unconfirm idea" : "Confirm idea"}
+        >
+          <CheckCircle2 size={18} />
+        </button>
+
         <textarea
           ref={textareaRef}
-          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed text-gray-800 overflow-y-auto pr-6"
+          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto pr-6 pl-6" // Adjusted padding for new button
           value={text}
           onChange={(e) => onTextChange(id, e.target.value)}
           placeholder="Write your idea here..."
