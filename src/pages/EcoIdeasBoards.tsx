@@ -155,7 +155,7 @@ const EcoIdeasBoards: React.FC = () => {
               </div>
 
               {/* Right Column for Eco-Ideas Board */}
-              <div className="relative w-1/2 pl-8 border-l border-gray-200">
+              <div className="relative w-1/2 pl-8">
                 {/* Removed the h4 tag for "Eco-Ideas" */}
                 <div
                   className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
