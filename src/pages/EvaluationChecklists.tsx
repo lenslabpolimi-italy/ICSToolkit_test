@@ -253,7 +253,6 @@ const EvaluationChecklists: React.FC = () => {
             onDelete={handleNoteDelete}
           />
         ))}
-        {/* WipeContentButton moved here */}
         <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
       </div>
     );
@@ -312,14 +311,15 @@ const EvaluationChecklists: React.FC = () => {
         </div>
       </div>
 
+      {/* NEW: Evaluation Notes board moved here, above the Tabs component */}
+      {selectedStrategyTab && renderNotesArea(selectedStrategyTab)}
+
       {currentChecklistLevel === 'Simplified' ? (
         <div className="space-y-8 mt-6 pt-4">
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                {/* Notes area for Simplified level - moved to top */}
-                {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -360,8 +360,6 @@ const EvaluationChecklists: React.FC = () => {
 
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                {/* Notes area for Normal level - moved to top */}
-                {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -421,8 +419,6 @@ const EvaluationChecklists: React.FC = () => {
           </TabsList>
           {currentStrategy && (
             <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
-              {/* NEW: Notes area for Detailed level - moved to top */}
-              {renderNotesArea(currentStrategy.id)}
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                   {currentStrategy.id}. {currentStrategy.name}
