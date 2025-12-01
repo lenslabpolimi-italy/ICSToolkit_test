@@ -316,7 +316,7 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                {/* NEW: Notes area for Simplified level - moved to top */}
+                {/* Notes area for Simplified level - moved to top */}
                 {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
@@ -358,7 +358,7 @@ const EvaluationChecklists: React.FC = () => {
 
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                {/* NEW: Notes area for Normal level - moved to top */}
+                {/* Notes area for Normal level - moved to top */}
                 {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
@@ -419,13 +419,13 @@ const EvaluationChecklists: React.FC = () => {
           </TabsList>
           {currentStrategy && (
             <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
+              {/* NEW: Notes area for Detailed level - moved to top */}
+              {renderNotesArea(currentStrategy.id)}
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                   {currentStrategy.id}. {currentStrategy.name}
                 </h3>
               </div>
-              {/* NEW: Notes area for Detailed level - moved to top */}
-              {renderNotesArea(currentStrategy.id)}
               <div className="space-y-8">
                 {currentStrategy.subStrategies.map(subStrategy => (
                   <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
