@@ -36,7 +36,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 }) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <AlertDialogContent>
+      <AlertDialogContent className="z-[999]"> {/* Added z-[999] to ensure it's on top */}
         <AlertDialogHeader>
           <AlertDialogTitle className="font-palanquin">{title}</AlertDialogTitle>
           <AlertDialogDescription className="font-roboto">{description}</AlertDialogDescription>
