@@ -6,13 +6,16 @@ import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CustomProgress } from '@/components/CustomProgress'; // Import the new CustomProgress component
-import { ChecklistLevel, ConceptType, EvaluationLevel } from '@/types/lcd';
+import { CustomProgress } from '@/components/CustomProgress';
+import { ChecklistLevel, ConceptType, EvaluationLevel, EvaluationNote as EvaluationNoteType } from '@/types/lcd'; // Import EvaluationNoteType
 import { cn } from '@/lib/utils';
-import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // Import new utilities
+import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
+import EvaluationNote from '@/components/EvaluationNote'; // Import the new EvaluationNote component
+import { PlusCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 const EvaluationChecklists: React.FC = () => {
-  const { strategies, evaluationChecklists, setEvaluationChecklists, qualitativeEvaluation } = useLcd();
+  const { strategies, evaluationChecklists, setEvaluationChecklists, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A');
   
   const allStrategies = strategies;
@@ -180,6 +183,45 @@ const EvaluationChecklists: React.FC = () => {
     return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   }, [evaluationChecklists, selectedConcept, currentChecklistLevel, allStrategies]);
 
+  // NEW: Sticky note functionality for EvaluationChecklists
+  const addEvaluationNote = () => {
+    if (!selectedStrategyTab) {
+      toast.error("Please select a strategy first.");
+      return;
+    }
+    const newNote: EvaluationNoteType = {
+      id: `eval-note-${Date.now()}`,
+      text: '',
+      strategyId: selectedStrategyTab,
+      conceptType: selectedConcept,
+      x: 50,
+      y: 50,
+    };
+    setEvaluationNotes(prev => [...prev, newNote]);
+    toast.success(`New note added for Concept ${selectedConcept} - Strategy ${selectedStrategyTab}!`);
+  };
+
+  const handleNoteDragStop = (id: string, x: number, y: number) => {
+    setEvaluationNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+  };
+
+  const handleNoteTextChange = (id: string, newText: string) => {
+    setEvaluationNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+  };
+
+  const handleNoteDelete = (id: string) => {
+    setEvaluationNotes(prev => prev.filter(note => note.id !== id));
+    toast.info("Evaluation note removed.");
+  };
+
+  const filteredEvaluationNotes = evaluationNotes.filter(
+    note => note.strategyId === selectedStrategyTab && note.conceptType === selectedConcept
+  );
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation of the Implementation of Life Cycle Design Strategies</h2>
@@ -264,6 +306,33 @@ const EvaluationChecklists: React.FC = () => {
                     ))}
                   </div>
                 </div>
+                {/* NEW: Notes area for Simplified level */}
+                {selectedStrategyTab === strategy.id && (
+                  <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8">
+                    <div
+                      className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+                      onClick={addEvaluationNote}
+                      style={{ width: '60px', height: '60px', zIndex: 101 }}
+                      title={`Add a new note for Concept ${selectedConcept}`}
+                    >
+                      <PlusCircle size={32} className="text-gray-700" />
+                    </div>
+                    {filteredEvaluationNotes.map(note => (
+                      <EvaluationNote
+                        key={note.id}
+                        id={note.id}
+                        x={note.x}
+                        y={note.y}
+                        text={note.text}
+                        strategyId={note.strategyId}
+                        conceptType={note.conceptType}
+                        onDragStop={handleNoteDragStop}
+                        onTextChange={handleNoteTextChange}
+                        onDelete={handleNoteDelete}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -306,6 +375,33 @@ const EvaluationChecklists: React.FC = () => {
                     ))}
                   </div>
                 </div>
+                {/* NEW: Notes area for Normal level */}
+                {selectedStrategyTab === strategy.id && (
+                  <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8">
+                    <div
+                      className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+                      onClick={addEvaluationNote}
+                      style={{ width: '60px', height: '60px', zIndex: 101 }}
+                      title={`Add a new note for Concept ${selectedConcept}`}
+                    >
+                      <PlusCircle size={32} className="text-gray-700" />
+                    </div>
+                    {filteredEvaluationNotes.map(note => (
+                      <EvaluationNote
+                        key={note.id}
+                        id={note.id}
+                        x={note.x}
+                        y={note.y}
+                        text={note.text}
+                        strategyId={note.strategyId}
+                        conceptType={note.conceptType}
+                        onDragStop={handleNoteDragStop}
+                        onTextChange={handleNoteTextChange}
+                        onDelete={handleNoteDelete}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -369,12 +465,38 @@ const EvaluationChecklists: React.FC = () => {
                   </div>
                 ))}
               </div>
+              {/* NEW: Notes area for Detailed level */}
+              <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8">
+                <div
+                  className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+                  onClick={addEvaluationNote}
+                  style={{ width: '60px', height: '60px', zIndex: 101 }}
+                  title={`Add a new note for Concept ${selectedConcept}`}
+                >
+                  <PlusCircle size={32} className="text-gray-700" />
+                </div>
+                {filteredEvaluationNotes.map(note => (
+                  <EvaluationNote
+                    key={note.id}
+                    id={note.id}
+                    x={note.x}
+                    y={note.y}
+                    text={note.text}
+                    strategyId={note.strategyId}
+                    conceptType={note.conceptType}
+                    onDragStop={handleNoteDragStop}
+                    onTextChange={handleNoteTextChange}
+                    onDelete={handleNoteDelete}
+                  />
+                ))}
+              </div>
             </TabsContent>
           )}
         </Tabs>
       )}
 
       <WipeContentButton sectionKey="evaluationChecklists" />
+      <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="absolute bottom-4 right-36 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
     </div>
   );
 };

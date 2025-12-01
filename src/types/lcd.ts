@@ -76,3 +76,12 @@ export interface RadarInsight {
   strategyId: string;
   text: string;
 }
+
+export interface EvaluationNote { // NEW: Interface for evaluation notes
+  id: string;
+  text: string;
+  strategyId: string;
+  conceptType: ConceptType;
+  x: number;
+  y: number;
+}
