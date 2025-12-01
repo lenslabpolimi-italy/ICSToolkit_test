@@ -223,7 +223,7 @@ const EvaluationChecklists: React.FC = () => {
   );
 
   const renderNotesArea = (strategyId: string) => (
-    <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8 mb-8"> {/* Added mb-8 for spacing */}
+    <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"> {/* Removed mt-8, kept mb-8 for spacing below */}
       <div
         className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
         onClick={addEvaluationNote}
@@ -308,6 +308,8 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+                {/* NEW: Notes area for Simplified level - moved to top */}
+                {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -325,8 +327,6 @@ const EvaluationChecklists: React.FC = () => {
                       evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
                     )}
                   </div>
-                  {/* NEW: Notes area for Simplified level - moved to top */}
-                  {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                   <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
                     {strategy.subStrategies.map(subStrategy => (
                       <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
@@ -350,6 +350,8 @@ const EvaluationChecklists: React.FC = () => {
 
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+                {/* NEW: Notes area for Normal level - moved to top */}
+                {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -362,8 +364,6 @@ const EvaluationChecklists: React.FC = () => {
                       {strategy.id}. {strategy.name}
                     </h3>
                   </div>
-                  {/* NEW: Notes area for Normal level - moved to top */}
-                  {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                   <div className="pl-4 space-y-2">
                     {strategy.subStrategies.map(subStrategy => (
                       <div key={subStrategy.id} className="flex justify-between items-center">
