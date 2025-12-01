@@ -15,7 +15,7 @@ import {
   ChecklistLevel,
   ConceptType,
   RadarInsight,
-  EvaluationNote,
+  EvaluationNote, // NEW: Import EvaluationNote
 } from '@/types/lcd';
 import { parseLcdStrategies } from '@/utils/lcdParser';
 
@@ -31,10 +31,10 @@ interface LcdContextType {
   setEvaluationChecklists: (data: EvaluationChecklistData) => void;
   radarChartData: RadarChartData;
   setRadarChartData: (data: RadarChartData) => void;
-  // radarInsights: { [strategyId: string]: string }; // Removed
-  // setRadarInsights: React.Dispatch<React.SetStateAction<{ [strategyId: string]: string }>>; // Removed
-  evaluationNotes: EvaluationNote[];
-  setEvaluationNotes: React.Dispatch<React.SetStateAction<EvaluationNote[]>>;
+  radarInsights: { [strategyId: string]: string };
+  setRadarInsights: React.Dispatch<React.SetStateAction<{ [strategyId: string]: string }>>;
+  evaluationNotes: EvaluationNote[]; // NEW: Add evaluationNotes to context type
+  setEvaluationNotes: React.Dispatch<React.SetStateAction<EvaluationNote[]>>; // NEW: Add setter
   resetSection: (section: string) => void;
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
@@ -61,8 +61,8 @@ const initialRadarChartData: RadarChartData = {
   A: {},
   B: {},
 };
-// const initialRadarInsights: { [strategyId: string]: string } = {}; // Removed
-const initialEvaluationNotes: EvaluationNote[] = [];
+const initialRadarInsights: { [strategyId: string]: string } = {};
+const initialEvaluationNotes: EvaluationNote[] = []; // NEW: Initial state for evaluation notes
 
 export const LcdProvider = ({ children }: { ReactNode }) => {
   const [strategies, setStrategies] = useState<Strategy[]>([]);
@@ -71,8 +71,8 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
   const [ecoIdeas, setEcoIdeas] = useState<EcoIdea[]>(initialEcoIdeas);
   const [evaluationChecklists, setEvaluationChecklists] = useState<EvaluationChecklistData>(initialEvaluationChecklists);
   const [radarChartData, setRadarChartData] = useState<RadarChartData>(initialRadarChartData);
-  // const [radarInsights, setRadarInsights] = useState<{ [strategyId: string]: string }>(initialRadarInsights); // Removed
-  const [evaluationNotes, setEvaluationNotes] = useState<EvaluationNote[]>(initialEvaluationNotes);
+  const [radarInsights, setRadarInsights] = useState<{ [strategyId: string]: string }>(initialRadarInsights);
+  const [evaluationNotes, setEvaluationNotes] = useState<EvaluationNote[]>(initialEvaluationNotes); // NEW: State for evaluation notes
 
   useEffect(() => {
     const loadStrategies = async () => {
@@ -82,19 +82,19 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
       // Initialize qualitative evaluation, radar data, and radar insights based on parsed strategies
       const initialQualitative: QualitativeEvaluationData = {};
       const initialRadar: RadarChartData = { A: {}, B: {} };
-      // const initialInsights: { [strategyId: string]: string } = {}; // Removed
+      const initialInsights: { [strategyId: string]: string } = {};
       parsedStrategies.forEach(strategy => {
         initialQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
         strategy.subStrategies.forEach(sub => {
-          initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
+          initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' }; // Initialize answer field
         });
-        initialRadar.A[strategy.id] = 0;
-        initialRadar.B[strategy.id] = 0;
-        // initialInsights[strategy.id] = ''; // Removed
+        initialRadar.A[strategy.id] = 0; // Default to Poor
+        initialRadar.B[strategy.id] = 0; // Default to Poor
+        initialInsights[strategy.id] = '';
       });
       setQualitativeEvaluation(initialQualitative);
       setRadarChartData(initialRadar);
-      // setRadarInsights(initialInsights); // Removed
+      setRadarInsights(initialInsights);
     };
     loadStrategies();
   }, []);
@@ -106,6 +106,8 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
     return strategy?.subStrategies.find(ss => ss.id === subStrategyId);
   };
   const getGuidelineById = (subStrategyId: string, guidelineId: string) => {
+    // This assumes guidelineId is unique across all guidelines, or at least within a sub-strategy
+    // For now, let's find it by iterating through all sub-strategies
     for (const strategy of strategies) {
       for (const subStrategy of strategy.subStrategies) {
         if (subStrategy.id === subStrategyId) {
@@ -127,29 +129,29 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         strategies.forEach(strategy => {
           resetQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
           strategy.subStrategies.forEach(sub => {
-            resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
+            resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' }; // Reset answer field
           });
         });
         setQualitativeEvaluation(resetQualitative);
         break;
       case 'ecoIdeas':
-        setEcoIdeas(initialEcoIdeas);
+        setEcoIdeas(initialEcoIdeas); // Resets to an empty array, clearing all notes
         break;
       case 'evaluationChecklists':
         setEvaluationChecklists(initialEvaluationChecklists);
         break;
       case 'radarChart':
         const resetRadar: RadarChartData = { A: {}, B: {} };
-        // const resetInsights: { [strategyId: string]: string } = {}; // Removed
+        const resetInsights: { [strategyId: string]: string } = {};
         strategies.forEach(strategy => {
           resetRadar.A[strategy.id] = 0;
           resetRadar.B[strategy.id] = 0;
-          // resetInsights[strategy.id] = ''; // Removed
+          resetInsights[strategy.id] = '';
         });
         setRadarChartData(resetRadar);
-        // setRadarInsights(resetInsights); // Removed
+        setRadarInsights(resetInsights);
         break;
-      case 'evaluationNotes':
+      case 'evaluationNotes': // NEW: Case to reset evaluation notes
         setEvaluationNotes(initialEvaluationNotes);
         break;
       default:
@@ -171,10 +173,10 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         setEvaluationChecklists,
         radarChartData,
         setRadarChartData,
-        // radarInsights, // Removed
-        // setRadarInsights, // Removed
-        evaluationNotes,
-        setEvaluationNotes,
+        radarInsights,
+        setRadarInsights,
+        evaluationNotes, // NEW: Provide evaluationNotes
+        setEvaluationNotes, // NEW: Provide setEvaluationNotes
         resetSection,
         getStrategyById,
         getSubStrategyById,
