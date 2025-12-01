@@ -47,7 +47,6 @@ export interface EcoIdea {
   x: number; // Added for position
   y: number; // Added for position
   isConfirmed: boolean; // NEW: Added to track if the idea is confirmed
-  conceptType: ConceptType; // NEW: Added to link idea to a concept
 }
 
 export type ChecklistLevel = 'Simplified' | 'Normal' | 'Detailed';
@@ -79,21 +78,11 @@ export interface RadarInsight {
   text: string;
 }
 
-export interface EvaluationNote { // Interface for evaluation notes (used in EvaluationChecklists)
+export interface EvaluationNote { // NEW: Interface for evaluation notes
   id: string;
   text: string;
   strategyId: string;
   conceptType: ConceptType;
   x: number;
   y: number;
-}
-
-export interface RadarEcoIdea { // NEW: Interface for eco-ideas copied to the radar
-  id: string; // Unique ID for this radar copy
-  originalEcoIdeaId: string; // Link back to the original EcoIdea
-  text: string;
-  strategyId: string;
-  conceptType: ConceptType;
-  x: number; // Position on radar board
-  y: number; // Position on radar board
 }

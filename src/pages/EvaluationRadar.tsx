@@ -4,11 +4,9 @@ import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, ConceptType, RadarEcoIdea } from '@/types/lcd';
+import { EvaluationLevel } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote';
-import { getStrategyPriorityForDisplay, insightBoxPositions, radarEcoIdeaNoteInitialPositions } from '@/utils/lcdUtils';
-import { cn } from '@/lib/utils';
+import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -35,7 +33,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -113,7 +111,6 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // Handler for insight text changes
   const handleInsightTextChange = (strategyId: string, newText: string) => {
     setRadarInsights(prev => ({
       ...prev,
@@ -121,62 +118,21 @@ const EvaluationRadar: React.FC = () => {
     }));
   };
 
-  // Handlers for RadarEcoIdeaNote
-  const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
-    setRadarEcoIdeas(prev =>
-      prev.map(note => (note.id === id ? { ...note, x, y } : note))
-    );
+  // Adjusted positions to place boxes in two columns around the radar chart
+  const insightBoxPositions: { [key: string]: React.CSSProperties } = {
+    // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
+    '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
+
+    // Right side of the radar chart (aligned with radar's vertical extent)
+    '2': { top: '32px', left: 'calc(75% + 20px)' },
+    '3': { top: '240px', left: 'calc(75% + 20px)' },
+    '4': { top: '448px', left: 'calc(75% + 20px)' },
+
+    // Left side of the radar chart (aligned with radar's vertical extent)
+    '7': { top: '32px', right: 'calc(75% + 20px)' },
+    '6': { top: '240px', right: 'calc(75% + 20px)' },
+    '5': { top: '448px', right: 'calc(75% + 20px)' },
   };
-
-  const handleRadarEcoIdeaTextChange = (id: string, newText: string) => {
-    setRadarEcoIdeas(prev =>
-      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
-    );
-  };
-
-  const handleRadarEcoIdeaDelete = (id: string) => {
-    setRadarEcoIdeas(prev => prev.filter(note => note.id !== id));
-    // Optionally, you might want to unconfirm the original eco-idea here as well
-    // For now, we'll just delete the copy from the radar.
-    toast.info("Eco-idea copy removed from radar.");
-  };
-
-  // NEW: Logic to dynamically position radar eco-ideas
-  const positionedRadarEcoIdeas: RadarEcoIdea[] = [];
-  const strategyANoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept A per strategy
-  const strategyBNoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept B per strategy
-
-  radarEcoIdeas.forEach(note => {
-    const initialPos = radarEcoIdeaNoteInitialPositions[note.strategyId];
-    if (initialPos) {
-      let currentOffsetIndex = 0;
-      let startX = initialPos.x;
-      let startY = initialPos.y;
-      const noteHeightWithPadding = 110; // Approx. note height (100px) + padding (10px)
-      const conceptBSeparationX = 250; // Increased horizontal separation for Concept B notes
-
-      if (note.conceptType === 'A') {
-        strategyANoteCounts[note.strategyId] = (strategyANoteCounts[note.strategyId] || 0) + 1;
-        currentOffsetIndex = strategyANoteCounts[note.strategyId] - 1;
-        // Stack Concept A notes vertically
-        startY += currentOffsetIndex * noteHeightWithPadding;
-      } else { // Concept B
-        strategyBNoteCounts[note.strategyId] = (strategyBNoteCounts[note.strategyId] || 0) + 1;
-        currentOffsetIndex = strategyBNoteCounts[note.strategyId] - 1;
-        // Start Concept B notes at an offset X, then stack vertically
-        startX += conceptBSeparationX; // This is the key for horizontal separation
-        startY += currentOffsetIndex * noteHeightWithPadding;
-      }
-
-      positionedRadarEcoIdeas.push({
-        ...note,
-        x: startX,
-        y: startY,
-      });
-    } else {
-      positionedRadarEcoIdeas.push(note);
-    }
-  });
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -185,11 +141,8 @@ const EvaluationRadar: React.FC = () => {
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
         based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
-      <p className="text-app-body-text mb-8">
-        Confirmed eco-ideas from the "Eco-Ideas Boards" will also appear here, grouped by concept.
-      </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48"> {/* Added mt-48 here */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="50%" height="100%">
@@ -226,22 +179,6 @@ const EvaluationRadar: React.FC = () => {
                 />
               );
             })}
-
-            {/* Render RadarEcoIdeaNotes with dynamic positioning */}
-            {positionedRadarEcoIdeas.map(note => (
-              <RadarEcoIdeaNote
-                key={note.id}
-                id={note.id}
-                x={note.x}
-                y={note.y}
-                text={note.text}
-                strategyId={note.strategyId}
-                conceptType={note.conceptType}
-                onDragStop={handleRadarEcoIdeaDragStop}
-                onTextChange={handleRadarEcoIdeaTextChange}
-                onDelete={handleRadarEcoIdeaDelete}
-              />
-            ))}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
