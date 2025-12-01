@@ -227,7 +227,7 @@ const EvaluationChecklists: React.FC = () => {
     const iconColorClass = 'text-white'; // Ensure icon is visible on colored background
 
     return (
-      <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"> {/* Removed mt-8, kept mb-8 for spacing below */}
+      <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8">
         <div
           className={cn(
             "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
@@ -253,6 +253,8 @@ const EvaluationChecklists: React.FC = () => {
             onDelete={handleNoteDelete}
           />
         ))}
+        {/* WipeContentButton moved here */}
+        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
       </div>
     );
   };
@@ -457,7 +459,6 @@ const EvaluationChecklists: React.FC = () => {
       )}
 
       <WipeContentButton sectionKey="evaluationChecklists" />
-      <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="absolute bottom-4 right-36 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
     </div>
   );
 };
