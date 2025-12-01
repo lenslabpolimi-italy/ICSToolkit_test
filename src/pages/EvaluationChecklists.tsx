@@ -7,13 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CustomProgress } from '@/components/CustomProgress';
-import { ChecklistLevel, ConceptType, EvaluationLevel, EvaluationNote as EvaluationNoteType } from '@/types/lcd';
+import { ChecklistLevel, ConceptType, EvaluationLevel, EvaluationNote as EvaluationNoteType } from '@/types/lcd'; // Import EvaluationNoteType
 import { cn } from '@/lib/utils';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
-import EvaluationNote from '@/components/EvaluationNote';
+import EvaluationNote from '@/components/EvaluationNote'; // Import the new EvaluationNote component
 import { PlusCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import FloatingAddNoteButton from '@/components/FloatingAddNoteButton'; // Import the new component
 
 const EvaluationChecklists: React.FC = () => {
   const { strategies, evaluationChecklists, setEvaluationChecklists, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
@@ -184,7 +183,7 @@ const EvaluationChecklists: React.FC = () => {
     return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   }, [evaluationChecklists, selectedConcept, currentChecklistLevel, allStrategies]);
 
-  // Function to add a new evaluation note
+  // NEW: Sticky note functionality for EvaluationChecklists
   const addEvaluationNote = () => {
     if (!selectedStrategyTab) {
       toast.error("Please select a strategy first.");
@@ -195,8 +194,8 @@ const EvaluationChecklists: React.FC = () => {
       text: '',
       strategyId: selectedStrategyTab,
       conceptType: selectedConcept,
-      x: 50, // Default position
-      y: 50, // Default position
+      x: 50,
+      y: 50,
     };
     setEvaluationNotes(prev => [...prev, newNote]);
     toast.success(`New note added for Concept ${selectedConcept} - Strategy ${selectedStrategyTab}!`);
@@ -223,12 +222,26 @@ const EvaluationChecklists: React.FC = () => {
     note => note.strategyId === selectedStrategyTab && note.conceptType === selectedConcept
   );
 
-  const renderNotesArea = () => { // Removed strategyId parameter as it's now derived from selectedStrategyTab
+  const renderNotesArea = (strategyId: string) => {
+    const buttonBgClass = selectedConcept === 'A' ? 'bg-app-concept-a-light hover:bg-app-concept-a-dark' : 'bg-app-concept-b-light hover:bg-app-concept-b-dark';
+    const iconColorClass = 'text-white'; // Ensure icon is visible on colored background
+
     return (
       <div className={cn(
         "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"
+        // Removed sticky positioning
       )}>
-        {/* The add note button is now floating, so removed the inline PlusCircle button */}
+        <div
+          className={cn(
+            "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
+            buttonBgClass
+          )}
+          onClick={addEvaluationNote}
+          style={{ width: '60px', height: '60px', zIndex: 101 }}
+          title={`Add a new note for Concept ${selectedConcept}`}
+        >
+          <PlusCircle size={32} className={iconColorClass} />
+        </div>
         {filteredEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
@@ -302,7 +315,7 @@ const EvaluationChecklists: React.FC = () => {
       </div>
 
       {currentChecklistLevel === 'Simplified' ? (
-        <div className="space-y-8 pt-4">
+        <div className="space-y-8 pt-4"> {/* Removed mt-[232px] */}
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
@@ -337,7 +350,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
-        <div className="space-y-8 pt-4">
+        <div className="space-y-8 pt-4"> {/* Removed mt-[232px] */}
           {allStrategies.map((strategy) => {
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
@@ -441,17 +454,10 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
-      {/* Evaluation Notes board at the bottom */}
-      {selectedStrategyTab && renderNotesArea()}
+      {/* Evaluation Notes board moved to the bottom */}
+      {selectedStrategyTab && renderNotesArea(selectedStrategyTab)}
 
       <WipeContentButton sectionKey="evaluationChecklists" />
-
-      {/* Floating Add Note Button */}
-      <FloatingAddNoteButton
-        onClick={addEvaluationNote}
-        conceptType={selectedConcept}
-        disabled={!selectedStrategyTab} // Disable if no strategy tab is selected
-      />
     </div>
   );
 };
