@@ -7,15 +7,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea } from '@/types/lcd';
+import { EcoIdea } from '@/types/lcd'; // Removed ConceptType, EvaluationNoteType as they are not used for adding notes here
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
+// Removed Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Label as they are no longer needed
 
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
+  // Removed selectedConcept state as it's no longer needed on this page for filtering/adding
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -74,6 +76,7 @@ const EcoIdeasBoards: React.FC = () => {
   // Filter evaluation notes only by strategyId, not by conceptType
   const filteredEvaluationNotes = evaluationNotes.filter(note => note.strategyId === selectedStrategyId);
 
+  // Removed addEvaluationNoteButtonClasses as the button is removed
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -156,7 +159,7 @@ const EcoIdeasBoards: React.FC = () => {
 
               {/* Right Column for Eco-Ideas Board */}
               <div className="relative w-1/2 pl-8 border-l border-gray-200">
-                {/* Removed the h4 tag for "Eco-Ideas" */}
+                <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Eco-Ideas</h4>
                 <div
                   className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
                   onClick={addStickyNote}
