@@ -9,6 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
+import ConfirmedIdeasBox from '@/components/ConfirmedIdeasBox'; // NEW: Import ConfirmedIdeasBox
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -56,7 +57,7 @@ const BOX_HEIGHT = 80; // h-20 is 80px
 const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
 
 const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Adjusted from -64 to -104
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
   '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
   '3': { top: 240, left: 'calc(75% + 20px)' },
   '4': { top: 448, left: 'calc(75% + 20px)' },
@@ -149,6 +150,17 @@ const EvaluationRadar: React.FC = () => {
     (idea) => idea.strategyId === '1' && idea.isConfirmed
   );
 
+  // Calculate position for ConfirmedIdeasBox for Strategy 1
+  const strategy1BoxPosition = insightBoxPositions['1'];
+  const confirmedIdeasBoxStyle: React.CSSProperties = strategy1BoxPosition
+    ? {
+        top: (parseFloat(strategy1BoxPosition.top as string) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP) + 'px',
+        left: strategy1BoxPosition.left,
+        transform: strategy1BoxPosition.transform,
+      }
+    : {};
+
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
@@ -204,6 +216,15 @@ const EvaluationRadar: React.FC = () => {
                 />
               );
             })}
+
+            {/* NEW: Render ConfirmedIdeasBox for Strategy 1 */}
+            {confirmedStrategy1EcoIdeas.length > 0 && (
+              <ConfirmedIdeasBox
+                ideas={confirmedStrategy1EcoIdeas}
+                className="absolute"
+                style={confirmedIdeasBoxStyle}
+              />
+            )}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
