@@ -153,7 +153,7 @@ const EvaluationRadar: React.FC = () => {
       let startX = initialPos.x;
       let startY = initialPos.y;
       const noteHeightWithPadding = 110; // Approx. note height (100px) + padding (10px)
-      const conceptBSeparationX = 200; // Horizontal separation for Concept B notes
+      const conceptBSeparationX = 250; // Increased horizontal separation for Concept B notes
 
       if (note.conceptType === 'A') {
         strategyANoteCounts[note.strategyId] = (strategyANoteCounts[note.strategyId] || 0) + 1;
@@ -164,7 +164,7 @@ const EvaluationRadar: React.FC = () => {
         strategyBNoteCounts[note.strategyId] = (strategyBNoteCounts[note.strategyId] || 0) + 1;
         currentOffsetIndex = strategyBNoteCounts[note.strategyId] - 1;
         // Start Concept B notes at an offset X, then stack vertically
-        startX += conceptBSeparationX;
+        startX += conceptBSeparationX; // This is the key for horizontal separation
         startY += currentOffsetIndex * noteHeightWithPadding;
       }
 
@@ -174,7 +174,6 @@ const EvaluationRadar: React.FC = () => {
         y: startY,
       });
     } else {
-      // Fallback if no initial position is defined for the strategy
       positionedRadarEcoIdeas.push(note);
     }
   });
