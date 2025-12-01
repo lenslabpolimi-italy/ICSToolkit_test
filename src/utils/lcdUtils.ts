@@ -88,18 +88,32 @@ export const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 
 // Define initial positions for RadarEcoIdeaNote components relative to the h-[800px] container (max-w-7xl = 1280px)
 // These positions are chosen to be near their respective StrategyInsightBox components,
-// with a vertical offset to avoid overlapping the insight box title.
-export const radarEcoIdeaNoteInitialPositions: { [key: string]: { x: number; y: number } } = {
-  // Strategy 1 (Top center) - placed below the insight box
-  '1': { x: 496, y: 112 }, // Insight box bottom is at 92px, +20px gap
+// with explicit separation for Concept A and Concept B.
+export const radarEcoIdeaNoteInitialPositions: { 
+  [key: string]: { 
+    A: { x: number; y: number }; 
+    B: { x: number; y: number }; 
+  } 
+} = {
+  // Strategy 1 (Top center)
+  // Insight box left edge: 496px. Insight box right edge: 784px. Center: 640px. Note width: 192px.
+  // Concept A: Left of center. x = 640 - (192/2) - 100 = 444px
+  // Concept B: Right of center. x = 640 - (192/2) + 100 = 644px
+  '1': { A: { x: 444, y: 112 }, B: { x: 644, y: 112 } },
 
-  // Strategies 2, 3, 4 (Right side) - placed to the left of their insight boxes, vertically offset
-  '2': { x: 768, y: 188 }, // Insight box top is 148px, +40px offset for title area
-  '3': { x: 768, y: 388 }, // Insight box top is 348px, +40px offset for title area
-  '4': { x: 768, y: 588 }, // Insight box top is 548px, +40px offset for title area
+  // Strategies 2, 3, 4 (Right side)
+  // Insight box starts at 980px. Note width: 192px.
+  // Concept A: To the left of insight box. x = 980 - 192 - 20 = 768px
+  // Concept B: Further left, closer to radar. x = 768 - 192 - 50 = 526px
+  '2': { A: { x: 768, y: 188 }, B: { x: 526, y: 188 } },
+  '3': { A: { x: 768, y: 388 }, B: { x: 526, y: 388 } },
+  '4': { A: { x: 768, y: 588 }, B: { x: 526, y: 588 } },
 
-  // Strategies 5, 6, 7 (Left side) - placed to the right of their insight boxes, vertically offset
-  '7': { x: 608, y: 188 }, // Insight box top is 148px, +40px offset for title area
-  '6': { x: 608, y: 388 }, // Insight box top is 348px, +40px offset for title area
-  '5': { x: 608, y: 588 }, // Insight box top is 548px, +40px offset for title area
+  // Strategies 5, 6, 7 (Left side)
+  // Insight box starts at 300px. Insight box width: 288px. Note width: 192px.
+  // Concept A: To the right of insight box. x = 300 + 288 + 20 = 608px
+  // Concept B: Further right, closer to radar. x = 608 + 192 + 50 = 850px
+  '7': { A: { x: 608, y: 188 }, B: { x: 850, y: 188 } },
+  '6': { A: { x: 608, y: 388 }, B: { x: 850, y: 388 } },
+  '5': { A: { x: 608, y: 588 }, B: { x: 850, y: 588 } },
 };

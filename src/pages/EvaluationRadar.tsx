@@ -141,32 +141,28 @@ const EvaluationRadar: React.FC = () => {
     toast.info("Eco-idea copy removed from radar.");
   };
 
-  // NEW: Logic to dynamically position radar eco-ideas
+  // Logic to dynamically position radar eco-ideas
   const positionedRadarEcoIdeas: RadarEcoIdea[] = [];
   const strategyANoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept A per strategy
   const strategyBNoteCounts: { [key: string]: number } = {}; // Tracks notes for Concept B per strategy
 
   radarEcoIdeas.forEach(note => {
-    const initialPos = radarEcoIdeaNoteInitialPositions[note.strategyId];
-    if (initialPos) {
+    const initialPosForConcept = radarEcoIdeaNoteInitialPositions[note.strategyId]?.[note.conceptType];
+    if (initialPosForConcept) {
       let currentOffsetIndex = 0;
-      let startX = initialPos.x;
-      let startY = initialPos.y;
-      const noteHeightWithPadding = 110; // Approx. note height (100px) + padding (10px)
-      const conceptBSeparationX = 250; // Increased horizontal separation for Concept B notes
+      let startX = initialPosForConcept.x;
+      let startY = initialPosForConcept.y;
+      const noteHeightWithPadding = 120; // Increased for more vertical separation
 
       if (note.conceptType === 'A') {
         strategyANoteCounts[note.strategyId] = (strategyANoteCounts[note.strategyId] || 0) + 1;
         currentOffsetIndex = strategyANoteCounts[note.strategyId] - 1;
-        // Stack Concept A notes vertically
-        startY += currentOffsetIndex * noteHeightWithPadding;
       } else { // Concept B
         strategyBNoteCounts[note.strategyId] = (strategyBNoteCounts[note.strategyId] || 0) + 1;
         currentOffsetIndex = strategyBNoteCounts[note.strategyId] - 1;
-        // Start Concept B notes at an offset X, then stack vertically
-        startX += conceptBSeparationX; // This is the key for horizontal separation
-        startY += currentOffsetIndex * noteHeightWithPadding;
       }
+      
+      startY += currentOffsetIndex * noteHeightWithPadding;
 
       positionedRadarEcoIdeas.push({
         ...note,
@@ -174,6 +170,7 @@ const EvaluationRadar: React.FC = () => {
         y: startY,
       });
     } else {
+      // Fallback if no initial position is defined for the strategy/concept
       positionedRadarEcoIdeas.push(note);
     }
   });
