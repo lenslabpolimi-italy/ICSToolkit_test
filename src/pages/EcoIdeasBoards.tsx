@@ -7,17 +7,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea, ConceptType, RadarEcoIdea } from '@/types/lcd';
+import { EcoIdea } from '@/types/lcd';
 import { toast } from 'sonner';
-import { getStrategyPriorityForDisplay, getPriorityTagClasses, radarEcoIdeaNoteInitialPositions } from '@/utils/lcdUtils'; // Import radarEcoIdeaNoteInitialPositions
+import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'; // Import Card components
 
 const EcoIdeasBoards: React.FC = () => {
-  const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes, setRadarEcoIdeas } = useLcd();
+  const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
-  const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A');
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -30,13 +28,12 @@ const EcoIdeasBoards: React.FC = () => {
       id: `eco-note-${Date.now()}`,
       text: '',
       strategyId: selectedStrategyId,
-      x: 20,
-      y: 20,
+      x: 20, // Initial X position relative to the Eco-Ideas board
+      y: 20, // Initial Y position relative to the Eco-Ideas board
       isConfirmed: false,
-      conceptType: selectedConcept,
     };
     setEcoIdeas(prev => [...prev, newNote]);
-    toast.success(`New eco-idea sticky note added for Concept ${selectedConcept}!`);
+    toast.success("New eco-idea sticky note added!");
   };
 
   const handleEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -53,43 +50,16 @@ const EcoIdeasBoards: React.FC = () => {
 
   const handleEcoIdeaDelete = (id: string) => {
     setEcoIdeas(prev => prev.filter(note => note.id !== id));
-    // Also remove from radar if it was confirmed
-    setRadarEcoIdeas(prev => prev.filter(radarNote => radarNote.originalEcoIdeaId !== id));
     toast.info("Eco-idea sticky note removed.");
   };
 
   const handleEcoIdeaConfirmToggle = (id: string) => {
-    setEcoIdeas(prevEcoIdeas => {
-      const updatedEcoIdeas = prevEcoIdeas.map(note =>
+    setEcoIdeas(prev =>
+      prev.map(note =>
         note.id === id ? { ...note, isConfirmed: !note.isConfirmed } : note
-      );
-
-      const toggledNote = updatedEcoIdeas.find(note => note.id === id);
-
-      if (toggledNote) {
-        if (toggledNote.isConfirmed) {
-          // Use the predefined initial positions for radar notes
-          const initialPos = radarEcoIdeaNoteInitialPositions[toggledNote.strategyId];
-
-          const newRadarEcoIdea: RadarEcoIdea = {
-            id: `radar-copy-${toggledNote.id}`, // Unique ID for the radar copy
-            originalEcoIdeaId: toggledNote.id,
-            text: toggledNote.text,
-            strategyId: toggledNote.strategyId,
-            conceptType: toggledNote.conceptType,
-            x: initialPos?.x || 50, // Fallback to 50 if position not found
-            y: initialPos?.y || 50, // Fallback to 50 if position not found
-          };
-          setRadarEcoIdeas(prevRadar => [...prevRadar, newRadarEcoIdea]);
-          toast.success("Eco-idea confirmed and copied to Evaluation Radar!");
-        } else {
-          // Remove from radarEcoIdeas
-          setRadarEcoIdeas(prevRadar => prevRadar.filter(radarNote => radarNote.originalEcoIdeaId !== toggledNote.id));
-          toast.info("Eco-idea unconfirmed and removed from Evaluation Radar.");
-        }
-      }
-      return updatedEcoIdeas;
-    });
+      )
+    );
+    toast.info("Eco-idea confirmation status updated!");
   };
 
   const handleEvaluationNoteDragStop = (id: string, x: number, y: number) => {
@@ -109,11 +79,8 @@ const EcoIdeasBoards: React.FC = () => {
     toast.info("Evaluation note removed.");
   };
 
-  // Filter eco-ideas by selected strategy AND selected concept
-  // This variable is no longer used directly for rendering inside TabsContent
-  // const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId && note.conceptType === selectedConcept);
+  const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
   const allEvaluationNotes = evaluationNotes;
-
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -125,7 +92,6 @@ const EcoIdeasBoards: React.FC = () => {
         Review evaluation notes from both Concept A and Concept B here.
       </p>
 
-      {/* Evaluation Notes Board - Moved to the top, removed concept selector and add button */}
       <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mb-8">
         <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
         {allEvaluationNotes.map(note => (
@@ -143,23 +109,6 @@ const EcoIdeasBoards: React.FC = () => {
           />
         ))}
         <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
-      </div>
-
-      {/* Concept Selector for Eco-Ideas */}
-      <div className="flex items-center gap-4 mb-8">
-        <h3 className="text-xl font-palanquin font-semibold text-app-header">Concept for Eco-Ideas:</h3>
-        <Select
-          value={selectedConcept}
-          onValueChange={(value: ConceptType) => setSelectedConcept(value)}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select Concept" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="A">Concept A</SelectItem>
-            <SelectItem value="B">Concept B</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       <Tabs value={selectedStrategyId} onValueChange={setSelectedStrategyId} className="w-full">
@@ -192,7 +141,7 @@ const EcoIdeasBoards: React.FC = () => {
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
             <div className="relative flex min-h-[400px] p-8 rounded-lg bg-gray-50 overflow-hidden">
-              {/* Left Column for Strategy Text */}
+              {/* Left Column for Strategy Text and Eco-Ideas */}
               <div className="w-1/2 pr-8">
                 {strategy.subStrategies.map((subStrategy) => (
                   <div key={subStrategy.id} className="mb-6">
@@ -208,6 +157,25 @@ const EcoIdeasBoards: React.FC = () => {
                     </ul>
                   </div>
                 ))}
+
+                {/* Display Eco-Ideas for the current strategy */}
+                {filteredEcoIdeas.length > 0 && (
+                  <div className="mt-8 pt-4 border-t border-gray-200">
+                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-4">Eco-Ideas for this Strategy:</h4>
+                    <div className="space-y-4">
+                      {filteredEcoIdeas.map(idea => (
+                        <Card key={idea.id} className={cn(
+                          "p-3 shadow-sm",
+                          idea.isConfirmed ? "bg-yellow-100 border-yellow-300" : "bg-gray-100 border-gray-200"
+                        )}>
+                          <CardContent className="p-0 text-sm font-roboto-condensed text-gray-800">
+                            {idea.text || "Empty idea note"}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Right Column for Eco-Ideas Board */}
@@ -221,10 +189,7 @@ const EcoIdeasBoards: React.FC = () => {
                   <PlusCircle size={32} className="text-gray-700" />
                 </div>
 
-                {/* Corrected filtering: filter ecoIdeas for the current strategy.id */}
-                {ecoIdeas
-                  .filter(note => note.strategyId === strategy.id && note.conceptType === selectedConcept)
-                  .map(note => (
+                {filteredEcoIdeas.map(note => (
                   <StickyNote
                     key={note.id}
                     id={note.id}

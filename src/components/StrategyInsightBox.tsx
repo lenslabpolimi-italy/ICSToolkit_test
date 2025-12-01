@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode } from 'react';
-// Removed import for Textarea as it's no longer used
+import React from 'react';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Strategy, PriorityLevel } from '@/types/lcd';
 import { getPriorityTagClasses } from '@/utils/lcdUtils';
@@ -9,29 +9,27 @@ import { getPriorityTagClasses } from '@/utils/lcdUtils';
 interface StrategyInsightBoxProps {
   strategy: Strategy;
   priority: PriorityLevel;
-  text: string; // Keeping text prop for potential future display or re-introduction of editing
-  // Removed onTextChange prop
-  className?: string;
-  style?: React.CSSProperties;
-  children?: ReactNode;
+  text: string;
+  onTextChange: (strategyId: string, newText: string) => void;
+  className?: string; // For positioning
+  style?: React.CSSProperties; // For inline styles like top, left, transform
 }
 
 const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
   strategy,
   priority,
   text,
-  // Removed onTextChange from destructuring
+  onTextChange,
   className,
-  style,
-  children
+  style
 }) => {
   const { displayText, classes } = getPriorityTagClasses(priority);
 
   return (
     <div className={cn(
-      "flex flex-col",
-      "w-72 h-auto min-h-48",
-      className
+      "bg-white p-3 rounded-lg shadow-md border border-gray-200 flex flex-col",
+      "w-72 h-48",
+      className // Removed the direct absolute positioning here
     )} style={style}>
       <div className="flex items-center mb-2">
         <span className={cn(
@@ -44,8 +42,12 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
           {strategy.id}. {strategy.name}
         </h4>
       </div>
-      {/* Textarea component removed as requested */}
-      {children}
+      <Textarea
+        value={text}
+        onChange={(e) => onTextChange(strategy.id, e.target.value)}
+        placeholder="Write your insights here..."
+        className="flex-grow resize-none text-sm font-roboto-condensed"
+      />
     </div>
   );
 };
