@@ -67,7 +67,7 @@ const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas, setEcoIdeas } = useLcd(); // NEW: Added setEcoIdeas
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -138,17 +138,22 @@ const EvaluationRadar: React.FC = () => {
     });
   }, [evaluationChecklists, strategies, setRadarChartData]);
 
+  // NEW: Effect to initialize radarEcoIdeas from confirmed ecoIdeas
+  useEffect(() => {
+    const confirmedStrategy1EcoIdeas = ecoIdeas.filter(
+      (idea) => idea.strategyId === '1' && idea.isConfirmed
+    );
+    // Create deep copies to ensure independence
+    const copiedIdeas = confirmedStrategy1EcoIdeas.map(idea => ({ ...idea }));
+    setRadarEcoIdeas(copiedIdeas);
+  }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
+
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
     A: radarChartData.A[strategy.id] || 0,
     B: radarChartData.B[strategy.id] || 0,
     fullMark: 4, // Max score for Excellent
   }));
-
-  // Filter confirmed eco-ideas for Strategy 1
-  const confirmedStrategy1EcoIdeas = ecoIdeas.filter(
-    (idea) => idea.strategyId === '1' && idea.isConfirmed
-  );
 
   // Calculate position for the container of StaticStickyNotes for Strategy 1
   const strategy1BoxPosition = insightBoxPositions['1'];
@@ -160,9 +165,9 @@ const EvaluationRadar: React.FC = () => {
       }
     : {};
 
-  // Handler for text changes in StaticStickyNote
+  // Handler for text changes in StaticStickyNote, now updates radarEcoIdeas
   const handleStaticNoteTextChange = (id: string, newText: string) => {
-    setEcoIdeas(prev =>
+    setRadarEcoIdeas(prev =>
       prev.map(idea => (idea.id === id ? { ...idea, text: newText } : idea))
     );
   };
@@ -223,10 +228,10 @@ const EvaluationRadar: React.FC = () => {
               );
             })}
 
-            {/* NEW: Render StaticStickyNotes for Strategy 1 */}
-            {confirmedStrategy1EcoIdeas.length > 0 && (
+            {/* NEW: Render StaticStickyNotes for Strategy 1 using radarEcoIdeas */}
+            {radarEcoIdeas.length > 0 && (
               <div className="absolute flex flex-col gap-2" style={staticNotesContainerStyle}>
-                {confirmedStrategy1EcoIdeas.map(idea => (
+                {radarEcoIdeas.map(idea => (
                   <StaticStickyNote
                     key={idea.id}
                     idea={idea}
