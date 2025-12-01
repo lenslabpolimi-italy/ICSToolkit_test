@@ -230,7 +230,7 @@ const EvaluationChecklists: React.FC = () => {
         "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8" // Removed sticky, added mt-8
       )}>
         <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">
-          Evaluation Notes for Concept {selectedConcept} - Strategy {selectedStrategyTab}
+          Evaluation Notes for Concept {selectedConcept}
         </h3>
         {filteredEvaluationNotes.map(note => (
           <EvaluationNote
