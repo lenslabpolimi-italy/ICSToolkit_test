@@ -47,7 +47,7 @@ const EvaluationNote: React.FC<EvaluationNoteProps> = ({
       handle=".handle"
       defaultPosition={{ x, y }}
       onStop={(e, data) => onDragStop(id, data.x, data.y)}
-      bounds="parent" // Keep notes within the parent container
+      // Removed bounds="parent" to allow free movement
     >
       <div
         className={cn(
