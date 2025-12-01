@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, Strategy } from '@/types/lcd';
-import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
-import StrategyInsightBox from '@/components/StrategyInsightBox'; // Re-import StrategyInsightBox
+import { EvaluationLevel } from '@/types/lcd';
+import StrategyInsightBox from '@/components/StrategyInsightBox';
+import { getStrategyPriorityForDisplay } from '@/utils/lcdUtils';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -34,30 +32,8 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
   );
 };
 
-// Custom tick component for the PolarAngleAxis to display strategy name and priority
-const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation }: any) => {
-  const strategyId = payload.value.split('.')[0]; // Extract strategy ID from "1. Strategy Name"
-  const strategy = strategies.find((s: Strategy) => s.id === strategyId);
-
-  if (!strategy) return null;
-
-  const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-  const { displayText, classes } = getPriorityTagClasses(priority);
-
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto">
-        {payload.value} {/* Strategy ID and Name */}
-      </text>
-      <text x={0} y={0} dy={40} textAnchor="middle" fill="#666" fontSize={10} fontFamily="Roboto">
-        <tspan className={cn("px-1 rounded-sm", classes)}>{displayText}</tspan> {/* Priority */}
-      </text>
-    </g>
-  );
-};
-
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, setRadarInsights } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -135,33 +111,44 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
+  const handleInsightTextChange = (strategyId: string, newText: string) => {
+    setRadarInsights(prev => ({
+      ...prev,
+      [strategyId]: newText,
+    }));
+  };
+
+  // Adjusted positions to place boxes in two columns around the radar chart
+  const insightBoxPositions: { [key: string]: React.CSSProperties } = {
+    // Strategy 1 box positioned above the radar chart with a 32px margin from the top of the radar area
+    '1': { top: '-160px', left: '50%', transform: 'translateX(-50%)' },
+
+    // Right side of the radar chart (aligned with radar's vertical extent)
+    '2': { top: '32px', left: 'calc(75% + 20px)' },
+    '3': { top: '240px', left: 'calc(75% + 20px)' },
+    '4': { top: '448px', left: 'calc(75% + 20px)' },
+
+    // Left side of the radar chart (aligned with radar's vertical extent)
+    '7': { top: '32px', right: 'calc(75% + 20px)' },
+    '6': { top: '240px', right: 'calc(75% + 20px)' },
+    '5': { top: '448px', right: 'calc(75% + 20px)' },
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
-        based on your evaluations in the "Evaluation Checklists" section.
-      </p>
-      <p className="text-app-body-text mb-8">
-        Below, you'll find the insights you've written for each strategy.
+        based on your evaluations in the "Evaluation Checklists" section. Use the text boxes to add insights for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-12">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48"> {/* Added mt-48 here */}
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+            <ResponsiveContainer width="50%" height="100%">
+              <RadarChart cx="50%" cy="42%" outerRadius="80%" data={data}>
                 <PolarGrid stroke="#e0e0e0" />
-                <PolarAngleAxis
-                  dataKey="strategyName"
-                  tick={(props) => (
-                    <CustomAngleAxisTick
-                      {...props}
-                      strategies={strategies}
-                      qualitativeEvaluation={qualitativeEvaluation}
-                    />
-                  )}
-                />
+                <PolarAngleAxis tick={false} />
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 4]}
@@ -175,29 +162,20 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Re-add simplified StrategyInsightBox components around the radar */}
-            {strategies.map((strategy, index) => {
+            {/* Render StrategyInsightBoxes */}
+            {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-
-              // Calculate positions for the insight boxes around the radar chart
-              const angle = (index / strategies.length) * 2 * Math.PI;
-              const radius = 280; // Distance from center
-              const centerX = 350; // Center of the container
-              const centerY = 300; // Center of the container
-
-              const boxWidth = 192; // w-48 is 192px (from new StrategyInsightBox)
-              const boxHeight = 80; // h-20 is 80px (from new StrategyInsightBox)
-
-              const x = centerX + radius * Math.cos(angle) - boxWidth / 2;
-              const y = centerY + radius * Math.sin(angle) - boxHeight / 2;
+              const positionStyle = insightBoxPositions[strategy.id] || {};
 
               return (
                 <StrategyInsightBox
                   key={strategy.id}
                   strategy={strategy}
                   priority={priority}
+                  text={radarInsights[strategy.id] || ''}
+                  onTextChange={handleInsightTextChange}
                   className="absolute"
-                  style={{ top: y, left: x }}
+                  style={positionStyle}
                 />
               );
             })}
@@ -205,39 +183,6 @@ const EvaluationRadar: React.FC = () => {
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
         )}
-      </div>
-
-      {/* Display Strategy Insights as static text (kept from previous step) */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {strategies.map(strategy => {
-            const insightText = radarInsights[strategy.id];
-            if (!insightText) return null; // Only show cards for strategies with insights
-
-            const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-            const { displayText, classes } = getPriorityTagClasses(priority);
-
-            return (
-              <Card key={strategy.id} className="shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-palanquin font-semibold text-app-header flex items-center gap-2">
-                    <span className={cn(
-                      "text-xs font-roboto-condensed px-1 rounded-sm",
-                      classes
-                    )}>
-                      {displayText}
-                    </span>
-                    {strategy.id}. {strategy.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-app-body-text font-roboto-condensed">
-                  {insightText}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
       </div>
 
       <WipeContentButton sectionKey="radarChart" />

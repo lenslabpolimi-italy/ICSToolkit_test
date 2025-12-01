@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Strategy, PriorityLevel } from '@/types/lcd';
 import { getPriorityTagClasses } from '@/utils/lcdUtils';
@@ -8,6 +9,8 @@ import { getPriorityTagClasses } from '@/utils/lcdUtils';
 interface StrategyInsightBoxProps {
   strategy: Strategy;
   priority: PriorityLevel;
+  text: string;
+  onTextChange: (strategyId: string, newText: string) => void;
   className?: string; // For positioning
   style?: React.CSSProperties; // For inline styles like top, left, transform
 }
@@ -15,6 +18,8 @@ interface StrategyInsightBoxProps {
 const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
   strategy,
   priority,
+  text,
+  onTextChange,
   className,
   style
 }) => {
@@ -22,11 +27,11 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
 
   return (
     <div className={cn(
-      "bg-white p-2 rounded-lg shadow-sm border border-gray-200 flex flex-col justify-center items-start",
-      "w-48 h-20", // Adjusted size for a compact display
-      className
+      "bg-white p-3 rounded-lg shadow-md border border-gray-200 flex flex-col",
+      "w-72 h-48",
+      className // Removed the direct absolute positioning here
     )} style={style}>
-      <div className="flex items-center">
+      <div className="flex items-center mb-2">
         <span className={cn(
           "text-xs font-roboto-condensed px-1 rounded-sm mr-2",
           classes
@@ -37,6 +42,12 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
           {strategy.id}. {strategy.name}
         </h4>
       </div>
+      <Textarea
+        value={text}
+        onChange={(e) => onTextChange(strategy.id, e.target.value)}
+        placeholder="Write your insights here..."
+        className="flex-grow resize-none text-sm font-roboto-condensed"
+      />
     </div>
   );
 };
