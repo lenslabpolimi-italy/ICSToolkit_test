@@ -227,7 +227,10 @@ const EvaluationChecklists: React.FC = () => {
     const iconColorClass = 'text-white'; // Ensure icon is visible on colored background
 
     return (
-      <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8">
+      <div className={cn(
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8",
+        "sticky top-0 z-50" // Added sticky positioning
+      )}>
         <div
           className={cn(
             "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
@@ -311,11 +314,11 @@ const EvaluationChecklists: React.FC = () => {
         </div>
       </div>
 
-      {/* NEW: Evaluation Notes board moved here, above the Tabs component */}
+      {/* Evaluation Notes board moved here, above the Tabs component */}
       {selectedStrategyTab && renderNotesArea(selectedStrategyTab)}
 
       {currentChecklistLevel === 'Simplified' ? (
-        <div className="space-y-8 mt-6 pt-4">
+        <div className="space-y-8 mt-[232px] pt-4"> {/* Added mt-[232px] */}
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
@@ -350,7 +353,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : currentChecklistLevel === 'Normal' ? (
-        <div className="space-y-8 mt-6 pt-4">
+        <div className="space-y-8 mt-[232px] pt-4"> {/* Added mt-[232px] */}
           {allStrategies.map((strategy) => {
             const subStrategyEvals = strategy.subStrategies.map(ss => 
               evaluationChecklists[selectedConcept]?.subStrategies[ss.id] || 'N/A'
@@ -392,7 +395,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : ( // Detailed level
-        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
+        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full mt-[232px]"> {/* Added mt-[232px] */}
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {allStrategies.map((strategy) => {
               const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
