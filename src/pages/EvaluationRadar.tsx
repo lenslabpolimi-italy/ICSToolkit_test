@@ -138,14 +138,34 @@ const EvaluationRadar: React.FC = () => {
     });
   }, [evaluationChecklists, strategies, setRadarChartData]);
 
-  // NEW: Effect to initialize radarEcoIdeas from confirmed ecoIdeas
+  // Effect to synchronize radarEcoIdeas with confirmed ecoIdeas, preserving edits
   useEffect(() => {
     const confirmedStrategy1EcoIdeas = ecoIdeas.filter(
       (idea) => idea.strategyId === '1' && idea.isConfirmed
     );
-    // Create deep copies to ensure independence
-    const copiedIdeas = confirmedStrategy1EcoIdeas.map(idea => ({ ...idea }));
-    setRadarEcoIdeas(copiedIdeas);
+
+    setRadarEcoIdeas(prevRadarEcoIdeas => {
+      const nextRadarEcoIdeas = [];
+      const prevRadarEcoIdeasMap = new Map(prevRadarEcoIdeas.map(idea => [idea.id, idea]));
+
+      confirmedStrategy1EcoIdeas.forEach(confirmedIdea => {
+        const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
+        if (existingRadarIdea) {
+          // If the idea already exists in radarEcoIdeas, keep its current state (including edits)
+          nextRadarEcoIdeas.push(existingRadarIdea);
+        } else {
+          // If it's a new confirmed idea, add a deep copy
+          nextRadarEcoIdeas.push({ ...confirmedIdea });
+        }
+      });
+
+      // Filter out any ideas from prevRadarEcoIdeas that are no longer confirmed
+      // This is implicitly handled by only pushing confirmed ideas into nextRadarEcoIdeas
+      // but we can add an explicit check if needed for more complex scenarios.
+      // For now, the above loop ensures only currently confirmed ideas are in nextRadarEcoIdeas.
+
+      return nextRadarEcoIdeas;
+    });
   }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
 
   const data = strategies.map(strategy => ({
@@ -228,7 +248,7 @@ const EvaluationRadar: React.FC = () => {
               );
             })}
 
-            {/* NEW: Render StaticStickyNotes for Strategy 1 using radarEcoIdeas */}
+            {/* Render StaticStickyNotes for Strategy 1 using radarEcoIdeas */}
             {radarEcoIdeas.length > 0 && (
               <div className="absolute flex flex-col gap-2" style={staticNotesContainerStyle}>
                 {radarEcoIdeas.map(idea => (
