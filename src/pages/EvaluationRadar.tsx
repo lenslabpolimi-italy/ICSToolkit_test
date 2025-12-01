@@ -210,29 +210,7 @@ const EvaluationRadar: React.FC = () => {
               );
             })}
 
-            {/* Render confirmed eco-ideas for Strategy 1 below its StrategyInsightBox */}
-            {confirmedStrategy1EcoIdeas.length > 0 && (
-              <Card
-                className="absolute w-96 p-4 border-2 border-app-accent bg-orange-50"
-                style={{
-                  top: (insightBoxPositions['1']?.top as number) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  zIndex: 100,
-                }}
-              >
-                <CardHeader className="p-0 pb-2">
-                  <CardTitle className="text-lg font-palanquin font-semibold text-app-accent">
-                    Confirmed Ideas for Strategy 1
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0 text-sm text-app-body-text font-roboto-condensed space-y-2">
-                  {confirmedStrategy1EcoIdeas.map((idea) => (
-                    <p key={idea.id}>• {idea.text}</p>
-                  ))}
-                </CardContent>
-              </Card>
-            )}
+            {/* Removed the Card component for confirmed eco-ideas for Strategy 1 */}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
