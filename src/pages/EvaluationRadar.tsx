@@ -113,13 +113,7 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // NEW: Handler for insight text changes
-  const handleInsightTextChange = (strategyId: string, newText: string) => {
-    setRadarInsights(prev => ({
-      ...prev,
-      [strategyId]: newText,
-    }));
-  };
+  // Removed handleInsightTextChange function as it's no longer used
 
   // Handlers for RadarEcoIdeaNote
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -183,7 +177,7 @@ const EvaluationRadar: React.FC = () => {
                   strategy={strategy}
                   priority={priority}
                   text={radarInsights[strategy.id] || ''}
-                  onTextChange={handleInsightTextChange} // Pass the handler
+                  // Removed onTextChange prop
                   className="absolute"
                   style={positionStyle}
                 />
