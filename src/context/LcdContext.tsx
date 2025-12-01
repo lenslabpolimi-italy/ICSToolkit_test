@@ -16,7 +16,7 @@ import {
   ConceptType,
   RadarInsight,
   EvaluationNote,
-  RadarEcoIdea, // NEW: Import RadarEcoIdea
+  RadarEcoIdea,
 } from '@/types/lcd';
 import { parseLcdStrategies } from '@/utils/lcdParser';
 
@@ -32,12 +32,11 @@ interface LcdContextType {
   setEvaluationChecklists: (data: EvaluationChecklistData) => void;
   radarChartData: RadarChartData;
   setRadarChartData: (data: RadarChartData) => void;
-  radarInsights: { [strategyId: string]: string };
-  setRadarInsights: React.Dispatch<React.SetStateAction<{ [strategyId: string]: string }>>;
+  // Removed radarInsights from context type
   evaluationNotes: EvaluationNote[];
   setEvaluationNotes: React.Dispatch<React.SetStateAction<EvaluationNote[]>>;
-  radarEcoIdeas: RadarEcoIdea[]; // NEW: Add radarEcoIdeas to context type
-  setRadarEcoIdeas: React.Dispatch<React.SetStateAction<RadarEcoIdea[]>>; // NEW: Add setter
+  radarEcoIdeas: RadarEcoIdea[];
+  setRadarEcoIdeas: React.Dispatch<React.SetStateAction<RadarEcoIdea[]>>;
   resetSection: (section: string) => void;
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
@@ -64,9 +63,9 @@ const initialRadarChartData: RadarChartData = {
   A: {},
   B: {},
 };
-const initialRadarInsights: { [strategyId: string]: string } = {};
+// Removed initialRadarInsights
 const initialEvaluationNotes: EvaluationNote[] = [];
-const initialRadarEcoIdeas: RadarEcoIdea[] = []; // NEW: Initial state for radar eco-ideas
+const initialRadarEcoIdeas: RadarEcoIdea[] = [];
 
 export const LcdProvider = ({ children }: { ReactNode }) => {
   const [strategies, setStrategies] = useState<Strategy[]>([]);
@@ -75,9 +74,9 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
   const [ecoIdeas, setEcoIdeas] = useState<EcoIdea[]>(initialEcoIdeas);
   const [evaluationChecklists, setEvaluationChecklists] = useState<EvaluationChecklistData>(initialEvaluationChecklists);
   const [radarChartData, setRadarChartData] = useState<RadarChartData>(initialRadarChartData);
-  const [radarInsights, setRadarInsights] = useState<{ [strategyId: string]: string }>(initialRadarInsights);
+  // Removed radarInsights state
   const [evaluationNotes, setEvaluationNotes] = useState<EvaluationNote[]>(initialEvaluationNotes);
-  const [radarEcoIdeas, setRadarEcoIdeas] = useState<RadarEcoIdea[]>(initialRadarEcoIdeas); // NEW: State for radar eco-ideas
+  const [radarEcoIdeas, setRadarEcoIdeas] = useState<RadarEcoIdea[]>(initialRadarEcoIdeas);
 
   useEffect(() => {
     const loadStrategies = async () => {
@@ -87,19 +86,19 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
       // Initialize qualitative evaluation, radar data, and radar insights based on parsed strategies
       const initialQualitative: QualitativeEvaluationData = {};
       const initialRadar: RadarChartData = { A: {}, B: {} };
-      const initialInsights: { [strategyId: string]: string } = {};
+      // Removed initialInsights
       parsedStrategies.forEach(strategy => {
         initialQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
         strategy.subStrategies.forEach(sub => {
-          initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' }; // Initialize answer field
+          initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
         });
-        initialRadar.A[strategy.id] = 0; // Default to Poor
-        initialRadar.B[strategy.id] = 0; // Default to Poor
-        initialInsights[strategy.id] = '';
+        initialRadar.A[strategy.id] = 0;
+        initialRadar.B[strategy.id] = 0;
+        // Removed initialInsights[strategy.id] = '';
       });
       setQualitativeEvaluation(initialQualitative);
       setRadarChartData(initialRadar);
-      setRadarInsights(initialInsights);
+      // Removed setRadarInsights(initialInsights);
     };
     loadStrategies();
   }, []);
@@ -134,28 +133,28 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         strategies.forEach(strategy => {
           resetQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
           strategy.subStrategies.forEach(sub => {
-            resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' }; // Reset answer field
+            resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
           });
         });
         setQualitativeEvaluation(resetQualitative);
         break;
       case 'ecoIdeas':
-        setEcoIdeas(initialEcoIdeas); // Resets to an empty array, clearing all notes
+        setEcoIdeas(initialEcoIdeas);
         break;
       case 'evaluationChecklists':
         setEvaluationChecklists(initialEvaluationChecklists);
         break;
       case 'radarChart':
         const resetRadar: RadarChartData = { A: {}, B: {} };
-        const resetInsights: { [strategyId: string]: string } = {};
+        // Removed resetInsights
         strategies.forEach(strategy => {
           resetRadar.A[strategy.id] = 0;
           resetRadar.B[strategy.id] = 0;
-          resetInsights[strategy.id] = '';
+          // Removed resetInsights[strategy.id] = '';
         });
         setRadarChartData(resetRadar);
-        setRadarInsights(resetInsights);
-        setRadarEcoIdeas(initialRadarEcoIdeas); // NEW: Reset radar eco-ideas
+        // Removed setRadarInsights(resetInsights);
+        setRadarEcoIdeas(initialRadarEcoIdeas);
         break;
       case 'evaluationNotes':
         setEvaluationNotes(initialEvaluationNotes);
@@ -179,12 +178,11 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         setEvaluationChecklists,
         radarChartData,
         setRadarChartData,
-        radarInsights,
-        setRadarInsights,
+        // Removed radarInsights from value
         evaluationNotes,
         setEvaluationNotes,
-        radarEcoIdeas, // NEW: Provide radarEcoIdeas
-        setRadarEcoIdeas, // NEW: Provide setRadarEcoIdeas
+        radarEcoIdeas,
+        setRadarEcoIdeas,
         resetSection,
         getStrategyById,
         getSubStrategyById,
