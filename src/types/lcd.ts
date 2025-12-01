@@ -85,4 +85,5 @@ export interface EvaluationNote { // NEW: Interface for evaluation notes
   conceptType: ConceptType;
   x: number;
   y: number;
+  isConfirmed: boolean; // NEW: Added to track if the note is confirmed
 }
