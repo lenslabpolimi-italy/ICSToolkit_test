@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react'; // Changed from Plus to PlusCircle
+import { PlusCircle } from 'lucide-react';
 import { ConceptType } from '@/types/lcd';
 import { cn } from '@/lib/utils';
 
@@ -20,15 +20,15 @@ const FloatingAddNoteButton: React.FC<FloatingAddNoteButtonProps> = ({ onClick, 
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "fixed bottom-8 right-8 rounded-lg p-2 shadow-lg z-50", // Changed rounded-full to rounded-lg, adjusted padding
-        "h-14 w-14 flex items-center justify-center", // Kept size
+        "fixed bottom-8 right-8 rounded-md p-2 shadow-lg z-50", // Changed rounded-lg to rounded-md
+        "h-[60px] w-[60px] flex items-center justify-center", // Changed h-14 w-14 to h-[60px] w-[60px]
         "transition-all duration-200 ease-in-out",
         buttonColorClass,
         disabled && "opacity-50 cursor-not-allowed"
       )}
       aria-label="Add new evaluation note"
     >
-      <PlusCircle className="h-8 w-8 text-white" /> {/* Changed icon to PlusCircle and adjusted size/color */}
+      <PlusCircle className="h-8 w-8 text-white" />
     </Button>
   );
 };
