@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, ConceptType } from '@/types/lcd';
+import { EvaluationLevel, ConceptType, RadarEcoIdea } from '@/types/lcd';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
 import RadarEcoIdeaNote from '@/components/RadarEcoIdeaNote';
-import { getStrategyPriorityForDisplay, insightBoxPositions } from '@/utils/lcdUtils';
+import { getStrategyPriorityForDisplay, insightBoxPositions, radarEcoIdeaNoteInitialPositions } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
 
 // Custom tick component for the PolarRadiusAxis
@@ -113,7 +113,13 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // Removed handleInsightTextChange function as it's no longer used
+  // Handler for insight text changes
+  const handleInsightTextChange = (strategyId: string, newText: string) => {
+    setRadarInsights(prev => ({
+      ...prev,
+      [strategyId]: newText,
+    }));
+  };
 
   // Handlers for RadarEcoIdeaNote
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -134,6 +140,32 @@ const EvaluationRadar: React.FC = () => {
     // For now, we'll just delete the copy from the radar.
     toast.info("Eco-idea copy removed from radar.");
   };
+
+  // NEW: Logic to dynamically position radar eco-ideas
+  const positionedRadarEcoIdeas: RadarEcoIdea[] = [];
+  const strategyConceptNoteCounts: { [key: string]: number } = {}; // Tracks notes per strategy-concept pair
+
+  radarEcoIdeas.forEach(note => {
+    const initialPos = radarEcoIdeaNoteInitialPositions[note.strategyId];
+    if (initialPos) {
+      const countKey = `${note.strategyId}-${note.conceptType}`;
+      strategyConceptNoteCounts[countKey] = (strategyConceptNoteCounts[countKey] || 0) + 1;
+      const offsetIndex = strategyConceptNoteCounts[countKey] - 1; // 0 for first, 1 for second, etc.
+
+      // Apply an offset for subsequent notes
+      const offsetX = offsetIndex * 20; // Adjust these values as needed for desired spacing
+      const offsetY = offsetIndex * 20;
+
+      positionedRadarEcoIdeas.push({
+        ...note,
+        x: initialPos.x + offsetX,
+        y: initialPos.y + offsetY,
+      });
+    } else {
+      // Fallback if no initial position is defined for the strategy
+      positionedRadarEcoIdeas.push(note);
+    }
+  });
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -177,15 +209,15 @@ const EvaluationRadar: React.FC = () => {
                   strategy={strategy}
                   priority={priority}
                   text={radarInsights[strategy.id] || ''}
-                  // Removed onTextChange prop
+                  onTextChange={handleInsightTextChange}
                   className="absolute"
                   style={positionStyle}
                 />
               );
             })}
 
-            {/* Render RadarEcoIdeaNotes */}
-            {radarEcoIdeas.map(note => (
+            {/* Render RadarEcoIdeaNotes with dynamic positioning */}
+            {positionedRadarEcoIdeas.map(note => (
               <RadarEcoIdeaNote
                 key={note.id}
                 id={note.id}
