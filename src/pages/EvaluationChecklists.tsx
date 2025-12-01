@@ -183,7 +183,7 @@ const EvaluationChecklists: React.FC = () => {
     return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   }, [evaluationChecklists, selectedConcept, currentChecklistLevel, allStrategies]);
 
-  // NEW: Sticky note functionality for EvaluationChecklists
+  // Sticky note functionality for EvaluationChecklists
   const addEvaluationNote = () => {
     if (!selectedStrategyTab) {
       toast.error("Please select a strategy first.");
@@ -194,8 +194,8 @@ const EvaluationChecklists: React.FC = () => {
       text: '',
       strategyId: selectedStrategyTab,
       conceptType: selectedConcept,
-      x: 50,
-      y: 50,
+      x: 10, // Adjusted initial X position for smaller container
+      y: 10, // Adjusted initial Y position for smaller container
     };
     setEvaluationNotes(prev => [...prev, newNote]);
     toast.success(`New note added for Concept ${selectedConcept} - Strategy ${selectedStrategyTab}!`);
@@ -218,28 +218,28 @@ const EvaluationChecklists: React.FC = () => {
     toast.info("Evaluation note removed.");
   };
 
-  const filteredEvaluationNotes = evaluationNotes.filter(
-    note => note.strategyId === selectedStrategyTab && note.conceptType === selectedConcept
-  );
-
   const renderNotesArea = (strategyId: string) => {
     const buttonBgClass = selectedConcept === 'A' ? 'bg-app-concept-a-light hover:bg-app-concept-a-dark' : 'bg-app-concept-b-light hover:bg-app-concept-b-dark';
-    const iconColorClass = 'text-white'; // Ensure icon is visible on colored background
+    const iconColorClass = 'text-white';
+
+    const filteredNotesForStrategy = evaluationNotes.filter(
+      note => note.strategyId === strategyId && note.conceptType === selectedConcept
+    );
 
     return (
-      <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8"> {/* Removed mt-8, kept mb-8 for spacing below */}
+      <div className="relative w-64 h-32 p-2 border border-gray-200 rounded-lg bg-gray-50 flex-shrink-0"> {/* Compact size */}
         <div
           className={cn(
-            "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
+            "absolute top-2 left-2 p-1 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
             buttonBgClass
           )}
           onClick={addEvaluationNote}
-          style={{ width: '60px', height: '60px', zIndex: 101 }}
+          style={{ width: '40px', height: '40px', zIndex: 101 }} // Smaller button
           title={`Add a new note for Concept ${selectedConcept}`}
         >
-          <PlusCircle size={32} className={iconColorClass} />
+          <PlusCircle size={24} className={iconColorClass} /> {/* Smaller icon */}
         </div>
-        {filteredEvaluationNotes.map(note => (
+        {filteredNotesForStrategy.map(note => (
           <EvaluationNote
             key={note.id}
             id={note.id}
@@ -316,11 +316,10 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                {/* NEW: Notes area for Simplified level - moved to top */}
-                {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
-                <div className="flex flex-col mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
+                <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
+                  {/* Left side: Strategy info */}
+                  <div className="flex-1">
+                    <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2 mb-2">
                       <span className={cn(
                         "text-xs font-roboto-condensed px-1 rounded-sm",
                         classes
@@ -329,18 +328,23 @@ const EvaluationChecklists: React.FC = () => {
                       </span>
                       {strategy.id}. {strategy.name}
                     </h3>
+                    <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
+                      {strategy.subStrategies.map(subStrategy => (
+                        <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
+                          {subStrategy.id}. {subStrategy.name}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right side: Evaluation selector and Notes Area */}
+                  <div className="flex items-center gap-4">
                     {renderEvaluationSelectors(
                       'strategy',
                       strategy.id,
                       evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
                     )}
-                  </div>
-                  <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
-                    {strategy.subStrategies.map(subStrategy => (
-                      <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
-                        {subStrategy.id}. {subStrategy.name}
-                      </p>
-                    ))}
+                    {renderNotesArea(strategy.id)}
                   </div>
                 </div>
               </div>
@@ -358,8 +362,6 @@ const EvaluationChecklists: React.FC = () => {
 
             return (
               <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                {/* NEW: Notes area for Normal level - moved to top */}
-                {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -371,6 +373,7 @@ const EvaluationChecklists: React.FC = () => {
                       </span>
                       {strategy.id}. {strategy.name}
                     </h3>
+                    {renderNotesArea(strategy.id)} {/* Placed here for Normal level */}
                   </div>
                   <div className="pl-4 space-y-2">
                     {strategy.subStrategies.map(subStrategy => (
@@ -423,9 +426,8 @@ const EvaluationChecklists: React.FC = () => {
                 <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                   {currentStrategy.id}. {currentStrategy.name}
                 </h3>
+                {renderNotesArea(currentStrategy.id)} {/* Placed here for Detailed level */}
               </div>
-              {/* NEW: Notes area for Detailed level - moved to top */}
-              {renderNotesArea(currentStrategy.id)}
               <div className="space-y-8">
                 {currentStrategy.subStrategies.map(subStrategy => (
                   <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
