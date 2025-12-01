@@ -222,6 +222,33 @@ const EvaluationChecklists: React.FC = () => {
     note => note.strategyId === selectedStrategyTab && note.conceptType === selectedConcept
   );
 
+  const renderNotesArea = (strategyId: string) => (
+    <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8 mb-8"> {/* Added mb-8 for spacing */}
+      <div
+        className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
+        onClick={addEvaluationNote}
+        style={{ width: '60px', height: '60px', zIndex: 101 }}
+        title={`Add a new note for Concept ${selectedConcept}`}
+      >
+        <PlusCircle size={32} className="text-gray-700" />
+      </div>
+      {filteredEvaluationNotes.map(note => (
+        <EvaluationNote
+          key={note.id}
+          id={note.id}
+          x={note.x}
+          y={note.y}
+          text={note.text}
+          strategyId={note.strategyId}
+          conceptType={note.conceptType}
+          onDragStop={handleNoteDragStop}
+          onTextChange={handleNoteTextChange}
+          onDelete={handleNoteDelete}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation of the Implementation of Life Cycle Design Strategies</h2>
@@ -298,6 +325,8 @@ const EvaluationChecklists: React.FC = () => {
                       evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
                     )}
                   </div>
+                  {/* NEW: Notes area for Simplified level - moved to top */}
+                  {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                   <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
                     {strategy.subStrategies.map(subStrategy => (
                       <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
@@ -306,33 +335,6 @@ const EvaluationChecklists: React.FC = () => {
                     ))}
                   </div>
                 </div>
-                {/* NEW: Notes area for Simplified level */}
-                {selectedStrategyTab === strategy.id && (
-                  <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8">
-                    <div
-                      className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
-                      onClick={addEvaluationNote}
-                      style={{ width: '60px', height: '60px', zIndex: 101 }}
-                      title={`Add a new note for Concept ${selectedConcept}`}
-                    >
-                      <PlusCircle size={32} className="text-gray-700" />
-                    </div>
-                    {filteredEvaluationNotes.map(note => (
-                      <EvaluationNote
-                        key={note.id}
-                        id={note.id}
-                        x={note.x}
-                        y={note.y}
-                        text={note.text}
-                        strategyId={note.strategyId}
-                        conceptType={note.conceptType}
-                        onDragStop={handleNoteDragStop}
-                        onTextChange={handleNoteTextChange}
-                        onDelete={handleNoteDelete}
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
             );
           })}
@@ -360,6 +362,8 @@ const EvaluationChecklists: React.FC = () => {
                       {strategy.id}. {strategy.name}
                     </h3>
                   </div>
+                  {/* NEW: Notes area for Normal level - moved to top */}
+                  {selectedStrategyTab === strategy.id && renderNotesArea(strategy.id)}
                   <div className="pl-4 space-y-2">
                     {strategy.subStrategies.map(subStrategy => (
                       <div key={subStrategy.id} className="flex justify-between items-center">
@@ -375,33 +379,6 @@ const EvaluationChecklists: React.FC = () => {
                     ))}
                   </div>
                 </div>
-                {/* NEW: Notes area for Normal level */}
-                {selectedStrategyTab === strategy.id && (
-                  <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8">
-                    <div
-                      className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
-                      onClick={addEvaluationNote}
-                      style={{ width: '60px', height: '60px', zIndex: 101 }}
-                      title={`Add a new note for Concept ${selectedConcept}`}
-                    >
-                      <PlusCircle size={32} className="text-gray-700" />
-                    </div>
-                    {filteredEvaluationNotes.map(note => (
-                      <EvaluationNote
-                        key={note.id}
-                        id={note.id}
-                        x={note.x}
-                        y={note.y}
-                        text={note.text}
-                        strategyId={note.strategyId}
-                        conceptType={note.conceptType}
-                        onDragStop={handleNoteDragStop}
-                        onTextChange={handleNoteTextChange}
-                        onDelete={handleNoteDelete}
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
             );
           })}
@@ -439,7 +416,8 @@ const EvaluationChecklists: React.FC = () => {
                   {currentStrategy.id}. {currentStrategy.name}
                 </h3>
               </div>
-
+              {/* NEW: Notes area for Detailed level - moved to top */}
+              {renderNotesArea(currentStrategy.id)}
               <div className="space-y-8">
                 {currentStrategy.subStrategies.map(subStrategy => (
                   <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
@@ -463,31 +441,6 @@ const EvaluationChecklists: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                ))}
-              </div>
-              {/* NEW: Notes area for Detailed level */}
-              <div className="relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mt-8">
-                <div
-                  className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
-                  onClick={addEvaluationNote}
-                  style={{ width: '60px', height: '60px', zIndex: 101 }}
-                  title={`Add a new note for Concept ${selectedConcept}`}
-                >
-                  <PlusCircle size={32} className="text-gray-700" />
-                </div>
-                {filteredEvaluationNotes.map(note => (
-                  <EvaluationNote
-                    key={note.id}
-                    id={note.id}
-                    x={note.x}
-                    y={note.y}
-                    text={note.text}
-                    strategyId={note.strategyId}
-                    conceptType={note.conceptType}
-                    onDragStop={handleNoteDragStop}
-                    onTextChange={handleNoteTextChange}
-                    onDelete={handleNoteDelete}
-                  />
                 ))}
               </div>
             </TabsContent>
