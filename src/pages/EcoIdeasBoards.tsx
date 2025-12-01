@@ -7,18 +7,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea, ConceptType, EvaluationNote as EvaluationNoteType } from '@/types/lcd';
+import { EcoIdea } from '@/types/lcd'; // Removed ConceptType, EvaluationNoteType as they are not used for adding notes here
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+// Removed Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Label as they are no longer needed
 
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
-  const [selectedConcept, setSelectedConcept] = useState<ConceptType>('A'); // New state for concept selection
+  // Removed selectedConcept state as it's no longer needed on this page for filtering/adding
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -55,24 +54,7 @@ const EcoIdeasBoards: React.FC = () => {
     toast.info("Eco-idea sticky note removed.");
   };
 
-  // Handlers for Evaluation Notes
-  const addEvaluationNote = () => {
-    if (!selectedStrategyId) {
-      toast.error("Please select a strategy first.");
-      return;
-    }
-    const newNote: EvaluationNoteType = {
-      id: `eval-note-${Date.now()}`,
-      text: '',
-      strategyId: selectedStrategyId,
-      conceptType: selectedConcept,
-      x: 20, // Initial X position relative to the Evaluation Notes board
-      y: 20, // Initial Y position relative to the Evaluation Notes board
-    };
-    setEvaluationNotes(prev => [...prev, newNote]);
-    toast.success(`New evaluation note added for Concept ${selectedConcept} - Strategy ${selectedStrategyId}!`);
-  };
-
+  // Handlers for Evaluation Notes (only drag, text change, delete remain)
   const handleEvaluationNoteDragStop = (id: string, x: number, y: number) => {
     setEvaluationNotes(prev =>
       prev.map(note => (note.id === id ? { ...note, x, y } : note))
@@ -91,13 +73,10 @@ const EcoIdeasBoards: React.FC = () => {
   };
 
   const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
-  const filteredEvaluationNotes = evaluationNotes.filter(note =>
-    note.strategyId === selectedStrategyId && note.conceptType === selectedConcept
-  );
+  // Filter evaluation notes only by strategyId, not by conceptType
+  const filteredEvaluationNotes = evaluationNotes.filter(note => note.strategyId === selectedStrategyId);
 
-  const addEvaluationNoteButtonClasses = selectedConcept === 'A'
-    ? 'bg-app-concept-a-light hover:bg-app-concept-a-dark'
-    : 'bg-app-concept-b-light hover:bg-app-concept-b-dark';
+  // Removed addEvaluationNoteButtonClasses as the button is removed
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -106,40 +85,13 @@ const EcoIdeasBoards: React.FC = () => {
         Brainstorm and create digital sticky notes with ideas inspired by the LCD strategies and guidelines.
       </p>
       <p className="text-app-body-text mb-8">
-        Use the "Evaluation Notes" board to review and add specific comments related to the evaluation of Concept {selectedConcept}.
+        Review evaluation notes from both Concept A and Concept B here.
       </p>
 
-      {/* Concept Selector for Evaluation Notes */}
-      <div className="flex items-center gap-4 mb-8">
-        <Label htmlFor="concept-selector" className="text-xl font-palanquin font-semibold text-app-header">View/Add Evaluation Notes for Concept:</Label>
-        <Select
-          value={selectedConcept}
-          onValueChange={(value: ConceptType) => setSelectedConcept(value)}
-        >
-          <SelectTrigger id="concept-selector" className="w-[180px]">
-            <SelectValue placeholder="Select Concept" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="A">Concept A</SelectItem>
-            <SelectItem value="B">Concept B</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Evaluation Notes Board - Moved to the top */}
+      {/* Evaluation Notes Board - Moved to the top, removed concept selector and add button */}
       <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mb-8">
-        <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (Concept {selectedConcept})</h4>
-        <div
-          className={cn(
-            "absolute top-4 left-4 p-2 rounded-md shadow-lg cursor-pointer transition-colors flex items-center justify-center",
-            addEvaluationNoteButtonClasses
-          )}
-          onClick={addEvaluationNote}
-          style={{ width: '60px', height: '60px', zIndex: 101 }}
-          title={`Add a new note for Concept ${selectedConcept}`}
-        >
-          <PlusCircle size={32} className="text-white" />
-        </div>
+        <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
+        {/* Removed the "Add Note" button from here */}
         {filteredEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
@@ -148,7 +100,7 @@ const EcoIdeasBoards: React.FC = () => {
             y={note.y}
             text={note.text}
             strategyId={note.strategyId}
-            conceptType={note.conceptType}
+            conceptType={note.conceptType} // Keep conceptType for styling
             onDragStop={handleEvaluationNoteDragStop}
             onTextChange={handleEvaluationNoteTextChange}
             onDelete={handleEvaluationNoteDelete}
