@@ -7,15 +7,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea } from '@/types/lcd';
+import { EcoIdea } from '@/types/lcd'; // Removed ConceptType, EvaluationNoteType as they are not used for adding notes here
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
+// Removed Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Label as they are no longer needed
 
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
+  // Removed selectedConcept state as it's no longer needed on this page for filtering/adding
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -74,6 +76,7 @@ const EcoIdeasBoards: React.FC = () => {
   // Filter evaluation notes only by strategyId, not by conceptType
   const filteredEvaluationNotes = evaluationNotes.filter(note => note.strategyId === selectedStrategyId);
 
+  // Removed addEvaluationNoteButtonClasses as the button is removed
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -135,9 +138,28 @@ const EcoIdeasBoards: React.FC = () => {
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
-            <div className="relative min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
-              {/* Eco-Ideas Board (now full width) */}
-              <div className="relative w-full h-full">
+            <div className="relative flex min-h-[400px] p-8 border border-gray-200 rounded-lg bg-gray-50 overflow-hidden">
+              {/* Left Column for Strategy Text */}
+              <div className="w-1/2 pr-8">
+                {strategy.subStrategies.map((subStrategy) => (
+                  <div key={subStrategy.id} className="mb-6">
+                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                      {subStrategy.id}. {subStrategy.name}
+                    </h4>
+                    <ul className="list-none space-y-1">
+                      {subStrategy.guidelines.map((guideline) => (
+                        <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
+                          {guideline.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right Column for Eco-Ideas Board */}
+              <div className="relative w-1/2 pl-8 border-l border-gray-200">
+                <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Eco-Ideas</h4>
                 <div
                   className="absolute top-4 left-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
                   onClick={addStickyNote}
