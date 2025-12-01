@@ -7,15 +7,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StickyNote from '@/components/StickyNote';
 import EvaluationNote from '@/components/EvaluationNote';
 import { PlusCircle } from 'lucide-react';
-import { EcoIdea } from '@/types/lcd';
+import { EcoIdea, ConceptType } from '@/types/lcd'; // Import ConceptType
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Import Select components
+import { Label } from '@/components/ui/label'; // Import Label
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
+  const [selectedConceptForNotes, setSelectedConceptForNotes] = useState<'All' | ConceptType>('All'); // New state for concept filter
 
   React.useEffect(() => {
     if (strategies.length > 0 && !selectedStrategyId) {
@@ -71,8 +73,14 @@ const EcoIdeasBoards: React.FC = () => {
   };
 
   const filteredEcoIdeas = ecoIdeas.filter(note => note.strategyId === selectedStrategyId);
-  // Filter evaluation notes only by strategyId, not by conceptType
-  const allEvaluationNotes = evaluationNotes; // Display all evaluation notes
+  
+  // Filter evaluation notes based on selected concept
+  const filteredEvaluationNotes = evaluationNotes.filter(note => {
+    if (selectedConceptForNotes === 'All') {
+      return true;
+    }
+    return note.conceptType === selectedConceptForNotes;
+  });
 
 
   return (
@@ -87,9 +95,27 @@ const EcoIdeasBoards: React.FC = () => {
 
       {/* Evaluation Notes Board - Moved to the top, removed concept selector and add button */}
       <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mb-8">
-        <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
-        {/* Removed the "Add Note" button from here */}
-        {allEvaluationNotes.map(note => (
+        <div className="flex justify-between items-center mb-4">
+          <h4 className="text-lg font-palanquin font-semibold text-app-header">Evaluation Notes</h4>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="concept-filter-notes" className="text-app-body-text">View Concept:</Label>
+            <Select
+              value={selectedConceptForNotes}
+              onValueChange={(value: 'All' | ConceptType) => setSelectedConceptForNotes(value)}
+            >
+              <SelectTrigger id="concept-filter-notes" className="w-[180px]">
+                <SelectValue placeholder="All Concepts" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Concepts</SelectItem>
+                <SelectItem value="A">Concept A</SelectItem>
+                <SelectItem value="B">Concept B</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        
+        {filteredEvaluationNotes.map(note => (
           <EvaluationNote
             key={note.id}
             id={note.id}
@@ -156,7 +182,6 @@ const EcoIdeasBoards: React.FC = () => {
 
               {/* Right Column for Eco-Ideas Board */}
               <div className="relative w-1/2 pl-8">
-                {/* Removed the h4 tag for "Eco-Ideas" */}
                 <div
                   className="absolute top-4 right-4 bg-yellow-300 p-2 rounded-md shadow-lg cursor-pointer hover:bg-yellow-400 transition-colors flex items-center justify-center"
                   onClick={addStickyNote}
