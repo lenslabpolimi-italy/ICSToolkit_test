@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { XCircle } from 'lucide-react'; // NEW: Import XCircle icon
+import { XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { EcoIdea } from '@/types/lcd';
 
@@ -11,7 +11,7 @@ interface StaticStickyNoteProps {
   className?: string;
   onTextChange: (id: string, newText: string) => void;
   onDragStop: (id: string, x: number, y: number) => void;
-  onDelete: (id: string) => void; // NEW: Add onDelete prop
+  onDelete: (id: string) => void;
 }
 
 const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className, onTextChange, onDragStop, onDelete }) => {
@@ -28,7 +28,7 @@ const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className, on
   return (
     <Draggable
       handle=".handle"
-      defaultPosition={{ x: idea.x, y: idea.y }}
+      defaultPosition={{ x: idea.x - 20, y: idea.y }} {/* Adjusted x position */}
       onStop={(e, data) => onDragStop(idea.id, data.x, data.y)}
       // Removed bounds="parent" to allow free movement
     >
@@ -54,7 +54,7 @@ const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className, on
 
         <textarea
           ref={textareaRef}
-          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto pr-6" // Adjusted padding for new button
+          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto pr-6"
           value={idea.text}
           onChange={(e) => onTextChange(idea.id, e.target.value)}
           rows={3}
