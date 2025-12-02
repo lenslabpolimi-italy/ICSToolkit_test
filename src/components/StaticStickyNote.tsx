@@ -44,7 +44,7 @@ const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({
     <Draggable
       nodeRef={nodeRef}
       handle=".handle"
-      defaultPosition={{ x: idea.x - 10, y: idea.y - 5 }} {/* Adjusted position here */}
+      defaultPosition={{ x: idea.x - 10, y: idea.y - 5 }} // Adjusted position here
       onStop={(e, data) => onDragStop(idea.id, data.x, data.y)}
     >
       <div
