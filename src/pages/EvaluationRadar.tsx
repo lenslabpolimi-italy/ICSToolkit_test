@@ -87,62 +87,46 @@ const calculatePixelPosition = (
     y = parseFloat(boxPos.top);
   }
 
+  // Function to parse a calc() string
+  const parseCalc = (calcString: string, baseValue: number) => {
+    let result = 0;
+    const cleaned = calcString.replace(/calc\((.*)\)/, '$1').trim();
+    // Regex to match numbers, percentages, px values, and their preceding operators
+    const parts = cleaned.match(/([+-]?\s*\d*\.?\d+(?:%|px)?)/g) || [];
+
+    parts.forEach(part => {
+      part = part.trim();
+      const operator = part.startsWith('-') ? -1 : 1;
+      const value = parseFloat(part.replace(/[+-]/, '')); // Get the numeric value
+
+      if (part.includes('%')) {
+        result += operator * (baseValue * (value / 100));
+      } else if (part.includes('px')) {
+        result += operator * value;
+      } else if (!isNaN(value)) { // Assume unitless numbers are pixels
+        result += operator * value;
+      }
+    });
+    return result;
+  };
+
   // Calculate X
   if (boxPos.left) {
-    if (typeof boxPos.left === 'string' && boxPos.left.includes('%')) {
-      const percentage = parseFloat(boxPos.left) / 100;
-      x = currentParentWidth * percentage;
+    if (typeof boxPos.left === 'string' && boxPos.left.includes('%') && !boxPos.left.includes('calc')) {
+      // Simple percentage like '50%'
+      x = currentParentWidth * (parseFloat(boxPos.left) / 100);
       if (boxPos.transform && boxPos.transform.includes('translateX(-50%)')) {
         x -= elementWidth / 2; // Adjust for centering transform
       }
     } else if (typeof boxPos.left === 'string' && boxPos.left.includes('calc')) {
-      const calcMatch = boxPos.left.match(/calc\(([^)]*)\)/);
-      if (calcMatch && calcMatch[1]) {
-        let tempX = 0;
-        const parts = calcMatch[1].split(/([+-])/).map(s => s.trim()).filter(Boolean);
-        let currentOperator = '+';
-        parts.forEach(part => {
-          if (part === '+' || part === '-') {
-            currentOperator = part;
-          } else if (part.includes('%')) {
-            const percentageValue = parseFloat(part) / 100;
-            tempX = currentOperator === '+' ? tempX + (currentParentWidth * percentageValue) : tempX - (currentParentWidth * percentageValue);
-          } else if (part.includes('px')) {
-            const pixelValue = parseFloat(part);
-            tempX = currentOperator === '+' ? tempX + pixelValue : tempX - pixelValue;
-          } else {
-            const pixelValue = parseFloat(part);
-            tempX = currentOperator === '+' ? tempX + pixelValue : tempX - pixelValue;
-          }
-        });
-        x = tempX;
-      }
+      x = parseCalc(boxPos.left, currentParentWidth);
     } else if (typeof boxPos.left === 'number') {
       x = boxPos.left;
     }
   } else if (boxPos.right) {
     if (typeof boxPos.right === 'string' && boxPos.right.includes('calc')) {
-      const calcMatch = boxPos.right.match(/calc\(([^)]*)\)/);
-      if (calcMatch && calcMatch[1]) {
-        let tempRightOffset = 0;
-        const parts = calcMatch[1].split(/([+-])/).map(s => s.trim()).filter(Boolean);
-        let currentOperator = '+';
-        parts.forEach(part => {
-          if (part === '+' || part === '-') {
-            currentOperator = part;
-          } else if (part.includes('%')) {
-            const percentageValue = parseFloat(part) / 100;
-            tempRightOffset = currentOperator === '+' ? tempRightOffset + (currentParentWidth * percentageValue) : tempRightOffset - (currentParentWidth * percentageValue);
-          } else if (part.includes('px')) {
-            const pixelValue = parseFloat(part);
-            tempRightOffset = currentOperator === '+' ? tempRightOffset + pixelValue : tempRightOffset - pixelValue;
-          } else {
-            const pixelValue = parseFloat(part);
-            tempRightOffset = currentOperator === '+' ? tempRightOffset + pixelValue : tempRightOffset - pixelValue;
-          }
-        });
-        x = currentParentWidth - tempRightOffset - elementWidth;
-      }
+      const rightOffset = parseCalc(boxPos.right, currentParentWidth);
+      x = currentParentWidth - rightOffset - elementWidth;
     } else if (typeof boxPos.right === 'number') {
       x = currentParentWidth - boxPos.right - elementWidth;
     }
@@ -265,34 +249,36 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div ref={parentRef} className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div ref={parentRef} className="relative max-w-7xl mx-auto min-h-[600px] mt-32"> {/* Removed flex centering, changed h to min-h */}
         {strategies.length > 0 ? (
           <>
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-                <PolarGrid stroke="#e0e0e0" />
-                <PolarAngleAxis
-                  dataKey="strategyName"
-                  tick={(props) => (
-                    <CustomAngleAxisTick
-                      {...props}
-                      strategies={strategies}
-                      qualitativeEvaluation={qualitativeEvaluation}
-                    />
-                  )}
-                />
-                <PolarRadiusAxis
-                  angle={90}
-                  domain={[0, 4]}
-                  tickCount={5}
-                  stroke="#333"
-                  tick={CustomRadiusTick}
-                />
-                <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
-                <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-                <Legend />
-              </RadarChart>
-            </ResponsiveContainer>
+            <div className="w-full h-[600px] mx-auto flex justify-center items-center"> {/* New wrapper for centering radar chart */}
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                  <PolarGrid stroke="#e0e0e0" />
+                  <PolarAngleAxis
+                    dataKey="strategyName"
+                    tick={(props) => (
+                      <CustomAngleAxisTick
+                        {...props}
+                        strategies={strategies}
+                        qualitativeEvaluation={qualitativeEvaluation}
+                      />
+                    )}
+                  />
+                  <PolarRadiusAxis
+                    angle={90}
+                    domain={[0, 4]}
+                    tickCount={5}
+                    stroke="#333"
+                    tick={CustomRadiusTick}
+                  />
+                  <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+                  <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
+                  <Legend />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
 
             {/* Render StrategyInsightBoxes and their associated DraggableStickyNotes */}
             {strategies.map(strategy => {
