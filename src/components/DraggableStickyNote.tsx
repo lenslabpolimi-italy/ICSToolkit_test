@@ -42,7 +42,7 @@ const DraggableStickyNote: React.FC<DraggableStickyNoteProps> = ({
       nodeRef={nodeRef}
       defaultPosition={{ x: initialX, y: initialY }}
       onStop={handleDragStop}
-      bounds="parent" // Keep notes within the parent container
+      // Removed bounds="parent" to allow free movement
     >
       <div
         ref={nodeRef}
