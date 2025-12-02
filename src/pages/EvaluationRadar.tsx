@@ -9,8 +9,8 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import StickyNote from '@/components/StickyNote';
-import { toast } from 'sonner';
+import StickyNote from '@/components/StickyNote'; // NEW: Import StickyNote
+import { toast } from 'sonner'; // NEW: Import toast for notifications
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -309,6 +309,39 @@ const EvaluationRadar: React.FC = () => {
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
         )}
+      </div>
+
+      {/* Display Strategy Insights as static text (kept from previous step) */}
+      <div className="mt-12 pt-8 border-t border-gray-200">
+        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {strategies.map(strategy => {
+            const insightText = radarInsights[strategy.id];
+            if (!insightText) return null; // Only show cards for strategies with insights
+
+            const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+            const { displayText, classes } = getPriorityTagClasses(priority);
+
+            return (
+              <Card key={strategy.id} className="shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-palanquin font-semibold text-app-header flex items-center gap-2">
+                    <span className={cn(
+                      "text-xs font-roboto-condensed px-1 rounded-sm",
+                      classes
+                    )}>
+                      {displayText}
+                    </span>
+                    {strategy.id}. {strategy.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-app-body-text font-roboto-condensed">
+                  {insightText}
+                </CardContent>
+              </Card>
+            );
+            })}
+        </div>
       </div>
 
       <WipeContentButton sectionKey="radarChart" />
