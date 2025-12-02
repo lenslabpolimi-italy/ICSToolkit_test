@@ -75,10 +75,10 @@ const EvaluationRadar: React.FC = () => {
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
-    'Poor': 1,
-    'Mediocre': 2,
-    'Good': 3,
-    'Excellent': 4,
+    1: 'Poor',
+    2: 'Mediocre',
+    3: 'Good',
+    4: 'Excellent',
     'N/A': 0, // N/A will be treated as 0 or not shown
     'Yes': 4,
     'Partially': 2.5,
@@ -247,7 +247,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-32 border-2 border-purple-500"> {/* Added border for debugging */}
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
@@ -286,7 +286,7 @@ const EvaluationRadar: React.FC = () => {
                   key={strategy.id}
                   strategy={strategy}
                   priority={priority}
-                  className="absolute border-2 border-blue-500" // Added border for debugging
+                  className="absolute"
                   style={positionStyle}
                 />
               );
@@ -300,7 +300,6 @@ const EvaluationRadar: React.FC = () => {
                 onTextChange={handleStaticNoteTextChange}
                 onDragStop={handleStaticNoteDragStop}
                 onDelete={handleStaticNoteDelete}
-                className="border-2 border-red-500" // Added border for debugging
               />
             ))}
           </>
