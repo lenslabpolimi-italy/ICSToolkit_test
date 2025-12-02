@@ -23,9 +23,15 @@ const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Removed useEffect for dynamic height adjustment as the note now has a fixed height.
+  // Reintroduce dynamic height adjustment based on content
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [text]);
 
-  // Styling for the confirmed yellow sticky note
+  // Styling for the confirmed yellow sticky note (always confirmed for radar)
   const noteColorClass = 'bg-yellow-400 text-gray-900 border-yellow-500';
 
   return (
@@ -36,8 +42,8 @@ const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
     >
       <div
         className={cn(
-          "p-2 rounded-md shadow-sm border cursor-grab",
-          "w-48 h-36 flex flex-col group", // Set fixed width w-48 (192px) and height h-36 (144px)
+          "absolute p-2 rounded-md shadow-md cursor-grab border", // Changed shadow-sm to shadow-md, added absolute
+          "w-48 min-h-[100px] max-h-[200px] flex flex-col group", // Changed h-36 to min-h/max-h
           noteColorClass
         )}
         style={{ zIndex: 100 }} // Ensure notes are on top
@@ -45,11 +51,12 @@ const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
         <div className="handle absolute top-0 left-0 right-0 h-6 cursor-grab -mt-2 -mx-2 rounded-t-md" /> {/* Invisible handle for dragging */}
         <textarea
           ref={textareaRef}
-          className="flex-grow w-full h-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto" // Textarea fills parent height
+          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto" // Removed h-full, kept standard padding
           value={text}
           onChange={(e) => onTextChange(id, e.target.value)}
           placeholder="Write your idea here..."
-          // Removed rows and minHeight style as h-full handles it
+          rows={3} // Initial rows
+          style={{ minHeight: '70px' }} // Minimum height for the textarea
         />
       </div>
     </Draggable>
