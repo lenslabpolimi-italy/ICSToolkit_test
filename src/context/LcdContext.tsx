@@ -122,7 +122,7 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
           nextRadarEcoIdeas.push(existingRadarIdea);
         } else {
           // If it's a new confirmed idea, add a deep copy with default position
-          nextRadarEcoIdeas.push({ ...confirmedIdea, x: 200, y: 200 }); // Adjusted default position for new radar notes
+          nextRadarEcoIdeas.push({ ...confirmedIdea, x: 20, y: 20 }); // Default position for new radar notes
         }
       });
       return nextRadarEcoIdeas;
