@@ -55,6 +55,10 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 // Constants for positioning StrategyInsightBoxes
 const BOX_HEIGHT = 80; // h-20 is 80px
 const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
+const NOTE_WIDTH = 192; // w-48
+const NOTE_HEIGHT = 100; // min-h-[100px]
+const NOTE_VERTICAL_SPACING = 10; // Space between stacked notes
+const RADAR_CONTAINER_WIDTH = 1280; // Max width of the radar chart container (max-w-7xl)
 
 const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -71,10 +75,10 @@ const EvaluationRadar: React.FC = () => {
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
-    'Poor': 1,
-    'Mediocre': 2,
-    'Good': 3,
-    'Excellent': 4,
+    1: 'Poor',
+    2: 'Mediocre',
+    3: 'Good',
+    4: 'Excellent',
     'N/A': 0, // N/A will be treated as 0 or not shown
     'Yes': 4,
     'Partially': 2.5,
@@ -138,35 +142,73 @@ const EvaluationRadar: React.FC = () => {
     });
   }, [evaluationChecklists, strategies, setRadarChartData]);
 
-  // Effect to synchronize radarEcoIdeas with confirmed ecoIdeas, preserving edits
+  // Effect to synchronize radarEcoIdeas with confirmed ecoIdeas, preserving edits and calculating initial positions
   useEffect(() => {
-    const confirmedStrategy1EcoIdeas = ecoIdeas.filter(
-      (idea) => idea.strategyId === '1' && idea.isConfirmed
+    const allConfirmedEcoIdeas = ecoIdeas.filter(
+      (idea) => idea.isConfirmed
     );
 
     setRadarEcoIdeas(prevRadarEcoIdeas => {
       const nextRadarEcoIdeas = [];
       const prevRadarEcoIdeasMap = new Map(prevRadarEcoIdeas.map(idea => [idea.id, idea]));
 
-      confirmedStrategy1EcoIdeas.forEach(confirmedIdea => {
+      // Temporary map to track how many notes have been placed for each strategy
+      const strategyNoteCounts: { [key: string]: number } = {};
+
+      allConfirmedEcoIdeas.forEach(confirmedIdea => {
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
         if (existingRadarIdea) {
-          // If the idea already exists in radarEcoIdeas, keep its current state (including edits)
+          // If the idea already exists in radarEcoIdeas, keep its current state (including edits and position)
           nextRadarEcoIdeas.push(existingRadarIdea);
         } else {
-          // If it's a new confirmed idea, add a deep copy
-          nextRadarEcoIdeas.push({ ...confirmedIdea });
+          // If it's a new confirmed idea, calculate an initial position relative to its strategy box
+          const strategyId = confirmedIdea.strategyId;
+          const strategyBoxPos = insightBoxPositions[strategyId];
+          let initialX = 0;
+          let initialY = 0;
+
+          if (strategyBoxPos) {
+            const radarContainerWidth = RADAR_CONTAINER_WIDTH; // Use the constant
+
+            // Base Y position is below the strategy box
+            initialY = (parseFloat(strategyBoxPos.top as string || '0') || 0) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP;
+
+            // Calculate X based on left/right/transform
+            if (strategyBoxPos.left) {
+              const leftVal = parseFloat(strategyBoxPos.left as string || '0');
+              if (strategyBoxPos.transform?.includes('translateX(-50%)')) {
+                // Centered box (Strategy 1)
+                initialX = (radarContainerWidth / 2) - (NOTE_WIDTH / 2);
+              } else {
+                // Right side boxes (Strategies 2,3,4)
+                // 'calc(75% + 20px)' -> 0.75 * radarContainerWidth + 20
+                initialX = (0.75 * radarContainerWidth) + 20;
+              }
+            } else if (strategyBoxPos.right) {
+              // Left side boxes (Strategies 5,6,7)
+              // 'calc(75% + 20px)' from right -> 0.25 * radarContainerWidth - 20 - NOTE_WIDTH
+              initialX = (0.25 * radarContainerWidth) - 20 - NOTE_WIDTH;
+            }
+          }
+
+          // Stack notes vertically if multiple for the same strategy
+          const currentNoteCount = strategyNoteCounts[strategyId] || 0;
+          initialY += currentNoteCount * (NOTE_HEIGHT + NOTE_VERTICAL_SPACING);
+          strategyNoteCounts[strategyId] = currentNoteCount + 1;
+
+          nextRadarEcoIdeas.push({
+            ...confirmedIdea,
+            x: initialX,
+            y: initialY,
+          });
         }
       });
 
       // Filter out any ideas from prevRadarEcoIdeas that are no longer confirmed
-      // This is implicitly handled by only pushing confirmed ideas into nextRadarEcoIdeas
-      // but we can add an explicit check if needed for more complex scenarios.
-      // For now, the above loop ensures only currently confirmed ideas are in nextRadarEcoIdeas.
-
-      return nextRadarEcoIdeas;
+      const confirmedIds = new Set(allConfirmedEcoIdeas.map(idea => idea.id));
+      return nextRadarEcoIdeas.filter(idea => confirmedIds.has(idea.id));
     });
-  }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
+  }, [ecoIdeas, setRadarEcoIdeas, strategies]); // Add strategies to dependencies
 
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
@@ -174,16 +216,6 @@ const EvaluationRadar: React.FC = () => {
     B: radarChartData.B[strategy.id] || 0,
     fullMark: 4, // Max score for Excellent
   }));
-
-  // Calculate position for the container of StaticStickyNotes for Strategy 1
-  const strategy1BoxPosition = insightBoxPositions['1'];
-  const staticNotesContainerStyle: React.CSSProperties = strategy1BoxPosition
-    ? {
-        top: (parseFloat(strategy1BoxPosition.top as string) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP) + 'px',
-        left: strategy1BoxPosition.left,
-        transform: strategy1BoxPosition.transform,
-      }
-    : {};
 
   // Handler for text changes in StaticStickyNote, now updates radarEcoIdeas
   const handleStaticNoteTextChange = (id: string, newText: string) => {
@@ -199,7 +231,7 @@ const EvaluationRadar: React.FC = () => {
     );
   };
 
-  // NEW: Handler for deleting StaticStickyNote
+  // Handler for deleting StaticStickyNote
   const handleStaticNoteDelete = (id: string) => {
     setRadarEcoIdeas(prev => prev.filter(idea => idea.id !== id));
   };
@@ -260,20 +292,16 @@ const EvaluationRadar: React.FC = () => {
               );
             })}
 
-            {/* Render StaticStickyNotes for Strategy 1 using radarEcoIdeas */}
-            {radarEcoIdeas.length > 0 && (
-              <div className="absolute flex flex-col gap-2" style={staticNotesContainerStyle}>
-                {radarEcoIdeas.map(idea => (
-                  <StaticStickyNote
-                    key={idea.id}
-                    idea={idea}
-                    onTextChange={handleStaticNoteTextChange}
-                    onDragStop={handleStaticNoteDragStop}
-                    onDelete={handleStaticNoteDelete} // NEW: Pass the delete handler
-                  />
-                ))}
-              </div>
-            )}
+            {/* Render StaticStickyNotes for all strategies */}
+            {radarEcoIdeas.map(idea => (
+              <StaticStickyNote
+                key={idea.id}
+                idea={idea}
+                onTextChange={handleStaticNoteTextChange}
+                onDragStop={handleStaticNoteDragStop}
+                onDelete={handleStaticNoteDelete}
+              />
+            ))}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
