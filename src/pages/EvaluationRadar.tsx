@@ -233,7 +233,7 @@ const EvaluationRadar: React.FC = () => {
                 padding: '8px',
                 overflowY: 'auto', // Allow scrolling if many notes
                 backgroundColor: 'white', // White background for the box
-                zIndex: 90,
+                zIndex: 80, // Changed zIndex to 80 to send it to the back
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '4px',
@@ -250,7 +250,7 @@ const EvaluationRadar: React.FC = () => {
                       left: boxPosition.left,
                       right: boxPosition.right,
                       transform: boxPosition.transform,
-                      zIndex: 100, // Ensure insight box is on top
+                      zIndex: 90, // Changed zIndex to 90
                     }}
                   />
                   {/* This div acts as a visual placeholder for where notes initially appear */}
