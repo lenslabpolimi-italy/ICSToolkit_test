@@ -299,7 +299,7 @@ const EvaluationRadar: React.FC = () => {
                         />
                       ))
                     ) : (
-                      <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
+                      <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
                     )}
                   </div>
                 </React.Fragment>
@@ -313,7 +313,7 @@ const EvaluationRadar: React.FC = () => {
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
       <div className="mt-12 pt-8 border-t border-gray-200">
-        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights</h3>
+        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {strategies.map(strategy => {
             const insightText = radarInsights[strategy.id];
