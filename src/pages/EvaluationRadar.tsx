@@ -143,6 +143,30 @@ const EvaluationRadar: React.FC = () => {
     });
   }, [evaluationChecklists, strategies, setRadarChartData]);
 
+  // Effect to calculate and set initial positions for newly added radar eco-ideas
+  useEffect(() => {
+    const mainContainer = mainContainerRef.current;
+    if (!mainContainer) return;
+
+    radarEcoIdeas.forEach(idea => {
+      // Only process ideas that haven't been positioned yet (x,y are default 0,0)
+      if (idea.x === 0 && idea.y === 0) {
+        const targetContainer = notesContainerRefs.current[idea.strategyId];
+        if (targetContainer) {
+          const targetRect = targetContainer.getBoundingClientRect();
+          const mainRect = mainContainer.getBoundingClientRect();
+
+          // Calculate position relative to the main EvaluationRadar container
+          const calculatedX = targetRect.left - mainRect.left + 8; // +8 for padding
+          const calculatedY = targetRect.top - mainRect.top + 8; // +8 for padding
+
+          // Update the position in the context, which will trigger a re-render
+          updateRadarEcoIdeaPosition(idea.id, calculatedX, calculatedY);
+        }
+      }
+    });
+  }, [radarEcoIdeas, strategies, updateRadarEcoIdeaPosition]); // Depend on radarEcoIdeas and strategies for ref availability
+
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
     A: radarChartData.A[strategy.id] || 0,
@@ -248,35 +272,18 @@ const EvaluationRadar: React.FC = () => {
         )}
       </div>
 
-      {/* Render RadarStickyNotes directly within the main container, calculating initial position */}
-      {radarEcoIdeas.length > 0 && radarEcoIdeas.map((idea) => {
-        let initialX = idea.x;
-        let initialY = idea.y;
-
-        // If it's a newly added note (x,y are default 0,0), calculate its initial position
-        if (idea.x === 0 && idea.y === 0) {
-          const targetContainer = notesContainerRefs.current[idea.strategyId];
-          const mainContainer = mainContainerRef.current;
-          if (targetContainer && mainContainer) {
-            const targetRect = targetContainer.getBoundingClientRect();
-            const mainRect = mainContainer.getBoundingClientRect();
-            initialX = targetRect.left - mainRect.left + 8; // +8 for padding
-            initialY = targetRect.top - mainRect.top + 8; // +8 for padding
-          }
-        }
-
-        return (
-          <RadarStickyNote
-            key={idea.id}
-            id={idea.id}
-            x={initialX}
-            y={initialY}
-            text={idea.text}
-            onTextChange={updateRadarEcoIdeaText}
-            onDragStop={updateRadarEcoIdeaPosition}
-          />
-        );
-      })}
+      {/* Render RadarStickyNotes directly within the main container, using their state-managed positions */}
+      {radarEcoIdeas.length > 0 && radarEcoIdeas.map((idea) => (
+        <RadarStickyNote
+          key={idea.id}
+          id={idea.id}
+          x={idea.x} // Use the x from the context
+          y={idea.y} // Use the y from the context
+          text={idea.text}
+          onTextChange={updateRadarEcoIdeaText}
+          onDragStop={updateRadarEcoIdeaPosition}
+        />
+      ))}
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
       <div className="mt-12 pt-8 border-t border-gray-200">
