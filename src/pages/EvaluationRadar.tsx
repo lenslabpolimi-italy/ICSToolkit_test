@@ -58,14 +58,15 @@ const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and no
 const NOTES_BOX_WIDTH = '192px'; // w-48
 const NOTES_BOX_HEIGHT = '144px'; // h-36
 
+// Adjusted positions to prevent overlap with the radar chart
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
-  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
-  '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
-  '3': { top: 240, left: 'calc(75% + 20px)' },
-  '4': { top: 448, left: 'calc(75% + 20px)' },
-  '7': { top: 32, right: 'calc(75% + 20px)' }, // Left side
-  '6': { top: 240, right: 'calc(75% + 20px)' },
-  '5': { top: 448, right: 'calc(75% + 20px)' },
+  '1': { top: -100, left: '50%', transform: 'translateX(-50%)' }, // Above the radar
+  '2': { top: 50, left: 'calc(50% + 320px + 20px)' }, // Top-right, outside radar's horizontal extent
+  '3': { top: 250, left: 'calc(50% + 320px + 20px)' }, // Mid-right, outside radar's horizontal extent
+  '4': { top: 450, left: 'calc(50% + 320px + 20px)' }, // Bottom-right, outside radar's horizontal extent
+  '7': { top: 50, right: 'calc(50% + 320px + 20px)' }, // Top-left, outside radar's horizontal extent
+  '6': { top: 250, right: 'calc(50% + 320px + 20px)' }, // Mid-left, outside radar's horizontal extent
+  '5': { top: 450, right: 'calc(50% + 320px + 20px)' }, // Bottom-left, outside radar's horizontal extent
 };
 
 const EvaluationRadar: React.FC = () => {
@@ -185,7 +186,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-48"> {/* Increased height and top margin */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
