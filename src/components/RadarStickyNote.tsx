@@ -37,13 +37,13 @@ const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
   return (
     <Draggable
       handle=".handle"
-      defaultPosition={{ x, y }}
+      position={{ x, y }} // Changed from defaultPosition to position
       onStop={(e, data) => onDragStop(id, data.x, data.y)}
     >
       <div
         className={cn(
-          "absolute p-2 rounded-md shadow-md cursor-grab border", // Changed shadow-sm to shadow-md, added absolute
-          "w-48 min-h-[100px] max-h-[200px] flex flex-col group", // Changed h-36 to min-h/max-h
+          "absolute p-2 rounded-md shadow-md cursor-grab border",
+          "w-48 min-h-[100px] max-h-[200px] flex flex-col group",
           noteColorClass
         )}
         style={{ zIndex: 100 }} // Ensure notes are on top
@@ -51,7 +51,7 @@ const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
         <div className="handle absolute top-0 left-0 right-0 h-6 cursor-grab -mt-2 -mx-2 rounded-t-md" /> {/* Invisible handle for dragging */}
         <textarea
           ref={textareaRef}
-          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto" // Removed h-full, kept standard padding
+          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto"
           value={text}
           onChange={(e) => onTextChange(id, e.target.value)}
           placeholder="Write your idea here..."
