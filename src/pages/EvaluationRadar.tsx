@@ -9,7 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import DraggableStickyNote from '@/components/DraggableStickyNote'; // Import the new component
+import DraggableStickyNote from '@/components/DraggableStickyNote';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -53,10 +53,12 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 };
 
 // Constants for positioning StrategyInsightBoxes and their associated notes containers
+const BOX_WIDTH = 192; // w-48 in px
 const BOX_HEIGHT = 80; // h-20 is 80px
 const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
-const NOTES_BOX_WIDTH = 192; // w-48 in px
-const NOTES_BOX_HEIGHT = 144; // h-36 in px
+
+// Assuming the parent container for positioning is max-w-7xl (1280px)
+const PARENT_WIDTH = 1280;
 
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -67,6 +69,68 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
   '6': { top: 240, right: 'calc(75% + 20px)' },
   '5': { top: 448, right: 'calc(75% + 20px)' },
 };
+
+// Helper function to calculate pixel coordinates from CSS position properties
+const calculatePixelPosition = (
+  boxPos: typeof insightBoxPositions[keyof typeof insightBoxPositions],
+  parentWidth: number,
+  boxWidth: number
+) => {
+  let x = 0;
+  let y = 0;
+
+  // Calculate Y
+  if (typeof boxPos.top === 'number') {
+    y = boxPos.top;
+  } else if (typeof boxPos.top === 'string') {
+    y = parseFloat(boxPos.top);
+  }
+
+  // Calculate X
+  if (boxPos.left) {
+    if (typeof boxPos.left === 'string' && boxPos.left.includes('%')) {
+      // e.g., '50%' with translateX(-50%)
+      x = (parentWidth * parseFloat(boxPos.left) / 100) - (boxWidth / 2);
+    } else if (typeof boxPos.left === 'string' && boxPos.left.includes('calc')) {
+      // e.g., 'calc(75% + 20px)'
+      const parts = boxPos.left.replace('calc(', '').replace(')', '').split('+').map(s => s.trim());
+      let percentage = 0;
+      let pixels = 0;
+      parts.forEach(part => {
+        if (part.includes('%')) {
+          percentage = parseFloat(part) / 100;
+        } else if (part.includes('px')) {
+            pixels = parseFloat(part);
+        } else {
+            pixels = parseFloat(part); // Fallback if no unit
+        }
+      });
+      x = (parentWidth * percentage) + pixels;
+    } else if (typeof boxPos.left === 'number') {
+      x = boxPos.left;
+    }
+  } else if (boxPos.right) {
+    if (typeof boxPos.right === 'string' && boxPos.right.includes('calc')) {
+      const parts = boxPos.right.replace('calc(', '').replace(')', '').split('+').map(s => s.trim());
+      let percentage = 0;
+      let pixels = 0;
+      parts.forEach(part => {
+        if (part.includes('%')) {
+          percentage = parseFloat(part) / 100;
+        } else if (part.includes('px')) {
+            pixels = parseFloat(part);
+        } else {
+            pixels = parseFloat(part); // Fallback if no unit
+        }
+      });
+      x = parentWidth - ((parentWidth * percentage) + pixels) - boxWidth;
+    } else if (typeof boxPos.right === 'number') {
+      x = parentWidth - boxPos.right - boxWidth;
+    }
+  }
+  return { x, y };
+};
+
 
 const EvaluationRadar: React.FC = () => {
   const {
@@ -204,39 +268,8 @@ const EvaluationRadar: React.FC = () => {
 
               const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
 
-              // Calculate the initial position for the notes container
-              // This is a fallback if the note doesn't have stored x, y coordinates
-              let initialNotesContainerX = 0;
-              let initialNotesContainerY = 0;
-
-              // Determine initial X position
-              if (boxPosition.left) {
-                if (typeof boxPosition.left === 'string' && boxPosition.left.includes('%')) {
-                  // For '50%', calculate relative to parent width (assuming parent is max-w-7xl, 1280px)
-                  // This is a rough estimate, actual calculation might need parent ref
-                  initialNotesContainerX = (1280 / 2) - (NOTES_BOX_WIDTH / 2); // Center it
-                } else if (typeof boxPosition.left === 'string' && boxPosition.left.includes('calc')) {
-                  // For 'calc(75% + 20px)', this is relative to the radar chart's container.
-                  // We need to convert this to a pixel value relative to the parent of DraggableStickyNote.
-                  // For simplicity, let's assume the 'calc' values are relative to the radar chart's center.
-                  // This might need fine-tuning based on actual layout.
-                  // For now, we'll use a placeholder and rely on Draggable's defaultPosition.
-                  // The `Draggable` component handles `defaultPosition` relative to its parent.
-                  // We need to ensure the parent of DraggableStickyNote is the `relative` div.
-                  // The `top` and `left/right` values in `insightBoxPositions` are already relative to this parent.
-                  // So, we can directly use them.
-                } else {
-                  initialNotesContainerX = parseFloat(boxPosition.left as string);
-                }
-              } else if (boxPosition.right) {
-                // Similar logic for right, but relative to parent's right edge
-                // This will be handled by Draggable's defaultPosition if we pass the right value.
-              }
-
-              // Determine initial Y position
-              if (boxPosition.top) {
-                initialNotesContainerY = parseFloat(boxPosition.top as string) + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y;
-              }
+              // Calculate pixel position for the StrategyInsightBox
+              const { x: boxPixelX, y: boxPixelY } = calculatePixelPosition(boxPosition, PARENT_WIDTH, BOX_WIDTH);
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -258,8 +291,8 @@ const EvaluationRadar: React.FC = () => {
                       <DraggableStickyNote
                         key={idea.id}
                         id={idea.id}
-                        initialX={idea.x !== undefined ? idea.x : (boxPosition.left === '50%' ? (1280 / 2) - (NOTES_BOX_WIDTH / 2) : (boxPosition.left ? parseFloat(boxPosition.left as string) : (1280 - NOTES_BOX_WIDTH - parseFloat(boxPosition.right as string))))} // Simplified initial X calculation
-                        initialY={idea.y !== undefined ? idea.y : (parseFloat(boxPosition.top as string) + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y)} // Simplified initial Y calculation
+                        initialX={idea.x !== undefined ? idea.x : boxPixelX}
+                        initialY={idea.y !== undefined ? idea.y : (boxPixelY + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y)}
                         text={idea.text}
                         onDragStop={updateRadarEcoIdeaPosition}
                         onTextChange={updateRadarEcoIdeaText}
