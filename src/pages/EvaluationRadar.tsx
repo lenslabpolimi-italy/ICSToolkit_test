@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -9,6 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
+import DraggableStickyNote from '@/components/DraggableStickyNote'; // Import the new component
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -51,12 +52,11 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
   );
 };
 
-// Constants for positioning StrategyInsightBoxes
-const BOX_WIDTH = 192; // w-48 in px for StrategyInsightBox
-const BOX_HEIGHT = 80; // h-20 is 80px for StrategyInsightBox
-
-// Default parent width, will be updated dynamically
-const DEFAULT_PARENT_WIDTH = 1280; 
+// Constants for positioning StrategyInsightBoxes and their associated notes containers
+const BOX_HEIGHT = 80; // h-20 is 80px
+const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
+const NOTES_BOX_WIDTH = 192; // w-48 in px
+const NOTES_BOX_HEIGHT = 144; // h-36 in px
 
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -68,70 +68,6 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
   '5': { top: 448, right: 'calc(75% + 20px)' },
 };
 
-// Helper function to calculate pixel coordinates from CSS position properties
-const calculatePixelPosition = (
-  boxPos: typeof insightBoxPositions[keyof typeof insightBoxPositions],
-  currentParentWidth: number,
-  elementWidth: number
-) => {
-  let x = 0;
-  let y = 0;
-
-  // Calculate Y
-  if (typeof boxPos.top === 'number') {
-    y = boxPos.top;
-  } else if (typeof boxPos.top === 'string') {
-    y = parseFloat(boxPos.top);
-  }
-
-  // Function to parse a calc() string
-  const parseCalc = (calcString: string, baseValue: number) => {
-    let result = 0;
-    const cleaned = calcString.replace(/calc\((.*)\)/, '$1').trim();
-    // Regex to match numbers, percentages, px values, and their preceding operators
-    const parts = cleaned.match(/([+-]?\s*\d*\.?\d+(?:%|px)?)/g) || [];
-
-    parts.forEach(part => {
-      part = part.trim();
-      const operator = part.startsWith('-') ? -1 : 1;
-      const value = parseFloat(part.replace(/[+-]/, '')); // Get the numeric value
-
-      if (part.includes('%')) {
-        result += operator * (baseValue * (value / 100));
-      } else if (part.includes('px')) {
-        result += operator * value;
-      } else if (!isNaN(value)) { // Assume unitless numbers are pixels
-        result += operator * value;
-      }
-    });
-    return result;
-  };
-
-  // Calculate X
-  if (boxPos.left) {
-    if (typeof boxPos.left === 'string' && boxPos.left.includes('%') && !boxPos.left.includes('calc')) {
-      // Simple percentage like '50%'
-      x = currentParentWidth * (parseFloat(boxPos.left) / 100);
-      if (boxPos.transform && boxPos.transform.includes('translateX(-50%)')) {
-        x -= elementWidth / 2; // Adjust for centering transform
-      }
-    } else if (typeof boxPos.left === 'string' && boxPos.left.includes('calc')) {
-      x = parseCalc(boxPos.left, currentParentWidth);
-    } else if (typeof boxPos.left === 'number') {
-      x = boxPos.left;
-    }
-  } else if (boxPos.right) {
-    if (typeof boxPos.right === 'string' && boxPos.right.includes('calc')) {
-      const rightOffset = parseCalc(boxPos.right, currentParentWidth);
-      x = currentParentWidth - rightOffset - elementWidth;
-    } else if (typeof boxPos.right === 'number') {
-      x = currentParentWidth - boxPos.right - elementWidth;
-    }
-  }
-  return { x, y };
-};
-
-
 const EvaluationRadar: React.FC = () => {
   const {
     strategies,
@@ -140,21 +76,10 @@ const EvaluationRadar: React.FC = () => {
     radarChartData,
     qualitativeEvaluation,
     radarInsights,
+    radarEcoIdeas,
+    updateRadarEcoIdeaPosition,
+    updateRadarEcoIdeaText,
   } = useLcd();
-
-  const parentRef = useRef<HTMLDivElement>(null);
-  const [dynamicParentWidth, setDynamicParentWidth] = useState(DEFAULT_PARENT_WIDTH);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (parentRef.current) {
-        setDynamicParentWidth(parentRef.current.offsetWidth);
-      }
-    };
-    updateWidth(); // Set initial width
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -243,44 +168,75 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div ref={parentRef} className="relative max-w-7xl mx-auto min-h-[600px] mt-32">
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
         {strategies.length > 0 ? (
           <>
-            <div className="w-full h-[600px] mx-auto flex justify-center items-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-                  <PolarGrid stroke="#e0e0e0" />
-                  <PolarAngleAxis
-                    dataKey="strategyName"
-                    tick={(props) => (
-                      <CustomAngleAxisTick
-                        {...props}
-                        strategies={strategies}
-                        qualitativeEvaluation={qualitativeEvaluation}
-                      />
-                    )}
-                  />
-                  <PolarRadiusAxis
-                    angle={90}
-                    domain={[0, 4]}
-                    tickCount={5}
-                    stroke="#333"
-                    tick={CustomRadiusTick}
-                  />
-                  <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
-                  <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-                  <Legend />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <PolarGrid stroke="#e0e0e0" />
+                <PolarAngleAxis
+                  dataKey="strategyName"
+                  tick={(props) => (
+                    <CustomAngleAxisTick
+                      {...props}
+                      strategies={strategies}
+                      qualitativeEvaluation={qualitativeEvaluation}
+                    />
+                  )}
+                />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 4]}
+                  tickCount={5}
+                  stroke="#333"
+                  tick={CustomRadiusTick}
+                />
+                <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+                <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes */}
+            {/* Render StrategyInsightBoxes and their associated DraggableStickyNotes */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
 
-              // Calculate pixel position for the StrategyInsightBox
-              const { x: boxPixelX, y: boxPixelY } = calculatePixelPosition(boxPosition, dynamicParentWidth, BOX_WIDTH);
+              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
+
+              // Calculate the initial position for the notes container
+              // This is a fallback if the note doesn't have stored x, y coordinates
+              let initialNotesContainerX = 0;
+              let initialNotesContainerY = 0;
+
+              // Determine initial X position
+              if (boxPosition.left) {
+                if (typeof boxPosition.left === 'string' && boxPosition.left.includes('%')) {
+                  // For '50%', calculate relative to parent width (assuming parent is max-w-7xl, 1280px)
+                  // This is a rough estimate, actual calculation might need parent ref
+                  initialNotesContainerX = (1280 / 2) - (NOTES_BOX_WIDTH / 2); // Center it
+                } else if (typeof boxPosition.left === 'string' && boxPosition.left.includes('calc')) {
+                  // For 'calc(75% + 20px)', this is relative to the radar chart's container.
+                  // We need to convert this to a pixel value relative to the parent of DraggableStickyNote.
+                  // For simplicity, let's assume the 'calc' values are relative to the radar chart's center.
+                  // This might need fine-tuning based on actual layout.
+                  // For now, we'll use a placeholder and rely on Draggable's defaultPosition.
+                  // The `Draggable` component handles `defaultPosition` relative to its parent.
+                  // We need to ensure the parent of DraggableStickyNote is the `relative` div.
+                  // The `top` and `left/right` values in `insightBoxPositions` are already relative to this parent.
+                  // So, we can directly use them.
+                } else {
+                  initialNotesContainerX = parseFloat(boxPosition.left as string);
+                }
+              } else if (boxPosition.right) {
+                // Similar logic for right, but relative to parent's right edge
+                // This will be handled by Draggable's defaultPosition if we pass the right value.
+              }
+
+              // Determine initial Y position
+              if (boxPosition.top) {
+                initialNotesContainerY = parseFloat(boxPosition.top as string) + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y;
+              }
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -296,6 +252,34 @@ const EvaluationRadar: React.FC = () => {
                       zIndex: 100, // Ensure insight box is on top
                     }}
                   />
+
+                  {notesForCurrentStrategy.length > 0 ? (
+                    notesForCurrentStrategy.map((idea) => (
+                      <DraggableStickyNote
+                        key={idea.id}
+                        id={idea.id}
+                        initialX={idea.x !== undefined ? idea.x : (boxPosition.left === '50%' ? (1280 / 2) - (NOTES_BOX_WIDTH / 2) : (boxPosition.left ? parseFloat(boxPosition.left as string) : (1280 - NOTES_BOX_WIDTH - parseFloat(boxPosition.right as string))))} // Simplified initial X calculation
+                        initialY={idea.y !== undefined ? idea.y : (parseFloat(boxPosition.top as string) + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y)} // Simplified initial Y calculation
+                        text={idea.text}
+                        onDragStop={updateRadarEcoIdeaPosition}
+                        onTextChange={updateRadarEcoIdeaText}
+                      />
+                    ))
+                  ) : (
+                    // Render a placeholder if no confirmed ideas, but not as a draggable note
+                    <div
+                      className="absolute w-48 h-36 p-2 rounded-md shadow-sm border bg-gray-100 text-gray-500 border-gray-300 text-sm font-roboto-condensed flex flex-col justify-center items-center italic"
+                      style={{
+                        top: initialNotesContainerY,
+                        left: boxPosition.left,
+                        right: boxPosition.right,
+                        transform: boxPosition.transform,
+                        zIndex: 90,
+                      }}
+                    >
+                      No confirmed ideas yet.
+                    </div>
+                  )}
                 </React.Fragment>
               );
             })}
