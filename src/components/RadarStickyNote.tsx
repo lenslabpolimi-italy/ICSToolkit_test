@@ -1,25 +1,25 @@
 "use client";
 
 import React, { useRef, useEffect } from 'react';
-import Draggable from 'react-draggable'; // NEW: Import Draggable
+import Draggable from 'react-draggable';
 import { cn } from '@/lib/utils';
 
 interface RadarStickyNoteProps {
   id: string;
   text: string;
-  x: number; // NEW: Add x position
-  y: number; // NEW: Add y position
+  x: number;
+  y: number;
   onTextChange: (id: string, newText: string) => void;
-  onDragStop: (id: string, x: number, y: number) => void; // NEW: Add onDragStop handler
+  onDragStop: (id: string, x: number, y: number) => void;
 }
 
 const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
   id,
   text,
-  x, // NEW: Destructure x
-  y, // NEW: Destructure y
+  x,
+  y,
   onTextChange,
-  onDragStop, // NEW: Destructure onDragStop
+  onDragStop,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -35,15 +35,15 @@ const RadarStickyNote: React.FC<RadarStickyNoteProps> = ({
   const noteColorClass = 'bg-yellow-400 text-gray-900 border-yellow-500';
 
   return (
-    <Draggable // NEW: Wrap with Draggable
+    <Draggable
       handle=".handle"
       defaultPosition={{ x, y }}
       onStop={(e, data) => onDragStop(id, data.x, data.y)}
     >
       <div
         className={cn(
-          "absolute p-2 rounded-md shadow-sm border cursor-grab", // NEW: Added absolute and cursor-grab
-          "w-full min-h-[70px] flex flex-col group", // Added group for hover effects
+          "p-2 rounded-md shadow-sm border cursor-grab", // Removed 'absolute', Draggable handles positioning
+          "w-48 min-h-[70px] flex flex-col group", // Set fixed width w-48 (192px)
           noteColorClass
         )}
         style={{ zIndex: 100 }} // Ensure notes are on top
