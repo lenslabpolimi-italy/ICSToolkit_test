@@ -247,7 +247,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-32"> {/* Changed h-[600px] to h-[800px] */}
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-32 border-2 border-purple-500"> {/* Added border for debugging */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
@@ -286,7 +286,7 @@ const EvaluationRadar: React.FC = () => {
                   key={strategy.id}
                   strategy={strategy}
                   priority={priority}
-                  className="absolute"
+                  className="absolute border-2 border-blue-500" // Added border for debugging
                   style={positionStyle}
                 />
               );
@@ -300,6 +300,7 @@ const EvaluationRadar: React.FC = () => {
                 onTextChange={handleStaticNoteTextChange}
                 onDragStop={handleStaticNoteDragStop}
                 onDelete={handleStaticNoteDelete}
+                className="border-2 border-red-500" // Added border for debugging
               />
             ))}
           </>
