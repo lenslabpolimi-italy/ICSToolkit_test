@@ -37,6 +37,7 @@ interface LcdContextType {
   setEvaluationNotes: React.Dispatch<React.SetStateAction<EvaluationNote[]>>;
   radarEcoIdeas: EcoIdea[];
   setRadarEcoIdeas: React.Dispatch<React.SetStateAction<EcoIdea[]>>;
+  updateRadarEcoIdeaText: (id: string, newText: string) => void; // NEW: Function to update text of radar-specific eco-ideas
   resetSection: (section: string) => void;
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
@@ -127,6 +128,12 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
     });
   }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
 
+  // NEW: Function to update the text of an eco-idea specifically in the radarEcoIdeas state
+  const updateRadarEcoIdeaText = (id: string, newText: string) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(idea => (idea.id === id ? { ...idea, text: newText } : idea))
+    );
+  };
 
   // Helper functions to get strategy/sub-strategy/guideline by ID
   const getStrategyById = (id: string) => strategies.find(s => s.id === id);
@@ -209,6 +216,7 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         setEvaluationNotes,
         radarEcoIdeas,
         setRadarEcoIdeas,
+        updateRadarEcoIdeaText, // NEW: Add to context value
         resetSection,
         getStrategyById,
         getSubStrategyById,

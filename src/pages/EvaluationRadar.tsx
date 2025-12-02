@@ -9,6 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
+import RadarStickyNote from '@/components/RadarStickyNote'; // NEW: Import RadarStickyNote
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -68,7 +69,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText } = useLcd(); // NEW: Destructure updateRadarEcoIdeaText
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -230,13 +231,13 @@ const EvaluationRadar: React.FC = () => {
 
                   <div style={notesContainerStyle}>
                     {notesForCurrentStrategy.length > 0 ? (
-                      notesForCurrentStrategy.map((idea, index) => (
-                        <div
+                      notesForCurrentStrategy.map((idea) => (
+                        <RadarStickyNote // NEW: Use RadarStickyNote component
                           key={idea.id}
-                          className="p-2 rounded-md shadow-sm border bg-yellow-400 text-gray-900 border-yellow-500 text-sm font-roboto-condensed"
-                        >
-                          {idea.text || `Idea ${index + 1}`}
-                        </div>
+                          id={idea.id}
+                          text={idea.text}
+                          onTextChange={updateRadarEcoIdeaText} // NEW: Pass the update function
+                        />
                       ))
                     ) : (
                       <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
