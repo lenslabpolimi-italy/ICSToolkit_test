@@ -9,7 +9,6 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import DraggableStickyNote from '@/components/DraggableStickyNote';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -52,11 +51,9 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
   );
 };
 
-// Constants for positioning StrategyInsightBoxes and their associated notes containers
+// Constants for positioning StrategyInsightBoxes
 const BOX_WIDTH = 192; // w-48 in px for StrategyInsightBox
 const BOX_HEIGHT = 80; // h-20 is 80px for StrategyInsightBox
-const NOTES_BOX_WIDTH = 192; // w-48 in px for DraggableStickyNote
-const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
 
 // Default parent width, will be updated dynamically
 const DEFAULT_PARENT_WIDTH = 1280; 
@@ -143,9 +140,6 @@ const EvaluationRadar: React.FC = () => {
     radarChartData,
     qualitativeEvaluation,
     radarInsights,
-    radarEcoIdeas,
-    updateRadarEcoIdeaPosition,
-    updateRadarEcoIdeaText,
   } = useLcd();
 
   const parentRef = useRef<HTMLDivElement>(null);
@@ -249,10 +243,10 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div ref={parentRef} className="relative max-w-7xl mx-auto min-h-[600px] mt-32"> {/* Removed flex centering, changed h to min-h */}
+      <div ref={parentRef} className="relative max-w-7xl mx-auto min-h-[600px] mt-32">
         {strategies.length > 0 ? (
           <>
-            <div className="w-full h-[600px] mx-auto flex justify-center items-center"> {/* New wrapper for centering radar chart */}
+            <div className="w-full h-[600px] mx-auto flex justify-center items-center">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
                   <PolarGrid stroke="#e0e0e0" />
@@ -280,19 +274,13 @@ const EvaluationRadar: React.FC = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Render StrategyInsightBoxes and their associated DraggableStickyNotes */}
+            {/* Render StrategyInsightBoxes */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
 
-              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
-
               // Calculate pixel position for the StrategyInsightBox
               const { x: boxPixelX, y: boxPixelY } = calculatePixelPosition(boxPosition, dynamicParentWidth, BOX_WIDTH);
-
-              // Calculate initial pixel position for the DraggableStickyNote
-              const { x: noteBaseX } = calculatePixelPosition(boxPosition, dynamicParentWidth, NOTES_BOX_WIDTH);
-              const noteInitialY = boxPixelY + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y;
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -308,20 +296,6 @@ const EvaluationRadar: React.FC = () => {
                       zIndex: 100, // Ensure insight box is on top
                     }}
                   />
-
-                  {notesForCurrentStrategy.length > 0 && (
-                    notesForCurrentStrategy.map((idea) => (
-                      <DraggableStickyNote
-                        key={idea.id}
-                        id={idea.id}
-                        initialX={idea.x !== undefined ? idea.x : noteBaseX}
-                        initialY={idea.y !== undefined ? idea.y : noteInitialY}
-                        text={idea.text}
-                        onDragStop={updateRadarEcoIdeaPosition}
-                        onTextChange={updateRadarEcoIdeaText}
-                      />
-                    ))
-                  )}
                 </React.Fragment>
               );
             })}
