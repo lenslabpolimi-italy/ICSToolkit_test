@@ -75,10 +75,10 @@ const EvaluationRadar: React.FC = () => {
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
-    1: 'Poor',
-    2: 'Mediocre',
-    3: 'Good',
-    4: 'Excellent',
+    'Poor': 1,
+    'Mediocre': 2,
+    'Good': 3,
+    'Excellent': 4,
     'N/A': 0, // N/A will be treated as 0 or not shown
     'Yes': 4,
     'Partially': 2.5,
@@ -247,7 +247,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div className="relative max-w-7xl mx-auto h-[800px] flex justify-center items-center mt-32"> {/* Changed h-[600px] to h-[800px] */}
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
