@@ -253,7 +253,7 @@ const EvaluationRadar: React.FC = () => {
                     }}
                   />
 
-                  {notesForCurrentStrategy.length > 0 ? (
+                  {notesForCurrentStrategy.length > 0 && (
                     notesForCurrentStrategy.map((idea) => (
                       <DraggableStickyNote
                         key={idea.id}
@@ -265,20 +265,6 @@ const EvaluationRadar: React.FC = () => {
                         onTextChange={updateRadarEcoIdeaText}
                       />
                     ))
-                  ) : (
-                    // Render a placeholder if no confirmed ideas, but not as a draggable note
-                    <div
-                      className="absolute w-48 h-36 p-2 rounded-md shadow-sm border bg-gray-100 text-gray-500 border-gray-300 text-sm font-roboto-condensed flex flex-col justify-center items-center italic"
-                      style={{
-                        top: initialNotesContainerY,
-                        left: boxPosition.left,
-                        right: boxPosition.right,
-                        transform: boxPosition.transform,
-                        zIndex: 90,
-                      }}
-                    >
-                      No confirmed ideas yet.
-                    </div>
                   )}
                 </React.Fragment>
               );
