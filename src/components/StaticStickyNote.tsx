@@ -28,7 +28,7 @@ const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className, on
   return (
     <Draggable
       handle=".handle"
-      defaultPosition={{ x: idea.x - 40, y: idea.y }} {/* Adjusted x position from -20 to -40 */}
+      defaultPosition={{ x: idea.x - 40, y: idea.y }}
       onStop={(e, data) => onDragStop(idea.id, data.x, data.y)}
       // Removed bounds="parent" to allow free movement
     >
