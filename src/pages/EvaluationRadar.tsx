@@ -9,7 +9,6 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import DraggableStickyNote from '@/components/DraggableStickyNote'; // Import the new component
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -55,8 +54,8 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 // Constants for positioning StrategyInsightBoxes and their associated notes containers
 const BOX_HEIGHT = 80; // h-20 is 80px
 const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
-const NOTES_BOX_WIDTH = 192; // w-48 in px
-const NOTES_BOX_HEIGHT = 144; // h-36 in px
+const NOTES_BOX_WIDTH = '192px'; // w-48
+const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -69,17 +68,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const EvaluationRadar: React.FC = () => {
-  const {
-    strategies,
-    evaluationChecklists,
-    setRadarChartData,
-    radarChartData,
-    qualitativeEvaluation,
-    radarInsights,
-    radarEcoIdeas,
-    updateRadarEcoIdeaPosition,
-    updateRadarEcoIdeaText,
-  } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -197,46 +186,32 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes and their associated DraggableStickyNotes */}
+            {/* Render StrategyInsightBoxes and their associated notes containers */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
 
               const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
 
-              // Calculate the initial position for the notes container
-              // This is a fallback if the note doesn't have stored x, y coordinates
-              let initialNotesContainerX = 0;
-              let initialNotesContainerY = 0;
-
-              // Determine initial X position
-              if (boxPosition.left) {
-                if (typeof boxPosition.left === 'string' && boxPosition.left.includes('%')) {
-                  // For '50%', calculate relative to parent width (assuming parent is max-w-7xl, 1280px)
-                  // This is a rough estimate, actual calculation might need parent ref
-                  initialNotesContainerX = (1280 / 2) - (NOTES_BOX_WIDTH / 2); // Center it
-                } else if (typeof boxPosition.left === 'string' && boxPosition.left.includes('calc')) {
-                  // For 'calc(75% + 20px)', this is relative to the radar chart's container.
-                  // We need to convert this to a pixel value relative to the parent of DraggableStickyNote.
-                  // For simplicity, let's assume the 'calc' values are relative to the radar chart's center.
-                  // This might need fine-tuning based on actual layout.
-                  // For now, we'll use a placeholder and rely on Draggable's defaultPosition.
-                  // The `Draggable` component handles `defaultPosition` relative to its parent.
-                  // We need to ensure the parent of DraggableStickyNote is the `relative` div.
-                  // The `top` and `left/right` values in `insightBoxPositions` are already relative to this parent.
-                  // So, we can directly use them.
-                } else {
-                  initialNotesContainerX = parseFloat(boxPosition.left as string);
-                }
-              } else if (boxPosition.right) {
-                // Similar logic for right, but relative to parent's right edge
-                // This will be handled by Draggable's defaultPosition if we pass the right value.
-              }
-
-              // Determine initial Y position
-              if (boxPosition.top) {
-                initialNotesContainerY = parseFloat(boxPosition.top as string) + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y;
-              }
+              // Calculate the position for the notes container
+              const notesContainerStyle: React.CSSProperties = {
+                position: 'absolute',
+                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                left: boxPosition.left,
+                right: boxPosition.right,
+                transform: boxPosition.transform,
+                width: NOTES_BOX_WIDTH,
+                height: NOTES_BOX_HEIGHT,
+                border: '2px solid var(--app-accent)', // Orange border from image
+                borderRadius: '8px',
+                padding: '8px',
+                overflowY: 'auto', // Allow scrolling if many notes
+                backgroundColor: 'white', // White background for the box
+                zIndex: 90,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
+              };
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -253,33 +228,20 @@ const EvaluationRadar: React.FC = () => {
                     }}
                   />
 
-                  {notesForCurrentStrategy.length > 0 ? (
-                    notesForCurrentStrategy.map((idea) => (
-                      <DraggableStickyNote
-                        key={idea.id}
-                        id={idea.id}
-                        initialX={idea.x !== undefined ? idea.x : (boxPosition.left === '50%' ? (1280 / 2) - (NOTES_BOX_WIDTH / 2) : (boxPosition.left ? parseFloat(boxPosition.left as string) : (1280 - NOTES_BOX_WIDTH - parseFloat(boxPosition.right as string))))} // Simplified initial X calculation
-                        initialY={idea.y !== undefined ? idea.y : (parseFloat(boxPosition.top as string) + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y)} // Simplified initial Y calculation
-                        text={idea.text}
-                        onDragStop={updateRadarEcoIdeaPosition}
-                        onTextChange={updateRadarEcoIdeaText}
-                      />
-                    ))
-                  ) : (
-                    // Render a placeholder if no confirmed ideas, but not as a draggable note
-                    <div
-                      className="absolute w-48 h-36 p-2 rounded-md shadow-sm border bg-gray-100 text-gray-500 border-gray-300 text-sm font-roboto-condensed flex flex-col justify-center items-center italic"
-                      style={{
-                        top: initialNotesContainerY,
-                        left: boxPosition.left,
-                        right: boxPosition.right,
-                        transform: boxPosition.transform,
-                        zIndex: 90,
-                      }}
-                    >
-                      No confirmed ideas yet.
-                    </div>
-                  )}
+                  <div style={notesContainerStyle}>
+                    {notesForCurrentStrategy.length > 0 ? (
+                      notesForCurrentStrategy.map((idea, index) => (
+                        <div
+                          key={idea.id}
+                          className="p-2 rounded-md shadow-sm border bg-yellow-400 text-gray-900 border-yellow-500 text-sm font-roboto-condensed"
+                        >
+                          {idea.text || `Idea ${index + 1}`}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
+                    )}
+                  </div>
                 </React.Fragment>
               );
             })}
@@ -291,6 +253,7 @@ const EvaluationRadar: React.FC = () => {
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
       <div className="mt-12 pt-8 border-t border-gray-200">
+        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {strategies.map(strategy => {
             const insightText = radarInsights[strategy.id];

@@ -1,26 +1,22 @@
-export type EvaluationLevel = 'Poor' | 'Mediocre' | 'Good' | 'Excellent' | 'N/A' | 'Yes' | 'Partially' | 'No';
-export type ChecklistLevel = 'Simplified' | 'Normal' | 'Detailed';
-export type ConceptType = 'A' | 'B';
-export type PriorityLevel = 'None' | 'Low' | 'Medium' | 'High';
-
 export interface Guideline {
   id: string;
-  text: string;
+  name: string;
 }
 
 export interface SubStrategy {
   id: string;
   name: string;
-  description: string;
   guidelines: Guideline[];
 }
 
 export interface Strategy {
   id: string;
   name: string;
-  description: string;
   subStrategies: SubStrategy[];
 }
+
+export type PriorityLevel = 'High' | 'Mid' | 'Low' | 'None';
+export type EvaluationLevel = 'Excellent' | 'Good' | 'Mediocre' | 'Poor' | 'N/A' | 'Yes' | 'Partially' | 'No'; // Added Yes, Partially, No
 
 export interface ProjectData {
   projectName: string;
@@ -36,7 +32,7 @@ export interface QualitativeEvaluationData {
     subStrategies: {
       [subStrategyId: string]: {
         priority: PriorityLevel;
-        answer: string; // Text answer for sub-strategy
+        answer: string;
       };
     };
   };
@@ -44,31 +40,37 @@ export interface QualitativeEvaluationData {
 
 export interface EcoIdea {
   id: string;
-  strategyId: string;
   text: string;
-  isConfirmed: boolean;
-  x?: number; // Added for draggable notes
-  y?: number; // Added for draggable notes
+  strategyId: string;
+  subStrategyId?: string;
+  guidelineId?: string;
+  x: number; // Added for position
+  y: number; // Added for position
+  isConfirmed: boolean; // NEW: Added to track if the idea is confirmed
 }
 
+export type ChecklistLevel = 'Simplified' | 'Normal' | 'Detailed';
+export type ConceptType = 'A' | 'B';
+
 export interface EvaluationChecklistData {
-  A: {
+  [concept: string]: {
     level: ChecklistLevel;
-    strategies: { [strategyId: string]: EvaluationLevel };
-    subStrategies: { [subStrategyId: string]: EvaluationLevel };
-    guidelines: { [guidelineId: string]: EvaluationLevel };
-  };
-  B: {
-    level: ChecklistLevel;
-    strategies: { [strategyId: string]: EvaluationLevel };
-    subStrategies: { [subStrategyId: string]: EvaluationLevel };
-    guidelines: { [guidelineId: string]: EvaluationLevel };
+    strategies: {
+      [strategyId: string]: EvaluationLevel;
+    };
+    subStrategies: {
+      [subStrategyId: string]: EvaluationLevel;
+    };
+    guidelines: {
+      [guidelineId: string]: EvaluationLevel;
+    };
   };
 }
 
 export interface RadarChartData {
-  A: { [strategyId: string]: number };
-  B: { [strategyId: string]: number };
+  [concept: string]: {
+    [strategyId: string]: number; // 0-4 for Poor to Excellent
+  };
 }
 
 export interface RadarInsight {
@@ -76,11 +78,11 @@ export interface RadarInsight {
   text: string;
 }
 
-export interface EvaluationNote {
+export interface EvaluationNote { // NEW: Interface for evaluation notes
   id: string;
-  strategyId: string;
-  subStrategyId?: string;
-  guidelineId?: string;
   text: string;
-  concept: ConceptType;
+  strategyId: string;
+  conceptType: ConceptType;
+  x: number;
+  y: number;
 }
