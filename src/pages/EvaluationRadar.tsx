@@ -61,13 +61,13 @@ const NOTE_VERTICAL_SPACING = 10; // Space between stacked notes
 const RADAR_CONTAINER_WIDTH = 1280; // Max width of the radar chart container (max-w-7xl)
 
 const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-  '1': { top: 0, left: '50%', transform: 'translateX(-50%)' }, // Adjusted top to 0
-  '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side, upper
-  '3': { top: 240, left: 'calc(75% + 20px)' }, // Right side, middle
-  '4': { top: 448, left: 'calc(75% + 20px)' }, // Right side, lower
-  '7': { top: 32, right: 'calc(75% + 20px)' }, // Left side, upper
-  '6': { top: 240, right: 'calc(75% + 20px)' }, // Left side, middle
-  '5': { top: 448, right: 'calc(75% + 20px)' }, // Left side, lower
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
+  '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
+  '3': { top: 240, left: 'calc(75% + 20px)' },
+  '4': { top: 448, left: 'calc(75% + 20px)' },
+  '7': { top: 32, right: 'calc(75% + 20px)' }, // Left side
+  '6': { top: 240, right: 'calc(75% + 20px)' },
+  '5': { top: 448, right: 'calc(75% + 20px)' },
 };
 
 const EvaluationRadar: React.FC = () => {
