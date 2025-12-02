@@ -121,11 +121,13 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
           // If the idea already exists in radarEcoIdeas, keep its current state (including edits and position)
           nextRadarEcoIdeas.push(existingRadarIdea);
         } else {
-          // If it's a new confirmed idea, add a deep copy, x and y will be undefined initially
-          nextRadarEcoIdeas.push({ ...confirmedIdea });
+          // If it's a new confirmed idea, add a deep copy, but reset x and y to undefined
+          // so DraggableStickyNote can use its calculated initial position.
+          nextRadarEcoIdeas.push({ ...confirmedIdea, x: undefined, y: undefined });
         }
       });
-      return nextRadarEcoIdeas;
+      // Also, remove any radarEcoIdeas that are no longer confirmed in ecoIdeas
+      return nextRadarEcoIdeas.filter(radarIdea => confirmedEcoIdeas.some(ci => ci.id === radarIdea.id));
     });
   }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
 
