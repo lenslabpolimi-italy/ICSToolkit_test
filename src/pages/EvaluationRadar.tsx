@@ -59,30 +59,14 @@ const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
 const NOTE_HEIGHT = 100; // min-h-[100px]
 const NOTE_VERTICAL_SPACING = 10; // Space between stacked notes
 
-// Define a function to calculate positions based on container width
-const getInsightBoxPixelPositions = (containerWidth: number) => {
-  const positions: { [key: string]: { top: number; left: number } } = {};
-
-  // Strategy 1: Centered
-  const s1Left = (containerWidth / 2) - (BOX_WIDTH / 2);
-  positions['1'] = { top: -104, left: s1Left };
-
-  // Strategies 2, 3, 4: Right side
-  // The 'calc(75% + 20px)' means 75% of container width + 20px offset
-  const rightColumnLeft = (0.75 * containerWidth) + 20;
-  positions['2'] = { top: 32, left: rightColumnLeft };
-  positions['3'] = { top: 240, left: rightColumnLeft };
-  positions['4'] = { top: 448, left: rightColumnLeft };
-
-  // Strategies 7, 6, 5: Left side
-  // The 'calc(75% + 20px)' from right means 75% from right edge + 20px offset
-  // So, its left edge is containerWidth - (0.75 * containerWidth + 20) - BOX_WIDTH
-  const leftColumnLeft = (containerWidth - ((0.75 * containerWidth) + 20)) - BOX_WIDTH;
-  positions['7'] = { top: 32, left: leftColumnLeft };
-  positions['6'] = { top: 240, left: leftColumnLeft };
-  positions['5'] = { top: 448, left: leftColumnLeft };
-
-  return positions;
+const insightBoxPositions: { [key: string]: React.CSSProperties } = {
+  '1': { top: 0, left: '50%', transform: 'translateX(-50%)' }, // Adjusted top to be 0
+  '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
+  '3': { top: 240, left: 'calc(75% + 20px)' },
+  '4': { top: 448, left: 'calc(75% + 20px)' },
+  '7': { top: 32, right: 'calc(75% + 20px)' }, // Left side
+  '6': { top: 240, right: 'calc(75% + 20px)' },
+  '5': { top: 448, right: 'calc(75% + 20px)' }, // Corrected to use 'right'
 };
 
 
@@ -174,7 +158,6 @@ const EvaluationRadar: React.FC = () => {
 
       // Get the actual width of the radar container at runtime
       const radarContainerWidth = radarContainerRef.current?.offsetWidth || 1280; // Fallback to 1280px
-      const pixelPositions = getInsightBoxPixelPositions(radarContainerWidth); // Calculate pixel positions here
 
       allConfirmedEcoIdeas.forEach(confirmedIdea => {
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
@@ -184,20 +167,44 @@ const EvaluationRadar: React.FC = () => {
         } else {
           // If it's a new confirmed idea, calculate an initial position relative to its strategy box
           const strategyId = confirmedIdea.strategyId;
-          const strategyBoxPixelPos = pixelPositions[strategyId]; // Get pixel position directly
-
+          const strategyBoxPos = insightBoxPositions[strategyId];
           let initialX = 0;
           let initialY = 0;
 
-          if (strategyBoxPixelPos) {
-            initialX = strategyBoxPixelPos.left;
-            initialY = strategyBoxPixelPos.top + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP;
+          if (strategyBoxPos) {
+            // Calculate initialX based on left/right/transform
+            if (strategyBoxPos.left === '50%' && strategyBoxPos.transform?.includes('translateX(-50%)')) {
+              initialX = (radarContainerWidth / 2) - (BOX_WIDTH / 2);
+            } else if (typeof strategyBoxPos.left === 'string' && strategyBoxPos.left.startsWith('calc')) {
+              const percentMatch = strategyBoxPos.left.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
+              if (percentMatch) {
+                const percent = parseFloat(percentMatch[1]) / 100;
+                const pxOffset = parseFloat(percentMatch[2]);
+                initialX = (percent * radarContainerWidth) + pxOffset;
+              }
+            } else if (typeof strategyBoxPos.right === 'string' && strategyBoxPos.right.startsWith('calc')) {
+              const percentMatch = strategyBoxPos.right.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
+              if (percentMatch) {
+                const percent = parseFloat(percentMatch[1]) / 100;
+                const pxOffset = parseFloat(percentMatch[2]);
+                const rightEdgePx = (percent * radarContainerWidth) + pxOffset;
+                initialX = radarContainerWidth - rightEdgePx - BOX_WIDTH; // This is the left edge of the box
+              }
+            } else if (typeof strategyBoxPos.left === 'number') {
+                initialX = strategyBoxPos.left;
+            }
+
+            // Base Y position is below the strategy box
+            initialY = (parseFloat(strategyBoxPos.top as string || '0') || 0) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP;
           }
 
           // Stack notes vertically if multiple for the same strategy
           const currentNoteCount = strategyNoteCounts[strategyId] || 0;
           initialY += currentNoteCount * (NOTE_HEIGHT + NOTE_VERTICAL_SPACING);
           strategyNoteCounts[strategyId] = currentNoteCount + 1;
+
+          // For debugging:
+          console.log(`Confirmed Idea ID: ${confirmedIdea.id}, Strategy: ${strategyId}, Calculated X: ${initialX}, Y: ${initialY}`);
 
           nextRadarEcoIdeas.push({
             ...confirmedIdea,
@@ -282,11 +289,7 @@ const EvaluationRadar: React.FC = () => {
             {/* Render StrategyInsightBoxes */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-              const radarContainerWidth = radarContainerRef.current?.offsetWidth || 1280;
-              const pixelPositions = getInsightBoxPixelPositions(radarContainerWidth);
-              const position = pixelPositions[strategy.id];
-
-              if (!position) return null; // Should not happen if all strategies are covered
+              const positionStyle = insightBoxPositions[strategy.id] || {};
 
               return (
                 <StrategyInsightBox
@@ -294,7 +297,7 @@ const EvaluationRadar: React.FC = () => {
                   strategy={strategy}
                   priority={priority}
                   className="absolute"
-                  style={{ top: position.top, left: position.left }} // Use calculated pixel values
+                  style={positionStyle}
                 />
               );
             })}
