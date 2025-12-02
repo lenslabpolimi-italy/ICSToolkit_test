@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -54,32 +54,31 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 
 // Constants for positioning StrategyInsightBoxes
 const BOX_HEIGHT = 80; // h-20 is 80px
-const BOX_WIDTH = 192; // w-48 is 192px
 const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
+const NOTE_WIDTH = 192; // w-48
 const NOTE_HEIGHT = 100; // min-h-[100px]
 const NOTE_VERTICAL_SPACING = 10; // Space between stacked notes
+const RADAR_CONTAINER_WIDTH = 1280; // Max width of the radar chart container (max-w-7xl)
 
 const insightBoxPositions: { [key: string]: React.CSSProperties } = {
-  '1': { top: 0, left: '50%', transform: 'translateX(-50%)' }, // Adjusted top to be 0
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
   '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
   '3': { top: 240, left: 'calc(75% + 20px)' },
   '4': { top: 448, left: 'calc(75% + 20px)' },
   '7': { top: 32, right: 'calc(75% + 20px)' }, // Left side
   '6': { top: 240, right: 'calc(75% + 20px)' },
-  '5': { top: 448, right: 'calc(75% + 20px)' }, // Corrected to use 'right'
+  '5': { top: 448, right: 'calc(75% + 20px)' },
 };
-
 
 const EvaluationRadar: React.FC = () => {
   const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
-  const radarContainerRef = useRef<HTMLDivElement>(null); // Add ref here
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
-    'Poor': 1,
-    'Mediocre': 2,
-    'Good': 3,
-    'Excellent': 4,
+    1: 'Poor',
+    2: 'Mediocre',
+    3: 'Good',
+    4: 'Excellent',
     'N/A': 0, // N/A will be treated as 0 or not shown
     'Yes': 4,
     'Partially': 2.5,
@@ -156,9 +155,6 @@ const EvaluationRadar: React.FC = () => {
       // Temporary map to track how many notes have been placed for each strategy
       const strategyNoteCounts: { [key: string]: number } = {};
 
-      // Get the actual width of the radar container at runtime
-      const radarContainerWidth = radarContainerRef.current?.offsetWidth || 1280; // Fallback to 1280px
-
       allConfirmedEcoIdeas.forEach(confirmedIdea => {
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
         if (existingRadarIdea) {
@@ -172,39 +168,33 @@ const EvaluationRadar: React.FC = () => {
           let initialY = 0;
 
           if (strategyBoxPos) {
-            // Calculate initialX based on left/right/transform
-            if (strategyBoxPos.left === '50%' && strategyBoxPos.transform?.includes('translateX(-50%)')) {
-              initialX = (radarContainerWidth / 2) - (BOX_WIDTH / 2);
-            } else if (typeof strategyBoxPos.left === 'string' && strategyBoxPos.left.startsWith('calc')) {
-              const percentMatch = strategyBoxPos.left.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
-              if (percentMatch) {
-                const percent = parseFloat(percentMatch[1]) / 100;
-                const pxOffset = parseFloat(percentMatch[2]);
-                initialX = (percent * radarContainerWidth) + pxOffset;
-              }
-            } else if (typeof strategyBoxPos.right === 'string' && strategyBoxPos.right.startsWith('calc')) {
-              const percentMatch = strategyBoxPos.right.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
-              if (percentMatch) {
-                const percent = parseFloat(percentMatch[1]) / 100;
-                const pxOffset = parseFloat(percentMatch[2]);
-                const rightEdgePx = (percent * radarContainerWidth) + pxOffset;
-                initialX = radarContainerWidth - rightEdgePx - BOX_WIDTH; // This is the left edge of the box
-              }
-            } else if (typeof strategyBoxPos.left === 'number') {
-                initialX = strategyBoxPos.left;
-            }
+            const radarContainerWidth = RADAR_CONTAINER_WIDTH; // Use the constant
 
             // Base Y position is below the strategy box
             initialY = (parseFloat(strategyBoxPos.top as string || '0') || 0) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP;
+
+            // Calculate X based on left/right/transform
+            if (strategyBoxPos.left) {
+              const leftVal = parseFloat(strategyBoxPos.left as string || '0');
+              if (strategyBoxPos.transform?.includes('translateX(-50%)')) {
+                // Centered box (Strategy 1)
+                initialX = (radarContainerWidth / 2) - (NOTE_WIDTH / 2);
+              } else {
+                // Right side boxes (Strategies 2,3,4)
+                // 'calc(75% + 20px)' -> 0.75 * radarContainerWidth + 20
+                initialX = (0.75 * radarContainerWidth) + 20;
+              }
+            } else if (strategyBoxPos.right) {
+              // Left side boxes (Strategies 5,6,7)
+              // 'calc(75% + 20px)' from right -> 0.25 * radarContainerWidth - 20 - NOTE_WIDTH
+              initialX = (0.25 * radarContainerWidth) - 20 - NOTE_WIDTH;
+            }
           }
 
           // Stack notes vertically if multiple for the same strategy
           const currentNoteCount = strategyNoteCounts[strategyId] || 0;
           initialY += currentNoteCount * (NOTE_HEIGHT + NOTE_VERTICAL_SPACING);
           strategyNoteCounts[strategyId] = currentNoteCount + 1;
-
-          // For debugging:
-          console.log(`Confirmed Idea ID: ${confirmedIdea.id}, Strategy: ${strategyId}, Calculated X: ${initialX}, Y: ${initialY}`);
 
           nextRadarEcoIdeas.push({
             ...confirmedIdea,
@@ -218,7 +208,7 @@ const EvaluationRadar: React.FC = () => {
       const confirmedIds = new Set(allConfirmedEcoIdeas.map(idea => idea.id));
       return nextRadarEcoIdeas.filter(idea => confirmedIds.has(idea.id));
     });
-  }, [ecoIdeas, setRadarEcoIdeas, strategies, radarContainerRef.current?.offsetWidth]); // Add ref dependency here
+  }, [ecoIdeas, setRadarEcoIdeas, strategies]); // Add strategies to dependencies
 
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
@@ -257,7 +247,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div ref={radarContainerRef} className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
