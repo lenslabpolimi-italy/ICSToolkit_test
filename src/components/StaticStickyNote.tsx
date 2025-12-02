@@ -1,91 +1,65 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Trash2, GripVertical } from 'lucide-react';
+import { XCircle } from 'lucide-react'; // NEW: Import XCircle icon
 import { cn } from '@/lib/utils';
 import { EcoIdea } from '@/types/lcd';
 
 interface StaticStickyNoteProps {
-  idea: EcoIdea & { x: number; y: number }; // EcoIdea with position
+  idea: EcoIdea;
+  className?: string;
   onTextChange: (id: string, newText: string) => void;
   onDragStop: (id: string, x: number, y: number) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => void; // NEW: Add onDelete prop
 }
 
-const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({
-  idea,
-  onTextChange,
-  onDragStop,
-  onDelete,
-}) => {
-  const nodeRef = useRef(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentText, setCurrentText] = useState(idea.text);
+const StaticStickyNote: React.FC<StaticStickyNoteProps> = ({ idea, className, onTextChange, onDragStop, onDelete }) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Adjust textarea height based on content
   useEffect(() => {
-    setCurrentText(idea.text); // Update internal state if idea.text changes from outside
-  }, [idea.text]);
-
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCurrentText(e.target.value);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-    if (currentText !== idea.text) {
-      onTextChange(idea.id, currentText);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  };
+  }, [idea.text]);
 
   return (
     <Draggable
-      nodeRef={nodeRef}
       handle=".handle"
-      defaultPosition={{ x: idea.x - 10, y: idea.y - 5 }} // Adjusted position here
+      defaultPosition={{ x: idea.x, y: idea.y }}
       onStop={(e, data) => onDragStop(idea.id, data.x, data.y)}
+      // Removed bounds="parent" to allow free movement
     >
       <div
-        ref={nodeRef}
         className={cn(
           "absolute p-2 rounded-md shadow-md cursor-grab border",
           "w-48 min-h-[100px] flex flex-col group",
-          isEditing ? "border-blue-500" : "border-gray-200",
-          idea.color === 'yellow' ? 'bg-yellow-100' : 'bg-blue-100' // Default to yellow if not specified
+          "bg-yellow-400 text-gray-900 border-yellow-500",
+          className
         )}
+        style={{ zIndex: 100 }}
       >
-        <div className="flex justify-between items-center mb-1 handle cursor-grab">
-          <span className="text-xs font-semibold text-gray-600">
-            Strategy {idea.strategyId}
-          </span>
-          <GripVertical className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
-        </div>
-        {isEditing ? (
-          <Textarea
-            value={currentText}
-            onChange={handleTextareaChange}
-            onBlur={handleBlur}
-            autoFocus
-            className="flex-grow resize-none border-none focus-visible:ring-0 focus-visible:ring-offset-0 text-sm bg-transparent"
-          />
-        ) : (
-          <div
-            className="flex-grow text-sm text-gray-800 cursor-text overflow-hidden whitespace-pre-wrap"
-            onClick={() => setIsEditing(true)}
-          >
-            {currentText || "Click to add note..."}
-          </div>
-        )}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute bottom-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+        <div className="handle absolute top-0 left-0 right-0 h-6 cursor-grab -mt-2 -mx-2 rounded-t-md" />
+        
+        {/* NEW: Delete button */}
+        <button
           onClick={() => onDelete(idea.id)}
+          className="absolute top-1 right-1 text-gray-500 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+          aria-label="Delete note"
         >
-          <Trash2 className="h-4 w-4 text-red-500" />
-        </Button>
+          <XCircle size={18} />
+        </button>
+
+        <textarea
+          ref={textareaRef}
+          className="flex-grow w-full bg-transparent resize-none outline-none text-sm font-roboto-condensed overflow-y-auto pr-6" // Adjusted padding for new button
+          value={idea.text}
+          onChange={(e) => onTextChange(idea.id, e.target.value)}
+          rows={3}
+          style={{ minHeight: '70px' }}
+        />
       </div>
     </Draggable>
   );
