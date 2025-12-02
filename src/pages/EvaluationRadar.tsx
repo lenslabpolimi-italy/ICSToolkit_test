@@ -9,6 +9,8 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
+import StickyNote from '@/components/StickyNote'; // NEW: Import StickyNote
+import { toast } from 'sonner'; // NEW: Import toast for notifications
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -68,7 +70,18 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas } = useLcd();
+  const {
+    strategies,
+    evaluationChecklists,
+    setRadarChartData,
+    radarChartData,
+    qualitativeEvaluation,
+    radarInsights,
+    radarEcoIdeas,
+    setRadarEcoIdeas,
+    updateEcoIdea, // NEW
+    deleteEcoIdea, // NEW
+  } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -146,6 +159,48 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
+  // NEW: Handlers for radarEcoIdeas
+  const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+    // No need to update original ecoIdea's x,y as radar's position is independent
+  };
+
+  const handleRadarEcoIdeaTextChange = (id: string, newText: string) => {
+    // Update the text in radarEcoIdeas
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+    // Also update the text in the original ecoIdeas
+    updateEcoIdea(id, { text: newText });
+  };
+
+  const handleRadarEcoIdeaDelete = (id: string) => {
+    // Delete from radarEcoIdeas
+    setRadarEcoIdeas(prev => prev.filter(note => note.id !== id));
+    // Also delete from original ecoIdeas, which will then trigger the useEffect to sync radarEcoIdeas
+    deleteEcoIdea(id);
+    toast.info("Confirmed eco-idea removed.");
+  };
+
+  const handleRadarEcoIdeaConfirmToggle = (id: string) => {
+    // Find the current state of isConfirmed for this idea
+    const currentIdea = radarEcoIdeas.find(idea => idea.id === id);
+    if (currentIdea) {
+      const newConfirmedStatus = !currentIdea.isConfirmed;
+      // Update in radarEcoIdeas
+      setRadarEcoIdeas(prev =>
+        prev.map(note =>
+          note.id === id ? { ...note, isConfirmed: newConfirmedStatus } : note
+        )
+      );
+      // Update in original ecoIdeas, which will then trigger the useEffect to sync radarEcoIdeas
+      updateEcoIdea(id, { isConfirmed: newConfirmedStatus });
+      toast.info(`Eco-idea ${newConfirmedStatus ? 'confirmed' : 'unconfirmed'}.`);
+    }
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
@@ -205,12 +260,10 @@ const EvaluationRadar: React.FC = () => {
                 border: '2px solid var(--app-accent)', // Orange border from image
                 borderRadius: '8px',
                 padding: '8px',
-                overflowY: 'auto', // Allow scrolling if many notes
+                // Removed overflowY: 'auto' as StickyNotes are absolute and draggable
                 backgroundColor: 'white', // White background for the box
                 zIndex: 90,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
+                // Removed flex properties as StickyNotes handle their own positioning
               };
 
               return (
@@ -228,15 +281,22 @@ const EvaluationRadar: React.FC = () => {
                     }}
                   />
 
-                  <div style={notesContainerStyle}>
+                  <div style={notesContainerStyle} className="relative"> {/* Added relative to container */}
                     {notesForCurrentStrategy.length > 0 ? (
-                      notesForCurrentStrategy.map((idea, index) => (
-                        <div
+                      notesForCurrentStrategy.map((idea) => (
+                        <StickyNote
                           key={idea.id}
-                          className="p-2 rounded-md shadow-sm border bg-yellow-400 text-gray-900 border-yellow-500 text-sm font-roboto-condensed"
-                        >
-                          {idea.text || `Idea ${index + 1}`}
-                        </div>
+                          id={idea.id}
+                          x={idea.x}
+                          y={idea.y}
+                          text={idea.text}
+                          strategyId={idea.strategyId}
+                          isConfirmed={idea.isConfirmed}
+                          onDragStop={handleRadarEcoIdeaDragStop}
+                          onTextChange={handleRadarEcoIdeaTextChange}
+                          onDelete={handleRadarEcoIdeaDelete}
+                          onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
+                        />
                       ))
                     ) : (
                       <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>

@@ -41,6 +41,8 @@ interface LcdContextType {
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
   getGuidelineById: (subStrategyId: string, guidelineId: string) => Guideline | undefined;
+  updateEcoIdea: (id: string, updates: Partial<EcoIdea>) => void; // NEW: Function to update an eco-idea
+  deleteEcoIdea: (id: string) => void; // NEW: Function to delete an eco-idea
 }
 
 const LcdContext = createContext<LcdContextType | undefined>(undefined);
@@ -67,7 +69,7 @@ const initialRadarInsights: { [strategyId: string]: string } = {};
 const initialEvaluationNotes: EvaluationNote[] = [];
 const initialRadarEcoIdeas: EcoIdea[] = [];
 
-export const LcdProvider = ({ children }: { ReactNode }) => {
+export const LcdProvider = ({ children }: { children: ReactNode }) => {
   const [strategies, setStrategies] = useState<Strategy[]>([]);
   const [projectData, setProjectData] = useState<ProjectData>(initialProjectData);
   const [qualitativeEvaluation, setQualitativeEvaluation] = useState<QualitativeEvaluationData>(initialQualitativeEvaluation);
@@ -103,29 +105,48 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
     loadStrategies();
   }, []);
 
+  // NEW: Function to update an existing eco-idea
+  const updateEcoIdea = (id: string, updates: Partial<EcoIdea>) => {
+    setEcoIdeas(prev =>
+      prev.map(idea => (idea.id === id ? { ...idea, ...updates } : idea))
+    );
+  };
+
+  // NEW: Function to delete an eco-idea
+  const deleteEcoIdea = (id: string) => {
+    setEcoIdeas(prev => prev.filter(idea => idea.id !== id));
+  };
+
   // Effect to synchronize radarEcoIdeas with all confirmed ecoIdeas
   useEffect(() => {
-    const confirmedEcoIdeas = ecoIdeas.filter(
-      (idea) => idea.isConfirmed
-    );
+    const confirmedEcoIdeas = ecoIdeas.filter(idea => idea.isConfirmed);
 
     setRadarEcoIdeas(prevRadarEcoIdeas => {
-      const nextRadarEcoIdeas = [];
+      const nextRadarEcoIdeas: EcoIdea[] = [];
       const prevRadarEcoIdeasMap = new Map(prevRadarEcoIdeas.map(idea => [idea.id, idea]));
 
       confirmedEcoIdeas.forEach(confirmedIdea => {
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
         if (existingRadarIdea) {
-          // If the idea already exists in radarEcoIdeas, keep its current state (including edits)
-          nextRadarEcoIdeas.push(existingRadarIdea);
+          // If the idea already exists in radarEcoIdeas, update its text and confirmation status
+          // but preserve its x, y position on the radar.
+          nextRadarEcoIdeas.push({
+            ...existingRadarIdea, // Keep existing x, y
+            text: confirmedIdea.text, // Update text from source
+            isConfirmed: confirmedIdea.isConfirmed, // Update confirmation status from source
+          });
         } else {
-          // If it's a new confirmed idea, add a deep copy
-          nextRadarEcoIdeas.push({ ...confirmedIdea });
+          // If it's a new confirmed idea, add a deep copy with default radar positions
+          nextRadarEcoIdeas.push({
+            ...confirmedIdea,
+            x: 20, // Default X for radar page
+            y: 20, // Default Y for radar page
+          });
         }
       });
       return nextRadarEcoIdeas;
     });
-  }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
+  }, [ecoIdeas]); // Re-run when original ecoIdeas change
 
 
   // Helper functions to get strategy/sub-strategy/guideline by ID
@@ -213,6 +234,8 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         getStrategyById,
         getSubStrategyById,
         getGuidelineById,
+        updateEcoIdea, // NEW
+        deleteEcoIdea, // NEW
       }}
     >
       {children}
