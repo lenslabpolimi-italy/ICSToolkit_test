@@ -52,11 +52,8 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
   );
 };
 
-// Constants for positioning StrategyInsightBoxes and their associated notes containers
+// Constants for positioning StrategyInsightBoxes
 const BOX_HEIGHT = 80; // h-20 is 80px
-const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
-const NOTES_BOX_WIDTH = '192px'; // w-48
-const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -69,7 +66,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText, updateRadarEcoIdeaPosition } = useLcd(); // NEW: Destructure updateRadarEcoIdeaPosition
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText, updateRadarEcoIdeaPosition } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -187,32 +184,10 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {/* Render StrategyInsightBoxes */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
-
-              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
-
-              // Calculate the position for the notes container
-              const notesContainerStyle: React.CSSProperties = {
-                position: 'absolute',
-                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
-                left: boxPosition.left,
-                right: boxPosition.right,
-                transform: boxPosition.transform,
-                width: NOTES_BOX_WIDTH,
-                height: NOTES_BOX_HEIGHT,
-                border: '2px solid var(--app-accent)', // Orange border from image
-                borderRadius: '8px',
-                padding: '8px',
-                overflowY: 'auto', // Allow scrolling if many notes
-                backgroundColor: 'white', // White background for the box
-                zIndex: 90,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
-              };
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -228,27 +203,22 @@ const EvaluationRadar: React.FC = () => {
                       zIndex: 100, // Ensure insight box is on top
                     }}
                   />
-
-                  <div style={notesContainerStyle}>
-                    {notesForCurrentStrategy.length > 0 ? (
-                      notesForCurrentStrategy.map((idea) => (
-                        <RadarStickyNote
-                          key={idea.id}
-                          id={idea.id}
-                          x={idea.x} // Pass x position
-                          y={idea.y} // Pass y position
-                          text={idea.text}
-                          onTextChange={updateRadarEcoIdeaText}
-                          onDragStop={updateRadarEcoIdeaPosition} // Pass the new drag handler
-                        />
-                      ))
-                    ) : (
-                      <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
-                    )}
-                  </div>
                 </React.Fragment>
               );
             })}
+
+            {/* Render RadarStickyNotes directly within the main container */}
+            {radarEcoIdeas.length > 0 && radarEcoIdeas.map((idea) => (
+              <RadarStickyNote
+                key={idea.id}
+                id={idea.id}
+                x={idea.x}
+                y={idea.y}
+                text={idea.text}
+                onTextChange={updateRadarEcoIdeaText}
+                onDragStop={updateRadarEcoIdeaPosition}
+              />
+            ))}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
