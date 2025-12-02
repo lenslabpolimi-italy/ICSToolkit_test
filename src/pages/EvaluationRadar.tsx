@@ -55,8 +55,8 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 // Constants for positioning StrategyInsightBoxes and their associated notes containers
 const BOX_HEIGHT = 80; // h-20 is 80px
 const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
-// NOTES_BOX_WIDTH and NOTES_BOX_HEIGHT are no longer needed for a placeholder div,
-// but the RadarStickyNote itself uses w-48 (192px) and min-h-[100px] max-h-[200px]
+const NOTES_BOX_WIDTH = '192px'; // w-48
+const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -72,8 +72,7 @@ const EvaluationRadar: React.FC = () => {
   const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText, updateRadarEcoIdeaPosition } = useLcd();
 
   const mainContainerRef = useRef<HTMLDivElement>(null);
-  // New ref for StrategyInsightBox components to get their positions
-  const insightBoxRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const notesContainerRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -152,15 +151,14 @@ const EvaluationRadar: React.FC = () => {
     radarEcoIdeas.forEach(idea => {
       // Only process ideas that haven't been positioned yet (x,y are default 0,0)
       if (idea.x === 0 && idea.y === 0) {
-        const strategyInsightBox = insightBoxRefs.current[idea.strategyId];
-        if (strategyInsightBox) {
-          const boxRect = strategyInsightBox.getBoundingClientRect();
+        const targetContainer = notesContainerRefs.current[idea.strategyId];
+        if (targetContainer) {
+          const targetRect = targetContainer.getBoundingClientRect();
           const mainRect = mainContainer.getBoundingClientRect();
 
           // Calculate position relative to the main EvaluationRadar container
-          // Note should appear below the StrategyInsightBox, with an offset
-          const calculatedX = boxRect.left - mainRect.left;
-          const calculatedY = boxRect.top - mainRect.top + boxRect.height + NOTES_CONTAINER_OFFSET_Y;
+          const calculatedX = targetRect.left - mainRect.left + 8; // +8 for padding
+          const calculatedY = targetRect.top - mainRect.top + 8; // +8 for padding
 
           // Update the position in the context, which will trigger a re-render
           updateRadarEcoIdeaPosition(idea.id, calculatedX, calculatedY);
@@ -216,26 +214,56 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes */}
+            {/* Render StrategyInsightBoxes and their associated notes containers (visual guides) */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
 
+              // Calculate the position for the notes container
+              const notesContainerStyle: React.CSSProperties = {
+                position: 'absolute',
+                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                left: boxPosition.left,
+                right: boxPosition.right,
+                transform: boxPosition.transform,
+                width: NOTES_BOX_WIDTH,
+                height: NOTES_BOX_HEIGHT,
+                border: '2px solid var(--app-accent)', // Orange border from image
+                borderRadius: '8px',
+                padding: '8px',
+                overflowY: 'auto', // Allow scrolling if many notes
+                backgroundColor: 'white', // White background for the box
+                zIndex: 90,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
+              };
+
               return (
-                <StrategyInsightBox
-                  key={strategy.id}
-                  ref={el => insightBoxRefs.current[strategy.id] = el} // Assign ref here
-                  strategy={strategy}
-                  priority={priority}
-                  className="absolute"
-                  style={{
-                    top: boxPosition.top,
-                    left: boxPosition.left,
-                    right: boxPosition.right,
-                    transform: boxPosition.transform,
-                    zIndex: 100, // Ensure insight box is on top
-                  }}
-                />
+                <React.Fragment key={strategy.id}>
+                  <StrategyInsightBox
+                    strategy={strategy}
+                    priority={priority}
+                    className="absolute"
+                    style={{
+                      top: boxPosition.top,
+                      left: boxPosition.left,
+                      right: boxPosition.right,
+                      transform: boxPosition.transform,
+                      zIndex: 100, // Ensure insight box is on top
+                    }}
+                  />
+                  {/* This div acts as a visual placeholder for where notes initially appear */}
+                  <div
+                    ref={el => notesContainerRefs.current[strategy.id] = el}
+                    style={notesContainerStyle}
+                  >
+                    {/* Only show "No confirmed ideas yet." if there are no notes for this strategy */}
+                    {!radarEcoIdeas.some(idea => idea.strategyId === strategy.id) && (
+                      <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
+                    )}
+                  </div>
+                </React.Fragment>
               );
             })}
           </>
