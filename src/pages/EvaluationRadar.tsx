@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -53,12 +53,13 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 };
 
 // Constants for positioning StrategyInsightBoxes and their associated notes containers
-const BOX_WIDTH = 192; // w-48 in px
-const BOX_HEIGHT = 80; // h-20 is 80px
+const BOX_WIDTH = 192; // w-48 in px for StrategyInsightBox
+const BOX_HEIGHT = 80; // h-20 is 80px for StrategyInsightBox
+const NOTES_BOX_WIDTH = 192; // w-48 in px for DraggableStickyNote
 const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
 
-// Assuming the parent container for positioning is max-w-7xl (1280px)
-const PARENT_WIDTH = 1280;
+// Default parent width, will be updated dynamically
+const DEFAULT_PARENT_WIDTH = 1280; 
 
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -73,8 +74,8 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 // Helper function to calculate pixel coordinates from CSS position properties
 const calculatePixelPosition = (
   boxPos: typeof insightBoxPositions[keyof typeof insightBoxPositions],
-  parentWidth: number,
-  boxWidth: number
+  currentParentWidth: number,
+  elementWidth: number
 ) => {
   let x = 0;
   let y = 0;
@@ -89,43 +90,61 @@ const calculatePixelPosition = (
   // Calculate X
   if (boxPos.left) {
     if (typeof boxPos.left === 'string' && boxPos.left.includes('%')) {
-      // e.g., '50%' with translateX(-50%)
-      x = (parentWidth * parseFloat(boxPos.left) / 100) - (boxWidth / 2);
+      const percentage = parseFloat(boxPos.left) / 100;
+      x = currentParentWidth * percentage;
+      if (boxPos.transform && boxPos.transform.includes('translateX(-50%)')) {
+        x -= elementWidth / 2; // Adjust for centering transform
+      }
     } else if (typeof boxPos.left === 'string' && boxPos.left.includes('calc')) {
-      // e.g., 'calc(75% + 20px)'
-      const parts = boxPos.left.replace('calc(', '').replace(')', '').split('+').map(s => s.trim());
-      let percentage = 0;
-      let pixels = 0;
-      parts.forEach(part => {
-        if (part.includes('%')) {
-          percentage = parseFloat(part) / 100;
-        } else if (part.includes('px')) {
-            pixels = parseFloat(part);
-        } else {
-            pixels = parseFloat(part); // Fallback if no unit
-        }
-      });
-      x = (parentWidth * percentage) + pixels;
+      const calcMatch = boxPos.left.match(/calc\(([^)]*)\)/);
+      if (calcMatch && calcMatch[1]) {
+        let tempX = 0;
+        const parts = calcMatch[1].split(/([+-])/).map(s => s.trim()).filter(Boolean);
+        let currentOperator = '+';
+        parts.forEach(part => {
+          if (part === '+' || part === '-') {
+            currentOperator = part;
+          } else if (part.includes('%')) {
+            const percentageValue = parseFloat(part) / 100;
+            tempX = currentOperator === '+' ? tempX + (currentParentWidth * percentageValue) : tempX - (currentParentWidth * percentageValue);
+          } else if (part.includes('px')) {
+            const pixelValue = parseFloat(part);
+            tempX = currentOperator === '+' ? tempX + pixelValue : tempX - pixelValue;
+          } else {
+            const pixelValue = parseFloat(part);
+            tempX = currentOperator === '+' ? tempX + pixelValue : tempX - pixelValue;
+          }
+        });
+        x = tempX;
+      }
     } else if (typeof boxPos.left === 'number') {
       x = boxPos.left;
     }
   } else if (boxPos.right) {
     if (typeof boxPos.right === 'string' && boxPos.right.includes('calc')) {
-      const parts = boxPos.right.replace('calc(', '').replace(')', '').split('+').map(s => s.trim());
-      let percentage = 0;
-      let pixels = 0;
-      parts.forEach(part => {
-        if (part.includes('%')) {
-          percentage = parseFloat(part) / 100;
-        } else if (part.includes('px')) {
-            pixels = parseFloat(part);
-        } else {
-            pixels = parseFloat(part); // Fallback if no unit
-        }
-      });
-      x = parentWidth - ((parentWidth * percentage) + pixels) - boxWidth;
+      const calcMatch = boxPos.right.match(/calc\(([^)]*)\)/);
+      if (calcMatch && calcMatch[1]) {
+        let tempRightOffset = 0;
+        const parts = calcMatch[1].split(/([+-])/).map(s => s.trim()).filter(Boolean);
+        let currentOperator = '+';
+        parts.forEach(part => {
+          if (part === '+' || part === '-') {
+            currentOperator = part;
+          } else if (part.includes('%')) {
+            const percentageValue = parseFloat(part) / 100;
+            tempRightOffset = currentOperator === '+' ? tempRightOffset + (currentParentWidth * percentageValue) : tempRightOffset - (currentParentWidth * percentageValue);
+          } else if (part.includes('px')) {
+            const pixelValue = parseFloat(part);
+            tempRightOffset = currentOperator === '+' ? tempRightOffset + pixelValue : tempRightOffset - pixelValue;
+          } else {
+            const pixelValue = parseFloat(part);
+            tempRightOffset = currentOperator === '+' ? tempRightOffset + pixelValue : tempRightOffset - pixelValue;
+          }
+        });
+        x = currentParentWidth - tempRightOffset - elementWidth;
+      }
     } else if (typeof boxPos.right === 'number') {
-      x = parentWidth - boxPos.right - boxWidth;
+      x = currentParentWidth - boxPos.right - elementWidth;
     }
   }
   return { x, y };
@@ -144,6 +163,20 @@ const EvaluationRadar: React.FC = () => {
     updateRadarEcoIdeaPosition,
     updateRadarEcoIdeaText,
   } = useLcd();
+
+  const parentRef = useRef<HTMLDivElement>(null);
+  const [dynamicParentWidth, setDynamicParentWidth] = useState(DEFAULT_PARENT_WIDTH);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (parentRef.current) {
+        setDynamicParentWidth(parentRef.current.offsetWidth);
+      }
+    };
+    updateWidth(); // Set initial width
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -232,7 +265,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div ref={parentRef} className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
@@ -269,7 +302,11 @@ const EvaluationRadar: React.FC = () => {
               const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
 
               // Calculate pixel position for the StrategyInsightBox
-              const { x: boxPixelX, y: boxPixelY } = calculatePixelPosition(boxPosition, PARENT_WIDTH, BOX_WIDTH);
+              const { x: boxPixelX, y: boxPixelY } = calculatePixelPosition(boxPosition, dynamicParentWidth, BOX_WIDTH);
+
+              // Calculate initial pixel position for the DraggableStickyNote
+              const { x: noteBaseX } = calculatePixelPosition(boxPosition, dynamicParentWidth, NOTES_BOX_WIDTH);
+              const noteInitialY = boxPixelY + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y;
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -291,8 +328,8 @@ const EvaluationRadar: React.FC = () => {
                       <DraggableStickyNote
                         key={idea.id}
                         id={idea.id}
-                        initialX={idea.x !== undefined ? idea.x : boxPixelX}
-                        initialY={idea.y !== undefined ? idea.y : (boxPixelY + BOX_HEIGHT + NOTES_CONTAINER_OFFSET_Y)}
+                        initialX={idea.x !== undefined ? idea.x : noteBaseX}
+                        initialY={idea.y !== undefined ? idea.y : noteInitialY}
                         text={idea.text}
                         onDragStop={updateRadarEcoIdeaPosition}
                         onTextChange={updateRadarEcoIdeaText}
