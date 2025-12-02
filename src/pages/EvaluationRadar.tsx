@@ -9,7 +9,6 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import StaticStickyNote from '@/components/StaticStickyNote';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -52,11 +51,13 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
   );
 };
 
-// Constants for positioning StrategyInsightBoxes
+// Constants for positioning StrategyInsightBoxes and their associated notes containers
 const BOX_HEIGHT = 80; // h-20 is 80px
-const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
+const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
+const NOTES_BOX_WIDTH = '192px'; // w-48
+const NOTES_BOX_HEIGHT = '144px'; // h-36
 
-const insightBoxPositions: { [key: string]: React.CSSProperties } = {
+const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
   '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
   '3': { top: 240, left: 'calc(75% + 20px)' },
@@ -67,7 +68,7 @@ const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -138,71 +139,12 @@ const EvaluationRadar: React.FC = () => {
     });
   }, [evaluationChecklists, strategies, setRadarChartData]);
 
-  // Effect to synchronize radarEcoIdeas with confirmed ecoIdeas, preserving edits
-  useEffect(() => {
-    const confirmedStrategy1EcoIdeas = ecoIdeas.filter(
-      (idea) => idea.strategyId === '1' && idea.isConfirmed
-    );
-
-    setRadarEcoIdeas(prevRadarEcoIdeas => {
-      const nextRadarEcoIdeas = [];
-      const prevRadarEcoIdeasMap = new Map(prevRadarEcoIdeas.map(idea => [idea.id, idea]));
-
-      confirmedStrategy1EcoIdeas.forEach(confirmedIdea => {
-        const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
-        if (existingRadarIdea) {
-          // If the idea already exists in radarEcoIdeas, keep its current state (including edits)
-          nextRadarEcoIdeas.push(existingRadarIdea);
-        } else {
-          // If it's a new confirmed idea, add a deep copy
-          nextRadarEcoIdeas.push({ ...confirmedIdea });
-        }
-      });
-
-      // Filter out any ideas from prevRadarEcoIdeas that are no longer confirmed
-      // This is implicitly handled by only pushing confirmed ideas into nextRadarEcoIdeas
-      // but we can add an explicit check if needed for more complex scenarios.
-      // For now, the above loop ensures only currently confirmed ideas are in nextRadarEcoIdeas.
-
-      return nextRadarEcoIdeas;
-    });
-  }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
-
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
     A: radarChartData.A[strategy.id] || 0,
     B: radarChartData.B[strategy.id] || 0,
     fullMark: 4, // Max score for Excellent
   }));
-
-  // Calculate position for the container of StaticStickyNotes for Strategy 1
-  const strategy1BoxPosition = insightBoxPositions['1'];
-  const staticNotesContainerStyle: React.CSSProperties = strategy1BoxPosition
-    ? {
-        top: (parseFloat(strategy1BoxPosition.top as string) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP) + 'px',
-        left: strategy1BoxPosition.left,
-        transform: strategy1BoxPosition.transform,
-      }
-    : {};
-
-  // Handler for text changes in StaticStickyNote, now updates radarEcoIdeas
-  const handleStaticNoteTextChange = (id: string, newText: string) => {
-    setRadarEcoIdeas(prev =>
-      prev.map(idea => (idea.id === id ? { ...idea, text: newText } : idea))
-    );
-  };
-
-  // Handler for drag stop on StaticStickyNote
-  const handleStaticNoteDragStop = (id: string, x: number, y: number) => {
-    setRadarEcoIdeas(prev =>
-      prev.map(idea => (idea.id === id ? { ...idea, x, y } : idea))
-    );
-  };
-
-  // NEW: Handler for deleting StaticStickyNote
-  const handleStaticNoteDelete = (id: string) => {
-    setRadarEcoIdeas(prev => prev.filter(idea => idea.id !== id));
-  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
@@ -244,36 +186,62 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes */}
+            {/* Render StrategyInsightBoxes and their associated notes containers */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-              const positionStyle = insightBoxPositions[strategy.id] || {};
+              const boxPosition = insightBoxPositions[strategy.id] || {};
+
+              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
+
+              // Calculate the position for the notes container
+              const notesContainerStyle: React.CSSProperties = {
+                position: 'absolute',
+                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                left: boxPosition.left,
+                right: boxPosition.right,
+                transform: boxPosition.transform,
+                width: NOTES_BOX_WIDTH,
+                height: NOTES_BOX_HEIGHT,
+                border: '2px solid var(--app-accent)', // Orange border from image
+                borderRadius: '8px',
+                padding: '8px',
+                overflowY: 'auto', // Allow scrolling if many notes
+                backgroundColor: 'white', // White background for the box
+                zIndex: 90,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
+              };
 
               return (
-                <StrategyInsightBox
-                  key={strategy.id}
-                  strategy={strategy}
-                  priority={priority}
-                  className="absolute"
-                  style={positionStyle}
-                />
+                <React.Fragment key={strategy.id}>
+                  <StrategyInsightBox
+                    strategy={strategy}
+                    priority={priority}
+                    className="absolute"
+                    style={{
+                      top: boxPosition.top,
+                      left: boxPosition.left,
+                      right: boxPosition.right,
+                      transform: boxPosition.transform,
+                      zIndex: 100, // Ensure insight box is on top
+                    }}
+                  />
+
+                  <div style={notesContainerStyle}>
+                    {notesForCurrentStrategy.length > 0 ? (
+                      notesForCurrentStrategy.map((idea, index) => (
+                        <p key={idea.id} className="text-sm text-gray-800 font-roboto-condensed">
+                          {idea.text || `Idea ${index + 1}`}
+                        </p>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
+                    )}
+                  </div>
+                </React.Fragment>
               );
             })}
-
-            {/* Render StaticStickyNotes for Strategy 1 using radarEcoIdeas */}
-            {radarEcoIdeas.length > 0 && (
-              <div className="absolute flex flex-col gap-2" style={staticNotesContainerStyle}>
-                {radarEcoIdeas.map(idea => (
-                  <StaticStickyNote
-                    key={idea.id}
-                    idea={idea}
-                    onTextChange={handleStaticNoteTextChange}
-                    onDragStop={handleStaticNoteDragStop}
-                    onDelete={handleStaticNoteDelete} // NEW: Pass the delete handler
-                  />
-                ))}
-              </div>
-            )}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>

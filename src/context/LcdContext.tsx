@@ -35,8 +35,8 @@ interface LcdContextType {
   setRadarInsights: React.Dispatch<React.SetStateAction<{ [strategyId: string]: string }>>;
   evaluationNotes: EvaluationNote[];
   setEvaluationNotes: React.Dispatch<React.SetStateAction<EvaluationNote[]>>;
-  radarEcoIdeas: EcoIdea[]; // NEW: Add radarEcoIdeas to context type
-  setRadarEcoIdeas: React.Dispatch<React.SetStateAction<EcoIdea[]>>; // NEW: Add setter for radarEcoIdeas
+  radarEcoIdeas: EcoIdea[];
+  setRadarEcoIdeas: React.Dispatch<React.SetStateAction<EcoIdea[]>>;
   resetSection: (section: string) => void;
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
@@ -65,7 +65,7 @@ const initialRadarChartData: RadarChartData = {
 };
 const initialRadarInsights: { [strategyId: string]: string } = {};
 const initialEvaluationNotes: EvaluationNote[] = [];
-const initialRadarEcoIdeas: EcoIdea[] = []; // NEW: Initial state for radar-specific eco-ideas
+const initialRadarEcoIdeas: EcoIdea[] = [];
 
 export const LcdProvider = ({ children }: { ReactNode }) => {
   const [strategies, setStrategies] = useState<Strategy[]>([]);
@@ -76,7 +76,7 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
   const [radarChartData, setRadarChartData] = useState<RadarChartData>(initialRadarChartData);
   const [radarInsights, setRadarInsights] = useState<{ [strategyId: string]: string }>(initialRadarInsights);
   const [evaluationNotes, setEvaluationNotes] = useState<EvaluationNote[]>(initialEvaluationNotes);
-  const [radarEcoIdeas, setRadarEcoIdeas] = useState<EcoIdea[]>(initialRadarEcoIdeas); // NEW: State for radar-specific eco-ideas
+  const [radarEcoIdeas, setRadarEcoIdeas] = useState<EcoIdea[]>(initialRadarEcoIdeas);
 
   useEffect(() => {
     const loadStrategies = async () => {
@@ -102,6 +102,31 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
     };
     loadStrategies();
   }, []);
+
+  // Effect to synchronize radarEcoIdeas with all confirmed ecoIdeas
+  useEffect(() => {
+    const confirmedEcoIdeas = ecoIdeas.filter(
+      (idea) => idea.isConfirmed
+    );
+
+    setRadarEcoIdeas(prevRadarEcoIdeas => {
+      const nextRadarEcoIdeas = [];
+      const prevRadarEcoIdeasMap = new Map(prevRadarEcoIdeas.map(idea => [idea.id, idea]));
+
+      confirmedEcoIdeas.forEach(confirmedIdea => {
+        const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
+        if (existingRadarIdea) {
+          // If the idea already exists in radarEcoIdeas, keep its current state (including edits)
+          nextRadarEcoIdeas.push(existingRadarIdea);
+        } else {
+          // If it's a new confirmed idea, add a deep copy
+          nextRadarEcoIdeas.push({ ...confirmedIdea });
+        }
+      });
+      return nextRadarEcoIdeas;
+    });
+  }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
+
 
   // Helper functions to get strategy/sub-strategy/guideline by ID
   const getStrategyById = (id: string) => strategies.find(s => s.id === id);
@@ -154,7 +179,7 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         });
         setRadarChartData(resetRadar);
         setRadarInsights(resetInsights);
-        setRadarEcoIdeas(initialRadarEcoIdeas); // NEW: Reset radarEcoIdeas
+        setRadarEcoIdeas(initialRadarEcoIdeas);
         break;
       case 'evaluationNotes':
         setEvaluationNotes(initialEvaluationNotes);
@@ -182,8 +207,8 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         setRadarInsights,
         evaluationNotes,
         setEvaluationNotes,
-        radarEcoIdeas, // NEW: Provide radarEcoIdeas
-        setRadarEcoIdeas, // NEW: Provide setRadarEcoIdeas
+        radarEcoIdeas,
+        setRadarEcoIdeas,
         resetSection,
         getStrategyById,
         getSubStrategyById,
