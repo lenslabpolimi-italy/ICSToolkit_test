@@ -54,8 +54,8 @@ const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation 
 
 // Constants for positioning StrategyInsightBoxes
 const BOX_HEIGHT = 80; // h-20 is 80px
+const BOX_WIDTH = 192; // w-48 is 192px
 const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
-const NOTE_WIDTH = 192; // w-48
 const NOTE_HEIGHT = 100; // min-h-[100px]
 const NOTE_VERTICAL_SPACING = 10; // Space between stacked notes
 const RADAR_CONTAINER_WIDTH = 1280; // Max width of the radar chart container (max-w-7xl)
@@ -75,10 +75,10 @@ const EvaluationRadar: React.FC = () => {
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
-    1: 'Poor',
-    2: 'Mediocre',
-    3: 'Good',
-    4: 'Excellent',
+    'Poor': 1,
+    'Mediocre': 2,
+    'Good': 3,
+    'Excellent': 4,
     'N/A': 0, // N/A will be treated as 0 or not shown
     'Yes': 4,
     'Partially': 2.5,
@@ -168,27 +168,38 @@ const EvaluationRadar: React.FC = () => {
           let initialY = 0;
 
           if (strategyBoxPos) {
-            const radarContainerWidth = RADAR_CONTAINER_WIDTH; // Use the constant
+            const radarContainerWidth = RADAR_CONTAINER_WIDTH;
+
+            // Calculate the actual pixel 'left' position of the StrategyInsightBox
+            let strategyBoxLeftPx = 0;
+            if (strategyBoxPos.left === '50%' && strategyBoxPos.transform?.includes('translateX(-50%)')) {
+              strategyBoxLeftPx = (radarContainerWidth / 2) - (BOX_WIDTH / 2);
+            } else if (typeof strategyBoxPos.left === 'string' && strategyBoxPos.left.startsWith('calc')) {
+              // e.g., 'calc(75% + 20px)'
+              const percentMatch = strategyBoxPos.left.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
+              if (percentMatch) {
+                const percent = parseFloat(percentMatch[1]) / 100;
+                const pxOffset = parseFloat(percentMatch[2]);
+                strategyBoxLeftPx = (percent * radarContainerWidth) + pxOffset;
+              }
+            } else if (typeof strategyBoxPos.right === 'string' && strategyBoxPos.right.startsWith('calc')) {
+              // e.g., 'calc(75% + 20px)'
+              const percentMatch = strategyBoxPos.right.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
+              if (percentMatch) {
+                const percent = parseFloat(percentMatch[1]) / 100;
+                const pxOffset = parseFloat(percentMatch[2]);
+                const rightEdgePx = (percent * radarContainerWidth) + pxOffset;
+                strategyBoxLeftPx = radarContainerWidth - rightEdgePx - BOX_WIDTH;
+              }
+            } else if (typeof strategyBoxPos.left === 'number') {
+                strategyBoxLeftPx = strategyBoxPos.left;
+            }
+
+            // Set initialX for the sticky note to align with the strategy box's left edge
+            initialX = strategyBoxLeftPx;
 
             // Base Y position is below the strategy box
             initialY = (parseFloat(strategyBoxPos.top as string || '0') || 0) + BOX_HEIGHT + IDEAS_BOX_MARGIN_TOP;
-
-            // Calculate X based on left/right/transform
-            if (strategyBoxPos.left) {
-              const leftVal = parseFloat(strategyBoxPos.left as string || '0');
-              if (strategyBoxPos.transform?.includes('translateX(-50%)')) {
-                // Centered box (Strategy 1)
-                initialX = (radarContainerWidth / 2) - (NOTE_WIDTH / 2);
-              } else {
-                // Right side boxes (Strategies 2,3,4)
-                // 'calc(75% + 20px)' -> 0.75 * radarContainerWidth + 20
-                initialX = (0.75 * radarContainerWidth) + 20;
-              }
-            } else if (strategyBoxPos.right) {
-              // Left side boxes (Strategies 5,6,7)
-              // 'calc(75% + 20px)' from right -> 0.25 * radarContainerWidth - 20 - NOTE_WIDTH
-              initialX = (0.25 * radarContainerWidth) - 20 - NOTE_WIDTH;
-            }
           }
 
           // Stack notes vertically if multiple for the same strategy
