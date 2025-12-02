@@ -79,8 +79,8 @@ const EvaluationRadar: React.FC = () => {
     radarInsights,
     radarEcoIdeas,
     setRadarEcoIdeas,
-    updateEcoIdea, // NEW
-    deleteEcoIdea, // NEW
+    updateEcoIdea,
+    deleteEcoIdea,
   } = useLcd();
 
   // Map EvaluationLevel to a numerical score for the radar chart
@@ -159,7 +159,7 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // NEW: Handlers for radarEcoIdeas
+  // Handlers for radarEcoIdeas
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
     setRadarEcoIdeas(prev =>
       prev.map(note => (note.id === id ? { ...note, x, y } : note))
@@ -261,7 +261,7 @@ const EvaluationRadar: React.FC = () => {
                 borderRadius: '8px',
                 padding: '8px',
                 // Removed overflowY: 'auto' as StickyNotes are absolute and draggable
-                backgroundColor: 'white', // White background for the box
+                backgroundColor: 'transparent', // Changed to transparent
                 zIndex: 90,
                 // Removed flex properties as StickyNotes handle their own positioning
               };
