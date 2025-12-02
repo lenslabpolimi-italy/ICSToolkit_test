@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react'; // Import useRef
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -58,7 +58,7 @@ const BOX_WIDTH = 192; // w-48 is 192px
 const IDEAS_BOX_MARGIN_TOP = 16; // Margin between Strategy 1 box and ideas box
 const NOTE_HEIGHT = 100; // min-h-[100px]
 const NOTE_VERTICAL_SPACING = 10; // Space between stacked notes
-const RADAR_CONTAINER_WIDTH = 1280; // Max width of the radar chart container (max-w-7xl)
+// Removed RADAR_CONTAINER_WIDTH constant as it will be dynamic
 
 const insightBoxPositions: { [key: string]: React.CSSProperties } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
@@ -72,6 +72,7 @@ const insightBoxPositions: { [key: string]: React.CSSProperties } = {
 
 const EvaluationRadar: React.FC = () => {
   const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, ecoIdeas, radarEcoIdeas, setRadarEcoIdeas } = useLcd();
+  const radarContainerRef = useRef<HTMLDivElement>(null); // Add ref here
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -155,6 +156,9 @@ const EvaluationRadar: React.FC = () => {
       // Temporary map to track how many notes have been placed for each strategy
       const strategyNoteCounts: { [key: string]: number } = {};
 
+      // Get the actual width of the radar container at runtime
+      const radarContainerWidth = radarContainerRef.current?.offsetWidth || 1280; // Fallback to 1280px
+
       allConfirmedEcoIdeas.forEach(confirmedIdea => {
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
         if (existingRadarIdea) {
@@ -168,14 +172,10 @@ const EvaluationRadar: React.FC = () => {
           let initialY = 0;
 
           if (strategyBoxPos) {
-            const radarContainerWidth = RADAR_CONTAINER_WIDTH;
-
-            // Calculate the actual pixel 'left' position of the StrategyInsightBox
             let strategyBoxLeftPx = 0;
             if (strategyBoxPos.left === '50%' && strategyBoxPos.transform?.includes('translateX(-50%)')) {
               strategyBoxLeftPx = (radarContainerWidth / 2) - (BOX_WIDTH / 2);
             } else if (typeof strategyBoxPos.left === 'string' && strategyBoxPos.left.startsWith('calc')) {
-              // e.g., 'calc(75% + 20px)'
               const percentMatch = strategyBoxPos.left.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
               if (percentMatch) {
                 const percent = parseFloat(percentMatch[1]) / 100;
@@ -183,7 +183,6 @@ const EvaluationRadar: React.FC = () => {
                 strategyBoxLeftPx = (percent * radarContainerWidth) + pxOffset;
               }
             } else if (typeof strategyBoxPos.right === 'string' && strategyBoxPos.right.startsWith('calc')) {
-              // e.g., 'calc(75% + 20px)'
               const percentMatch = strategyBoxPos.right.match(/calc\((\d+)%\s*\+\s*(\d+)px\)/);
               if (percentMatch) {
                 const percent = parseFloat(percentMatch[1]) / 100;
@@ -219,7 +218,7 @@ const EvaluationRadar: React.FC = () => {
       const confirmedIds = new Set(allConfirmedEcoIdeas.map(idea => idea.id));
       return nextRadarEcoIdeas.filter(idea => confirmedIds.has(idea.id));
     });
-  }, [ecoIdeas, setRadarEcoIdeas, strategies]); // Add strategies to dependencies
+  }, [ecoIdeas, setRadarEcoIdeas, strategies, radarContainerRef.current?.offsetWidth]); // Add ref dependency here
 
   const data = strategies.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
@@ -258,7 +257,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div ref={radarContainerRef} className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
         {strategies.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
