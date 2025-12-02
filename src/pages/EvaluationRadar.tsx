@@ -231,9 +231,12 @@ const EvaluationRadar: React.FC = () => {
                   <div style={notesContainerStyle}>
                     {notesForCurrentStrategy.length > 0 ? (
                       notesForCurrentStrategy.map((idea, index) => (
-                        <p key={idea.id} className="text-sm text-gray-800 font-roboto-condensed">
+                        <div
+                          key={idea.id}
+                          className="p-2 rounded-md shadow-sm border bg-yellow-400 text-gray-900 border-yellow-500 text-sm font-roboto-condensed"
+                        >
                           {idea.text || `Idea ${index + 1}`}
-                        </p>
+                        </div>
                       ))
                     ) : (
                       <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
