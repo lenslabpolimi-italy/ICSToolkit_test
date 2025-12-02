@@ -37,8 +37,6 @@ interface LcdContextType {
   setEvaluationNotes: React.Dispatch<React.SetStateAction<EvaluationNote[]>>;
   radarEcoIdeas: EcoIdea[];
   setRadarEcoIdeas: React.Dispatch<React.SetStateAction<EcoIdea[]>>;
-  updateRadarEcoIdeaText: (id: string, newText: string) => void;
-  updateRadarEcoIdeaPosition: (id: string, x: number, y: number) => void;
   resetSection: (section: string) => void;
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
@@ -118,30 +116,17 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
       confirmedEcoIdeas.forEach(confirmedIdea => {
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
         if (existingRadarIdea) {
-          // If the idea already exists in radarEcoIdeas, keep its current state (including edits and position)
+          // If the idea already exists in radarEcoIdeas, keep its current state (including edits)
           nextRadarEcoIdeas.push(existingRadarIdea);
         } else {
-          // If it's a new confirmed idea, add a deep copy with default position (0,0 to signal it needs initial placement)
-          nextRadarEcoIdeas.push({ ...confirmedIdea, x: 0, y: 0 });
+          // If it's a new confirmed idea, add a deep copy
+          nextRadarEcoIdeas.push({ ...confirmedIdea });
         }
       });
       return nextRadarEcoIdeas;
     });
   }, [ecoIdeas, setRadarEcoIdeas]); // Re-run when original ecoIdeas change
 
-  // Function to update the text of an eco-idea specifically in the radarEcoIdeas state
-  const updateRadarEcoIdeaText = (id: string, newText: string) => {
-    setRadarEcoIdeas(prev =>
-      prev.map(idea => (idea.id === id ? { ...idea, text: newText } : idea))
-    );
-  };
-
-  // Function to update the position of an eco-idea specifically in the radarEcoIdeas state
-  const updateRadarEcoIdeaPosition = (id: string, x: number, y: number) => {
-    setRadarEcoIdeas(prev =>
-      prev.map(idea => (idea.id === id ? { ...idea, x, y } : idea))
-    );
-  };
 
   // Helper functions to get strategy/sub-strategy/guideline by ID
   const getStrategyById = (id: string) => strategies.find(s => s.id === id);
@@ -193,8 +178,8 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
           resetInsights[strategy.id] = '';
         });
         setRadarChartData(resetRadar);
-        setRadarInsights(initialRadarInsights); // Reset insights to initial empty state
-        setRadarEcoIdeas(initialRadarEcoIdeas); // Reset radar-specific eco-ideas
+        setRadarInsights(resetInsights);
+        setRadarEcoIdeas(initialRadarEcoIdeas);
         break;
       case 'evaluationNotes':
         setEvaluationNotes(initialEvaluationNotes);
@@ -224,8 +209,6 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         setEvaluationNotes,
         radarEcoIdeas,
         setRadarEcoIdeas,
-        updateRadarEcoIdeaText,
-        updateRadarEcoIdeaPosition,
         resetSection,
         getStrategyById,
         getSubStrategyById,
