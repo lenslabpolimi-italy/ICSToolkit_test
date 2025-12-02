@@ -9,7 +9,7 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import RadarStickyNote from '@/components/RadarStickyNote'; // NEW: Import RadarStickyNote
+import RadarStickyNote from '@/components/RadarStickyNote';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -69,7 +69,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText } = useLcd(); // NEW: Destructure updateRadarEcoIdeaText
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText, updateRadarEcoIdeaPosition } = useLcd(); // NEW: Destructure updateRadarEcoIdeaPosition
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -232,11 +232,14 @@ const EvaluationRadar: React.FC = () => {
                   <div style={notesContainerStyle}>
                     {notesForCurrentStrategy.length > 0 ? (
                       notesForCurrentStrategy.map((idea) => (
-                        <RadarStickyNote // NEW: Use RadarStickyNote component
+                        <RadarStickyNote
                           key={idea.id}
                           id={idea.id}
+                          x={idea.x} // Pass x position
+                          y={idea.y} // Pass y position
                           text={idea.text}
-                          onTextChange={updateRadarEcoIdeaText} // NEW: Pass the update function
+                          onTextChange={updateRadarEcoIdeaText}
+                          onDragStop={updateRadarEcoIdeaPosition} // Pass the new drag handler
                         />
                       ))
                     ) : (
