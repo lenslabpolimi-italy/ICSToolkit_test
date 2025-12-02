@@ -38,7 +38,7 @@ interface LcdContextType {
   radarEcoIdeas: EcoIdea[];
   setRadarEcoIdeas: React.Dispatch<React.SetStateAction<EcoIdea[]>>;
   updateRadarEcoIdeaText: (id: string, newText: string) => void;
-  updateRadarEcoIdeaPosition: (id: string, x: number, y: number) => void; // NEW: Function to update position
+  updateRadarEcoIdeaPosition: (id: string, x: number, y: number) => void;
   resetSection: (section: string) => void;
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
@@ -121,8 +121,8 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
           // If the idea already exists in radarEcoIdeas, keep its current state (including edits and position)
           nextRadarEcoIdeas.push(existingRadarIdea);
         } else {
-          // If it's a new confirmed idea, add a deep copy with default position
-          nextRadarEcoIdeas.push({ ...confirmedIdea, x: 20, y: 20 }); // Default position for new radar notes
+          // If it's a new confirmed idea, add a deep copy with default position (0,0 to signal it needs initial placement)
+          nextRadarEcoIdeas.push({ ...confirmedIdea, x: 0, y: 0 });
         }
       });
       return nextRadarEcoIdeas;
@@ -136,7 +136,7 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
     );
   };
 
-  // NEW: Function to update the position of an eco-idea specifically in the radarEcoIdeas state
+  // Function to update the position of an eco-idea specifically in the radarEcoIdeas state
   const updateRadarEcoIdeaPosition = (id: string, x: number, y: number) => {
     setRadarEcoIdeas(prev =>
       prev.map(idea => (idea.id === id ? { ...idea, x, y } : idea))
@@ -225,7 +225,7 @@ export const LcdProvider = ({ children }: { ReactNode }) => {
         radarEcoIdeas,
         setRadarEcoIdeas,
         updateRadarEcoIdeaText,
-        updateRadarEcoIdeaPosition, // NEW: Add to context value
+        updateRadarEcoIdeaPosition,
         resetSection,
         getStrategyById,
         getSubStrategyById,

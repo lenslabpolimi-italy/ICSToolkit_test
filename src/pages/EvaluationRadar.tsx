@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -69,7 +69,10 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const EvaluationRadar: React.FC = () => {
-  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText, updateRadarEcoIdeaPosition } = useLcd(); // NEW: Destructure updateRadarEcoIdeaPosition
+  const { strategies, evaluationChecklists, setRadarChartData, radarChartData, qualitativeEvaluation, radarInsights, radarEcoIdeas, updateRadarEcoIdeaText, updateRadarEcoIdeaPosition } = useLcd();
+
+  const mainContainerRef = useRef<HTMLDivElement>(null);
+  const notesContainerRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -148,7 +151,7 @@ const EvaluationRadar: React.FC = () => {
   }));
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
+    <div ref={mainContainerRef} className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
@@ -187,12 +190,10 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {/* Render StrategyInsightBoxes and their associated notes containers (visual guides) */}
             {strategies.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
-
-              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
 
               // Calculate the position for the notes container
               const notesContainerStyle: React.CSSProperties = {
@@ -228,21 +229,13 @@ const EvaluationRadar: React.FC = () => {
                       zIndex: 100, // Ensure insight box is on top
                     }}
                   />
-
-                  <div style={notesContainerStyle}>
-                    {notesForCurrentStrategy.length > 0 ? (
-                      notesForCurrentStrategy.map((idea) => (
-                        <RadarStickyNote
-                          key={idea.id}
-                          id={idea.id}
-                          x={idea.x} // Pass x position
-                          y={idea.y} // Pass y position
-                          text={idea.text}
-                          onTextChange={updateRadarEcoIdeaText}
-                          onDragStop={updateRadarEcoIdeaPosition} // Pass the new drag handler
-                        />
-                      ))
-                    ) : (
+                  {/* This div acts as a visual placeholder for where notes initially appear */}
+                  <div
+                    ref={el => notesContainerRefs.current[strategy.id] = el}
+                    style={notesContainerStyle}
+                  >
+                    {/* Only show "No confirmed ideas yet." if there are no notes for this strategy */}
+                    {!radarEcoIdeas.some(idea => idea.strategyId === strategy.id) && (
                       <p className="text-sm text-gray-500 italic font-roboto-condensed">No confirmed ideas yet.</p>
                     )}
                   </div>
@@ -254,6 +247,36 @@ const EvaluationRadar: React.FC = () => {
           <p className="text-app-body-text">Loading strategies...</p>
         )}
       </div>
+
+      {/* Render RadarStickyNotes directly within the main container, calculating initial position */}
+      {radarEcoIdeas.length > 0 && radarEcoIdeas.map((idea) => {
+        let initialX = idea.x;
+        let initialY = idea.y;
+
+        // If it's a newly added note (x,y are default 0,0), calculate its initial position
+        if (idea.x === 0 && idea.y === 0) {
+          const targetContainer = notesContainerRefs.current[idea.strategyId];
+          const mainContainer = mainContainerRef.current;
+          if (targetContainer && mainContainer) {
+            const targetRect = targetContainer.getBoundingClientRect();
+            const mainRect = mainContainer.getBoundingClientRect();
+            initialX = targetRect.left - mainRect.left + 8; // +8 for padding
+            initialY = targetRect.top - mainRect.top + 8; // +8 for padding
+          }
+        }
+
+        return (
+          <RadarStickyNote
+            key={idea.id}
+            id={idea.id}
+            x={initialX}
+            y={initialY}
+            text={idea.text}
+            onTextChange={updateRadarEcoIdeaText}
+            onDragStop={updateRadarEcoIdeaPosition}
+          />
+        );
+      })}
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
       <div className="mt-12 pt-8 border-t border-gray-200">
