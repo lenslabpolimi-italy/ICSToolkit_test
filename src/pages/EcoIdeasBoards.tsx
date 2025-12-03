@@ -24,12 +24,16 @@ const EcoIdeasBoards: React.FC = () => {
   }, [strategies, selectedStrategyId]);
 
   const addStickyNote = () => {
+    // Generate random offsets for x and y to prevent overlapping
+    const offsetX = Math.floor(Math.random() * 100); // Max 100px offset
+    const offsetY = Math.floor(Math.random() * 100); // Max 100px offset
+
     const newNote: EcoIdea = {
       id: `eco-note-${Date.now()}`,
       text: '',
       strategyId: selectedStrategyId,
-      x: 20, // Initial X position relative to the Eco-Ideas board
-      y: 20, // Initial Y position relative to the Eco-Ideas board
+      x: 20 + offsetX, // Initial X position relative to the Eco-Ideas board with offset
+      y: 20 + offsetY, // Initial Y position relative to the Eco-Ideas board with offset
       isConfirmed: false,
     };
     setEcoIdeas(prev => [...prev, newNote]);
