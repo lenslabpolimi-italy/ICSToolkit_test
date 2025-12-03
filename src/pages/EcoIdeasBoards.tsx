@@ -25,8 +25,9 @@ const EcoIdeasBoards: React.FC = () => {
 
   const addStickyNote = () => {
     // Generate random offsets for x and y to prevent overlapping
-    const offsetX = Math.floor(Math.random() * 100); // Max 100px offset
-    const offsetY = Math.floor(Math.random() * 100); // Max 100px offset
+    // Increased max offset to 200px for better separation
+    const offsetX = Math.floor(Math.random() * 200); 
+    const offsetY = Math.floor(Math.random() * 200); 
 
     const newNote: EcoIdea = {
       id: `eco-note-${Date.now()}`,
