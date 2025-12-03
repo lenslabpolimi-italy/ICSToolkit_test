@@ -313,6 +313,11 @@ const EvaluationRadar: React.FC = () => {
         )}
       </div>
 
+      {/* Placeholder for Strategy Insights to maintain space */}
+      <div className="mt-48 pt-8">
+        {/* Content removed to keep space */}
+      </div>
+
       {/* Manual Legend for Concept A and B */}
       <div className="flex justify-center gap-8 mt-12 mb-8 text-app-body-text font-roboto-condensed">
         <div className="flex items-center gap-2">
@@ -323,11 +328,6 @@ const EvaluationRadar: React.FC = () => {
           <span className="w-4 h-4 block rounded-full" style={{ backgroundColor: 'var(--app-concept-b-light)', border: '1px solid var(--app-concept-b-dark)' }}></span>
           <span>Concept B</span>
         </div>
-      </div>
-
-      {/* Placeholder for Strategy Insights to maintain space */}
-      <div className="mt-48 pt-8">
-        {/* Content removed to keep space */}
       </div>
 
       <WipeContentButton sectionKey="radarChart" />
