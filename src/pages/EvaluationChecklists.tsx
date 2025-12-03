@@ -227,7 +227,7 @@ const EvaluationChecklists: React.FC = () => {
   const renderNotesArea = () => {
     return (
       <div className={cn(
-        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8"
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8" // Removed sticky, added mt-8
       )}>
         <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">
           Evaluation Notes for Concept {selectedConcept}
@@ -258,16 +258,16 @@ const EvaluationChecklists: React.FC = () => {
         Evaluate how much each strategy, sub-strategy, and guideline has been pursued for Concept {selectedConcept}.
       </p>
 
-      {/* Completion Bar - Moved here */}
+      {/* Completion Bar */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2"> {/* Changed justify-between to items-center gap-2 */}
           <span>Completion Progress</span>
           <span>{completionPercentage}%</span>
         </div>
         <CustomProgress value={completionPercentage} className="w-full h-2 bg-gray-200" />
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         {/* Checklist Level Selector */}
         <div className="flex items-center gap-4">
           <h3 className="text-xl font-palanquin font-semibold text-app-header">Checklist Level:</h3>
@@ -303,9 +303,6 @@ const EvaluationChecklists: React.FC = () => {
           </Select>
         </div>
       </div>
-
-      {/* Orange horizontal bar */}
-      <div className="w-full h-1 bg-orange-500 my-4"></div>
 
       {currentChecklistLevel === 'Simplified' ? (
         <div className="space-y-8 pt-4">
@@ -451,7 +448,7 @@ const EvaluationChecklists: React.FC = () => {
 
       {/* Floating Add Note Button */}
       <FloatingAddNoteButton
-        onClick={() => setIsAddNoteDialogOpen(true)}
+        onClick={() => setIsAddNoteDialogOpen(true)} // Open the dialog on click
         conceptType={selectedConcept}
         disabled={!selectedStrategyTab}
       />
@@ -460,7 +457,7 @@ const EvaluationChecklists: React.FC = () => {
       <AddNoteDialog
         isOpen={isAddNoteDialogOpen}
         onClose={() => setIsAddNoteDialogOpen(false)}
-        onSave={addEvaluationNote}
+        onSave={addEvaluationNote} // Pass the updated addEvaluationNote function
         conceptType={selectedConcept}
         strategyId={selectedStrategyTab}
       />
