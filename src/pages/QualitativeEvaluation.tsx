@@ -187,6 +187,10 @@ const QualitativeEvaluation: React.FC = () => {
         </TabsList>
         {strategiesForQualitativeEvaluation.map((strategy) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
+            {/* Orange line at the top of the first strategy */}
+            {strategy.id === strategiesForQualitativeEvaluation[0]?.id && (
+              <div className="w-full h-1 bg-app-accent mb-8 -mt-4" />
+            )}
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                 {strategy.id}. {strategy.name}
