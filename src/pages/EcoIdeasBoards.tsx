@@ -60,11 +60,19 @@ const EcoIdeasBoards: React.FC = () => {
 
   const handleEcoIdeaConfirmToggle = (id: string) => {
     setEcoIdeas(prev =>
-      prev.map(note =>
-        note.id === id ? { ...note, isConfirmed: !note.isConfirmed } : note
-      )
+      prev.map(note => {
+        if (note.id === id) {
+          const newConfirmedStatus = !note.isConfirmed;
+          if (newConfirmedStatus) {
+            toast.success("Promising idea added to the radar");
+          } else {
+            toast.info("Eco-idea unconfirmed.");
+          }
+          return { ...note, isConfirmed: newConfirmedStatus };
+        }
+        return note;
+      })
     );
-    toast.info("Eco-idea confirmation status updated!");
   };
 
   const handleEvaluationNoteDragStop = (id: string, x: number, y: number) => {
