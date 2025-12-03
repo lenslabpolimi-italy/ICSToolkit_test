@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts'; // Removed Legend from import
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 import { EvaluationLevel, Strategy } from '@/types/lcd';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -59,12 +59,13 @@ const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and no
 const NOTES_BOX_WIDTH = '192px'; // w-48
 const NOTES_BOX_HEIGHT = '144px'; // h-36
 
-// Adjusted positions for the 5 strategies around the radar (Strategy 4 will be handled separately)
+// Adjusted positions for the 6 strategies around the radar
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
-  '1': { top: -40, left: '50%', transform: 'translateX(-50%)' }, // Top center, slightly above radar
-  '2': { top: 80, left: 'calc(75% + 20px)' }, // Top-right
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
+  '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
   '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
-  '6': { top: 80, right: 'calc(75% + 20px)' }, // Top-left
+  '4': { top: 480, left: '50%', transform: 'translateX(-50%)' }, // Moved up to be above the legend
+  '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
   '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
 
@@ -215,155 +216,97 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      {/* Main container for radar, strategy boxes, notes, and legend */}
-      <div className="relative max-w-7xl mx-auto flex flex-col items-center mt-12"> {/* Adjusted top margin */}
-        {strategiesForRadar.length > 0 ? (
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+        {strategiesForRadar.length > 0 ? ( // Use strategiesForRadar here
           <>
-            {/* Radar Chart Area (fixed height) */}
-            <div className="relative w-full h-[600px]"> {/* Fixed height for the radar chart and its surrounding boxes */}
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-                  <PolarGrid stroke="#e0e0e0" />
-                  <PolarAngleAxis
-                    dataKey="strategyName"
-                    tick={(props) => (
-                      <CustomAngleAxisTick
-                        {...props}
-                        strategies={strategiesForRadar}
-                        qualitativeEvaluation={qualitativeEvaluation}
-                      />
-                    )}
-                  />
-                  <PolarRadiusAxis
-                    angle={90}
-                    domain={[0, 4]}
-                    tickCount={5}
-                    stroke="#333"
-                    tick={CustomRadiusTick}
-                  />
-                  <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
-                  <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-                  {/* Removed <Legend /> from here to manually position it later */}
-                </RadarChart>
-              </ResponsiveContainer>
-
-              {/* Render StrategyInsightBoxes (except Strategy 4) and their associated notes containers */}
-              {strategiesForRadar.map(strategy => {
-                if (strategy.id === '4') return null; // Strategy 4 will be rendered separately below
-
-                const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-                const boxPosition = insightBoxPositions[strategy.id] || {};
-
-                const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
-
-                // Calculate the position for the notes container
-                const notesContainerStyle: React.CSSProperties = {
-                  position: 'absolute',
-                  top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
-                  left: boxPosition.left,
-                  right: boxPosition.right,
-                  transform: boxPosition.transform,
-                  width: NOTES_BOX_WIDTH,
-                  height: NOTES_BOX_HEIGHT,
-                  border: '2px solid var(--app-accent)',
-                  borderRadius: '8px',
-                  padding: '8px',
-                  backgroundColor: 'transparent',
-                  zIndex: 90,
-                };
-
-                return (
-                  <React.Fragment key={strategy.id}>
-                    <StrategyInsightBox
-                      strategy={strategy}
-                      priority={priority}
-                      className="absolute"
-                      style={{
-                        top: boxPosition.top,
-                        left: boxPosition.left,
-                        right: boxPosition.right,
-                        transform: boxPosition.transform,
-                        zIndex: 100,
-                      }}
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+                <PolarGrid stroke="#e0e0e0" />
+                <PolarAngleAxis
+                  dataKey="strategyName"
+                  tick={(props) => (
+                    <CustomAngleAxisTick
+                      {...props}
+                      strategies={strategiesForRadar} // Pass filtered strategies
+                      qualitativeEvaluation={qualitativeEvaluation}
                     />
+                  )}
+                />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 4]}
+                  tickCount={5}
+                  stroke="#333"
+                  tick={CustomRadiusTick}
+                />
+                <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+                <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
 
-                    <div style={notesContainerStyle} className="relative">
-                      {notesForCurrentStrategy.length > 0 ? (
-                        notesForCurrentStrategy.map((idea) => (
-                          <StickyNote
-                            key={idea.id}
-                            id={idea.id}
-                            x={idea.x}
-                            y={idea.y}
-                            text={idea.text}
-                            strategyId={idea.strategyId}
-                            isConfirmed={idea.isConfirmed}
-                            onDragStop={handleRadarEcoIdeaDragStop}
-                            onTextChange={handleRadarEcoIdeaTextChange}
-                            onDelete={handleRadarEcoIdeaDelete}
-                            onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
-                          />
-                        ))
-                      ) : (
-                        <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
-                      )}
-                    </div>
-                  </React.Fragment>
-                );
-              })}
-            </div>
+            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
+              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+              const boxPosition = insightBoxPositions[strategy.id] || {};
 
-            {/* Strategy 4 and its notes, positioned below the radar chart area */}
-            {strategiesForRadar.find(s => s.id === '4') && (
-              <div className="relative w-full flex flex-col items-center mt-8"> {/* Gap after radar */}
-                {strategiesForRadar.filter(s => s.id === '4').map(strategy => {
-                  const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-                  const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
-                  return (
-                    <React.Fragment key={strategy.id}>
-                      <StrategyInsightBox
-                        strategy={strategy}
-                        priority={priority}
-                        className="mb-4" // Small gap after box
-                      />
-                      <div className="relative" style={{ width: NOTES_BOX_WIDTH, height: NOTES_BOX_HEIGHT, border: '2px solid var(--app-accent)', borderRadius: '8px', padding: '8px', backgroundColor: 'transparent', zIndex: 90 }}>
-                        {notesForCurrentStrategy.length > 0 ? (
-                          notesForCurrentStrategy.map((idea) => (
-                            <StickyNote
-                              key={idea.id}
-                              id={idea.id}
-                              x={idea.x}
-                              y={idea.y}
-                              text={idea.text}
-                              strategyId={idea.strategyId}
-                              isConfirmed={idea.isConfirmed}
-                              onDragStop={handleRadarEcoIdeaDragStop}
-                              onTextChange={handleRadarEcoIdeaTextChange}
-                              onDelete={handleRadarEcoIdeaDelete}
-                              onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
-                            />
-                          ))
-                        ) : (
-                          <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
-                        )}
-                      </div>
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-            )}
+              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
 
-            {/* Manual Legend */}
-            <div className="flex justify-center gap-8 mt-8"> {/* Gap after notes */}
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-app-concept-a-light border border-app-concept-a-dark mr-2"></div>
-                <span className="text-app-body-text font-roboto-condensed">Concept A</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-app-concept-b-light border border-app-concept-b-dark mr-2"></div>
-                <span className="text-app-body-text font-roboto-condensed">Concept B</span>
-              </div>
-            </div>
+              // Calculate the position for the notes container
+              const notesContainerStyle: React.CSSProperties = {
+                position: 'absolute',
+                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                left: boxPosition.left,
+                right: boxPosition.right,
+                transform: boxPosition.transform,
+                width: NOTES_BOX_WIDTH,
+                height: NOTES_BOX_HEIGHT,
+                border: '2px solid var(--app-accent)',
+                borderRadius: '8px',
+                padding: '8px',
+                backgroundColor: 'transparent',
+                zIndex: 90,
+              };
+
+              return (
+                <React.Fragment key={strategy.id}>
+                  <StrategyInsightBox
+                    strategy={strategy}
+                    priority={priority}
+                    className="absolute"
+                    style={{
+                      top: boxPosition.top,
+                      left: boxPosition.left,
+                      right: boxPosition.right,
+                      transform: boxPosition.transform,
+                      zIndex: 100,
+                    }}
+                  />
+
+                  <div style={notesContainerStyle} className="relative">
+                    {notesForCurrentStrategy.length > 0 ? (
+                      notesForCurrentStrategy.map((idea) => (
+                        <StickyNote
+                          key={idea.id}
+                          id={idea.id}
+                          x={idea.x}
+                          y={idea.y}
+                          text={idea.text}
+                          strategyId={idea.strategyId}
+                          isConfirmed={idea.isConfirmed}
+                          onDragStop={handleRadarEcoIdeaDragStop}
+                          onTextChange={handleRadarEcoIdeaTextChange}
+                          onDelete={handleRadarEcoIdeaDelete}
+                          onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
+                        />
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
+                    )}
+                  </div>
+                </React.Fragment>
+              );
+            })}
           </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
@@ -371,12 +314,12 @@ const EvaluationRadar: React.FC = () => {
       </div>
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
-      <div className="mt-24 pt-8 border-t border-gray-200"> {/* Increased top margin to push the line down */}
+      <div className="mt-12 pt-8 border-t border-gray-200">
         <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {strategiesForRadar.map(strategy => {
+          {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
             const insightText = radarInsights[strategy.id];
-            if (!insightText) return null;
+            if (!insightText) return null; // Only show cards for strategies with insights
 
             const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
             const { displayText, classes } = getPriorityTagClasses(priority);
