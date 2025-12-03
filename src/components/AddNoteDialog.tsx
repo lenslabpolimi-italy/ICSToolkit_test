@@ -62,7 +62,7 @@ const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ isOpen, onClose, onSave, 
             disabled={!noteText.trim()}
             className={cn("font-roboto-condensed", buttonColorClass)}
           >
-            <Check className="mr-2 h-4 w-4" /> Save Note
+            <Check className="mr-2 h-4 w-4" /> Save
           </Button>
         </DialogFooter>
       </DialogContent>
