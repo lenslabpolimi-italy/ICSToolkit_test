@@ -120,4 +120,9 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-palanquin font-semibold; /* Apply Palanquin Semibold to all headers */
   }
+
+  /* Custom override for Dialog Overlay opacity */
+  .fixed.inset-0.z-50[data-state="open"] {
+    background-color: rgba(0, 0, 0, 0.15) !important; /* 15% transparency */
+  }
 }
