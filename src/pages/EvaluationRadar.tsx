@@ -216,7 +216,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32"> {/* Increased height to h-[700px] */}
+      <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
         {strategiesForRadar.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
@@ -241,7 +241,7 @@ const EvaluationRadar: React.FC = () => {
                 />
                 <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
                 <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-                <Legend />
+                {/* Removed Recharts Legend component */}
               </RadarChart>
             </ResponsiveContainer>
 
@@ -311,6 +311,18 @@ const EvaluationRadar: React.FC = () => {
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
         )}
+      </div>
+
+      {/* Manual Legend for Concept A and B */}
+      <div className="flex justify-center gap-8 mt-12 mb-8 text-app-body-text font-roboto-condensed">
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 block rounded-full" style={{ backgroundColor: 'var(--app-concept-a-light)', border: '1px solid var(--app-concept-a-dark)' }}></span>
+          <span>Concept A</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 block rounded-full" style={{ backgroundColor: 'var(--app-concept-b-light)', border: '1px solid var(--app-concept-b-dark)' }}></span>
+          <span>Concept B</span>
+        </div>
       </div>
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
