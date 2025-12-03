@@ -41,8 +41,8 @@ interface LcdContextType {
   getStrategyById: (id: string) => Strategy | undefined;
   getSubStrategyById: (strategyId: string, subStrategyId: string) => SubStrategy | undefined;
   getGuidelineById: (subStrategyId: string, guidelineId: string) => Guideline | undefined;
-  updateEcoIdea: (id: string, updates: Partial<EcoIdea>) => void; // NEW: Function to update an eco-idea
-  deleteEcoIdea: (id: string) => void; // NEW: Function to delete an eco-idea
+  updateEcoIdea: (id: string, updates: Partial<EcoIdea>) => void;
+  deleteEcoIdea: (id: string) => void;
 }
 
 const LcdContext = createContext<LcdContextType | undefined>(undefined);
@@ -89,10 +89,14 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
       const initialQualitative: QualitativeEvaluationData = {};
       const initialRadar: RadarChartData = { A: {}, B: {} };
       const initialInsights: { [strategyId: string]: string } = {};
-      parsedStrategies.forEach(strategy => {
+
+      // Filter out Strategy 7 for these initializations
+      const strategiesForRadarAndQualitative = parsedStrategies.filter(s => s.id !== '7');
+
+      strategiesForRadarAndQualitative.forEach(strategy => {
         initialQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
         strategy.subStrategies.forEach(sub => {
-          initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' }; // Initialize answer field
+          initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
         });
         initialRadar.A[strategy.id] = 0; // Default to Poor
         initialRadar.B[strategy.id] = 0; // Default to Poor
@@ -105,19 +109,16 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
     loadStrategies();
   }, []);
 
-  // NEW: Function to update an existing eco-idea
   const updateEcoIdea = (id: string, updates: Partial<EcoIdea>) => {
     setEcoIdeas(prev =>
       prev.map(idea => (idea.id === id ? { ...idea, ...updates } : idea))
     );
   };
 
-  // NEW: Function to delete an eco-idea
   const deleteEcoIdea = (id: string) => {
     setEcoIdeas(prev => prev.filter(idea => idea.id !== id));
   };
 
-  // Effect to synchronize radarEcoIdeas with all confirmed ecoIdeas
   useEffect(() => {
     const confirmedEcoIdeas = ecoIdeas.filter(idea => idea.isConfirmed);
 
@@ -126,38 +127,34 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
       const prevRadarEcoIdeasMap = new Map(prevRadarEcoIdeas.map(idea => [idea.id, idea]));
 
       confirmedEcoIdeas.forEach(confirmedIdea => {
+        // Only include confirmed ideas that are not Strategy 7
+        if (confirmedIdea.strategyId === '7') return;
+
         const existingRadarIdea = prevRadarEcoIdeasMap.get(confirmedIdea.id);
         if (existingRadarIdea) {
-          // If the idea already exists in radarEcoIdeas, update its text and confirmation status
-          // but preserve its x, y position on the radar.
           nextRadarEcoIdeas.push({
-            ...existingRadarIdea, // Keep existing x, y
-            text: confirmedIdea.text, // Update text from source
-            isConfirmed: confirmedIdea.isConfirmed, // Update confirmation status from source
+            ...existingRadarIdea,
+            text: confirmedIdea.text,
+            isConfirmed: confirmedIdea.isConfirmed,
           });
         } else {
-          // If it's a new confirmed idea, add a deep copy with default radar positions
           nextRadarEcoIdeas.push({
             ...confirmedIdea,
-            x: 20, // Default X for radar page
-            y: 20, // Default Y for radar page
+            x: 20,
+            y: 20,
           });
         }
       });
       return nextRadarEcoIdeas;
     });
-  }, [ecoIdeas]); // Re-run when original ecoIdeas change
+  }, [ecoIdeas]);
 
-
-  // Helper functions to get strategy/sub-strategy/guideline by ID
   const getStrategyById = (id: string) => strategies.find(s => s.id === id);
   const getSubStrategyById = (strategyId: string, subStrategyId: string) => {
     const strategy = getStrategyById(strategyId);
     return strategy?.subStrategies.find(ss => ss.id === subStrategyId);
   };
   const getGuidelineById = (subStrategyId: string, guidelineId: string) => {
-    // This assumes guidelineId is unique across all guidelines, or at least within a sub-strategy
-    // For now, let's find it by iterating through all sub-strategies
     for (const strategy of strategies) {
       for (const subStrategy of strategy.subStrategies) {
         if (subStrategy.id === subStrategyId) {
@@ -168,7 +165,6 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
     return undefined;
   };
 
-
   const resetSection = (section: string) => {
     switch (section) {
       case 'projectData':
@@ -176,16 +172,17 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
         break;
       case 'qualitativeEvaluation':
         const resetQualitative: QualitativeEvaluationData = {};
-        strategies.forEach(strategy => {
+        // Filter out Strategy 7 for reset
+        strategies.filter(s => s.id !== '7').forEach(strategy => {
           resetQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
           strategy.subStrategies.forEach(sub => {
-            resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' }; // Reset answer field
+            resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
           });
         });
         setQualitativeEvaluation(resetQualitative);
         break;
       case 'ecoIdeas':
-        setEcoIdeas(initialEcoIdeas); // Resets to an empty array, clearing all notes
+        setEcoIdeas(initialEcoIdeas);
         break;
       case 'evaluationChecklists':
         setEvaluationChecklists(initialEvaluationChecklists);
@@ -193,7 +190,8 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
       case 'radarChart':
         const resetRadar: RadarChartData = { A: {}, B: {} };
         const resetInsights: { [strategyId: string]: string } = {};
-        strategies.forEach(strategy => {
+        // Filter out Strategy 7 for reset
+        strategies.filter(s => s.id !== '7').forEach(strategy => {
           resetRadar.A[strategy.id] = 0;
           resetRadar.B[strategy.id] = 0;
           resetInsights[strategy.id] = '';
@@ -234,8 +232,8 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
         getStrategyById,
         getSubStrategyById,
         getGuidelineById,
-        updateEcoIdea, // NEW
-        deleteEcoIdea, // NEW
+        updateEcoIdea,
+        deleteEcoIdea,
       }}
     >
       {children}

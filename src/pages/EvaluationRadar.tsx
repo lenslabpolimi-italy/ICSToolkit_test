@@ -9,8 +9,8 @@ import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lc
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
-import StickyNote from '@/components/StickyNote'; // NEW: Import StickyNote
-import { toast } from 'sonner'; // NEW: Import toast for notifications
+import StickyNote from '@/components/StickyNote';
+import { toast } from 'sonner';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -38,7 +38,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
 
 // Custom tick component for the PolarAngleAxis to display strategy name and priority
 const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation }: any) => {
-  const strategyId = payload.value.split('.')[0]; // Extract strategy ID from "1. Strategy Name"
+  const strategyId = payload.value.split('.')[0];
   const strategy = strategies.find((s: Strategy) => s.id === strategyId);
 
   if (!strategy) return null;
@@ -59,13 +59,13 @@ const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and no
 const NOTES_BOX_WIDTH = '192px'; // w-48
 const NOTES_BOX_HEIGHT = '144px'; // h-36
 
+// Removed Strategy 7 from insightBoxPositions
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
   '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
   '3': { top: 240, left: 'calc(75% + 20px)' },
   '4': { top: 448, left: 'calc(75% + 20px)' },
-  '7': { top: 32, right: 'calc(75% + 20px)' }, // Left side
-  '6': { top: 240, right: 'calc(75% + 20px)' },
+  '6': { top: 240, right: 'calc(75% + 20px)' }, // Moved up from original '7' position
   '5': { top: 448, right: 'calc(75% + 20px)' },
 };
 
@@ -82,6 +82,9 @@ const EvaluationRadar: React.FC = () => {
     updateEcoIdea,
     deleteEcoIdea,
   } = useLcd();
+
+  // Filter strategies to exclude Strategy 7 for radar display
+  const strategiesForRadar = strategies.filter(s => s.id !== '7');
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
@@ -100,7 +103,7 @@ const EvaluationRadar: React.FC = () => {
     const conceptChecklists = evaluationChecklists[concept];
     if (!conceptChecklists) return 0;
 
-    const strategy = strategies.find(s => s.id === strategyId);
+    const strategy = strategies.find(s => s.id === strategyId); // Use original strategies for checklist lookup
     if (!strategy) return 0;
 
     let totalScore = 0;
@@ -141,7 +144,8 @@ const EvaluationRadar: React.FC = () => {
     const newRadarDataA: { [key: string]: number } = {};
     const newRadarDataB: { [key: string]: number } = {};
 
-    strategies.forEach(strategy => {
+    // Calculate averages only for strategies to be displayed on radar
+    strategiesForRadar.forEach(strategy => {
       newRadarDataA[strategy.id] = calculateStrategyAverage('A', strategy.id);
       newRadarDataB[strategy.id] = calculateStrategyAverage('B', strategy.id);
     });
@@ -150,9 +154,9 @@ const EvaluationRadar: React.FC = () => {
       A: newRadarDataA,
       B: newRadarDataB,
     });
-  }, [evaluationChecklists, strategies, setRadarChartData]);
+  }, [evaluationChecklists, strategies, setRadarChartData]); // Depend on original strategies to ensure all checklists are processed
 
-  const data = strategies.map(strategy => ({
+  const data = strategiesForRadar.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
     A: radarChartData.A[strategy.id] || 0,
     B: radarChartData.B[strategy.id] || 0,
@@ -213,7 +217,7 @@ const EvaluationRadar: React.FC = () => {
       </p>
 
       <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
-        {strategies.length > 0 ? (
+        {strategiesForRadar.length > 0 ? ( // Use strategiesForRadar here
           <>
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
@@ -223,7 +227,7 @@ const EvaluationRadar: React.FC = () => {
                   tick={(props) => (
                     <CustomAngleAxisTick
                       {...props}
-                      strategies={strategies}
+                      strategies={strategiesForRadar} // Pass filtered strategies
                       qualitativeEvaluation={qualitativeEvaluation}
                     />
                   )}
@@ -242,7 +246,7 @@ const EvaluationRadar: React.FC = () => {
             </ResponsiveContainer>
 
             {/* Render StrategyInsightBoxes and their associated notes containers */}
-            {strategies.map(strategy => {
+            {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
 
@@ -257,13 +261,11 @@ const EvaluationRadar: React.FC = () => {
                 transform: boxPosition.transform,
                 width: NOTES_BOX_WIDTH,
                 height: NOTES_BOX_HEIGHT,
-                border: '2px solid var(--app-accent)', // Orange border from image
+                border: '2px solid var(--app-accent)',
                 borderRadius: '8px',
                 padding: '8px',
-                // Removed overflowY: 'auto' as StickyNotes are absolute and draggable
-                backgroundColor: 'transparent', // Changed to transparent
+                backgroundColor: 'transparent',
                 zIndex: 90,
-                // Removed flex properties as StickyNotes handle their own positioning
               };
 
               return (
@@ -277,11 +279,11 @@ const EvaluationRadar: React.FC = () => {
                       left: boxPosition.left,
                       right: boxPosition.right,
                       transform: boxPosition.transform,
-                      zIndex: 100, // Ensure insight box is on top
+                      zIndex: 100,
                     }}
                   />
 
-                  <div style={notesContainerStyle} className="relative"> {/* Added relative to container */}
+                  <div style={notesContainerStyle} className="relative">
                     {notesForCurrentStrategy.length > 0 ? (
                       notesForCurrentStrategy.map((idea) => (
                         <StickyNote
@@ -315,7 +317,7 @@ const EvaluationRadar: React.FC = () => {
       <div className="mt-12 pt-8 border-t border-gray-200">
         <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {strategies.map(strategy => {
+          {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
             const insightText = radarInsights[strategy.id];
             if (!insightText) return null; // Only show cards for strategies with insights
 
