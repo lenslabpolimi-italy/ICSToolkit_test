@@ -64,7 +64,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
   '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
   '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
-  '4': { top: 500, left: '50%', transform: 'translateX(-50%)' }, // Adjusted to be above the legend, below radar
+  '4': { top: 400, left: '50%', transform: 'translateX(-50%)' }, // Adjusted to be above the legend, below radar
   '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
   '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
@@ -216,7 +216,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-40"> {/* Changed mt-32 to mt-40 */}
         {strategiesForRadar.length > 0 ? ( // Use strategiesForRadar here
           <>
             <ResponsiveContainer width="100%" height="100%">
