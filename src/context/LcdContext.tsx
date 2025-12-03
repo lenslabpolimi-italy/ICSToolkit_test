@@ -138,10 +138,13 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
             isConfirmed: confirmedIdea.isConfirmed,
           });
         } else {
+          // Apply a small random offset for new ideas
+          const offsetX = Math.floor(Math.random() * 40) - 20; // -20 to +20
+          const offsetY = Math.floor(Math.random() * 40) - 20; // -20 to +20
           nextRadarEcoIdeas.push({
             ...confirmedIdea,
-            x: 20,
-            y: 20,
+            x: 20 + offsetX,
+            y: 20 + offsetY,
           });
         }
       });
