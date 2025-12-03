@@ -314,7 +314,7 @@ const EvaluationRadar: React.FC = () => {
       </div>
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
-      <div className="mt-36 pt-8 border-t border-gray-200">
+      <div className="mt-52 pt-8 border-t border-gray-200"> {/* Changed mt-36 to mt-52 */}
         <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
