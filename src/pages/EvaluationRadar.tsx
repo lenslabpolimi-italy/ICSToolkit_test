@@ -206,7 +206,7 @@ const EvaluationRadar: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[1200px] font-roboto"> {/* Increased min-h to stretch the page */}
+    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[1200px] font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
@@ -217,7 +217,7 @@ const EvaluationRadar: React.FC = () => {
       </p>
 
       <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
-        {strategiesForRadar.length > 0 ? ( // Use strategiesForRadar here
+        {strategiesForRadar.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
@@ -227,7 +227,7 @@ const EvaluationRadar: React.FC = () => {
                   tick={(props) => (
                     <CustomAngleAxisTick
                       {...props}
-                      strategies={strategiesForRadar} // Pass filtered strategies
+                      strategies={strategiesForRadar}
                       qualitativeEvaluation={qualitativeEvaluation}
                     />
                   )}
@@ -246,7 +246,7 @@ const EvaluationRadar: React.FC = () => {
             </ResponsiveContainer>
 
             {/* Render StrategyInsightBoxes and their associated notes containers */}
-            {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
+            {strategiesForRadar.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
 
@@ -314,10 +314,10 @@ const EvaluationRadar: React.FC = () => {
       </div>
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
-      <div className="mt-48 pt-8 border-t border-gray-200"> {/* Increased mt-12 to mt-48 */}
+      <div className="mt-48 pt-8">
         <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
+          {strategiesForRadar.map(strategy => {
             const insightText = radarInsights[strategy.id];
             if (!insightText) return null; // Only show cards for strategies with insights
 
