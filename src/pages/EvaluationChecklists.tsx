@@ -73,7 +73,7 @@ const EvaluationChecklists: React.FC = () => {
         const strategyId = id.split('.')[0];
         const strategy = allStrategies.find(s => s.id === strategyId);
         if (strategy) {
-          const subStrategyEvals = strategy.subStrategy.map(ss => {
+          const subStrategyEvals = strategy.subStrategies.map(ss => {
             if (conceptData.level === 'Detailed' && (ss.id === '7.7' || ss.id === '7.8')) {
               return conceptData.subStrategies[ss.id] || 'N/A';
             }
@@ -295,7 +295,7 @@ const EvaluationChecklists: React.FC = () => {
         </div>
       </div>
 
-      {/* Completion Bar - Moved here */}
+      {/* Completion Bar */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <span>Completion Progress</span>
@@ -309,7 +309,7 @@ const EvaluationChecklists: React.FC = () => {
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
-              <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+              <div key={strategy.id} className="border-t pt-6 first:pt-0"> {/* Removed first:border-t-0 */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -349,7 +349,7 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
 
             return (
-              <div key={strategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+              <div key={strategy.id} className="border-t pt-6 first:pt-0"> {/* Removed first:border-t-0 */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
