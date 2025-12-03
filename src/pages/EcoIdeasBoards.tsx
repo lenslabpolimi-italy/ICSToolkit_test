@@ -151,25 +151,6 @@ const EcoIdeasBoards: React.FC = () => {
                     </ul>
                   </div>
                 ))}
-
-                {/* Display Eco-Ideas for the current strategy */}
-                {filteredEcoIdeas.length > 0 && (
-                  <div className="mt-8 pt-4 border-t border-gray-200">
-                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-4">Eco-Ideas for this Strategy:</h4>
-                    <div className="space-y-4">
-                      {filteredEcoIdeas.map(idea => (
-                        <Card key={idea.id} className={cn(
-                          "p-3 shadow-sm",
-                          idea.isConfirmed ? "bg-yellow-100 border-yellow-300" : "bg-gray-100 border-gray-200"
-                        )}>
-                          <CardContent className="p-0 text-sm font-roboto-condensed text-gray-800">
-                            {idea.text || "Empty idea note"}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Right Column for Eco-Ideas Board */}
