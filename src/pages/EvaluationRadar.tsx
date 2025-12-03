@@ -64,7 +64,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
   '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
   '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
-  '4': { top: 480, left: '50%', transform: 'translateX(-50%)' }, // Moved up to be above the legend
+  '4': { top: 600, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, moved down to avoid overlap
   '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
   '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
