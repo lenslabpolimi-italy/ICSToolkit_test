@@ -73,7 +73,7 @@ const EvaluationChecklists: React.FC = () => {
         const strategyId = id.split('.')[0];
         const strategy = allStrategies.find(s => s.id === strategyId);
         if (strategy) {
-          const subStrategyEvals = strategy.subStrategies.map(ss => {
+          const subStrategyEvals = strategy.subStrategy.map(ss => {
             if (conceptData.level === 'Detailed' && (ss.id === '7.7' || ss.id === '7.8')) {
               return conceptData.subStrategies[ss.id] || 'N/A';
             }
@@ -294,9 +294,6 @@ const EvaluationChecklists: React.FC = () => {
           </Select>
         </div>
       </div>
-
-      {/* Orange horizontal bar */}
-      <div className="w-full h-1 bg-orange-500 my-4"></div>
 
       {/* Completion Bar - Moved here */}
       <div className="mb-8">
