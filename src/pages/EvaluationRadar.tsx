@@ -59,14 +59,14 @@ const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and no
 const NOTES_BOX_WIDTH = '192px'; // w-48
 const NOTES_BOX_HEIGHT = '144px'; // h-36
 
-// Removed Strategy 7 from insightBoxPositions
+// Adjusted positions for the 6 strategies around the radar
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
-  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' },
-  '2': { top: 32, left: 'calc(75% + 20px)' }, // Right side
-  '3': { top: 240, left: 'calc(75% + 20px)' },
-  '4': { top: 448, left: 'calc(75% + 20px)' },
-  '6': { top: 240, right: 'calc(75% + 20px)' }, // Moved up from original '7' position
-  '5': { top: 448, right: 'calc(75% + 20px)' },
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
+  '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
+  '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
+  '4': { top: 600, left: '50%', transform: 'translateX(-50%)' }, // Bottom center
+  '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
+  '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
 
 const EvaluationRadar: React.FC = () => {
