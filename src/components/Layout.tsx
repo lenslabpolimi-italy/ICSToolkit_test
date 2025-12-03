@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-app-page-background text-app-body-text font-roboto">
-      <header className="bg-white text-app-header p-4 shadow-md">
+      <header className="bg-white text-app-header p-4 shadow-md sticky top-0 z-50">
         <div className="container mx-auto flex flex-col md:flex-row items-center md:justify-between">
           {/* LeNSlab Logo */}
           <div className="flex items-center mb-2 md:mb-0">
