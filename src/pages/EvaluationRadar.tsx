@@ -61,12 +61,12 @@ const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 // Adjusted positions for the 6 strategies around the radar
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
-  '1': { top: -4, left: '50%', transform: 'translateX(-50%)' }, // Top center (-104 + 100)
-  '2': { top: 200, left: 'calc(75% + 20px)' }, // Top-right (100 + 100)
-  '3': { top: 500, left: 'calc(75% + 20px)' }, // Bottom-right (400 + 100)
-  '4': { top: 400, left: '50%', transform: 'translateX(-50%)' }, // Adjusted to be above the legend, below radar (300 + 100)
-  '6': { top: 200, right: 'calc(75% + 20px)' }, // Top-left (100 + 100)
-  '5': { top: 500, right: 'calc(75% + 20px)' }, // Bottom-left (400 + 100)
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
+  '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
+  '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
+  '4': { top: 600, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, moved down to avoid overlap
+  '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
+  '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
 
 const EvaluationRadar: React.FC = () => {
@@ -216,7 +216,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-52">
+      <div className="relative max-w-7xl mx-auto h-[600px] flex justify-center items-center mt-32">
         {strategiesForRadar.length > 0 ? ( // Use strategiesForRadar here
           <>
             <ResponsiveContainer width="100%" height="100%">
@@ -314,7 +314,7 @@ const EvaluationRadar: React.FC = () => {
       </div>
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
-      <div className="mt-52 pt-8 border-t border-gray-200"> {/* Changed mt-36 to mt-52 */}
+      <div className="mt-12 pt-8 border-t border-gray-200">
         <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
