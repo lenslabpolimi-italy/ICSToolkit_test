@@ -325,37 +325,9 @@ const EvaluationRadar: React.FC = () => {
         </div>
       </div>
 
-      {/* Display Strategy Insights as static text (kept from previous step) */}
+      {/* Placeholder for Strategy Insights to maintain space */}
       <div className="mt-48 pt-8">
-        <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {strategiesForRadar.map(strategy => {
-            const insightText = radarInsights[strategy.id];
-            if (!insightText) return null; // Only show cards for strategies with insights
-
-            const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
-            const { displayText, classes } = getPriorityTagClasses(priority);
-
-            return (
-              <Card key={strategy.id} className="shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-palanquin font-semibold text-app-header flex items-center gap-2">
-                    <span className={cn(
-                      "text-xs font-roboto-condensed px-1 rounded-sm",
-                      classes
-                    )}>
-                      {displayText}
-                    </span>
-                    {strategy.id}. {strategy.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-app-body-text font-roboto-condensed">
-                  {insightText}
-                </CardContent>
-              </Card>
-            );
-            })}
-        </div>
+        {/* Content removed to keep space */}
       </div>
 
       <WipeContentButton sectionKey="radarChart" />
