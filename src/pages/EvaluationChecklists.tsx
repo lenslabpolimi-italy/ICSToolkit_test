@@ -309,7 +309,7 @@ const EvaluationChecklists: React.FC = () => {
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
-              <div key={strategy.id} className="border-t pt-6 first:pt-0"> {/* Removed first:border-t-0 */}
+              <div key={strategy.id} className="border-t pt-6"> {/* Removed first:pt-0 */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -349,7 +349,7 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
 
             return (
-              <div key={strategy.id} className="border-t pt-6 first:pt-0"> {/* Removed first:border-t-0 */}
+              <div key={strategy.id} className="border-t pt-6"> {/* Removed first:pt-0 */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
