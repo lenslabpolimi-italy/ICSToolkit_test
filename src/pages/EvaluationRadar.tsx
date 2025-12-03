@@ -64,7 +64,7 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
   '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
   '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
   '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
-  '4': { top: 600, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, moved down to avoid overlap
+  '4': { top: 600, left: '50%', transform: 'translateX(-50%)' }, // Bottom center
   '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
   '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
@@ -206,7 +206,7 @@ const EvaluationRadar: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
+    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[1200px] font-roboto"> {/* Increased min-h to stretch the page */}
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
@@ -314,7 +314,7 @@ const EvaluationRadar: React.FC = () => {
       </div>
 
       {/* Display Strategy Insights as static text (kept from previous step) */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
+      <div className="mt-48 pt-8 border-t border-gray-200"> {/* Increased mt-12 to mt-48 */}
         <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-6 text-transparent">Strategy Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {strategiesForRadar.map(strategy => { // Use strategiesForRadar here
