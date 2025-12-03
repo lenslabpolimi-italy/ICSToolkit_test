@@ -92,25 +92,6 @@ const EcoIdeasBoards: React.FC = () => {
         Review evaluation notes from both Concept A and Concept B here.
       </p>
 
-      <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mb-8">
-        <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
-        {allEvaluationNotes.map(note => (
-          <EvaluationNote
-            key={note.id}
-            id={note.id}
-            x={note.x}
-            y={note.y}
-            text={note.text}
-            strategyId={note.strategyId}
-            conceptType={note.conceptType}
-            onDragStop={handleEvaluationNoteDragStop}
-            onTextChange={handleEvaluationNoteTextChange}
-            onDelete={handleEvaluationNoteDelete}
-          />
-        ))}
-        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
-      </div>
-
       <Tabs value={selectedStrategyId} onValueChange={setSelectedStrategyId} className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
           {strategies.map((strategy) => {
@@ -212,6 +193,26 @@ const EcoIdeasBoards: React.FC = () => {
           </TabsContent>
         ))}
       </Tabs>
+
+      {/* Moved Evaluation Notes (All Concepts) to the bottom */}
+      <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mt-8">
+        <h4 className="text-lg font-palanquin font-semibold text-app-header mb-4">Evaluation Notes (All Concepts)</h4>
+        {allEvaluationNotes.map(note => (
+          <EvaluationNote
+            key={note.id}
+            id={note.id}
+            x={note.x}
+            y={note.y}
+            text={note.text}
+            strategyId={note.strategyId}
+            conceptType={note.conceptType}
+            onDragStop={handleEvaluationNoteDragStop}
+            onTextChange={handleEvaluationNoteTextChange}
+            onDelete={handleEvaluationNoteDelete}
+          />
+        ))}
+        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
+      </div>
     </div>
   );
 };
