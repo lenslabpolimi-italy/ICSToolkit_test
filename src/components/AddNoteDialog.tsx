@@ -43,7 +43,7 @@ const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ isOpen, onClose, onSave, 
         <DialogHeader>
           <DialogTitle className={cn("font-palanquin", headerColorClass)}>Add Your Idea/Note</DialogTitle>
           <DialogDescription className="font-roboto">
-            Type your evaluation note below. It will appear to eco idea board after you save.
+            Type your idea/note below<br />It will appear to eco idea board after you save.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
