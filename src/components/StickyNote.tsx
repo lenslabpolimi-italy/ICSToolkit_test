@@ -2,9 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { XCircle, CheckCircle2 } from 'lucide-react'; // Import CheckCircle2 icon
+import { XCircle, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import ConfirmationDialog from './ConfirmationDialog'; // NEW: Import ConfirmationDialog
 
 interface StickyNoteProps {
   id: string;
@@ -14,11 +13,11 @@ interface StickyNoteProps {
   strategyId: string;
   subStrategyId?: string;
   guidelineId?: string;
-  isConfirmed: boolean; // NEW: Add isConfirmed prop
+  isConfirmed: boolean;
   onDragStop: (id: string, x: number, y: number) => void;
   onTextChange: (id: string, newText: string) => void;
   onDelete: (id: string) => void;
-  onConfirmToggle: (id: string) => void; // NEW: Add onConfirmToggle prop
+  onConfirmToggle: (id: string) => void;
 }
 
 const StickyNote: React.FC<StickyNoteProps> = ({
@@ -26,14 +25,13 @@ const StickyNote: React.FC<StickyNoteProps> = ({
   x,
   y,
   text,
-  isConfirmed, // Destructure new prop
+  isConfirmed,
   onDragStop,
   onTextChange,
   onDelete,
-  onConfirmToggle, // Destructure new prop
+  onConfirmToggle,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false); // NEW: State for confirmation dialog
 
   // Adjust textarea height based on content
   useEffect(() => {
@@ -46,15 +44,6 @@ const StickyNote: React.FC<StickyNoteProps> = ({
   const noteColorClass = isConfirmed
     ? 'bg-yellow-400 text-gray-900 border-yellow-500' // Sharper, more saturated yellow
     : 'bg-yellow-200 text-gray-800 border-yellow-300'; // Light yellow
-
-  const handleConfirmClick = () => {
-    setIsConfirmDialogOpen(true);
-  };
-
-  const handleConfirmDialogConfirm = () => {
-    onConfirmToggle(id); // Call the parent's toggle function
-    setIsConfirmDialogOpen(false);
-  };
 
   return (
     <Draggable
@@ -81,9 +70,9 @@ const StickyNote: React.FC<StickyNoteProps> = ({
           <XCircle size={18} />
         </button>
 
-        {/* NEW: Confirmation button now opens dialog */}
+        {/* Confirmation button now directly calls onConfirmToggle */}
         <button
-          onClick={handleConfirmClick} // Open dialog on click
+          onClick={() => onConfirmToggle(id)} // Directly call the toggle function
           className={cn(
             "absolute top-1 left-1 text-gray-500 hover:text-green-600 opacity-0 group-hover:opacity-100 transition-opacity",
             isConfirmed && "opacity-100 text-green-600 hover:text-green-700" // Always visible and green if confirmed
@@ -102,21 +91,6 @@ const StickyNote: React.FC<StickyNoteProps> = ({
           placeholder="Write your idea here..."
           rows={3} // Initial rows
           style={{ minHeight: '70px' }} // Minimum height for the textarea
-        />
-
-        {/* NEW: Confirmation Dialog */}
-        <ConfirmationDialog
-          isOpen={isConfirmDialogOpen}
-          onClose={() => setIsConfirmDialogOpen(false)}
-          onConfirm={handleConfirmDialogConfirm}
-          title={isConfirmed ? "Unconfirm this idea?" : "Confirm this idea?"}
-          description={
-            isConfirmed
-              ? "Are you sure you want to unmark this idea as chosen?"
-              : "Are you sure you want to mark this idea as chosen? Confirmed ideas will be sent to the Evaluation Radar."
-          }
-          confirmButtonText={isConfirmed ? "Unconfirm" : "Confirm"}
-          confirmButtonVariant={isConfirmed ? "destructive" : "default"} // Red for unconfirm, default for confirm
         />
       </div>
     </Draggable>
