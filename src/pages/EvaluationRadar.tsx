@@ -265,7 +265,7 @@ const EvaluationRadar: React.FC = () => {
                 borderRadius: '8px',
                 padding: '8px',
                 backgroundColor: 'transparent',
-                zIndex: 90,
+                zIndex: 5, // Changed zIndex to a very low value
               };
 
               return (
@@ -279,7 +279,7 @@ const EvaluationRadar: React.FC = () => {
                       left: boxPosition.left,
                       right: boxPosition.right,
                       transform: boxPosition.transform,
-                      zIndex: 100,
+                      zIndex: 10, // Changed zIndex to a very low value
                     }}
                   />
 
