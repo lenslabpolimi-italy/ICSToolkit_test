@@ -227,7 +227,7 @@ const EvaluationChecklists: React.FC = () => {
   const renderNotesArea = () => {
     return (
       <div className={cn(
-        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8"
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50" // Removed mb-8 and mt-8
       )}>
         <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">
           Evaluation Notes for Concept {selectedConcept}
@@ -309,7 +309,7 @@ const EvaluationChecklists: React.FC = () => {
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
-              <div key={strategy.id} className="border-t pt-6"> {/* Removed first:pt-0 */}
+              <div key={strategy.id} className="border-t pt-6">
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -349,7 +349,7 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
 
             return (
-              <div key={strategy.id} className="border-t pt-6"> {/* Removed first:pt-0 */}
+              <div key={strategy.id} className="border-t pt-6">
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -444,7 +444,14 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
-      <WipeContentButton sectionKey="evaluationChecklists" />
+      {/* Main Wipe Content Button for the entire checklist section - moved and adjusted position */}
+      <WipeContentButton sectionKey="evaluationChecklists" className="bottom-[280px]" />
+
+      {/* Separator line before notes area */}
+      <div className="border-t pt-6 mt-8"></div>
+
+      {/* Evaluation Notes board */}
+      {selectedStrategyTab && renderNotesArea()}
 
       {/* Floating Add Note Button */}
       <FloatingAddNoteButton
@@ -461,9 +468,6 @@ const EvaluationChecklists: React.FC = () => {
         conceptType={selectedConcept}
         strategyId={selectedStrategyTab}
       />
-
-      {/* Evaluation Notes board moved here, at the very bottom */}
-      {selectedStrategyTab && renderNotesArea()}
     </div>
   );
 };

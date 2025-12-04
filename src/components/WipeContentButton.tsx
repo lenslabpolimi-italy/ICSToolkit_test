@@ -5,13 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useLcd } from '@/context/LcdContext';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 interface WipeContentButtonProps {
   sectionKey: string;
   label?: string;
+  className?: string; // Add className prop
 }
 
-const WipeContentButton: React.FC<WipeContentButtonProps> = ({ sectionKey, label = 'Wipe Content' }) => {
+const WipeContentButton: React.FC<WipeContentButtonProps> = ({ sectionKey, label = 'Wipe Content', className }) => {
   const { resetSection } = useLcd();
 
   const handleWipe = () => {
@@ -24,7 +26,10 @@ const WipeContentButton: React.FC<WipeContentButtonProps> = ({ sectionKey, label
       variant="outline"
       size="sm"
       onClick={handleWipe}
-      className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700"
+      className={cn(
+        "absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700",
+        className // Merge custom classes
+      )}
     >
       <Trash2 className="mr-2 h-4 w-4" />
       {label}
