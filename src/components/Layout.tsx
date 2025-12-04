@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </div>
       </header>
-      <main className="flex-grow container mx-auto p-4 pb-28 relative pt-52">
+      <main className="flex-grow container mx-auto p-4 pb-28 relative pt-24">
         {children}
       </main>
       <footer className="relative w-full">
