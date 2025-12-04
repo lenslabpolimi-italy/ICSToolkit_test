@@ -227,7 +227,7 @@ const EvaluationChecklists: React.FC = () => {
   const renderNotesArea = () => {
     return (
       <div className={cn(
-        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50"
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50" // Removed mb-8 and mt-8
       )}>
         <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">
           Evaluation Notes for Concept {selectedConcept}
@@ -444,17 +444,14 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
+      {/* Main Wipe Content Button for the entire checklist section - moved and adjusted position */}
+      <WipeContentButton sectionKey="evaluationChecklists" className="bottom-[280px]" />
+
       {/* Separator line before notes area */}
       <div className="border-t pt-6 mt-8"></div>
 
-      {/* New relative container for the main Wipe Content Button and Notes Area */}
-      <div className="relative">
-        {/* Main Wipe Content Button for the entire checklist section */}
-        <WipeContentButton sectionKey="evaluationChecklists" />
-
-        {/* Evaluation Notes board */}
-        {selectedStrategyTab && renderNotesArea()}
-      </div>
+      {/* Evaluation Notes board */}
+      {selectedStrategyTab && renderNotesArea()}
 
       {/* Floating Add Note Button */}
       <FloatingAddNoteButton
