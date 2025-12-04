@@ -34,7 +34,7 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
   ],
   '3.2': [
     "Are transport systems used for the product (system) that utilize energy resources and/or release emissions recognized/classified as toxic/harmful, and are they replaceable?",
-    "Does the product (system) in use adopt energy resources recognized/classified as toxic/harmful, and are they replaceable?"
+    "Does the product (system) in use adopt energy resources recognized/classified as toxic/harmf`ul, and are they replaceable?"
   ],
 
   '4.1': [
@@ -154,7 +154,7 @@ const QualitativeEvaluation: React.FC = () => {
   const strategiesForQualitativeEvaluation = strategies.filter(s => s.id !== '7');
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[calc(100vh-200px)] font-roboto">
+    <div className="p-6 bg-white rounded-lg shadow-md relative font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Qualitative Evaluation of Existing Products/Systems and Strategic Priorities</h2>
       <p className="text-app-body-text mb-8">
         Define the priority level for each LCD strategy and sub-strategy, and answer guiding questions to elaborate on your choices.

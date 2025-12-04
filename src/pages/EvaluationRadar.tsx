@@ -206,7 +206,7 @@ const EvaluationRadar: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md relative min-h-[1200px] font-roboto">
+    <div className="p-6 bg-white rounded-lg shadow-md relative font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
       <p className="text-app-body-text mb-4">
         This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B,
