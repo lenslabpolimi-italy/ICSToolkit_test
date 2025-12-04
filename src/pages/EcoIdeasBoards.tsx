@@ -181,8 +181,9 @@ const EcoIdeasBoards: React.FC = () => {
                     onConfirmToggle={handleEcoIdeaConfirmToggle}
                   />
                 ))}
-                <WipeContentButton sectionKey="ecoIdeas" label="Wipe Eco-Ideas" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
               </div>
+              {/* Wipe Eco-Ideas button moved here, relative to the full-width container */}
+              <WipeContentButton sectionKey="ecoIdeas" label="Wipe Eco-Ideas" className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
             </div>
           </TabsContent>
         ))}
@@ -205,7 +206,7 @@ const EcoIdeasBoards: React.FC = () => {
             onDelete={handleEvaluationNoteDelete}
           />
         ))}
-        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
+        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
       </div>
     </div>
   );
