@@ -182,13 +182,12 @@ const EcoIdeasBoards: React.FC = () => {
                   />
                 ))}
               </div>
+              {/* Wipe Eco-Ideas button moved here, relative to the full-width container */}
+              <WipeContentButton sectionKey="ecoIdeas" label="Wipe Eco-Ideas" className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
             </div>
           </TabsContent>
         ))}
       </Tabs>
-
-      {/* Wipe Eco-Ideas button moved to be a direct child of the main container */}
-      <WipeContentButton sectionKey="ecoIdeas" label="Wipe Eco-Ideas" className="bottom-4 right-6" />
 
       {/* Moved Evaluation Notes (All Concepts) to the bottom */}
       <div className="relative min-h-[250px] border border-gray-200 rounded-lg bg-white p-4 mt-8">
@@ -207,9 +206,8 @@ const EcoIdeasBoards: React.FC = () => {
             onDelete={handleEvaluationNoteDelete}
           />
         ))}
+        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
       </div>
-      {/* Wipe Evaluation Notes button moved to be a direct child of the main container */}
-      <WipeContentButton sectionKey="evaluationNotes" label="Wipe Evaluation Notes" className="bottom-4 right-[200px]" />
     </div>
   );
 };

@@ -246,6 +246,7 @@ const EvaluationChecklists: React.FC = () => {
             onDelete={handleNoteDelete}
           />
         ))}
+        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
       </div>
     );
   };
@@ -443,17 +444,14 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
-      {/* Main Wipe Content Button for the entire checklist section - adjusted position */}
-      <WipeContentButton sectionKey="evaluationChecklists" className="bottom-[280px] right-6" />
+      {/* Main Wipe Content Button for the entire checklist section - moved and adjusted position */}
+      <WipeContentButton sectionKey="evaluationChecklists" className="bottom-[280px]" />
 
       {/* Separator line before notes area */}
       <div className="border-t pt-6 mt-8"></div>
 
       {/* Evaluation Notes board */}
       {selectedStrategyTab && renderNotesArea()}
-
-      {/* Wipe Notes button moved to be a direct child of the main container */}
-      <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="bottom-4 right-6" />
 
       {/* Floating Add Note Button */}
       <FloatingAddNoteButton
