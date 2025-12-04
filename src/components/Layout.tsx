@@ -29,14 +29,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-app-page-background text-app-body-text font-roboto">
-      <header className="bg-white text-app-header shadow-md fixed top-0 z-50 w-full h-[120px] flex items-center">
-        <div className="container mx-auto flex flex-col md:flex-row items-center md:justify-between px-4">
+      <header className="bg-white text-app-header p-4 shadow-md sticky top-0 z-50">
+        <div className="container mx-auto flex flex-col md:flex-row items-center md:justify-between">
           {/* LeNSlab Logo */}
           <div className="flex items-center mb-2 md:mb-0">
             <img
               src="/white- LeNSlab_logo 3-03.png"
               alt="LeNSlab Logo"
-              className="h-12 mr-4 drop-shadow-sm"
+              className="h-12 mr-4 drop-shadow-sm" // Increased height to h-12
             />
           </div>
           <nav className="mt-2 md:mt-0">
@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </div>
       </header>
-      <main className="flex-grow container mx-auto p-4 pb-28 relative mt-[120px]">
+      <main className="flex-grow container mx-auto p-4 pb-28 relative pt-24">
         {children}
       </main>
       <footer className="relative w-full">

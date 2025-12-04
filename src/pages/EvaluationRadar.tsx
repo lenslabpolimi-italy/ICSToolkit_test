@@ -61,7 +61,7 @@ const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 // Adjusted positions for the 6 strategies around the radar
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
-  '1': { top: 0, left: '50%', transform: 'translateX(-50%)' }, // Top center, adjusted from -104
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
   '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
   '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
   '4': { top: 650, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, adjusted for more space
@@ -216,7 +216,7 @@ const EvaluationRadar: React.FC = () => {
         Below, you'll find the insights you've written for each strategy.
       </p>
 
-      <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center"> {/* Removed mt-32 */}
+      <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
         {strategiesForRadar.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
