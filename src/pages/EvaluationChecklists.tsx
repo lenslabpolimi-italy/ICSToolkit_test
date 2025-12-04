@@ -246,7 +246,7 @@ const EvaluationChecklists: React.FC = () => {
             onDelete={handleNoteDelete}
           />
         ))}
-        {/* Removed WipeContentButton from here */}
+        <WipeContentButton sectionKey="evaluationNotes" label="Wipe Notes" className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" />
       </div>
     );
   };
@@ -309,7 +309,7 @@ const EvaluationChecklists: React.FC = () => {
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
-              <div key={strategy.id} className="border-t pt-6">
+              <div key={strategy.id} className="border-t pt-6"> {/* Removed first:pt-0 */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -349,7 +349,7 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
 
             return (
-              <div key={strategy.id} className="border-t pt-6">
+              <div key={strategy.id} className="border-t pt-6"> {/* Removed first:pt-0 */}
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
@@ -444,6 +444,8 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
+      <WipeContentButton sectionKey="evaluationChecklists" />
+
       {/* Floating Add Note Button */}
       <FloatingAddNoteButton
         onClick={() => setIsAddNoteDialogOpen(true)}
@@ -460,20 +462,8 @@ const EvaluationChecklists: React.FC = () => {
         strategyId={selectedStrategyTab}
       />
 
-      {/* Evaluation Notes board */}
+      {/* Evaluation Notes board moved here, at the very bottom */}
       {selectedStrategyTab && renderNotesArea()}
-
-      {/* Wipe Notes button - NEW POSITION, above the main page wipe button */}
-      {selectedStrategyTab && ( // Only show if a strategy tab is selected
-        <WipeContentButton
-          sectionKey="evaluationNotes"
-          label="Wipe Notes"
-          className="bottom-20 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700" // Override bottom-4 to bottom-20
-        />
-      )}
-
-      {/* Main WipeContentButton for the whole page */}
-      <WipeContentButton sectionKey="evaluationChecklists" />
     </div>
   );
 };
