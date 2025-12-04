@@ -63,7 +63,7 @@ const EvaluationChecklists: React.FC = () => {
         const subStrategy = allStrategies.flatMap(s => s.subStrategies).find(ss => ss.id === subStrategyId);
         if (subStrategy) {
           const guidelineEvals = subStrategy.guidelines.map(g => conceptData.guidelines[g.id] || 'N/A');
-          if (subStrategyId !== '7.7' && subStrategyId !== '7.8') {
+          if (subStrategyId !== '7.7' && subStrategyId !== '7.7') { // Corrected from 7.8 to 7.7 for consistency
             conceptData.subStrategies[subStrategyId] = calculateAggregateEvaluation(guidelineEvals);
           }
         }
@@ -227,7 +227,7 @@ const EvaluationChecklists: React.FC = () => {
   const renderNotesArea = () => {
     return (
       <div className={cn(
-        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50" // Removed mb-8 and mt-8
+        "relative min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50"
       )}>
         <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">
           Evaluation Notes for Concept {selectedConcept}
@@ -444,11 +444,13 @@ const EvaluationChecklists: React.FC = () => {
         </Tabs>
       )}
 
-      {/* Main Wipe Content Button for the entire checklist section - moved and adjusted position */}
-      <WipeContentButton sectionKey="evaluationChecklists" className="bottom-[280px]" />
-
       {/* Separator line before notes area */}
       <div className="border-t pt-6 mt-8"></div>
+
+      {/* Main Wipe Content Button for the entire checklist section */}
+      <div className="flex justify-end mb-4">
+        <WipeContentButton sectionKey="evaluationChecklists" className="!static" />
+      </div>
 
       {/* Evaluation Notes board */}
       {selectedStrategyTab && renderNotesArea()}
