@@ -27,7 +27,7 @@ const WipeContentButton: React.FC<WipeContentButtonProps> = ({ sectionKey, label
       size="sm"
       onClick={handleWipe}
       className={cn(
-        "absolute bottom-4 right-4 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700",
+        "absolute bottom-4 right-6 bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700", // Changed right-4 to right-6
         className // Merge custom classes
       )}
     >
