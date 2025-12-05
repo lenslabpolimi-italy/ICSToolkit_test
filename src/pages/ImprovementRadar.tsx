@@ -24,8 +24,8 @@ interface ImprovementNoteData {
 // Custom tick component for the PolarRadiusAxis (same as in EvaluationRadar)
 const CustomRadiusTick = ({ x, y, payload }: any) => {
   const scoreToLabel: Record<number, string> = {
-    1: 'Worst -', // Changed from 'Poor' to 'Worst -'
-    2: 'Mediocre',
+    1: 'Worst -',
+    2: 'No Improvement =', // Changed from 'Mediocre' to 'No Improvement ='
     3: 'Good',
     4: 'Excellent',
   };
