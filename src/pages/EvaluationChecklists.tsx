@@ -312,15 +312,18 @@ const EvaluationChecklists: React.FC = () => {
               <div key={strategy.id} className="border-t pt-6">
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
+                    {/* Modified structure for Simplified view to allow priority tag to wrap */}
+                    <div className="flex flex-col items-start">
+                      <h3 className="text-xl font-palanquin font-semibold text-app-header">
+                        {strategy.id}. {strategy.name}
+                      </h3>
                       <span className={cn(
-                        "text-xs font-roboto-condensed px-1 rounded-sm",
+                        "text-xs font-roboto-condensed px-1 rounded-sm mt-1", // Added mt-1 for spacing
                         classes
                       )}>
                         {displayText}
                       </span>
-                      {strategy.id}. {strategy.name}
-                    </h3>
+                    </div>
                     {renderEvaluationSelectors(
                       'strategy',
                       strategy.id,
