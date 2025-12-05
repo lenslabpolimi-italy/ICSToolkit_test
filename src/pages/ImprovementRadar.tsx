@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Strategy } from '@/types/lcd';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts'; // Added Radar here
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { cn } from '@/lib/utils';
 import { useLcd } from '@/context/LcdContext';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
@@ -129,8 +129,8 @@ const ImprovementRadar: React.FC = () => {
                 <Radar
                   name="Improvement"
                   dataKey="improvement"
-                  stroke="#4CAF50" // Green color for improvement
-                  fill="#4CAF50"
+                  stroke="#9333EA" // Purple color for improvement
+                  fill="#9333EA"
                   fillOpacity={0.6}
                 />
               </RadarChart>
@@ -167,7 +167,7 @@ const ImprovementRadar: React.FC = () => {
       {/* Manual Legend for Improvement */}
       <div className="flex justify-center gap-8 mt-12 mb-8 text-app-body-text font-roboto-condensed">
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 block rounded-full bg-green-500 border border-green-700"></span>
+          <span className="w-4 h-4 block rounded-full bg-purple-600 border border-purple-800"></span>
           <span>Concept B vs Concept A Improvement</span>
         </div>
       </div>
