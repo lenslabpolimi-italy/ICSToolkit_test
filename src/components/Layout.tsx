@@ -72,14 +72,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         
         {/* HelpCircle icon on the left */}
         <div className="absolute bottom-4 left-4 flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors">
+          <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white cursor-pointer hover:bg-blue-700 transition-colors">
             <HelpCircle size={20} /> {/* Adjusted size for better fit */}
           </div>
         </div>
 
         {/* Creative Commons Logo and Info icon - Adjusted position */}
         <div className="absolute bottom-4 right-4 flex items-center gap-2"> {/* Added flex and gap for spacing */}
-          <div className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors">
+          <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white cursor-pointer hover:bg-blue-700 transition-colors">
             <Info size={20} /> {/* Info icon moved here */}
           </div>
           <img
