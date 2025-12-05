@@ -12,7 +12,8 @@ import EcoIdeasBoards from "./pages/EcoIdeasBoards";
 import EvaluationChecklists from "./pages/EvaluationChecklists";
 import EvaluationRadar from "./pages/EvaluationRadar";
 import ImprovementRadar from "./pages/ImprovementRadar";
-import HelpPage from "./pages/HelpPage"; // NEW: Import HelpPage
+import HelpPage from "./pages/HelpPage";
+import CreditsPage from "./pages/CreditsPage"; // NEW: Import CreditsPage
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,7 +34,8 @@ const App = () => (
               <Route path="/evaluation-checklists" element={<EvaluationChecklists />} />
               <Route path="/evaluation-radar" element={<EvaluationRadar />} />
               <Route path="/improvement-radar" element={<ImprovementRadar />} />
-              <Route path="/help" element={<HelpPage />} /> {/* NEW: Add route for HelpPage */}
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="/credits" element={<CreditsPage />} /> {/* NEW: Add route for CreditsPage */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
