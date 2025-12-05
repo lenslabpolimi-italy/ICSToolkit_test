@@ -152,19 +152,6 @@ const ImprovementRadar: React.FC = () => {
         >
           Back to Evaluation Radar
         </Button>
-        <Button
-          onClick={addImprovementNote}
-          className="bg-green-500 hover:bg-green-600 text-white font-roboto-condensed"
-        >
-          <PlusCircle className="mr-2 h-4 w-4" /> Add Idea
-        </Button>
-        <Button
-          onClick={handleWipeNotes}
-          variant="outline"
-          className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700 font-roboto-condensed"
-        >
-          <XCircle className="mr-2 h-4 w-4" /> Wipe All
-        </Button>
       </div>
 
       <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
@@ -264,14 +251,6 @@ const ImprovementRadar: React.FC = () => {
       {/* Placeholder for Strategy Insights to maintain space */}
       <div className="mt-48 pt-8">
         {/* Content removed to keep space */}
-      </div>
-
-      {/* Manual Legend for Concept A and B (removed as this is an improvement radar) */}
-      <div className="flex justify-center gap-8 mt-12 mb-8 text-app-body-text font-roboto-condensed">
-        <div className="flex items-center gap-2">
-          <span className="w-4 h-4 block rounded-full bg-gray-200 border border-gray-400"></span>
-          <span>Improvement Ideas</span>
-        </div>
       </div>
     </div>
   );
