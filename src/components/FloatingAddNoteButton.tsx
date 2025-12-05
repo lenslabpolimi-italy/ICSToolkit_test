@@ -12,8 +12,8 @@ interface FloatingAddNoteButtonProps {
 }
 
 const FloatingAddNoteButton: React.FC<FloatingAddNoteButtonProps> = ({ onClick, conceptType, disabled }) => {
-  // Changed from app-concept-a-base to red-500 and app-concept-a-dark to red-600 for a lighter red
-  const buttonColorClass = conceptType === 'A' ? 'bg-red-500 hover:bg-red-600' : 'bg-app-concept-b-base hover:bg-app-concept-b-dark';
+  // Using standard Tailwind red-500/600 and blue-500/600 for consistent lightness
+  const buttonColorClass = conceptType === 'A' ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600';
   const iconColorClass = 'text-white'; // Icon color is white for both concepts
 
   return (
