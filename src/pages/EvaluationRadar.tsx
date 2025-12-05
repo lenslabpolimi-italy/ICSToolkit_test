@@ -76,12 +76,12 @@ const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 // Adjusted positions for the 6 strategies around the radar
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
-  '1': { top: 20, left: '50%', transform: 'translateX(-50%)' }, // Top center, adjusted downwards
-  '2': { top: 130, left: 'calc(75% + 20px)' }, // Top-right, adjusted downwards
-  '3': { top: 450, left: 'calc(75% + 20px)' }, // Bottom-right, adjusted downwards
-  '4': { top: 680, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, adjusted downwards
-  '6': { top: 130, right: 'calc(75% + 20px)' }, // Top-left, adjusted downwards
-  '5': { top: 450, right: 'calc(75% + 20px)' }, // Bottom-left, adjusted downwards
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
+  '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
+  '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
+  '4': { top: 650, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, adjusted for more space
+  '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
+  '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
 };
 
 interface ImprovementNoteData {
