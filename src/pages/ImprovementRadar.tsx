@@ -47,9 +47,7 @@ const CustomAngleAxisTickImprovement = ({ x, y, payload, strategies }: any) => {
   if (!strategy) return null;
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto Condensed">
-        {strategy.id}. {strategy.name}
-      </text>
+      {/* Removed strategy name text */}
     </g>
   );
 };
@@ -251,7 +249,7 @@ const ImprovementRadar: React.FC = () => {
                         />
                       ))
                     ) : (
-                      <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No ideas for this strategy yet.</p>
+                      null // Removed the "No ideas for this strategy yet." text
                     )}
                   </div>
                 </React.Fragment>
