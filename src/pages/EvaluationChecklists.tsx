@@ -14,6 +14,7 @@ import EvaluationNote from '@/components/EvaluationNote';
 import { toast } from 'sonner';
 import FloatingAddNoteButton from '@/components/FloatingAddNoteButton';
 import AddNoteDialog from '@/components/AddNoteDialog'; // Import the new dialog component
+import { Button } from '@/components/ui/button'; // Import the Button component
 
 const EvaluationChecklists: React.FC = () => {
   const { strategies, evaluationChecklists, setEvaluationChecklists, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
@@ -280,18 +281,30 @@ const EvaluationChecklists: React.FC = () => {
         {/* Concept Selector */}
         <div className="flex items-center gap-4">
           <h3 className="text-xl font-palanquin font-semibold text-app-header">Concept:</h3>
-          <Select
-            value={selectedConcept}
-            onValueChange={(value: ConceptType) => setSelectedConcept(value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Concept" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="A">Concept A</SelectItem>
-              <SelectItem value="B">Concept B</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setSelectedConcept('A')}
+              className={cn(
+                "px-4 py-2 rounded-md",
+                selectedConcept === 'A'
+                  ? "bg-red-500 hover:bg-red-600 text-white"
+                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+              )}
+            >
+              Concept A
+            </Button>
+            <Button
+              onClick={() => setSelectedConcept('B')}
+              className={cn(
+                "px-4 py-2 rounded-md",
+                selectedConcept === 'B'
+                  ? "bg-blue-500 hover:bg-blue-600 text-white"
+                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+              )}
+            >
+              Concept B
+            </Button>
+          </div>
         </div>
       </div>
 
