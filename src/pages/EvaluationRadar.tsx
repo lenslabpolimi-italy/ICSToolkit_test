@@ -216,8 +216,12 @@ const EvaluationRadar: React.FC = () => {
   };
 
   const handleImprovementRadarClick = () => {
-    toast.info("Navigating to the Improvement Radar. Here you can compare and refine your strategies.");
-    // Future navigation logic can be added here
+    if (!isImprovementRadarActive) {
+      toast.info("Please complete the evaluation for both Concept A and Concept B to activate the Improvement Radar.");
+    } else {
+      toast.info("Navigating to the Improvement Radar. Here you can compare and refine your strategies.");
+      // Future navigation logic can be added here
+    }
   };
 
   return (
