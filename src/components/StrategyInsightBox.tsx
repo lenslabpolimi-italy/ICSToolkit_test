@@ -7,7 +7,7 @@ import { getPriorityTagClasses } from '@/utils/lcdUtils';
 
 interface StrategyInsightBoxProps {
   strategy: Strategy;
-  priority?: PriorityLevel; // Made optional
+  priority: PriorityLevel;
   className?: string; // For positioning
   style?: React.CSSProperties; // For inline styles like top, left, transform
 }
@@ -18,23 +18,21 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
   className,
   style
 }) => {
-  const { displayText, classes } = priority ? getPriorityTagClasses(priority) : { displayText: '', classes: '' };
+  const { displayText, classes } = getPriorityTagClasses(priority);
 
   return (
     <div className={cn(
-      "bg-white p-2 rounded-lg flex flex-col justify-center items-start",
-      "w-48 h-20",
+      "bg-white p-2 rounded-lg flex flex-col justify-center items-start", // Removed shadow-sm and border classes
+      "w-48 h-20", // Adjusted size for a compact display
       className
     )} style={style}>
       <div className="flex items-center">
-        {priority && ( // Conditionally render priority tag
-          <span className={cn(
-            "text-xs font-roboto-condensed px-1 rounded-sm mr-2",
-            classes
-          )}>
-            {displayText}
-          </span>
-        )}
+        <span className={cn(
+          "text-xs font-roboto-condensed px-1 rounded-sm mr-2",
+          classes
+        )}>
+          {displayText}
+        </span>
         <h4 className="text-sm font-palanquin font-semibold text-app-header">
           {strategy.id}. {strategy.name}
         </h4>
