@@ -75,18 +75,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <footer className="relative w-full py-4">
         <MadeWithDyad />
         
-        {/* HelpCircle icon on the left, now linked to the HelpPage */}
+        {/* HelpCircle icon on the left */}
         <div className="absolute bottom-4 left-4 flex items-center gap-2">
-          <Link to="/help" className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors" aria-label="Go to help page">
+          <div className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors">
             <HelpCircle size={20} />
-          </Link>
+          </div>
         </div>
 
         {/* Creative Commons Logo and Info icon - Adjusted position */}
         <div className="absolute bottom-4 right-4 flex items-center gap-2">
-          <Link to="/about" className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors" aria-label="Go to about page">
+          <div className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors">
             <Info size={20} />
-          </Link>
+          </div>
           <img
             src="/Creative Commons Logo - CC_by.svg"
             alt="Creative Commons Logo"
