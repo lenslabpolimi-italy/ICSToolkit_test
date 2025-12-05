@@ -25,8 +25,8 @@ interface ImprovementNoteData {
 const CustomRadiusTick = ({ x, y, payload }: any) => {
   const scoreToLabel: Record<number, string> = {
     1: 'Worst -',
-    2: 'No Improvement =', // Changed from 'Mediocre' to 'No Improvement ='
-    3: 'Good',
+    2: 'No Improvement =',
+    3: 'Incremental Improvement +', // Changed from 'Good' to 'Incremental Improvement +'
     4: 'Excellent',
   };
   const label = scoreToLabel[payload.value];
