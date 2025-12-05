@@ -27,16 +27,16 @@ const StrategyInsightBox: React.FC<StrategyInsightBoxProps> = ({
       className
     )} style={style}>
       <div className="flex items-center">
-        <h4 className="text-sm font-palanquin font-semibold text-app-header flex items-center"> {/* Added flex and items-center */}
+        {priority && ( // Conditionally render priority tag
+          <span className={cn(
+            "text-xs font-roboto-condensed px-1 rounded-sm mr-2",
+            classes
+          )}>
+            {displayText}
+          </span>
+        )}
+        <h4 className="text-sm font-palanquin font-semibold text-app-header">
           {strategy.id}. {strategy.name}
-          {priority && ( // Conditionally render priority tag
-            <span className={cn(
-              "text-xs font-roboto-condensed px-1 rounded-sm ml-2", // Changed mr-2 to ml-2 for spacing after name
-              classes
-            )}>
-              {displayText}
-            </span>
-          )}
         </h4>
       </div>
     </div>
