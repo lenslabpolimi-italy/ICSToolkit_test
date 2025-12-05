@@ -413,12 +413,13 @@ const EvaluationRadar: React.FC = () => {
             {/* Render StrategyInsightBoxes and their associated notes containers */}
             {strategiesForRadar.map(strategy => {
               const boxPosition = insightBoxPositions[strategy.id] || {};
+              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation); // Always calculate priority
 
               return (
                 <React.Fragment key={strategy.id}>
                   <StrategyInsightBox
                     strategy={strategy}
-                    priority={showImprovementRadar ? undefined : getStrategyPriorityForDisplay(strategy, qualitativeEvaluation)} // Pass undefined for improvement radar
+                    priority={priority} // Always pass the calculated priority
                     className="absolute"
                     style={{
                       top: boxPosition.top,
