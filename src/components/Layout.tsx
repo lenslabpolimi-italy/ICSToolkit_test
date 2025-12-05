@@ -70,18 +70,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <footer className="relative w-full py-4"> {/* Added py-4 to ensure space for absolute elements */}
         <MadeWithDyad />
         
-        {/* New elements on the left */}
+        {/* HelpCircle icon on the left */}
         <div className="absolute bottom-4 left-4 flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 cursor-pointer hover:bg-gray-300 transition-colors">
-            <Info size={20} /> {/* Adjusted size for better fit */}
-          </div>
           <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 cursor-pointer hover:bg-gray-300 transition-colors">
             <HelpCircle size={20} /> {/* Adjusted size for better fit */}
           </div>
         </div>
 
-        {/* Creative Commons Logo - Adjusted position */}
-        <div className="absolute bottom-4 right-4">
+        {/* Creative Commons Logo and Info icon - Adjusted position */}
+        <div className="absolute bottom-4 right-4 flex items-center gap-2"> {/* Added flex and gap for spacing */}
+          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 cursor-pointer hover:bg-gray-300 transition-colors">
+            <Info size={20} /> {/* Info icon moved here */}
+          </div>
           <img
             src="/Creative Commons Logo - CC_by.svg"
             alt="Creative Commons Logo"
