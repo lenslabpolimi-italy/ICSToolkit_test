@@ -63,9 +63,7 @@ const CustomAngleAxisTickImprovement = ({ x, y, payload, strategies }: any) => {
   if (!strategy) return null;
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto Condensed">
-        {strategy.id}. {strategy.name}
-      </text>
+      {/* Removed the text element for strategy name */}
     </g>
   );
 };
