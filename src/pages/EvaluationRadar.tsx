@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
 import StickyNote from '@/components/StickyNote';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button'; // Import Button component
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -163,6 +164,11 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
+  // Determine if both concepts have data (at least one strategy with score > 0)
+  const hasConceptAData = Object.values(radarChartData.A).some(value => value > 0);
+  const hasConceptBData = Object.values(radarChartData.B).some(value => value > 0);
+  const isImprovementRadarActive = hasConceptAData && hasConceptBData;
+
   // Handlers for radarEcoIdeas
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
     setRadarEcoIdeas(prev =>
@@ -215,6 +221,20 @@ const EvaluationRadar: React.FC = () => {
       <p className="text-app-body-text mb-8">
         Below, you'll find the insights you've written for each strategy.
       </p>
+
+      {/* New button for Improvement Radar */}
+      <div className="mb-8 flex justify-center">
+        <Button
+          onClick={() => console.log("Improvement Radar clicked!")} // Placeholder for future navigation/action
+          disabled={!isImprovementRadarActive}
+          className={cn(
+            "bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed",
+            !isImprovementRadarActive && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          Improvement Radar
+        </Button>
+      </div>
 
       <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
         {strategiesForRadar.length > 0 ? (
