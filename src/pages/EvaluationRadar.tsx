@@ -18,7 +18,7 @@ import { PlusCircle, Trash2 } from 'lucide-react'; // Import icons for buttons
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
   const scoreToLabel: Record<number, string> = {
-    1: 'Poor',
+    1: 'Worst', // Changed from 'Poor' to 'Worst'
     2: 'Mediocre',
     3: 'Good',
     4: 'Excellent',
@@ -121,7 +121,7 @@ const EvaluationRadar: React.FC = () => {
 
   // Map EvaluationLevel to a numerical score for the radar chart
   const evaluationToScore: Record<EvaluationLevel, number> = {
-    'Poor': 1,
+    'Worst': 1, // Changed from 'Poor' to 'Worst'
     'Mediocre': 2,
     'Good': 3,
     'Excellent': 4,
