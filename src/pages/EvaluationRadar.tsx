@@ -223,7 +223,7 @@ const EvaluationRadar: React.FC = () => {
       </p>
 
       {/* New button for Improvement Radar */}
-      <div className="mb-8 flex justify-center">
+      <div className="mb-8 flex justify-end"> {/* Changed justify-center to justify-end */}
         <Button
           onClick={() => console.log("Improvement Radar clicked!")} // Placeholder for future navigation/action
           disabled={!isImprovementRadarActive}
