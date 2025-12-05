@@ -10,7 +10,7 @@ const CreditsPage: React.FC = () => {
         <section>
           <p>The ICS Toolkit was conceived by Prof. Carlo Vezzoli of the Department of Design at Politecnico di Milano, coordinator of the LeNSlab Polimi Research Group, which works on design and system innovation for sustainability.</p>
           <p>Several PhD students, researchers and interns have collaborated on its updating over the years.</p>
-          <p>The latest updates for the digital toolkit were made by Razieh Soleimani, with support from Krastyo Kalachev, Luisa Valentina Arosa Cely, Chuyao Xin, Giuseppe Rizzi and María Camila Contreras Bello.</p>
+          <p>The latest updates for the digital toolkit were made by Razieh Soleimani, and for the functional part they were coordinated by Gabriele Tempesta, with support from Krastyo Kalachev, Luisa Valentina Arosa Cely, Chuyao Xin, Giuseppe Rizzi and María Camila Contreras Bello.</p>
         </section>
       </div>
     </div>
