@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react'; // Added useState
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -11,7 +11,8 @@ import { cn } from '@/lib/utils';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
 import StickyNote from '@/components/StickyNote';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button'; // Import Button component
+import { Button } from '@/components/ui/button';
+import ImprovementRadarDialog from '@/components/ImprovementRadarDialog'; // NEW import
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -83,6 +84,9 @@ const EvaluationRadar: React.FC = () => {
     updateEcoIdea,
     deleteEcoIdea,
   } = useLcd();
+
+  // NEW state for the Improvement Radar Dialog
+  const [isImprovementRadarDialogOpen, setIsImprovementRadarDialogOpen] = useState(false);
 
   // Filter strategies to exclude Strategy 7 for radar display
   const strategiesForRadar = strategies.filter(s => s.id !== '7');
@@ -219,8 +223,8 @@ const EvaluationRadar: React.FC = () => {
     if (!isImprovementRadarActive) {
       toast.info("Please complete the evaluation for both Concept A and Concept B to activate the Improvement Radar.");
     } else {
-      toast.info("Navigating to the Improvement Radar. Here you can compare and refine your strategies.");
-      // Future navigation logic can be added here
+      // Open the new Improvement Radar dialog
+      setIsImprovementRadarDialogOpen(true);
     }
   };
 
@@ -242,7 +246,7 @@ const EvaluationRadar: React.FC = () => {
             disabled={!isImprovementRadarActive}
             className={cn(
               "bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed",
-              !isImprovementRadarActive && "opacity-50 pointer-events-none" // Add pointer-events-none here
+              !isImprovementRadarActive && "opacity-50 pointer-events-none"
             )}
           >
             Improvement Radar
@@ -365,6 +369,13 @@ const EvaluationRadar: React.FC = () => {
       </div>
 
       <WipeContentButton sectionKey="radarChart" />
+
+      {/* NEW: Improvement Radar Dialog */}
+      <ImprovementRadarDialog
+        isOpen={isImprovementRadarDialogOpen}
+        onClose={() => setIsImprovementRadarDialogOpen(false)}
+        strategies={strategiesForRadar} // Pass filtered strategies to the dialog
+      />
     </div>
   );
 };
