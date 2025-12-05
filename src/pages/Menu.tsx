@@ -24,8 +24,8 @@ const Menu: React.FC = () => {
         {/* This inner div will size itself to the widest button, and its children (buttons) will fill it */}
         <div className="flex flex-col gap-4 w-full max-w-fit"> 
           {menuItems.map((item) => (
-            <Button asChild key={item.path} className="h-auto p-4 text-lg text-center bg-orange-500 hover:bg-orange-600 text-white font-roboto-condensed w-full">
-              <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-content px-4">
+            <Button asChild key={item.path} className="h-auto p-4 text-lg text-center bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed w-full">
+              <Link to={item.path} className="whitespace-normal flex-grow flex items-center justify-center px-4">
                 {item.label}
               </Link>
             </Button>
