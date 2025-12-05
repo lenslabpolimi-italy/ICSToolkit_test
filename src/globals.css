@@ -59,9 +59,6 @@
     --app-concept-a-dark: #8C1C14;
     --app-concept-b-light: #5FA0E0;
     --app-concept-b-dark: #245590;
-
-    /* Corrected app-accent to be blue */
-    --app-accent: #2F6EBA;
   }
 
   .dark {
@@ -108,9 +105,6 @@
     --app-concept-a-dark: #8C1C14;
     --app-concept-b-light: #5FA0E0;
     --app-concept-b-dark: #245590;
-
-    /* Corrected app-accent to be blue */
-    --app-accent: #2F6EBA;
   }
 }
 

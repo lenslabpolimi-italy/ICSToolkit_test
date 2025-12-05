@@ -70,7 +70,7 @@ export default {
         // Custom colors for the app
         'app-header': '#135C95',
         'app-body-text': '#333333', // Dark grey for body text
-        'app-accent': '#2F6EBA', // Changed to blue (app-concept-b-base)
+        'app-accent': '#ff8c00',
         'app-page-background': 'hsl(var(--app-page-background))', // New custom background color
         'app-concept-a-base': '#B02418', // Base red for Concept A
         'app-concept-a-light': '#E05040', // Lighter red for fill
