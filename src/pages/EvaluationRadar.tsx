@@ -6,9 +6,13 @@ import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 import { EvaluationLevel, Strategy } from '@/types/lcd';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import StrategyInsightBox from '@/components/StrategyInsightBox';
+import StickyNote from '@/components/StickyNote';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import ImprovementNote from '@/components/ImprovementNote'; // Import the ImprovementNote component
 import { PlusCircle, Trash2 } from 'lucide-react'; // Import icons for buttons
 
 // Custom tick component for the PolarRadiusAxis
@@ -35,58 +39,60 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
   );
 };
 
-// Custom tick component for the PolarAngleAxis to display strategy name
-const CustomAngleAxisTick = ({ x, y, payload, strategies }: any) => {
+// Custom tick component for the PolarAngleAxis to display strategy name and priority
+const CustomAngleAxisTick = ({ x, y, payload, strategies, qualitativeEvaluation }: any) => {
   const strategyId = payload.value.split('.')[0];
   const strategy = strategies.find((s: Strategy) => s.id === strategyId);
 
   if (!strategy) return null;
 
-  // Adjust position for text to be outside the radar and readable
-  const radiusOffset = 100; // Increased distance from the outer edge of the radar
-  const angle = payload.angle; // Angle in degrees
-
-  // Convert angle to radians for sin/cos
-  const rad = (angle * Math.PI) / 180;
-
-  // Calculate new x, y for the strategy name
-  const newX = x + Math.cos(rad) * radiusOffset;
-  const newY = y + Math.sin(rad) * radiusOffset;
-
-  // Determine text anchor based on quadrant for better readability
-  let textAnchor = 'middle';
-  if (angle > 45 && angle <= 135) { // Bottom-right quadrant
-    textAnchor = 'start';
-  } else if (angle > 135 && angle <= 225) { // Bottom-left quadrant
-    textAnchor = 'end';
-  } else if (angle > 225 && angle <= 315) { // Top-left quadrant
-    textAnchor = 'end';
-  } else { // Top-right quadrant (and top center)
-    textAnchor = 'start';
-  }
-
-  // For top and bottom, center the text
-  if (angle === 90 || angle === 270) {
-    textAnchor = 'middle';
-  }
+  const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+  const { displayText, classes } = getPriorityTagClasses(priority);
 
   return (
-    <g>
-      <text
-        x={newX}
-        y={newY}
-        textAnchor={textAnchor}
-        fill="#135C95" // app-header color
-        fontSize={14}
-        fontFamily="Palanquin"
-        fontWeight="600"
-      >
+    <g transform={`translate(${x},${y})`}>
+      {/* Removed the text elements for strategy ID/Name and Priority */}
+    </g>
+  );
+};
+
+// Custom tick component for the PolarAngleAxis to display strategy name (for Improvement Radar)
+const CustomAngleAxisTickImprovement = ({ x, y, payload, strategies }: any) => {
+  const strategyId = payload.value.split('.')[0];
+  const strategy = strategies.find((s: Strategy) => s.id === strategyId);
+  if (!strategy) return null;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={10} textAnchor="middle" fill="#333" fontSize={12} fontFamily="Roboto Condensed">
         {strategy.id}. {strategy.name}
       </text>
     </g>
   );
 };
 
+// Constants for positioning StrategyInsightBoxes and their associated notes containers
+const BOX_HEIGHT = 80; // h-20 is 80px
+const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
+const NOTES_BOX_WIDTH = '192px'; // w-48
+const NOTES_BOX_HEIGHT = '144px'; // h-36
+
+// Adjusted positions for the 6 strategies around the radar
+const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
+  '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
+  '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
+  '4': { top: 650, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, adjusted for more space
+  '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
+  '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
+};
+
+interface ImprovementNoteData {
+  id: string;
+  text: string;
+  strategyId: string;
+  x: number;
+  y: number;
+}
 
 const EvaluationRadar: React.FC = () => {
   const {
@@ -95,11 +101,14 @@ const EvaluationRadar: React.FC = () => {
     setRadarChartData,
     radarChartData,
     qualitativeEvaluation,
-    // Removed radarEcoIdeas, setRadarEcoIdeas, updateEcoIdea, deleteEcoIdea
+    radarEcoIdeas,
+    setRadarEcoIdeas,
+    updateEcoIdea,
+    deleteEcoIdea,
   } = useLcd();
 
   const [showImprovementRadar, setShowImprovementRadar] = useState(false);
-  // Removed improvementNotes, setImprovementNotes
+  const [improvementNotes, setImprovementNotes] = useState<ImprovementNoteData[]>([]);
   const [selectedStrategyForNewNote, setSelectedStrategyForNewNote] = useState(strategies[0]?.id || '');
 
   // Filter strategies to exclude Strategy 7 for radar display
@@ -198,20 +207,108 @@ const EvaluationRadar: React.FC = () => {
   );
   const isImprovementRadarActive = allStrategiesEvaluatedA && allStrategiesEvaluatedB;
 
-  // Removed all handlers for radarEcoIdeas and Improvement Notes
-  // Removed addImprovementNote, handleImprovementNoteDragStop, etc.
-  // Removed handleWipeImprovementNotes
+  // Handlers for radarEcoIdeas (for the main evaluation radar)
+  const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+    // No need to update original ecoIdea's x,y as radar's position is independent
+  };
+
+  const handleRadarEcoIdeaTextChange = (id: string, newText: string) => {
+    // Update the text in radarEcoIdeas
+    setRadarEcoIdeas(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+    // Also update the text in the original ecoIdeas
+    updateEcoIdea(id, { text: newText });
+  };
+
+  const handleRadarEcoIdeaDelete = (id: string) => {
+    // Delete from radarEcoIdeas
+    setRadarEcoIdeas(prev => prev.filter(note => note.id !== id));
+    // Also delete from original ecoIdeas, which will then trigger the useEffect to sync radarEcoIdeas
+    deleteEcoIdea(id);
+    toast.info("Confirmed eco-idea removed.");
+  };
+
+  const handleRadarEcoIdeaConfirmToggle = (id: string) => {
+    // Find the current state of isConfirmed for this idea
+    const currentIdea = radarEcoIdeas.find(idea => idea.id === id);
+    if (currentIdea) {
+      const newConfirmedStatus = !currentIdea.isConfirmed;
+      // Update in radarEcoIdeas
+      setRadarEcoIdeas(prev =>
+        prev.map(note =>
+          note.id === id ? { ...note, isConfirmed: newConfirmedStatus } : note
+        )
+      );
+      // Update in original ecoIdeas, which will then trigger the useEffect to sync radarEcoIdeas
+      updateEcoIdea(id, { isConfirmed: newConfirmedStatus });
+      toast.info(`Eco-idea ${newConfirmedStatus ? 'confirmed' : 'unconfirmed'}.`);
+    }
+  };
+
+  // Handlers for Improvement Notes (for the improvement radar)
+  const addImprovementNote = () => {
+    if (!selectedStrategyForNewNote) {
+      toast.error("Please select a strategy for the new idea.");
+      return;
+    }
+    // Generate random offsets for x and y to prevent overlapping
+    const offsetX = Math.floor(Math.random() * 100) - 50; // -50 to +50
+    const offsetY = Math.floor(Math.random() * 100) - 50; // -50 to +50
+    const newNote: ImprovementNoteData = {
+      id: `improvement-note-${Date.now()}`,
+      text: '',
+      strategyId: selectedStrategyForNewNote,
+      x: 20 + offsetX, // Initial X position relative to the notes container
+      y: 20 + offsetY, // Initial Y position relative to the notes container
+    };
+    setImprovementNotes(prev => [...prev, newNote]);
+    toast.success("New improvement idea added!");
+  };
+
+  const handleImprovementNoteDragStop = (id: string, x: number, y: number) => {
+    setImprovementNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, x, y } : note))
+    );
+  };
+
+  const handleImprovementNoteTextChange = (id: string, newText: string) => {
+    setImprovementNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
+    );
+  };
+
+  const handleImprovementNoteStrategyChange = (id: string, newStrategyId: string) => {
+    setImprovementNotes(prev =>
+      prev.map(note => (note.id === id ? { ...note, strategyId: newStrategyId } : note))
+    );
+  };
+
+  const handleImprovementNoteDelete = (id: string) => {
+    setImprovementNotes(prev => prev.filter(note => note.id !== id));
+    toast.info("Improvement idea removed.");
+  };
+
+  const handleWipeImprovementNotes = () => {
+    setImprovementNotes([]);
+    toast.success("All improvement ideas wiped!");
+  };
 
   const handleImprovementRadarClick = () => {
     if (!isImprovementRadarActive) {
       toast.info("Please complete the evaluation for both Concept A and Concept B to activate the Improvement Radar.");
     } else {
       setShowImprovementRadar(true);
+      toast.info("Switched to Improvement Radar. Brainstorm new ideas here!");
     }
   };
 
   const handleBackToEvaluationRadar = () => {
     setShowImprovementRadar(false);
+    toast.info("Switched back to Evaluation Radar.");
   };
 
   // Data for the empty radar chart (only axes and grid) for improvement radar
@@ -227,10 +324,15 @@ const EvaluationRadar: React.FC = () => {
       </h2>
       <p className="text-app-body-text mb-4">
         {showImprovementRadar
-          ? "This radar allows you to visualize potential areas for improvement."
+          ? "Brainstorm and place new ideas for improving your concepts on this radar. These ideas are independent of the initial evaluation."
           : "This radar chart displays the pursuit level of each of the 7 strategies for Concept A and B, based on your evaluations in the 'Evaluation Checklists' section."
         }
       </p>
+      {!showImprovementRadar && (
+        <p className="text-app-body-text mb-8">
+          Below, you'll find the insights you've written for each strategy.
+        </p>
+      )}
 
       <div className="mb-8 flex justify-end gap-4">
         {showImprovementRadar ? (
@@ -241,7 +343,19 @@ const EvaluationRadar: React.FC = () => {
             >
               Back to Evaluation Radar
             </Button>
-            {/* Removed Add Idea and Wipe All buttons for improvement notes */}
+            <Button
+              onClick={addImprovementNote}
+              className="bg-green-500 hover:bg-green-600 text-white font-roboto-condensed"
+            >
+              <PlusCircle className="mr-2 h-4 w-4" /> Add Idea
+            </Button>
+            <Button
+              onClick={handleWipeImprovementNotes}
+              variant="outline"
+              className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700 font-roboto-condensed"
+            >
+              <Trash2 className="mr-2 h-4 w-4" /> Wipe All
+            </Button>
           </>
         ) : (
           <div onClick={handleImprovementRadarClick} className={!isImprovementRadarActive ? "cursor-not-allowed" : ""}>
@@ -261,33 +375,144 @@ const EvaluationRadar: React.FC = () => {
       {/* Main Radar Container - this is where both views will render */}
       <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
         {strategiesForRadar.length > 0 ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={showImprovementRadar ? improvementRadarData : data}>
-              <PolarGrid stroke="#e0e0e0" />
-              <PolarAngleAxis
-                dataKey="strategyName"
-                tick={(props) => (
-                  <CustomAngleAxisTick
-                    {...props}
-                    strategies={strategiesForRadar}
-                  />
+          <>
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={showImprovementRadar ? improvementRadarData : data}>
+                <PolarGrid stroke="#e0e0e0" />
+                <PolarAngleAxis
+                  dataKey="strategyName"
+                  tick={(props) => (
+                    showImprovementRadar ? (
+                      <CustomAngleAxisTickImprovement
+                        {...props}
+                        strategies={strategiesForRadar}
+                      />
+                    ) : (
+                      <CustomAngleAxisTick
+                        {...props}
+                        strategies={strategiesForRadar}
+                        qualitativeEvaluation={qualitativeEvaluation}
+                      />
+                    )
+                  )}
+                />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 4]}
+                  tickCount={5}
+                  stroke="#333"
+                  tick={CustomRadiusTick}
+                />
+                {!showImprovementRadar && (
+                  <>
+                    <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
+                    <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
+                  </>
                 )}
-              />
-              <PolarRadiusAxis
-                angle={90}
-                domain={[0, 4]}
-                tickCount={5}
-                stroke="#333"
-                tick={CustomRadiusTick}
-              />
-              {!showImprovementRadar && (
-                <>
-                  <Radar name="Concept A" dataKey="A" stroke="var(--app-concept-a-dark)" fill="var(--app-concept-a-light)" fillOpacity={0.6} />
-                  <Radar name="Concept B" dataKey="B" stroke="var(--app-concept-b-dark)" fill="var(--app-concept-b-light)" fillOpacity={0.6} />
-                </>
-              )}
-            </RadarChart>
-          </ResponsiveContainer>
+              </RadarChart>
+            </ResponsiveContainer>
+
+            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {strategiesForRadar.map(strategy => {
+              const boxPosition = insightBoxPositions[strategy.id] || {};
+
+              return (
+                <React.Fragment key={strategy.id}>
+                  <StrategyInsightBox
+                    strategy={strategy}
+                    priority={showImprovementRadar ? undefined : getStrategyPriorityForDisplay(strategy, qualitativeEvaluation)} // Pass undefined for improvement radar
+                    className="absolute"
+                    style={{
+                      top: boxPosition.top,
+                      left: boxPosition.left,
+                      right: boxPosition.right,
+                      transform: boxPosition.transform,
+                      zIndex: 10,
+                    }}
+                  />
+
+                  {/* Conditional rendering for notes containers based on radar type */}
+                  {showImprovementRadar ? (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                        left: boxPosition.left,
+                        right: boxPosition.right,
+                        transform: boxPosition.transform,
+                        width: NOTES_BOX_WIDTH,
+                        height: NOTES_BOX_HEIGHT,
+                        border: '2px dashed var(--app-accent)', // Dashed border for improvement notes container
+                        borderRadius: '8px',
+                        padding: '8px',
+                        backgroundColor: 'transparent',
+                        zIndex: 5,
+                      }}
+                      className="relative"
+                    >
+                      {improvementNotes.filter(note => note.strategyId === strategy.id).length > 0 ? (
+                        improvementNotes.filter(note => note.strategyId === strategy.id).map((note) => (
+                          <ImprovementNote
+                            key={note.id}
+                            id={note.id}
+                            x={note.x}
+                            y={note.y}
+                            text={note.text}
+                            strategyId={note.strategyId}
+                            strategies={strategiesForRadar}
+                            onDragStop={handleImprovementNoteDragStop}
+                            onTextChange={handleImprovementNoteTextChange}
+                            onStrategyChange={handleImprovementNoteStrategyChange}
+                            onDelete={handleImprovementNoteDelete}
+                          />
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">Add ideas here.</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                        left: boxPosition.left,
+                        right: boxPosition.right,
+                        transform: boxPosition.transform,
+                        width: NOTES_BOX_WIDTH,
+                        height: NOTES_BOX_HEIGHT,
+                        border: '2px solid var(--app-accent)',
+                        borderRadius: '8px',
+                        padding: '8px',
+                        backgroundColor: 'transparent',
+                        zIndex: 5,
+                      }}
+                      className="relative"
+                    >
+                      {radarEcoIdeas.filter(idea => idea.strategyId === strategy.id).length > 0 ? (
+                        radarEcoIdeas.filter(idea => idea.strategyId === strategy.id).map((idea) => (
+                          <StickyNote
+                            key={idea.id}
+                            id={idea.id}
+                            x={idea.x}
+                            y={idea.y}
+                            text={idea.text}
+                            strategyId={idea.strategyId}
+                            isConfirmed={idea.isConfirmed}
+                            onDragStop={handleRadarEcoIdeaDragStop}
+                            onTextChange={handleRadarEcoIdeaTextChange}
+                            onDelete={handleRadarEcoIdeaDelete}
+                            onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
+                          />
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
+                      )}
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </>
         ) : (
           <p className="text-app-body-text">Loading strategies...</p>
         )}
