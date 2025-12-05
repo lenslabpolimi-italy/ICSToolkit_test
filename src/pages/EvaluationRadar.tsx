@@ -164,10 +164,14 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // Determine if both concepts have data (at least one strategy with score > 0)
-  const hasConceptAData = Object.values(radarChartData.A).some(value => value > 0);
-  const hasConceptBData = Object.values(radarChartData.B).some(value => value > 0);
-  const isImprovementRadarActive = hasConceptAData && hasConceptBData;
+  // Determine if both concepts are *completely* evaluated (all strategies have score > 0)
+  const allStrategiesEvaluatedA = strategiesForRadar.every(strategy =>
+    (radarChartData.A[strategy.id] || 0) > 0
+  );
+  const allStrategiesEvaluatedB = strategiesForRadar.every(strategy =>
+    (radarChartData.B[strategy.id] || 0) > 0
+  );
+  const isImprovementRadarActive = allStrategiesEvaluatedA && allStrategiesEvaluatedB;
 
   // Handlers for radarEcoIdeas
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -223,7 +227,7 @@ const EvaluationRadar: React.FC = () => {
       </p>
 
       {/* New button for Improvement Radar */}
-      <div className="mb-8 flex justify-end"> {/* Changed justify-center to justify-end */}
+      <div className="mb-8 flex justify-end">
         <Button
           onClick={() => console.log("Improvement Radar clicked!")} // Placeholder for future navigation/action
           disabled={!isImprovementRadarActive}
