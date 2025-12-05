@@ -11,6 +11,7 @@ import QualitativeEvaluation from "./pages/QualitativeEvaluation";
 import EcoIdeasBoards from "./pages/EcoIdeasBoards";
 import EvaluationChecklists from "./pages/EvaluationChecklists";
 import EvaluationRadar from "./pages/EvaluationRadar";
+import ImprovementRadar from "./pages/ImprovementRadar"; // NEW import
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/eco-ideas" element={<EcoIdeasBoards />} />
               <Route path="/evaluation-checklists" element={<EvaluationChecklists />} />
               <Route path="/evaluation-radar" element={<EvaluationRadar />} />
+              <Route path="/improvement-radar" element={<ImprovementRadar />} /> {/* NEW route */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
