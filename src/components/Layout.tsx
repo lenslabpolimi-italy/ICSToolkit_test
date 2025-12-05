@@ -15,7 +15,7 @@ const navItems = [
   { path: '/qualitative-evaluation', label: 'Qualitative Evaluation' },
   { path: '/eco-ideas', label: 'Eco-Ideas Boards' },
   { path: '/evaluation-checklists', label: 'Evaluation Checklists' },
-  { path: '/evaluation-radar', label: 'Evaluation Radar' },
+  { path: '/evaluation-radar', label: 'Radar' }, // Changed label here
 ];
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
