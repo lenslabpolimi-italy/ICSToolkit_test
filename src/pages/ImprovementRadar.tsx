@@ -3,31 +3,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, XCircle } from 'lucide-react';
 import { Strategy } from '@/types/lcd';
-import { toast } from 'sonner';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { cn } from '@/lib/utils';
-import ImprovementNote from '@/components/ImprovementNote'; // Import the ImprovementNote component
-import { useLcd } from '@/context/LcdContext'; // To get strategies
-import StrategyInsightBox from '@/components/StrategyInsightBox'; // Import StrategyInsightBox
-import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // For StrategyInsightBox
+import { useLcd } from '@/context/LcdContext';
+import StrategyInsightBox from '@/components/StrategyInsightBox';
+import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 
-interface ImprovementNoteData {
-  id: string;
-  text: string;
-  strategyId: string;
-  x: number;
-  y: number;
-}
-
-// Custom tick component for the PolarRadiusAxis (same as in EvaluationRadar)
+// Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
   const scoreToLabel: Record<number, string> = {
     1: 'Worst -',
     2: 'No Improvement =',
     3: 'Incremental Improvement +',
-    4: 'Radical Improvement ++', // Changed from 'Radical Improvement' to 'Radical Improvement ++'
+    4: 'Radical Improvement ++',
   };
   const label = scoreToLabel[payload.value];
   if (!label) return null;
@@ -47,16 +36,13 @@ const CustomAngleAxisTickImprovement = ({ x, y, payload, strategies }: any) => {
   if (!strategy) return null;
   return (
     <g transform={`translate(${x},${y})`}>
-      {/* Removed strategy name text */}
+      {/* Strategy name is displayed in StrategyInsightBox, so no text here */}
     </g>
   );
 };
 
-// Constants for positioning StrategyInsightBoxes and their associated notes containers
+// Constants for positioning StrategyInsightBoxes
 const BOX_HEIGHT = 80; // h-20 is 80px
-const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
-const NOTES_BOX_WIDTH = '192px'; // w-48
-const NOTES_BOX_HEIGHT = '144px'; // h-36
 
 // Adjusted positions for the 6 strategies around the radar
 const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
@@ -69,80 +55,44 @@ const insightBoxPositions: { [key: string]: { top: number | string; left?: numbe
 };
 
 const ImprovementRadar: React.FC = () => {
-  const { strategies, qualitativeEvaluation } = useLcd(); // Get strategies and qualitativeEvaluation from context
+  const { strategies, qualitativeEvaluation, radarChartData } = useLcd();
   const navigate = useNavigate();
-  const [improvementNotes, setImprovementNotes] = useState<ImprovementNoteData[]>([]);
-  const [selectedStrategyForNewNote, setSelectedStrategyForNewNote] = useState(strategies[0]?.id || '');
 
   // Filter strategies to exclude Strategy 7 for radar display
   const strategiesForRadar = strategies.filter(s => s.id !== '7');
 
-  // Set initial selected strategy for new notes when strategies load
-  useEffect(() => {
-    if (strategiesForRadar.length > 0 && !selectedStrategyForNewNote) {
-      setSelectedStrategyForNewNote(strategiesForRadar[0].id);
-    }
-  }, [strategiesForRadar, selectedStrategyForNewNote]);
+  // Calculate improvement data based on Concept B vs Concept A
+  const improvementRadarData = strategiesForRadar.map(strategy => {
+    const scoreA = radarChartData.A[strategy.id] || 0;
+    const scoreB = radarChartData.B[strategy.id] || 0;
 
-  const addImprovementNote = () => {
-    if (!selectedStrategyForNewNote) {
-      toast.error("Please select a strategy for the new idea.");
-      return;
+    let improvementScore: number;
+    const difference = scoreB - scoreA;
+
+    if (scoreA === 0 || scoreB === 0) { // If either concept is not evaluated, show as 'No Improvement' or 0
+      improvementScore = 2; // Default to 'No Improvement =' if data is missing
+    } else if (difference <= -1) { // B is worse than A
+      improvementScore = 1; // Maps to 'Worst -'
+    } else if (difference === 0) { // B is same as A
+      improvementScore = 2; // Maps to 'No Improvement ='
+    } else if (difference === 1) { // B is slightly better than A
+      improvementScore = 3; // Maps to 'Incremental Improvement +'
+    } else { // difference >= 2, B is significantly better than A
+      improvementScore = 4; // Maps to 'Radical Improvement ++'
     }
-    // Generate random offsets for x and y to prevent overlapping within the note container
-    const offsetX = Math.floor(Math.random() * 50) - 25; // -25 to +25
-    const offsetY = Math.floor(Math.random() * 50) - 25; // -25 to +25
-    const newNote: ImprovementNoteData = {
-      id: `improvement-note-${Date.now()}`,
-      text: '',
-      strategyId: selectedStrategyForNewNote,
-      x: 10 + offsetX, // Initial X position relative to the notes container
-      y: 10 + offsetY, // Initial Y position relative to the notes container
+
+    return {
+      strategyName: `${strategy.id}. ${strategy.name}`,
+      improvement: improvementScore,
+      fullMark: 4,
     };
-    setImprovementNotes(prev => [...prev, newNote]);
-    toast.success("New improvement idea added!");
-  };
-
-  const handleNoteDragStop = (id: string, x: number, y: number) => {
-    setImprovementNotes(prev =>
-      prev.map(note => (note.id === id ? { ...note, x, y } : note))
-    );
-  };
-
-  const handleNoteTextChange = (id: string, newText: string) => {
-    setImprovementNotes(prev =>
-      prev.map(note => (note.id === id ? { ...note, text: newText } : note))
-    );
-  };
-
-  const handleNoteStrategyChange = (id: string, newStrategyId: string) => {
-    setImprovementNotes(prev =>
-      prev.map(note => (note.id === id ? { ...note, strategyId: newStrategyId } : note))
-    );
-  };
-
-  const handleNoteDelete = (id: string) => {
-    setImprovementNotes(prev => prev.filter(note => note.id !== id));
-    toast.info("Improvement idea removed.");
-  };
-
-  const handleWipeNotes = () => {
-    setImprovementNotes([]);
-    toast.success("All improvement ideas wiped!");
-  };
-
-  // Data for the empty radar chart (only axes and grid)
-  const radarData = strategiesForRadar.map(s => ({
-    strategyName: `${s.id}. ${s.name}`,
-    fullMark: 4, // Max score for Excellent
-  }));
+  });
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Improvement Radar</h2>
       <p className="text-app-body-text mb-4">
-        Brainstorm and place new ideas for improving your concepts on this radar.
-        These ideas are independent of the initial evaluation.
+        This radar chart illustrates the improvement of Concept B compared to Concept A for each strategy.
       </p>
 
       <div className="mb-8 flex justify-end gap-4">
@@ -158,7 +108,7 @@ const ImprovementRadar: React.FC = () => {
         {strategiesForRadar.length > 0 ? (
           <>
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={improvementRadarData}>
                 <PolarGrid stroke="#e0e0e0" />
                 <PolarAngleAxis
                   dataKey="strategyName"
@@ -176,32 +126,20 @@ const ImprovementRadar: React.FC = () => {
                   stroke="#333"
                   tick={CustomRadiusTick}
                 />
-                {/* No Radar components for Concept A/B - this is a blank canvas */}
+                <Radar
+                  name="Improvement"
+                  dataKey="improvement"
+                  stroke="#4CAF50" // Green color for improvement
+                  fill="#4CAF50"
+                  fillOpacity={0.6}
+                />
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {/* Render StrategyInsightBoxes */}
             {strategiesForRadar.map(strategy => {
               const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
               const boxPosition = insightBoxPositions[strategy.id] || {};
-
-              const notesForCurrentStrategy = improvementNotes.filter(note => note.strategyId === strategy.id);
-
-              // Calculate the position for the notes container
-              const notesContainerStyle: React.CSSProperties = {
-                position: 'absolute',
-                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
-                left: boxPosition.left,
-                right: boxPosition.right,
-                transform: boxPosition.transform,
-                width: NOTES_BOX_WIDTH,
-                height: NOTES_BOX_HEIGHT,
-                border: '2px solid var(--app-accent)',
-                borderRadius: '8px',
-                padding: '8px',
-                backgroundColor: 'transparent',
-                zIndex: 5,
-              };
 
               return (
                 <React.Fragment key={strategy.id}>
@@ -217,28 +155,6 @@ const ImprovementRadar: React.FC = () => {
                       zIndex: 10,
                     }}
                   />
-
-                  <div style={notesContainerStyle} className="relative">
-                    {notesForCurrentStrategy.length > 0 ? (
-                      notesForCurrentStrategy.map((note) => (
-                        <ImprovementNote
-                          key={note.id}
-                          id={note.id}
-                          x={note.x}
-                          y={note.y}
-                          text={note.text}
-                          strategyId={note.strategyId}
-                          strategies={strategiesForRadar}
-                          onDragStop={handleNoteDragStop}
-                          onTextChange={handleNoteTextChange}
-                          onStrategyChange={handleNoteStrategyChange}
-                          onDelete={handleNoteDelete}
-                        />
-                      ))
-                    ) : (
-                      null
-                    )}
-                  </div>
                 </React.Fragment>
               );
             })}
@@ -248,9 +164,12 @@ const ImprovementRadar: React.FC = () => {
         )}
       </div>
 
-      {/* Placeholder for Strategy Insights to maintain space */}
-      <div className="mt-48 pt-8">
-        {/* Content removed to keep space */}
+      {/* Manual Legend for Improvement */}
+      <div className="flex justify-center gap-8 mt-12 mb-8 text-app-body-text font-roboto-condensed">
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 block rounded-full bg-green-500 border border-green-700"></span>
+          <span>Concept B vs Concept A Improvement</span>
+        </div>
       </div>
     </div>
   );
