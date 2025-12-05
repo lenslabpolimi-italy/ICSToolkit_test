@@ -412,33 +412,15 @@ const EvaluationRadar: React.FC = () => {
               </RadarChart>
             </ResponsiveContainer>
 
-            {/* Render StrategyInsightBoxes and their associated notes containers for Evaluation Radar */}
-            {!showImprovementRadar && strategiesForRadar.map(strategy => {
-              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {strategiesForRadar.map(strategy => {
               const boxPosition = insightBoxPositions[strategy.id] || {};
-
-              const notesForCurrentStrategy = radarEcoIdeas.filter(idea => idea.strategyId === strategy.id);
-
-              const notesContainerStyle: React.CSSProperties = {
-                position: 'absolute',
-                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
-                left: boxPosition.left,
-                right: boxPosition.right,
-                transform: boxPosition.transform,
-                width: NOTES_BOX_WIDTH,
-                height: NOTES_BOX_HEIGHT,
-                border: '2px solid var(--app-accent)',
-                borderRadius: '8px',
-                padding: '8px',
-                backgroundColor: 'transparent',
-                zIndex: 5,
-              };
 
               return (
                 <React.Fragment key={strategy.id}>
                   <StrategyInsightBox
                     strategy={strategy}
-                    priority={priority}
+                    priority={showImprovementRadar ? undefined : getStrategyPriorityForDisplay(strategy, qualitativeEvaluation)} // Pass undefined for improvement radar
                     className="absolute"
                     style={{
                       top: boxPosition.top,
@@ -449,73 +431,85 @@ const EvaluationRadar: React.FC = () => {
                     }}
                   />
 
-                  <div style={notesContainerStyle} className="relative">
-                    {notesForCurrentStrategy.length > 0 ? (
-                      notesForCurrentStrategy.map((idea) => (
-                        <StickyNote
-                          key={idea.id}
-                          id={idea.id}
-                          x={idea.x}
-                          y={idea.y}
-                          text={idea.text}
-                          strategyId={idea.strategyId}
-                          isConfirmed={idea.isConfirmed}
-                          onDragStop={handleRadarEcoIdeaDragStop}
-                          onTextChange={handleRadarEcoIdeaTextChange}
-                          onDelete={handleRadarEcoIdeaDelete}
-                          onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
-                        />
-                      ))
-                    ) : (
-                      <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
-                    )}
-                  </div>
-                </React.Fragment>
-              );
-            })}
-
-            {/* Render Improvement Notes for Improvement Radar */}
-            {showImprovementRadar && strategiesForRadar.map(strategy => {
-              const boxPosition = insightBoxPositions[strategy.id] || {};
-              const notesForCurrentStrategy = improvementNotes.filter(note => note.strategyId === strategy.id);
-
-              const notesContainerStyle: React.CSSProperties = {
-                position: 'absolute',
-                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
-                left: boxPosition.left,
-                right: boxPosition.right,
-                transform: boxPosition.transform,
-                width: NOTES_BOX_WIDTH,
-                height: NOTES_BOX_HEIGHT,
-                border: '2px dashed var(--app-accent)', // Dashed border for improvement notes container
-                borderRadius: '8px',
-                padding: '8px',
-                backgroundColor: 'transparent',
-                zIndex: 5,
-              };
-
-              return (
-                <div key={`improvement-notes-container-${strategy.id}`} style={notesContainerStyle} className="relative">
-                  {notesForCurrentStrategy.length > 0 ? (
-                    notesForCurrentStrategy.map((note) => (
-                      <ImprovementNote
-                        key={note.id}
-                        id={note.id}
-                        x={note.x}
-                        y={note.y}
-                        text={note.text}
-                        strategyId={note.strategyId}
-                        strategies={strategiesForRadar}
-                        onDragStop={handleImprovementNoteDragStop}
-                        onTextChange={handleImprovementNoteTextChange}
-                        onStrategyChange={handleImprovementNoteStrategyChange}
-                        onDelete={handleImprovementNoteDelete}
-                      />
-                    ))
+                  {/* Conditional rendering for notes containers based on radar type */}
+                  {showImprovementRadar ? (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                        left: boxPosition.left,
+                        right: boxPosition.right,
+                        transform: boxPosition.transform,
+                        width: NOTES_BOX_WIDTH,
+                        height: NOTES_BOX_HEIGHT,
+                        border: '2px dashed var(--app-accent)', // Dashed border for improvement notes container
+                        borderRadius: '8px',
+                        padding: '8px',
+                        backgroundColor: 'transparent',
+                        zIndex: 5,
+                      }}
+                      className="relative"
+                    >
+                      {improvementNotes.filter(note => note.strategyId === strategy.id).length > 0 ? (
+                        improvementNotes.filter(note => note.strategyId === strategy.id).map((note) => (
+                          <ImprovementNote
+                            key={note.id}
+                            id={note.id}
+                            x={note.x}
+                            y={note.y}
+                            text={note.text}
+                            strategyId={note.strategyId}
+                            strategies={strategiesForRadar}
+                            onDragStop={handleImprovementNoteDragStop}
+                            onTextChange={handleImprovementNoteTextChange}
+                            onStrategyChange={handleImprovementNoteStrategyChange}
+                            onDelete={handleImprovementNoteDelete}
+                          />
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">Add ideas here.</p>
+                      )}
+                    </div>
                   ) : (
-                    <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">Add ideas here.</p>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                        left: boxPosition.left,
+                        right: boxPosition.right,
+                        transform: boxPosition.transform,
+                        width: NOTES_BOX_WIDTH,
+                        height: NOTES_BOX_HEIGHT,
+                        border: '2px solid var(--app-accent)',
+                        borderRadius: '8px',
+                        padding: '8px',
+                        backgroundColor: 'transparent',
+                        zIndex: 5,
+                      }}
+                      className="relative"
+                    >
+                      {radarEcoIdeas.filter(idea => idea.strategyId === strategy.id).length > 0 ? (
+                        radarEcoIdeas.filter(idea => idea.strategyId === strategy.id).map((idea) => (
+                          <StickyNote
+                            key={idea.id}
+                            id={idea.id}
+                            x={idea.x}
+                            y={idea.y}
+                            text={idea.text}
+                            strategyId={idea.strategyId}
+                            isConfirmed={idea.isConfirmed}
+                            onDragStop={handleRadarEcoIdeaDragStop}
+                            onTextChange={handleRadarEcoIdeaTextChange}
+                            onDelete={handleRadarEcoIdeaDelete}
+                            onConfirmToggle={handleRadarEcoIdeaConfirmToggle}
+                          />
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No confirmed ideas yet.</p>
+                      )}
+                    </div>
                   )}
-                </div>
+                </React.Fragment>
               );
             })}
           </>
