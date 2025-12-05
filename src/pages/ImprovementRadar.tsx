@@ -26,8 +26,8 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
   const scoreToLabel: Record<number, string> = {
     1: 'Worst -',
     2: 'No Improvement =',
-    3: 'Incremental Improvement +', // Changed from 'Good' to 'Incremental Improvement +'
-    4: 'Excellent',
+    3: 'Incremental Improvement +',
+    4: 'Radical Improvement', // Changed from 'Excellent' to 'Radical Improvement'
   };
   const label = scoreToLabel[payload.value];
   if (!label) return null;
