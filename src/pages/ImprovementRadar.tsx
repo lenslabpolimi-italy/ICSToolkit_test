@@ -10,6 +10,8 @@ import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveConta
 import { cn } from '@/lib/utils';
 import ImprovementNote from '@/components/ImprovementNote'; // Import the ImprovementNote component
 import { useLcd } from '@/context/LcdContext'; // To get strategies
+import StrategyInsightBox from '@/components/StrategyInsightBox'; // Import StrategyInsightBox
+import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils'; // For StrategyInsightBox
 
 interface ImprovementNoteData {
   id: string;
@@ -52,8 +54,24 @@ const CustomAngleAxisTickImprovement = ({ x, y, payload, strategies }: any) => {
   );
 };
 
+// Constants for positioning StrategyInsightBoxes and their associated notes containers
+const BOX_HEIGHT = 80; // h-20 is 80px
+const NOTES_CONTAINER_OFFSET_Y = 16; // Margin between StrategyInsightBox and notes container
+const NOTES_BOX_WIDTH = '192px'; // w-48
+const NOTES_BOX_HEIGHT = '144px'; // h-36
+
+// Adjusted positions for the 6 strategies around the radar
+const insightBoxPositions: { [key: string]: { top: number | string; left?: number | string; right?: number | string; transform?: string; } } = {
+  '1': { top: -104, left: '50%', transform: 'translateX(-50%)' }, // Top center
+  '2': { top: 100, left: 'calc(75% + 20px)' }, // Top-right
+  '3': { top: 400, left: 'calc(75% + 20px)' }, // Bottom-right
+  '4': { top: 650, left: '50%', transform: 'translateX(-50%)' }, // Bottom center, adjusted for more space
+  '6': { top: 100, right: 'calc(75% + 20px)' }, // Top-left
+  '5': { top: 400, right: 'calc(75% + 20px)' }, // Bottom-left
+};
+
 const ImprovementRadar: React.FC = () => {
-  const { strategies } = useLcd(); // Get strategies from context
+  const { strategies, qualitativeEvaluation } = useLcd(); // Get strategies and qualitativeEvaluation from context
   const navigate = useNavigate();
   const [improvementNotes, setImprovementNotes] = useState<ImprovementNoteData[]>([]);
   const [selectedStrategyForNewNote, setSelectedStrategyForNewNote] = useState(strategies[0]?.id || '');
@@ -73,15 +91,15 @@ const ImprovementRadar: React.FC = () => {
       toast.error("Please select a strategy for the new idea.");
       return;
     }
-    // Generate random offsets for x and y to prevent overlapping
-    const offsetX = Math.floor(Math.random() * 100) - 50; // -50 to +50
-    const offsetY = Math.floor(Math.random() * 100) - 50; // -50 to +50
+    // Generate random offsets for x and y to prevent overlapping within the note container
+    const offsetX = Math.floor(Math.random() * 50) - 25; // -25 to +25
+    const offsetY = Math.floor(Math.random() * 50) - 25; // -25 to +25
     const newNote: ImprovementNoteData = {
       id: `improvement-note-${Date.now()}`,
       text: '',
       strategyId: selectedStrategyForNewNote,
-      x: 20 + offsetX, // Initial X position relative to the notes container
-      y: 20 + offsetY, // Initial Y position relative to the notes container
+      x: 10 + offsetX, // Initial X position relative to the notes container
+      y: 10 + offsetY, // Initial Y position relative to the notes container
     };
     setImprovementNotes(prev => [...prev, newNote]);
     toast.success("New improvement idea added!");
@@ -129,19 +147,31 @@ const ImprovementRadar: React.FC = () => {
         These ideas are independent of the initial evaluation.
       </p>
 
-      <div className="mb-8 flex justify-end">
+      <div className="mb-8 flex justify-end gap-4">
         <Button
           onClick={() => navigate('/evaluation-radar')}
           className="bg-gray-500 hover:bg-gray-600 text-white font-roboto-condensed"
         >
           Back to Evaluation Radar
         </Button>
+        <Button
+          onClick={addImprovementNote}
+          className="bg-green-500 hover:bg-green-600 text-white font-roboto-condensed"
+        >
+          <PlusCircle className="mr-2 h-4 w-4" /> Add Idea
+        </Button>
+        <Button
+          onClick={handleWipeNotes}
+          variant="outline"
+          className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700 font-roboto-condensed"
+        >
+          <XCircle className="mr-2 h-4 w-4" /> Wipe All
+        </Button>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-4 h-[700px]">
-        {/* Radar Chart Area (Visual Reference) */}
-        <div className="relative flex-grow lg:w-1/2 h-full border border-gray-200 rounded-lg bg-gray-50 p-4 flex items-center justify-center">
-          {strategiesForRadar.length > 0 ? (
+      <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
+        {strategiesForRadar.length > 0 ? (
+          <>
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
                 <PolarGrid stroke="#e0e0e0" />
@@ -164,49 +194,85 @@ const ImprovementRadar: React.FC = () => {
                 {/* No Radar components for Concept A/B - this is a blank canvas */}
               </RadarChart>
             </ResponsiveContainer>
-          ) : (
-            <p className="text-app-body-text">Loading strategies...</p>
-          )}
-        </div>
 
-        {/* Improvement Notes Area */}
-        <div className="relative lg:w-1/2 h-full border border-gray-200 rounded-lg bg-white p-4 overflow-auto">
-          <h3 className="text-xl font-palanquin font-semibold text-app-header mb-4">Your Improvement Ideas</h3>
-          <div className="flex items-center gap-2 mb-4">
-            <Button
-              onClick={addImprovementNote}
-              className="bg-green-500 hover:bg-green-600 text-white font-roboto-condensed"
-            >
-              <PlusCircle className="mr-2 h-4 w-4" /> Add Idea
-            </Button>
-            <Button
-              onClick={handleWipeNotes}
-              variant="outline"
-              className="bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-700 font-roboto-condensed"
-            >
-              <XCircle className="mr-2 h-4 w-4" /> Wipe All
-            </Button>
-          </div>
-          <div className="relative min-h-[200px] border border-gray-100 rounded-md p-2">
-            {improvementNotes.length === 0 && (
-              <p className="text-sm text-gray-500 italic font-roboto-condensed p-4">Click "Add Idea" to start brainstorming improvements.</p>
-            )}
-            {improvementNotes.map(note => (
-              <ImprovementNote
-                key={note.id}
-                id={note.id}
-                x={note.x}
-                y={note.y}
-                text={note.text}
-                strategyId={note.strategyId}
-                strategies={strategiesForRadar} // Pass filtered strategies for the dropdown
-                onDragStop={handleNoteDragStop}
-                onTextChange={handleNoteTextChange}
-                onStrategyChange={handleNoteStrategyChange}
-                onDelete={handleNoteDelete}
-              />
-            ))}
-          </div>
+            {/* Render StrategyInsightBoxes and their associated notes containers */}
+            {strategiesForRadar.map(strategy => {
+              const priority = getStrategyPriorityForDisplay(strategy, qualitativeEvaluation);
+              const boxPosition = insightBoxPositions[strategy.id] || {};
+
+              const notesForCurrentStrategy = improvementNotes.filter(note => note.strategyId === strategy.id);
+
+              // Calculate the position for the notes container
+              const notesContainerStyle: React.CSSProperties = {
+                position: 'absolute',
+                top: `calc(${boxPosition.top}px + ${BOX_HEIGHT}px + ${NOTES_CONTAINER_OFFSET_Y}px)`,
+                left: boxPosition.left,
+                right: boxPosition.right,
+                transform: boxPosition.transform,
+                width: NOTES_BOX_WIDTH,
+                height: NOTES_BOX_HEIGHT,
+                border: '2px solid var(--app-accent)',
+                borderRadius: '8px',
+                padding: '8px',
+                backgroundColor: 'transparent',
+                zIndex: 5,
+              };
+
+              return (
+                <React.Fragment key={strategy.id}>
+                  <StrategyInsightBox
+                    strategy={strategy}
+                    priority={priority}
+                    className="absolute"
+                    style={{
+                      top: boxPosition.top,
+                      left: boxPosition.left,
+                      right: boxPosition.right,
+                      transform: boxPosition.transform,
+                      zIndex: 10,
+                    }}
+                  />
+
+                  <div style={notesContainerStyle} className="relative">
+                    {notesForCurrentStrategy.length > 0 ? (
+                      notesForCurrentStrategy.map((note) => (
+                        <ImprovementNote
+                          key={note.id}
+                          id={note.id}
+                          x={note.x}
+                          y={note.y}
+                          text={note.text}
+                          strategyId={note.strategyId}
+                          strategies={strategiesForRadar}
+                          onDragStop={handleNoteDragStop}
+                          onTextChange={handleNoteTextChange}
+                          onStrategyChange={handleNoteStrategyChange}
+                          onDelete={handleNoteDelete}
+                        />
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500 italic font-roboto-condensed text-transparent">No ideas for this strategy yet.</p>
+                    )}
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </>
+        ) : (
+          <p className="text-app-body-text">Loading strategies...</p>
+        )}
+      </div>
+
+      {/* Placeholder for Strategy Insights to maintain space */}
+      <div className="mt-48 pt-8">
+        {/* Content removed to keep space */}
+      </div>
+
+      {/* Manual Legend for Concept A and B (removed as this is an improvement radar) */}
+      <div className="flex justify-center gap-8 mt-12 mb-8 text-app-body-text font-roboto-condensed">
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 block rounded-full bg-gray-200 border border-gray-400"></span>
+          <span>Improvement Ideas</span>
         </div>
       </div>
     </div>
