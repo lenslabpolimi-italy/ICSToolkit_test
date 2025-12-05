@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </div>
       </header>
-      <main className="flex-grow container mx-auto p-4 pb-28 relative pt-24">
+      <main className="flex-grow container mx-auto p-4 pb-28 relative pt-12">
         {children}
       </main>
       <footer className="relative w-full py-4"> {/* Added py-4 to ensure space for absolute elements */}
