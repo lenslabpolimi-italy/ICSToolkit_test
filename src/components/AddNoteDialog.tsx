@@ -35,7 +35,8 @@ const AddNoteDialog: React.FC<AddNoteDialogProps> = ({ isOpen, onClose, onSave, 
   };
 
   const headerColorClass = conceptType === 'A' ? 'text-app-concept-a-base' : 'text-app-concept-b-base';
-  const buttonColorClass = conceptType === 'A' ? 'bg-app-concept-a-base hover:bg-app-concept-a-dark' : 'bg-app-concept-b-base hover:bg-app-concept-b-dark';
+  // Updated button colors to use standard Tailwind red-500/600 and blue-500/600
+  const buttonColorClass = conceptType === 'A' ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600';
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
