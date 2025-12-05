@@ -90,7 +90,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <img
             src="/Creative Commons Logo - CC_by.svg"
             alt="Creative Commons Logo"
-            className="h-9 w-9"
+            className="h-9"
           />
         </div>
       </footer>
