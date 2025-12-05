@@ -77,9 +77,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         
         {/* HelpCircle icon on the left */}
         <div className="absolute bottom-4 left-4 flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors">
+          <Link to="/help" className="w-9 h-9 rounded-full bg-app-accent flex items-center justify-center text-white cursor-pointer hover:bg-app-accent/90 transition-colors">
             <HelpCircle size={20} />
-          </div>
+          </Link>
         </div>
 
         {/* Creative Commons Logo and Info icon - Adjusted position */}
