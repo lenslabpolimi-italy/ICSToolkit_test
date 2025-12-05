@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Strategy } from '@/types/lcd';
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts'; // Added Radar here
 import { cn } from '@/lib/utils';
 import { useLcd } from '@/context/LcdContext';
 import StrategyInsightBox from '@/components/StrategyInsightBox';
