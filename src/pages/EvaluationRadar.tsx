@@ -215,6 +215,11 @@ const EvaluationRadar: React.FC = () => {
     }
   };
 
+  const handleImprovementRadarClick = () => {
+    toast.info("Navigating to the Improvement Radar. Here you can compare and refine your strategies.");
+    // Future navigation logic can be added here
+  };
+
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative font-roboto">
       <h2 className="text-3xl font-palanquin font-semibold text-app-header mb-6">Evaluation Radar</h2>
@@ -229,7 +234,7 @@ const EvaluationRadar: React.FC = () => {
       {/* New button for Improvement Radar */}
       <div className="mb-8 flex justify-end">
         <Button
-          onClick={() => console.log("Improvement Radar clicked!")} // Placeholder for future navigation/action
+          onClick={handleImprovementRadarClick} // Updated to call the new handler
           disabled={!isImprovementRadarActive}
           className={cn(
             "bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed",
