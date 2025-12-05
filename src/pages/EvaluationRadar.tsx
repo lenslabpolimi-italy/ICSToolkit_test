@@ -237,16 +237,17 @@ const EvaluationRadar: React.FC = () => {
 
       {/* New button for Improvement Radar */}
       <div className="mb-8 flex justify-end">
-        <Button
-          onClick={handleImprovementRadarClick} // Updated to call the new handler
-          disabled={!isImprovementRadarActive}
-          className={cn(
-            "bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed",
-            !isImprovementRadarActive && "opacity-50 cursor-not-allowed"
-          )}
-        >
-          Improvement Radar
-        </Button>
+        <div onClick={handleImprovementRadarClick} className={!isImprovementRadarActive ? "cursor-not-allowed" : ""}>
+          <Button
+            disabled={!isImprovementRadarActive}
+            className={cn(
+              "bg-app-accent hover:bg-app-accent/90 text-white font-roboto-condensed",
+              !isImprovementRadarActive && "opacity-50 pointer-events-none" // Add pointer-events-none here
+            )}
+          >
+            Improvement Radar
+          </Button>
+        </div>
       </div>
 
       <div className="relative max-w-7xl mx-auto h-[700px] flex justify-center items-center mt-32">
