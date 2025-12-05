@@ -22,6 +22,8 @@ const navItems = [
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
 
+  const isHomePage = location.pathname === '/';
+
   // Combine "ICS Toolkit" with other nav items for consistent button styling
   const headerNavItems = [
     { path: '/', label: 'ICS Toolkit' }, // Keep this here for rendering order
@@ -29,7 +31,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-app-page-background text-app-body-text font-roboto">
+    <div className={cn(
+      "min-h-screen flex flex-col text-app-body-text font-roboto",
+      isHomePage ? "bg-app-concept-b-dark" : "bg-app-page-background"
+    )}>
       <header className="bg-white text-app-header p-4 shadow-md sticky top-0 z-[999]">
         <div className="container mx-auto flex flex-col md:flex-row items-center md:justify-between">
           {/* LeNSlab Logo */}
