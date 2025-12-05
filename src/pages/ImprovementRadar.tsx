@@ -27,7 +27,7 @@ const CustomRadiusTick = ({ x, y, payload }: any) => {
     1: 'Worst -',
     2: 'No Improvement =',
     3: 'Incremental Improvement +',
-    4: 'Radical Improvement', // Changed from 'Excellent' to 'Radical Improvement'
+    4: 'Radical Improvement ++', // Changed from 'Radical Improvement' to 'Radical Improvement ++'
   };
   const label = scoreToLabel[payload.value];
   if (!label) return null;
