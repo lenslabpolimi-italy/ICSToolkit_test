@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { MadeWithDyad } from './made-with-dyad';
+import { Info, HelpCircle } from 'lucide-react'; // Import new icons
 
 interface LayoutProps {
   children: ReactNode;
@@ -66,8 +67,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="flex-grow container mx-auto p-4 pb-28 relative pt-24">
         {children}
       </main>
-      <footer className="relative w-full">
+      <footer className="relative w-full py-4"> {/* Added py-4 to ensure space for absolute elements */}
         <MadeWithDyad />
+        
+        {/* New elements on the left */}
+        <div className="absolute bottom-4 left-4 flex items-center gap-2">
+          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 cursor-pointer hover:bg-gray-300 transition-colors">
+            <Info size={20} /> {/* Adjusted size for better fit */}
+          </div>
+          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 cursor-pointer hover:bg-gray-300 transition-colors">
+            <HelpCircle size={20} /> {/* Adjusted size for better fit */}
+          </div>
+        </div>
+
         {/* Creative Commons Logo - Adjusted position */}
         <div className="absolute bottom-4 right-4">
           <img
