@@ -152,7 +152,8 @@ const EcoIdeasBoards: React.FC = () => {
                         const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
                         const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 1;
                         const isFourthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 3;
-                        const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4; // New condition for 5th guideline
+                        const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4;
+                        const isSixthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 5; // New condition for 6th guideline
 
                         let guidelineLink = "#";
                         if (isFirstOverallGuideline) {
@@ -161,8 +162,10 @@ const EcoIdeasBoards: React.FC = () => {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
                         } else if (isFourthOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/jeans-IDEA2-english-scaled.png";
-                        } else if (isFifthOverallGuideline) { // Apply new link here
+                        } else if (isFifthOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/microstratificata-IDEA2-english-scaled.png";
+                        } else if (isSixthOverallGuideline) { // Apply new link here
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/tavolo-IDEA2-english-scaled.png";
                         }
 
                         return (
