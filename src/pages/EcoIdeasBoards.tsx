@@ -146,9 +146,14 @@ const EcoIdeasBoards: React.FC = () => {
                       {subStrategy.guidelines.map((guideline, guidelineIndex) => { // Added guidelineIndex
                         // Determine if this is the very first guideline across all strategies and sub-strategies
                         const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
-                        const guidelineLink = isFirstOverallGuideline
-                          ? "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/ascensore-IDEA2-english-scaled.png"
-                          : "#"; // Placeholder for other guidelines
+                        const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 1;
+
+                        let guidelineLink = "#"; // Default placeholder
+                        if (isFirstOverallGuideline) {
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/ascensore-IDEA2-english-scaled.png";
+                        } else if (isSecondOverallGuideline) {
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
+                        }
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
