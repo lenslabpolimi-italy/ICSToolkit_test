@@ -158,7 +158,12 @@ const EcoIdeasBoards: React.FC = () => {
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                             {guideline.name}
-                            <a href={guidelineLink} className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
+                            <a 
+                              href={guidelineLink} 
+                              className="inline-block px-2 py-1 ml-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors text-xs"
+                            >
+                              EXAMPLE
+                            </a>
                           </li>
                         );
                       })}
