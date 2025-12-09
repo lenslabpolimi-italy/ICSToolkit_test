@@ -16,7 +16,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip"; // NEW: Import Tooltip components
+} from "@/components/ui/tooltip";
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
@@ -162,17 +162,17 @@ const EcoIdeasBoards: React.FC = () => {
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                             {guideline.name}
-                            {guidelineLink !== "#" ? ( // Only show tooltip if there's a real link
+                            {guidelineLink !== "#" ? (
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
+                                  <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed">EXAMPLE</a>
                                 </TooltipTrigger>
                                 <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
                                   <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
-                              <a href={guidelineLink} className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
+                              <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed">EXAMPLE</a>
                             )}
                           </li>
                         );
