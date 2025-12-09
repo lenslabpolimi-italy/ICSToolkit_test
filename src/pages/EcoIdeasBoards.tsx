@@ -165,14 +165,14 @@ const EcoIdeasBoards: React.FC = () => {
                             {guidelineLink !== "#" ? (
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed">EXAMPLE</a>
+                                  <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                                 </TooltipTrigger>
                                 <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
                                   <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
-                              <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed">EXAMPLE</a>
+                              <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                             )}
                           </li>
                         );
