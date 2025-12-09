@@ -146,6 +146,7 @@ const EcoIdeasBoards: React.FC = () => {
                       {subStrategy.guidelines.map((guideline) => (
                         <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                           {guideline.name}
+                          <a href="#" className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
                         </li>
                       ))}
                     </ul>
