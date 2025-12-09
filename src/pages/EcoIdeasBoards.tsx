@@ -151,14 +151,14 @@ const EcoIdeasBoards: React.FC = () => {
                       {subStrategy.guidelines.map((guideline, guidelineIndex) => {
                         const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
                         const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 1;
-                        const isThirdOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 2; // New condition
+                        const isFourthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 3; // Changed to index 3 for the 4th guideline
 
                         let guidelineLink = "#";
                         if (isFirstOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/ascensore-IDEA2-english-scaled.png";
                         } else if (isSecondOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
-                        } else if (isThirdOverallGuideline) { // Apply new link here
+                        } else if (isFourthOverallGuideline) { // Apply new link here
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/jeans-IDEA2-english-scaled.png";
                         }
 
