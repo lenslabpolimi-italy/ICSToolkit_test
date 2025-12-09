@@ -11,7 +11,12 @@ import { EcoIdea } from '@/types/lcd';
 import { toast } from 'sonner';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'; // Import Card components
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"; // NEW: Import Tooltip components
 
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
@@ -130,25 +135,24 @@ const EcoIdeasBoards: React.FC = () => {
             );
           })}
         </TabsList>
-        {strategies.map((strategy, strategyIndex) => ( // Added strategyIndex
+        {strategies.map((strategy, strategyIndex) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             <h3 className="text-2xl font-palanquin font-semibold text-app-header mb-4">{strategy.id}. {strategy.name}</h3>
 
             <div className="relative flex min-h-[400px] p-8 rounded-lg bg-gray-50 overflow-hidden">
               {/* Left Column for Strategy Text and Eco-Ideas */}
               <div className="w-1/2 pr-8">
-                {strategy.subStrategies.map((subStrategy, subStrategyIndex) => ( // Added subStrategyIndex
+                {strategy.subStrategies.map((subStrategy, subStrategyIndex) => (
                   <div key={subStrategy.id} className="mb-6">
                     <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
                       {subStrategy.id}. {subStrategy.name}
                     </h4>
                     <ul className="list-none space-y-1">
-                      {subStrategy.guidelines.map((guideline, guidelineIndex) => { // Added guidelineIndex
-                        // Determine if this is the very first guideline across all strategies and sub-strategies
+                      {subStrategy.guidelines.map((guideline, guidelineIndex) => {
                         const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
                         const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 1;
 
-                        let guidelineLink = "#"; // Default placeholder
+                        let guidelineLink = "#";
                         if (isFirstOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/ascensore-IDEA2-english-scaled.png";
                         } else if (isSecondOverallGuideline) {
@@ -158,7 +162,18 @@ const EcoIdeasBoards: React.FC = () => {
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                             {guideline.name}
-                            <a href={guidelineLink} className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
+                            {guidelineLink !== "#" ? ( // Only show tooltip if there's a real link
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
+                                </TooltipTrigger>
+                                <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
+                                  <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                </TooltipContent>
+                              </Tooltip>
+                            ) : (
+                              <a href={guidelineLink} className="text-orange-500 hover:underline ml-2">EXAMPLE</a>
+                            )}
                           </li>
                         );
                       })}
