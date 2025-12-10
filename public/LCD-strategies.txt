@@ -1,1604 +1,282 @@
-1.Minimise material consumption
-1.1.Minimise material consumption in the product
-Minimise the number of components
-Minimise the weight of components
-Minimise the volume of components
-Minimise the number of materials
-Minimise the variety of materials
-Minimise the number of surface finishes
-Minimise the variety of surface finishes
-Minimise the number of joining elements
-Minimise the variety of joining elements
-Minimise the number of different tools for assembly/disassembly
-Minimise the variety of different tools for assembly/disassembly
-Minimise the number of different processes for assembly/disassembly
-Minimise the variety of different processes for assembly/disassembly
-Minimise the number of different skills for assembly/disassembly
-Minimise the variety of different skills for assembly/disassembly
-Minimise the number of different equipment for assembly/disassembly
-Minimise the variety of different equipment for assembly/disassembly
-Minimise the number of different spaces for assembly/disassembly
-Minimise the variety of different spaces for assembly/disassembly
-1.2.Minimise material consumption in the production system
-Minimise the amount of waste/scrap
-Minimise the amount of process materials
-Minimise the amount of process energy
-Minimise the amount of process water
-Minimise the amount of process air
-Minimise the amount of process chemicals
-Minimise the amount of process emissions
-Minimise the amount of process noise
-Minimise the amount of process vibrations
-Minimise the amount of process heat
-Minimise the amount of process cold
-Minimise the amount of process light
-Minimise the amount of process radiation
-Minimise the amount of process electromagnetic fields
-Minimise the amount of process magnetic fields
-Minimise the amount of process electric fields
-Minimise the amount of process static electricity
-Minimise the amount of process pressure
-Minimise the amount of process vacuum
-Minimise the amount of process humidity
-Minimise the amount of process dryness
-Minimise the amount of process dust
-Minimise the amount of process dirt
-Minimise the amount of process fumes
-Minimise the amount of process odours
-Minimise the amount of process aerosols
-Minimise the amount of process microorganisms
-Minimise the amount of process viruses
-Minimise the amount of process bacteria
-Minimise the amount of process fungi
-Minimise the amount of process spores
-Minimise the amount of process pollen
-Minimise the amount of process allergens
-Minimise the amount of process toxins
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-1.3.Minimise material consumption in the packaging
-Minimise the number of components
-Minimise the weight of components
-Minimise the volume of components
-Minimise the number of materials
-Minimise the variety of materials
-Minimise the number of surface finishes
-Minimise the variety of surface finishes
-Minimise the number of joining elements
-Minimise the variety of joining elements
-Minimise the number of different tools for assembly/disassembly
-Minimise the variety of different tools for assembly/disassembly
-Minimise the number of different processes for assembly/disassembly
-Minimise the variety of different processes for assembly/disassembly
-Minimise the number of different skills for assembly/disassembly
-Minimise the variety of different skills for assembly/disassembly
-Minimise the number of different equipment for assembly/disassembly
-Minimise the variety of different equipment for assembly/disassembly
-Minimise the number of different spaces for assembly/disassembly
-Minimise the variety of different spaces for assembly/disassembly
+1.Minimising Materials Consumption
+
+1.1.Minimise material content of a product
+Dematerialise the product or some of its components
+Digitalise the product or some of its components
+Miniaturise
+Avoid over-sized dimensions
+Reduce thickness
+Apply ribbed structures to increase structural stiffness
+Avoid extra components with little functionality
+
+1.2.Minimise scraps and discards
+Select processes that reduce scraps and discarded materials during production
+Engage simulation systems to optimise transformation processes
+
+1.3.Minimise or avoid packaging
+Avoid packaging
+Apply materials only where absolutely necessary
+Design the package to be part (or to become a part) of the product
+
 1.4.Minimise material consumption during usage
-Design for more efficient consumption of operational materials e.S
+Design for more efficient consumption of operational materials
+Design for more efficient supply of raw materials
 Design for more efficient use of maintenance materials
-Engage digital support systems with dynamic configuration
-Design variable material consumption systems for different operating requirements e.S
-Use of sensors to adjust material consumption to operational requirements e.S
-Set the product's default state at minimal materials consumption
+Design systems for the consumption of passive materials
+Design for cascading recycling systems
 Facilitate the user to reduce material consumption
-1.5.Minimise material consumption at the end of life
-Minimise the amount of waste/scrap
-Minimise the amount of process materials
-Minimise the amount of process energy
-Minimise the amount of process water
-Minimise the amount of process air
-Minimise the amount of process chemicals
-Minimise the amount of process emissions
-Minimise the amount of process noise
-Minimise the amount of process vibrations
-Minimise the amount of process heat
-Minimise the amount of process cold
-Minimise the amount of process light
-Minimise the amount of process radiation
-Minimise the amount of process electromagnetic fields
-Minimise the amount of process magnetic fields
-Minimise the amount of process electric fields
-Minimise the amount of process static electricity
-Minimise the amount of process pressure
-Minimise the amount of process vacuum
-Minimise the amount of process humidity
-Minimise the amount of process dryness
-Minimise the amount of process dust
-Minimise the amount of process dirt
-Minimise the amount of process fumes
-Minimise the amount of process odours
-Minimise the amount of process aerosols
-Minimise the amount of process microorganisms
-Minimise the amount of process viruses
-Minimise the amount of process bacteria
-Minimise the amount of process fungi
-Minimise the amount of process spores
-Minimise the amount of process pollen
-Minimise the amount of process allergens
-Minimise the amount of process toxins
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-2.Minimise energy consumption
-2.1.Minimise energy consumption in the product
-Minimise the number of components
-Minimise the weight of components
-Minimise the volume of components
-Minimise the number of materials
-Minimise the variety of materials
-Minimise the number of surface finishes
-Minimise the variety of surface finishes
-Minimise the number of joining elements
-Minimise the variety of joining elements
-Minimise the number of different tools for assembly/disassembly
-Minimise the variety of different tools for assembly/disassembly
-Minimise the number of different processes for assembly/disassembly
-Minimise the variety of different processes for assembly/disassembly
-Minimise the number of different skills for assembly/disassembly
-Minimise the variety of different skills for assembly/disassembly
-Minimise the number of different equipment for assembly/disassembly
-Minimise the variety of different equipment for assembly/disassembly
-Minimise the number of different spaces for assembly/disassembly
-Minimise the variety of different spaces for assembly/disassembly
-2.2.Minimise energy consumption in the production system
-Minimise the amount of waste/scrap
-Minimise the amount of process materials
-Minimise the amount of process energy
-Minimise the amount of process water
-Minimise the amount of process air
-Minimise the amount of process chemicals
-Minimise the amount of process emissions
-Minimise the amount of process noise
-Minimise the amount of process vibrations
-Minimise the amount of process heat
-Minimise the amount of process cold
-Minimise the amount of process light
-Minimise the amount of process radiation
-Minimise the amount of process electromagnetic fields
-Minimise the amount of process magnetic fields
-Minimise the amount of process electric fields
-Minimise the amount of process static electricity
-Minimise the amount of process pressure
-Minimise the amount of process vacuum
-Minimise the amount of process humidity
-Minimise the amount of process dryness
-Minimise the amount of process dust
-Minimise the amount of process dirt
-Minimise the amount of process fumes
-Minimise the amount of process odours
-Minimise the amount of process aerosols
-Minimise the amount of process microorganisms
-Minimise the amount of process viruses
-Minimise the amount of process bacteria
-Minimise the amount of process fungi
-Minimise the amount of process spores
-Minimise the amount of process pollen
-Minimise the amount of process allergens
-Minimise the amount of process toxins
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-2.3.Minimise energy consumption in the packaging
-Minimise the number of components
-Minimise the weight of components
-Minimise the volume of components
-Minimise the number of materials
-Minimise the variety of materials
-Minimise the number of surface finishes
-Minimise the variety of surface finishes
-Minimise the number of joining elements
-Minimise the variety of joining elements
-Minimise the number of different tools for assembly/disassembly
-Minimise the variety of different tools for assembly/disassembly
-Minimise the number of different processes for assembly/disassembly
-Minimise the variety of different processes for assembly/disassembly
-Minimise the number of different skills for assembly/disassembly
-Minimise the variety of different skills for assembly/disassembly
-Minimise the number of different equipment for assembly/disassembly
-Minimise the variety of different equipment for assembly/disassembly
-Minimise the number of different spaces for assembly/disassembly
-Minimise the variety of different spaces for assembly/disassembly
-2.4.Minimise energy consumption during usage
-Design for more efficient consumption of operational energy e.S
-Design for more efficient use of maintenance energy
+Set the product’s default state at minimal materials consumption
+
+1.5.Adopt flexible material consumption systems (during use)
 Engage digital support systems with dynamic configuration
-Design variable energy consumption systems for different operating requirements e.S
-Use of sensors to adjust energy consumption to operational requirements e.S
-Set the product's default state at minimal energy consumption
-Facilitate the user to reduce energy consumption
-2.5.Minimise energy consumption at the end of life
-Minimise the amount of waste/scrap
-Minimise the amount of process materials
-Minimise the amount of process energy
-Minimise the amount of process water
-Minimise the amount of process air
-Minimise the amount of process chemicals
-Minimise the amount of process emissions
-Minimise the amount of process noise
-Minimise the amount of process vibrations
-Minimise the amount of process heat
-Minimise the amount of process cold
-Minimise the amount of process light
-Minimise the amount of process radiation
-Minimise the amount of process electromagnetic fields
-Minimise the amount of process magnetic fields
-Minimise the amount of process electric fields
-Minimise the amount of process static electricity
-Minimise the amount of process pressure
-Minimise the amount of process vacuum
-Minimise the amount of process humidity
-Minimise the amount of process dryness
-Minimise the amount of process dust
-Minimise the amount of process dirt
-Minimise the amount of process fumes
-Minimise the amount of process odours
-Minimise the amount of process aerosols
-Minimise the amount of process microorganisms
-Minimise the amount of process viruses
-Minimise the amount of process bacteria
-Minimise the amount of process fungi
-Minimise the amount of process spores
-Minimise the amount of process pollen
-Minimise the amount of process allergens
-Minimise the amount of process toxins
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-3.Minimise toxic emissions
-3.1.Minimise toxic emissions in the product
-Minimise the number of components
-Minimise the weight of components
-Minimise the volume of components
-Minimise the number of materials
-Minimise the variety of materials
-Minimise the number of surface finishes
-Minimise the variety of surface finishes
-Minimise the number of joining elements
-Minimise the variety of joining elements
-Minimise the number of different tools for assembly/disassembly
-Minimise the variety of different tools for assembly/disassembly
-Minimise the number of different processes for assembly/disassembly
-Minimise the variety of different processes for assembly/disassembly
-Minimise the number of different skills for assembly/disassembly
-Minimise the variety of different skills for assembly/disassembly
-Minimise the number of different equipment for assembly/disassembly
-Minimise the variety of different equipment for assembly/disassembly
-Minimise the number of different spaces for assembly/disassembly
-Minimise the variety of different spaces for assembly/disassembly
-3.2.Minimise toxic emissions in the production system
-Minimise the amount of waste/scrap
-Minimise the amount of process materials
-Minimise the amount of process energy
-Minimise the amount of process water
-Minimise the amount of process air
-Minimise the amount of process chemicals
-Minimise the amount of process emissions
-Minimise the amount of process noise
-Minimise the amount of process vibrations
-Minimise the amount of process heat
-Minimise the amount of process cold
-Minimise the amount of process light
-Minimise the amount of process radiation
-Minimise the amount of process electromagnetic fields
-Minimise the amount of process magnetic fields
-Minimise the amount of process electric fields
-Minimise the amount of process static electricity
-Minimise the amount of process pressure
-Minimise the amount of process vacuum
-Minimise the amount of process humidity
-Minimise the amount of process dryness
-Minimise the amount of process dust
-Minimise the amount of process dirt
-Minimise the amount of process fumes
-Minimise the amount of process odours
-Minimise the amount of process aerosols
-Minimise the amount of process microorganisms
-Minimise the amount of process viruses
-Minimise the amount of process bacteria
-Minimise the amount of process fungi
-Minimise the amount of process spores
-Minimise the amount of process pollen
-Minimise the amount of process allergens
-Minimise the amount of process toxins
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-3.3.Minimise toxic emissions in the packaging
-Minimise the number of components
-Minimise the weight of components
-Minimise the volume of components
-Minimise the number of materials
-Minimise the variety of materials
-Minimise the number of surface finishes
-Minimise the variety of surface finishes
-Minimise the number of joining elements
-Minimise the variety of joining elements
-Minimise the number of different tools for assembly/disassembly
-Minimise the variety of different tools for assembly/disassembly
-Minimise the number of different processes for assembly/disassembly
-Minimise the variety of different processes for assembly/disassembly
-Minimise the number of different skills for assembly/disassembly
-Minimise the variety of different skills for assembly/disassembly
-Minimise the number of different equipment for assembly/disassembly
-Minimise the variety of different equipment for assembly/disassembly
-Minimise the number of different spaces for assembly/disassembly
-Minimise the variety of different spaces for assembly/disassembly
-3.4.Minimise toxic emissions during usage
-Design for more efficient consumption of operational toxic materials e.S
-Design for more efficient use of maintenance toxic materials
-Engage digital support systems with dynamic configuration
-Design variable toxic material consumption systems for different operating requirements e.S
-Use of sensors to adjust toxic material consumption to operational requirements e.S
-Set the product's default state at minimal toxic materials consumption
-Facilitate the user to reduce toxic material consumption
-3.5.Minimise toxic emissions at the end of life
-Minimise the amount of waste/scrap
-Minimise the amount of process materials
-Minimise the amount of process energy
-Minimise the amount of process water
-Minimise the amount of process air
-Minimise the amount of process chemicals
-Minimise the amount of process emissions
-Minimise the amount of process noise
-Minimise the amount of process vibrations
-Minimise the amount of process heat
-Minimise the amount of process cold
-Minimise the amount of process light
-Minimise the amount of process radiation
-Minimise the amount of process electromagnetic fields
-Minimise the amount of process magnetic fields
-Minimise the amount of process electric fields
-Minimise the amount of process static electricity
-Minimise the amount of process pressure
-Minimise the amount of process vacuum
-Minimise the amount of process humidity
-Minimise the amount of process dryness
-Minimise the amount of process dust
-Minimise the amount of process dirt
-Minimise the amount of process fumes
-Minimise the amount of process odours
-Minimise the amount of process aerosols
-Minimise the amount of process microorganisms
-Minimise the amount of process viruses
-Minimise the amount of process bacteria
-Minimise the amount of process fungi
-Minimise the amount of process spores
-Minimise the amount of process pollen
-Minimise the amount of process allergens
-Minimise the amount of process toxins
-Minimise the amount of process irritants
-Minimise the amount of process corrosives
-Minimise the amount of process flammables
-Minimise the amount of process explosives
-Minimise the amount of process oxidizers
-Minimise the amount of process reducers
-Minimise the amount of process reactives
-Minimise the amount of process radioactives
-Minimise the amount of process carcinogens
-Minimise the amount of process mutagens
-Minimise the amount of process teratogens
-Minimise the amount of process reproductive toxins
-Minimise the amount of process neurotoxins
-Minimise the amount of process sensitizers
-Minimise the amount of process asphyxiants
-Minimise the amount of process narcotics
-4.Use renewable resources
-4.1.Use renewable resources in the product
+Design dynamic material consumption for different operational stages
+Engage sensors to adjust materials consumption according to differentiated operational stages
+Reduce resource consumption in the product’s default state
+
+2.Minimising Energy Consumption
+
+2.1.Minimise energy consumption during transportation and storage
+Design compact products with high storage density
+Design concentrated products
+Equip products with on-site assembly
+Scale down the product weight
+Scale down the packaging weight
+Decentralise activities to reduce transportation volumes
+Select local material and energy sources
+
+2.2.Select the most efficient energy consumption systems during use
+Design products for collective use
+Design for energy-efficient operational stages
+Design for energy-efficient maintenance
+Design systems for consumption of passive energy sources
+Engage highly efficient energy conversion systems
+Design/engage highly efficient engines
+Design/engage highly efficient power transmission
+Use highly caulked materials and technical components
+Design for localised energy supply
+Scale down the weight of transportable goods
+Design energy recovery systems
+Design energy-saving systems
+
+2.3.Enable a variable consumption of energy, to follow demand fluctuations
+Engage digital dynamic support systems
+Design dynamic energy consumption systems for differentiated operational stages
+Engage sensors to adjust consumption during differentiated operational stages
+Equip machinery with intelligent power-off utilities
+Programme product default state at minimal energy consumption
+
+3.Minimising Resources Toxicity and Harmfulness
+
+3.1.Select nontoxic and harmless materials
+Avoid toxic or harmful materials for product components
+Minimise the hazard of toxic and harmful materials
+Avoid materials that emit toxic or harmful substances during pre-production
+Avoid additives that emit toxic or harmful substances
+Avoid technologies that process toxic and harmful materials
+Avoid toxic or harmful surface treatments
+Design products that do not consume toxic and harmful materials
+Avoid materials that emit toxic or harmful substances during usage
+Avoid materials that emit toxic or harmful substances during disposal
+
+3.2.Select nontoxic and harmless energy resources
+Select energy resources that reduce dangerous emissions during pre-production and production
+Select energy resources that reduce dangerous emissions during distribution
+Select energy resources that reduce dangerous emissions during usage
+Select energy resources that reduce dangerous residues and toxic and harmful waste
+
+4.Optimising Resources Renewability and Biocompatibility
+
+4.1.Select renewable and biocompatible materials
 Use renewable materials
-Use renewable energy
-Use renewable water
-Use renewable air
-Use renewable chemicals
-Use renewable emissions
-Use renewable noise
-Use renewable vibrations
-Use renewable heat
-Use renewable cold
-Use renewable light
-Use renewable radiation
-Use renewable electromagnetic fields
-Use renewable magnetic fields
-Use renewable electric fields
-Use renewable static electricity
-Use renewable pressure
-Use renewable vacuum
-Use renewable humidity
-Use renewable dryness
-Use renewable dust
-Use renewable dirt
-Use renewable fumes
-Use renewable odours
-Use renewable aerosols
-Use renewable microorganisms
-Use renewable viruses
-Use renewable bacteria
-Use renewable fungi
-Use renewable spores
-Use renewable pollen
-Use renewable allergens
-Use renewable toxins
-Use renewable irritants
-Use renewable corrosives
-Use renewable flammables
-Use renewable explosives
-Use renewable oxidizers
-Use renewable reducers
-Use renewable reactives
-Use renewable radioactives
-Use renewable carcinogens
-Use renewable mutagens
-Use renewable teratogens
-Use renewable reproductive toxins
-Use renewable neurotoxins
-Use renewable sensitizers
-Use renewable asphyxiants
-Use renewable narcotics
-4.2.Use renewable resources in the production system
-Use renewable materials
-Use renewable energy
-Use renewable water
-Use renewable air
-Use renewable chemicals
-Use renewable emissions
-Use renewable noise
-Use renewable vibrations
-Use renewable heat
-Use renewable cold
-Use renewable light
-Use renewable radiation
-Use renewable electromagnetic fields
-Use renewable magnetic fields
-Use renewable electric fields
-Use renewable static electricity
-Use renewable pressure
-Use renewable vacuum
-Use renewable humidity
-Use renewable dryness
-Use renewable dust
-Use renewable dirt
-Use renewable fumes
-Use renewable odours
-Use renewable aerosols
-Use renewable microorganisms
-Use renewable viruses
-Use renewable bacteria
-Use renewable fungi
-Use renewable spores
-Use renewable pollen
-Use renewable allergens
-Use renewable toxins
-Use renewable irritants
-Use renewable corrosives
-Use renewable flammables
-Use renewable explosives
-Use renewable oxidizers
-Use renewable reducers
-Use renewable reactives
-Use renewable radioactives
-Use renewable carcinogens
-Use renewable mutagens
-Use renewable teratogens
-Use renewable reproductive toxins
-Use renewable neurotoxins
-Use renewable sensitizers
-Use renewable asphyxiants
-Use renewable narcotics
-4.3.Use renewable resources in the packaging
-Use renewable materials
-Use renewable energy
-Use renewable water
-Use renewable air
-Use renewable chemicals
-Use renewable emissions
-Use renewable noise
-Use renewable vibrations
-Use renewable heat
-Use renewable cold
-Use renewable light
-Use renewable radiation
-Use renewable electromagnetic fields
-Use renewable magnetic fields
-Use renewable electric fields
-Use renewable static electricity
-Use renewable pressure
-Use renewable vacuum
-Use renewable humidity
-Use renewable dryness
-Use renewable dust
-Use renewable dirt
-Use renewable fumes
-Use renewable odours
-Use renewable aerosols
-Use renewable microorganisms
-Use renewable viruses
-Use renewable bacteria
-Use renewable fungi
-Use renewable spores
-Use renewable pollen
-Use renewable allergens
-Use renewable toxins
-Use renewable irritants
-Use renewable corrosives
-Use renewable flammables
-Use renewable explosives
-Use renewable oxidizers
-Use renewable reducers
-Use renewable reactives
-Use renewable radioactives
-Use renewable carcinogens
-Use renewable mutagens
-Use renewable teratogens
-Use renewable reproductive toxins
-Use renewable neurotoxins
-Use renewable sensitizers
-Use renewable asphyxiants
-Use renewable narcotics
-4.4.Use renewable resources during usage
-Use renewable materials
-Use renewable energy
-Use renewable water
-Use renewable air
-Use renewable chemicals
-Use renewable emissions
-Use renewable noise
-Use renewable vibrations
-Use renewable heat
-Use renewable cold
-Use renewable light
-Use renewable radiation
-Use renewable electromagnetic fields
-Use renewable magnetic fields
-Use renewable electric fields
-Use renewable static electricity
-Use renewable pressure
-Use renewable vacuum
-Use renewable humidity
-Use renewable dryness
-Use renewable dust
-Use renewable dirt
-Use renewable fumes
-Use renewable odours
-Use renewable aerosols
-Use renewable microorganisms
-Use renewable viruses
-Use renewable bacteria
-Use renewable fungi
-Use renewable spores
-Use renewable pollen
-Use renewable allergens
-Use renewable toxins
-Use renewable irritants
-Use renewable corrosives
-Use renewable flammables
-Use renewable explosives
-Use renewable oxidizers
-Use renewable reducers
-Use renewable reactives
-Use renewable radioactives
-Use renewable carcinogens
-Use renewable mutagens
-Use renewable teratogens
-Use renewable reproductive toxins
-Use renewable neurotoxins
-Use renewable sensitizers
-Use renewable asphyxiants
-Use renewable narcotics
-4.5.Use renewable resources at the end of life
-Use renewable materials
-Use renewable energy
-Use renewable water
-Use renewable air
-Use renewable chemicals
-Use renewable emissions
-Use renewable noise
-Use renewable vibrations
-Use renewable heat
-Use renewable cold
-Use renewable light
-Use renewable radiation
-Use renewable electromagnetic fields
-Use renewable magnetic fields
-Use renewable electric fields
-Use renewable static electricity
-Use renewable pressure
-Use renewable vacuum
-Use renewable humidity
-Use renewable dryness
-Use renewable dust
-Use renewable dirt
-Use renewable fumes
-Use renewable odours
-Use renewable aerosols
-Use renewable microorganisms
-Use renewable viruses
-Use renewable bacteria
-Use renewable fungi
-Use renewable spores
-Use renewable pollen
-Use renewable allergens
-Use renewable toxins
-Use renewable irritants
-Use renewable corrosives
-Use renewable flammables
-Use renewable explosives
-Use renewable oxidizers
-Use renewable reducers
-Use renewable reactives
-Use renewable radioactives
-Use renewable carcinogens
-Use renewable mutagens
-Use renewable teratogens
-Use renewable reproductive toxins
-Use renewable neurotoxins
-Use renewable sensitizers
-Use renewable asphyxiants
-Use renewable narcotics
-5.Increase product lifespan
-5.1.Design for durability
-Design for robustness
-Design for reliability
-Design for maintainability
-Design for repairability
-Design for upgradability
-Design for adaptability
-Design for versatility
-Design for flexibility
-Design for modularity
-Design for standardization
-Design for compatibility
-Design for interoperability
-Design for open source
-Design for transparency
-Design for traceability
-Design for authenticity
-Design for trust
-Design for security
-Design for privacy
-Design for ethics
-Design for social responsibility
-Design for environmental responsibility
-Design for economic responsibility
-Design for cultural responsibility
-Design for aesthetic responsibility
-Design for emotional responsibility
-Design for spiritual responsibility
-Design for political responsibility
-Design for legal responsibility
-Design for ethical responsibility
-Design for social responsibility
-Design for environmental responsibility
-Design for economic responsibility
-Design for cultural responsibility
-Design for aesthetic responsibility
-Design for emotional responsibility
-Design for spiritual responsibility
-Design for political responsibility
-Design for legal responsibility
-5.2.Design for emotional durability
-Design for timelessness
-Design for attachment
-Design for personalization
-Design for customization
-Design for self-expression
-Design for storytelling
-Design for meaning
-Design for memory
-Design for nostalgia
-Design for heritage
-Design for tradition
-Design for ritual
-Design for ceremony
-Design for celebration
-Design for commemoration
-Design for remembrance
-Design for legacy
-Design for inheritance
-Design for succession
-Design for continuity
-Design for evolution
-Design for transformation
-Design for change
-Design for adaptation
-Design for resilience
-Design for robustness
-Design for reliability
-Design for maintainability
-Design for repairability
-Design for upgradability
-Design for adaptability
-Design for versatility
-Design for flexibility
-Design for modularity
-Design for standardization
-Design for compatibility
-Design for interoperability
-Design for open source
-Design for transparency
-Design for traceability
-Design for authenticity
-Design for trust
-Design for security
-Design for privacy
-Design for ethics
-Design for social responsibility
-Design for environmental responsibility
-Design for economic responsibility
-Design for cultural responsibility
-Design for aesthetic responsibility
-Design for emotional responsibility
-Design for spiritual responsibility
-Design for political responsibility
-Design for legal responsibility
-5.3.Design for easy maintenance and repair
-Design for accessibility
-Design for visibility
-Design for simplicity
-Design for clarity
-Design for intuitiveness
-Design for learnability
-Design for efficiency
-Design for effectiveness
-Design for safety
-Design for security
-Design for comfort
-Design for convenience
-Design for pleasure
-Design for joy
-Design for fun
-Design for playfulness
-Design for engagement
-Design for immersion
-Design for flow
-Design for mastery
-Design for challenge
-Design for growth
-Design for development
-Design for learning
-Design for education
-Design for knowledge
-Design for wisdom
-Design for understanding
-Design for insight
-Design for enlightenment
-Design for awakening
-Design for consciousness
-Design for awareness
-Design for mindfulness
-Design for presence
-Design for attention
-Design for focus
-Design for concentration
-Design for meditation
-Design for contemplation
-Design for reflection
-Design for introspection
-Design for self-awareness
-Design for self-knowledge
-Design for self-understanding
-Design for self-insight
-Design for self-enlightenment
-Design for self-awakening
-Design for self-consciousness
-Design for self-awareness
-Design for self-mindfulness
-Design for self-presence
-Design for self-attention
-Design for self-focus
-Design for self-concentration
-Design for self-meditation
-Design for self-contemplation
-Design for self-reflection
-Design for self-introspection
-5.4.Design for upgradability and adaptability
-Design for modularity
-Design for standardization
-Design for compatibility
-Design for interoperability
-Design for open source
-Design for transparency
-Design for traceability
-Design for authenticity
-Design for trust
-Design for security
-Design for privacy
-Design for ethics
-Design for social responsibility
-Design for environmental responsibility
-Design for economic responsibility
-Design for cultural responsibility
-Design for aesthetic responsibility
-Design for emotional responsibility
-Design for spiritual responsibility
-Design for political responsibility
-Design for legal responsibility
-5.5.Design for multi-functionality
-Design for versatility
-Design for flexibility
-Design for adaptability
-Design for modularity
-Design for standardization
-Design for compatibility
-Design for interoperability
-Design for open source
-Design for transparency
-Design for traceability
-Design for authenticity
-Design for trust
-Design for security
-Design for privacy
-Design for ethics
-Design for social responsibility
-Design for environmental responsibility
-Design for economic responsibility
-Design for cultural responsibility
-Design for aesthetic responsibility
-Design for emotional responsibility
-Design for spiritual responsibility
-Design for political responsibility
-Design for legal responsibility
-5.6.Design for system solutions
-Design for sharing
-Design for leasing
-Design for renting
-Design for pooling
-Design for co-ownership
-Design for collaborative consumption
-Design for product-service systems
-Design for circular economy
-Design for regenerative design
-Design for biomimicry
-Design for cradle to cradle
-Design for industrial ecology
-Design for closed loop systems
-Design for zero waste
-Design for waste as food
-Design for upcycling
-Design for downcycling
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-Design for re-thinking
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-5.7.Design for product-service systems
-Design for sharing
-Design for leasing
-Design for renting
-Design for pooling
-Design for co-ownership
-Design for collaborative consumption
-Design for product-service systems
-Design for circular economy
-Design for regenerative design
-Design for biomimicry
-Design for cradle to cradle
-Design for industrial ecology
-Design for closed loop systems
-Design for zero waste
-Design for waste as food
-Design for upcycling
-Design for downcycling
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-5.8.Design for product-life extension
-Design for durability
-Design for emotional durability
-Design for easy maintenance and repair
-Design for upgradability and adaptability
-Design for multi-functionality
-Design for system solutions
-Design for product-service systems
-Design for product-life extension
-Design for circular economy
-Design for regenerative design
-Design for biomimicry
-Design for cradle to cradle
-Design for industrial ecology
-Design for closed loop systems
-Design for zero waste
-Design for waste as food
-Design for upcycling
-Design for downcycling
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.Optimise end-of-life
-6.1.Design for disassembly
-Design for easy disassembly
-Design for non-destructive disassembly
-Design for modular disassembly
-Design for selective disassembly
-Design for sequential disassembly
-Design for parallel disassembly
-Design for automated disassembly
-Design for robotic disassembly
-Design for manual disassembly
-Design for universal disassembly
-Design for standardized disassembly
-Design for compatible disassembly
-Design for interoperable disassembly
-Design for open source disassembly
-Design for transparent disassembly
-Design for traceable disassembly
-Design for authentic disassembly
-Design for trust disassembly
-Design for security disassembly
-Design for privacy disassembly
-Design for ethics disassembly
-Design for social responsibility disassembly
-Design for environmental responsibility disassembly
-Design for economic responsibility disassembly
-Design for cultural responsibility disassembly
-Design for aesthetic responsibility disassembly
-Design for emotional responsibility disassembly
-Design for spiritual responsibility disassembly
-Design for political responsibility disassembly
-Design for legal responsibility disassembly
-6.2.Design for material recovery
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.3.Design for component recovery
-Design for reuse
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for upgrading
-Design for cascading
-Design for repurposing
-Design for upcycling
-Design for downcycling
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.4.Design for energy recovery
-Design for energy from waste
-Design for waste to energy
-Design for energy from biomass
-Design for energy from biogas
-Design for energy from landfill gas
-Design for energy from incineration
-Design for energy from pyrolysis
-Design for energy from gasification
-Design for energy from anaerobic digestion
-Design for energy from composting
-Design for energy from recycling
-Design for energy from reuse
-Design for energy from remanufacturing
-Design for energy from refurbishing
-Design for energy from repairing
-Design for energy from upgrading
-Design for energy from cascading
-Design for energy from repurposing
-Design for energy from upcycling
-Design for energy from downcycling
-Design for energy from recycling
-Design for energy from composting
-Design for energy from anaerobic digestion
-Design for energy from pyrolysis
-Design for energy from gasification
-Design for energy from incineration with energy recovery
-Design for energy from landfilling with energy recovery
-Design for energy from landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.5.Design for waste reduction
-Design for waste prevention
-Design for waste minimisation
-Design for waste reuse
-Design for waste recycling
-Design for waste composting
-Design for waste anaerobic digestion
-Design for waste pyrolysis
-Design for waste gasification
-Design for waste incineration with energy recovery
-Design for waste landfilling with energy recovery
-Design for waste landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.6.Design for closed-loop systems
-Design for circular economy
-Design for regenerative design
-Design for biomimicry
-Design for cradle to cradle
-Design for industrial ecology
-Design for closed loop systems
-Design for zero waste
-Design for waste as food
-Design for upcycling
-Design for downcycling
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.7.Design for industrial symbiosis
-Design for industrial ecology
-Design for closed loop systems
-Design for zero waste
-Design for waste as food
-Design for upcycling
-Design for downcycling
-Design for recycling
-Design for composting
-Design for anaerobic digestion
-Design for pyrolysis
-Design for gasification
-Design for incineration with energy recovery
-Design for landfilling with energy recovery
-Design for landfill mining
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-6.8.Design for product take-back
-Design for extended producer responsibility
-Design for take-back schemes
-Design for reverse logistics
-Design for remanufacturing
-Design for refurbishing
-Design for repairing
-Design for reusing
-Design for reducing
-Design for rethinking
-Design for redesigning
-Design for regenerating
-Design for restoring
-Design for revitalizing
-Design for renewing
-Design for refreshing
-Design for re-imagining
-Design for re-inventing
-Design for re-creating
-Design for re-shaping
-Design for re-structuring
-Design for re-organizing
-Design for re-defining
-Design for re-evaluating
-Design for re-assessing
-Design for re-considering
-7.System innovation
-7.1.Design for new product concepts
-Design for new product functions
-Design for new product forms
-Design for new product aesthetics
-Design for new product materials
-Design for new product technologies
-Design for new product manufacturing processes
-Design for new product business models
-Design for new product user experiences
-Design for new product social impacts
-Design for new product environmental impacts
-Design for new product economic impacts
-Design for new product cultural impacts
-Design for new product ethical impacts
-Design for new product political impacts
-Design for new product legal impacts
-7.2.Design for new product-service systems
-Design for new product-service functions
-Design for new product-service forms
-Design for new product-service aesthetics
-Design for new product-service materials
-Design for new product-service technologies
-Design for new product-service manufacturing processes
-Design for new product-service business models
-Design for new product-service user experiences
-Design for new product-service social impacts
-Design for new product-service environmental impacts
-Design for new product-service economic impacts
-Design for new product-service cultural impacts
-Design for new product-service ethical impacts
-Design for new product-service political impacts
-Design for new product-service legal impacts
-7.3.Design for new business models
-Design for new revenue streams
-Design for new cost structures
-Design for new customer segments
-Design for new value propositions
-Design for new channels
-Design for new customer relationships
-Design for new key activities
-Design for new key resources
-Design for new key partnerships
-7.4.Design for new social practices
-Design for new social norms
-Design for new social values
-Design for new social roles
-Design for new social interactions
-Design for new social relationships
-Design for new social networks
-Design for new social communities
-Design for new social movements
-Design for new social institutions
-Design for new social policies
-Design for new social programs
-Design for new social services
-Design for new social innovations
-Design for new social enterprises
-Design for new social ventures
-Design for new social businesses
-Design for new social projects
-Design for new social initiatives
-Design for new social campaigns
-Design for new social actions
-Design for new social changes
-Design for new social transformations
-Design for new social paradigms
-Design for new social systems
-Design for new social structures
-Design for new social organizations
-Design for new social cultures
-Design for new social aesthetics
-Design for new social ethics
-Design for new social politics
-Design for new social laws
-7.5.Design for new cultural values
-Design for new cultural norms
-Design for new cultural practices
-Design for new cultural symbols
-Design for new cultural meanings
-Design for new cultural narratives
-Design for new cultural identities
-Design for new cultural communities
-Design for new cultural movements
-Design for new cultural institutions
-Design for new cultural policies
-Design for new cultural programs
-Design for new cultural services
-Design for new cultural innovations
-Design for new cultural enterprises
-Design for new cultural ventures
-Design for new cultural businesses
-Design for new cultural projects
-Design for new cultural initiatives
-Design for new cultural campaigns
-Design for new cultural actions
-Design for new cultural changes
-Design for new cultural transformations
-Design for new cultural paradigms
-Design for new cultural systems
-Design for new cultural structures
-Design for new cultural organizations
-Design for new cultural cultures
-Design for new cultural aesthetics
-Design for new cultural ethics
-Design for new cultural politics
-Design for new cultural laws
-7.6.Design for new environmental behaviours
-Design for new environmental norms
-Design for new environmental values
-Design for new environmental practices
-Design for new environmental symbols
-Design for new environmental meanings
-Design for new environmental narratives
-Design for new environmental identities
-Design for new environmental communities
-Design for new environmental movements
-Design for new environmental institutions
-Design for new environmental policies
-Design for new environmental programs
-Design for new environmental services
-Design for new environmental innovations
-Design for new environmental enterprises
-Design for new environmental ventures
-Design for new environmental businesses
-Design for new environmental projects
-Design for new environmental initiatives
-Design for new environmental campaigns
-Design for new environmental actions
-Design for new environmental changes
-Design for new environmental transformations
-Design for new environmental paradigms
-Design for new environmental systems
-Design for new environmental structures
-Design for new environmental organizations
-Design for new environmental cultures
-Design for new environmental aesthetics
-Design for new environmental ethics
-Design for new environmental politics
-Design for new environmental laws
-7.7.Design for new economic models
-Design for new economic norms
-Design for new economic values
-Design for new economic practices
-Design for new economic symbols
-Design for new economic meanings
-Design for new economic narratives
-Design for new economic identities
-Design for new economic communities
-Design for new economic movements
-Design for new economic institutions
-Design for new economic policies
-Design for new economic programs
-Design for new economic services
-Design for new economic innovations
-Design for new economic enterprises
-Design for new economic ventures
-Design for new economic businesses
-Design for new economic projects
-Design for new economic initiatives
-Design for new economic campaigns
-Design for new economic actions
-Design for new economic changes
-Design for new economic transformations
-Design for new economic paradigms
-Design for new economic systems
-Design for new economic structures
-Design for new economic organizations
-Design for new economic cultures
-Design for new economic aesthetics
-Design for new economic ethics
-Design for new economic politics
-Design for new economic laws
-7.8.Design for new political frameworks
-Design for new political norms
-Design for new political values
-Design for new political practices
-Design for new political symbols
-Design for new political meanings
-Design for new political narratives
-Design for new political identities
-Design for new political communities
-Design for new political movements
-Design for new political institutions
-Design for new political policies
-Design for new political programs
-Design for new political services
-Design for new political innovations
-Design for new political enterprises
-Design for new political ventures
-Design for new political businesses
-Design for new political projects
-Design for new political initiatives
-Design for new political campaigns
-Design for new political actions
-Design for new political changes
-Design for new political transformations
-Design for new political paradigms
-Design for new political systems
-Design for new political structures
-Design for new political organizations
-Design for new political cultures
-Design for new political aesthetics
-Design for new political ethics
-Design for new political politics
-Design for new political laws
+Avoid exhaustive materials
+Use residual materials of production processes
+Use retrieved components from disposed products
+Use recycled materials, alone or combined with primary materials
+Use biodegradable materials
+
+4.2.Select renewable and biocompatible energy resources
+Use renewable energy resources
+Engage the cascade approach
+Select energy resources with high second-order efficiency
+
+5.Product Lifespan Optimisation
+
+5.1.Design appropriate lifespan
+Design durable components, choosing materials and the appropriate ways to preserve performances in relationship with the foreseen usage conditions
+Design components with coextensive lifespan
+Design lifespan of replaceable components according to scheduled duration
+Select durable materials according to the product performance and lifespan
+Avoid selecting durable materials for temporary products or components
+
+5.2.Design for reliability
+Reduce overall number of components
+Simplify products
+Eliminate weak liaisons
+
+5.3.Facilitate upgrading and adaptability
+Enable and facilitate software upgrade
+Enable and facilitate hardware upgrade
+Design modular and dynamically configured products to facilitate their adaptability for changing environments
+Design multifunctional and dynamically configured products to facilitate their adaptability for changing cultural and physical individual backgrounds
+Design products that can be upgraded and adapted on-site
+Design complementary tools and documentation for product upgrade and adaptation
+
+5.4.Facilitate maintenance
+Simplify access and disassembly to components to be maintained
+Avoid narrow slits and holes to facilitate access for cleaning
+Pre-arrange and facilitate the substitution of short-lived components
+Equip the product with easily usable tools for maintenance
+Equip products with diagnostic and/or autodiagnostic systems for maintainable components
+Design products for easy on-site maintenance, enabling parts cleaning and/or replacement
+Design complementary maintenance tools and documentation
+Design products that need less maintenance
+
+5.5.Facilitate repairs
+Arrange and facilitate disassembly and re-attachment of easily damageable components
+Design components according to standards
+Equip products with automatic damage diagnostics system
+Design products for facilitated on-site repair
+Design complementary repair tools, materials and documentation
+
+5.6.Facilitate reuse
+Increase the resistance of easily damaged and expendable components
+Arrange and facilitate access and removal of retrievable components
+Design modular and replaceable components
+Design components according to standards to facilitate replacement
+Design reusable auxiliary parts
+Design refilling and reusable packaging
+Design products for secondary use
+
+5.7.Facilitate remanufacture
+Design and facilitate removal and substitution of easily expendable components
+Design structural parts that can be easily separated from external/visible ones
+Provide easier access to components to be remanufactured
+Calculate accurate tolerance parameters for easily expendable connections
+Design for excessive use of material for easily deteriorating surfaces
+
+5.8.Intensify Usage
+Design product services for a shared use
+Design multifunctional products with common substitutable components
+Design products with integrated functions
+Design for products or products parts on demand
+Design for products or products parts on availability
+
+6.Extending the Lifespan of Materials
+
+6.1.Adopt the cascade approach
+Arrange and facilitate recycling of materials in components with lower mechanical requirements
+Arrange and facilitate recycling of materials in components with lower aesthetical requirements
+Arrange and facilitate energy recovery from materials throughout combustion
+
+6.2.Select materials with most efficient recycling technologies
+Select materials that easily recover its original performance characteristics after recycling
+Avoid composite materials or, when necessary, choose easily recyclable ones
+Engage geometrical solutions like ribbing to increase polymer stiffness instead of reinforcing fibres
+Prefer thermoplastic polymers to thermosetting
+Prefer heat-proof thermoplastic polymers to fire-proof additives
+Design considering the secondary use of the materials once recycled
+
+6.3.Facilitate end-of-life collection and transportation
+Design in compliance with product retrieval system
+Minimise overall weight
+Minimise cluttering and improve stackability of discarded products
+Design for the compressibility of discarded products
+Provide the user with information about the disposing modalities of the product or its parts
+
+6.4.Material identification
+Codify different materials to facilitate their identification
+Provide additional information about the material’s age, number of times recycled in the past and additives used
+Indicate the existence of toxic or harmful materials
+Use standardised materials identification systems
+Arrange codifications in easily visible places
+Avoid codifying after component production stages
+
+6.5.Minimise the number of different incompatible materials
+Integrate functions to reduce the overall number of materials and components
+Monomaterial strategy: only one material per product or per sub-assembly
+Use only one material, but processed in sandwich structures
+Use compatible materials (that could be recycled together) within the product or sub-assembly
+For joining, use the same or compatible materials as in components (to be joined)
+
+6.6.Facilitate cleaning
+Avoid unnecessary coating procedures
+Avoid irremovable coating materials
+Facilitate removal of contaminants
+Use coating procedures that comply with coated materials
+Avoid adhesives or choose ones that comply with materials to be recycled
+Prefer the dyeing of internal polymers, rather than surface painting
+Avoid using additional materials for marking or codification
+Mark and codify materials during moulding
+Codify polymers using lasers
+
+6.7.Facilitate composting
+Select materials that degrade in the expected end-of-life environment
+Avoid combining non-degradable materials with products that are going to be composted
+Facilitate the separation of non-degradable materials
+
+6.8.Facilitate combustion
+Select high energy materials for products that are going to be incinerated
+Avoid materials that emit dangerous substances during incineration
+Avoid additives that emit dangerous substances during incineration
+Facilitate the separation of materials that would compromise the efficiency of combustion (with low-energy value)
+
+7.Facilitating Disassembly
+
+7.1.Reduce and facilitate operations of disassembly and separation - Overall architecture
+Prioritise the disassembly of toxic and dangerous components or materials
+Prioritise the disassembly of components or materials with higher economic value
+Prioritise the disassembly of more easily damageable components
+Prioritise the disassembly of the parts that are more subject to technological/aesthetic obsolescence
+Engage modular structures
+Divide the product into easily separable and manipulable sub-assemblies
+Minimise overall dimensions of the product
+Minimise hierarchically dependent connections between components
+Minimise different directions in the disassembly route of components and materials
+Increase the linearity of the disassembly route
+Engage a sandwich system of disassembly with central joining elements
+
+7.2.Reduce and facilitate operations of disassembly and separation - Shape of components and parts
+Avoid difficult-to-handle components
+Avoid asymmetrical components, unless required
+Design leaning surfaces and grabbing features in compliance with standards
+Arrange leaning surfaces around the product’s centre of gravity
+Design for easy centring on the component base
+
+7.3.Reduce and facilitate operations of disassembly and separation - Shape and accessibility of joints
+Avoid joining systems that require simultaneous interventions for opening
+Minimise the overall number of fasteners
+Minimise the overall number of different fastener types (that demand different tools)
+Avoid difficult-to-handle fasteners
+Design accessible and recognisable entrances for dismantling
+Design accessible and controllable dismantling points
+
+7.4.Engage reversible joining systems
+Employ two-way snapfits
+Employ joints that are opened without tools
+Employ joints that are opened with common tools
+Employ joints that are opened with special tools, when opening could be dangerous
+Design joints made of materials that become reversible only in determined conditions
+Use screws with hexagonal heads
+Prefer removable nuts and clips to self-tapping screws
+Use screws made of materials compatible with joint components, to avoid their separation before recycling
+Use self-tapping screws for polymers to avoid using metallic inserts
+
+7.5.Engage easily collapsible permanent joining systems
+Avoid rivets on incompatible materials
+Avoid staples on incompatible materials
+Avoid additional materials while welding
+Weld with compatible materials
+Prefer ultrasonic and vibration welding with polymers
+Avoid glueing with adhesives
+Employ easily removable adhesives
+
+7.6.Co-design special technologies and features for crushing separation
+Design thin areas to enable the taking off of incompatible inserts, by pressurised demolition
+Co-design cutting or breaking paths with appropriate separation technologies for incompatible materials separation
+Equip the product with a device to separate incompatible materials
+Employ joining elements that allow their chemical or physical destruction
+Make the breaking points easily accessible and recognisable
+Provide the products with information for the user about the characteristics of crushing separation.
+
+7.7.Use materials that are easily separable after being crushed
+7.8.Use additional parts that are easily separable after crushing of materials
