@@ -237,6 +237,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
+                              // Only show generic EXAMPLE if it's not one of the exceptions
                               !shouldHideGenericExample && (
                                 <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                               )
@@ -257,7 +258,6 @@ const EcoIdeasBoards: React.FC = () => {
                     <ul className="list-none space-y-1">
                       <li className="text-sm text-gray-600 font-roboto-condensed">
                         Minimise the consumption of stationery goods and their packages
-                        <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                       </li>
                       <li className="text-sm text-gray-600 font-roboto-condensed">
                         Engage digital tools in designing, modelling and prototyping
@@ -272,7 +272,6 @@ const EcoIdeasBoards: React.FC = () => {
                       </li>
                       <li className="text-sm text-gray-600 font-roboto-condensed">
                         Engage digital tools for documentation, communication and presentation
-                        <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                       </li>
                     </ul>
                   </div>
