@@ -161,6 +161,10 @@ const EcoIdeasBoards: React.FC = () => {
                         const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
                         const isFirstGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 0;
                         const isFourthGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 3;
+                        
+                        // Checks for Sub-Strategy 1.5 (assuming index 4)
+                        const isFirstGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 0;
+                        const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 3;
 
                         // Check for 1.1.1.7 (Strategy 1, SubStrategy 1.1, Guideline index 6)
                         const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
@@ -218,7 +222,8 @@ const EcoIdeasBoards: React.FC = () => {
                           }
                         }
 
-                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2;
+                        // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
+                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
