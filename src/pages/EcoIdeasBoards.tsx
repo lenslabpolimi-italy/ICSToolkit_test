@@ -245,8 +245,9 @@ const EcoIdeasBoards: React.FC = () => {
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
+                              // Only render the generic EXAMPLE link if guidelineLink is '#' AND shouldHideGenericExample is false
                               !shouldHideGenericExample && (
-                                <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                                <span className="text-orange-500 ml-2 text-sm font-roboto-condensed font-bold"></span> // Removed the <a> tag and text
                               )
                             )}
                           </li>
