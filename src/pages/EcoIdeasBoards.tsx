@@ -166,7 +166,6 @@ const EcoIdeasBoards: React.FC = () => {
                         const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
 
                         let guidelineLink = "#";
-                        // Removed isFirstOverallGuideline and isFourthOverallGuideline conditions
                         if (isSecondOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
                         } else if (isFifthOverallGuideline) {
@@ -182,15 +181,15 @@ const EcoIdeasBoards: React.FC = () => {
                         } else if (isThirdGuidelineOf1_3) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/packapplique-english-scaled.png";
                         } else if (isFirstGuidelineOf1_4) {
-                          // Link removed in previous step
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
                         } else if (isFourthGuidelineOf1_4) {
-                          // Link removed in previous step
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
                         }
 
                         let displayGuidelineName = guideline.name;
                         const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
                         
-                        if (isSubStrategy1_1_4) { // For sub-strategy 1.1.4 (which is 1.4 in the code)
+                        if (isSubStrategy1_1_4) { // For sub-strategy 1.1.4
                           switch (guidelineIndex) {
                             case 0:
                               displayGuidelineName = "Design for more efficient consumption of operational materials";
@@ -205,16 +204,13 @@ const EcoIdeasBoards: React.FC = () => {
                               displayGuidelineName = "Design variable material consumption systems for different operating requirements";
                               break;
                             case 4:
-                              // Target: 1.5.1 (index 4) - Remove link/text
-                              // guidelineLink was set here: guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
-                              guidelineLink = "#"; // Explicitly remove link
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
                               displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
                               break;
                             case 5:
                               displayGuidelineName = "Set the product's default state at minimal materials consumption";
                               break;
                             case 6:
-                              // Target: 1.5.3 (index 6) - Already no link, but ensure it stays that way
                               displayGuidelineName = "Facilitate the user to reduce material consumption";
                               break;
                             default:
@@ -223,15 +219,6 @@ const EcoIdeasBoards: React.FC = () => {
                         }
 
                         const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2;
-
-                        // Check if the current guideline is the 1st or 4th of 1.4/1.5 (which is index 0 and 3 in the loop)
-                        const isTargetGuideline = isSubStrategy1_1_4 && (guidelineIndex === 0 || guidelineIndex === 3);
-                        
-                        // If it's a target guideline, ensure guidelineLink is reset to '#'
-                        if (isTargetGuideline) {
-                            guidelineLink = "#";
-                        }
-
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
@@ -246,9 +233,8 @@ const EcoIdeasBoards: React.FC = () => {
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
-                              // Only render the generic EXAMPLE link if guidelineLink is '#' AND shouldHideGenericExample is false
                               !shouldHideGenericExample && (
-                                <span className="text-orange-500 ml-2 text-sm font-roboto-condensed font-bold"></span> // Removed the <a> tag and text
+                                <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                               )
                             )}
                           </li>
