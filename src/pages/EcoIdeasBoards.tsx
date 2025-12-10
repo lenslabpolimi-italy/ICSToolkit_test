@@ -166,9 +166,12 @@ const EcoIdeasBoards: React.FC = () => {
                         const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
 
                         let guidelineLink = "#";
-                        // Removed isFirstOverallGuideline and isFourthOverallGuideline conditions
-                        if (isSecondOverallGuideline) {
+                        if (isFirstOverallGuideline) {
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/ascensore-IDEA2-english-scaled.png";
+                        } else if (isSecondOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
+                        } else if (isFourthOverallGuideline) {
+                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/jeans-IDEA2-english-scaled.png";
                         } else if (isFifthOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/microstratificata-IDEA2-english-scaled.png";
                         } else if (isSixthOverallGuideline) {
@@ -246,7 +249,34 @@ const EcoIdeasBoards: React.FC = () => {
                 ))}
 
                 {/* Injecting Sub-Strategy 1.6: Minimise material consumption during the product development phase */}
-                {/* This section was removed as requested */}
+                {strategyIndex === 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                      1.6. Minimise material consumption during the product development phase
+                    </h4>
+                    <ul className="list-none space-y-1">
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Minimise the consumption of stationery goods and their packages
+                        <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                      </li>
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Engage digital tools in designing, modelling and prototyping
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <a href="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/prototyping-IDEA2-english-scaled.png" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                          </TooltipTrigger>
+                          <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
+                            <img src="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/prototyping-IDEA2-english-scaled.png" alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                          </TooltipContent>
+                        </Tooltip>
+                      </li>
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Engage digital tools for documentation, communication and presentation
+                        <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
 
               {/* Right Column for Eco-Ideas Board */}
