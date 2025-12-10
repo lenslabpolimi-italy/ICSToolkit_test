@@ -159,7 +159,7 @@ const EcoIdeasBoards: React.FC = () => {
                         const isSecondGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 1;
                         const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
                         const isFirstGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 0;
-                        const isFourthGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 3;
+                        const isFourthGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 3; // NEW condition
 
                         let guidelineLink = "#";
                         if (isFirstOverallGuideline) {
@@ -182,42 +182,13 @@ const EcoIdeasBoards: React.FC = () => {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/packapplique-english-scaled.png";
                         } else if (isFirstGuidelineOf1_4) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
-                        } else if (isFourthGuidelineOf1_4) {
+                        } else if (isFourthGuidelineOf1_4) { // Apply new link here
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
-                        }
-
-                        let displayGuidelineName = guideline.name;
-                        if (strategyIndex === 0 && subStrategyIndex === 3) { // For sub-strategy 1.1.4
-                          switch (guidelineIndex) {
-                            case 0:
-                              displayGuidelineName = "Design for more efficient consumption of operational materials e.S";
-                              break;
-                            case 1:
-                              displayGuidelineName = "Design for more efficient use of maintenance materials";
-                              break;
-                            case 2:
-                              displayGuidelineName = "Engage digital support systems with dynamic configuration";
-                              break;
-                            case 3:
-                              displayGuidelineName = "Design variable material consumption systems for different operating requirements e.S";
-                              break;
-                            case 4:
-                              displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements e.S";
-                              break;
-                            case 5:
-                              displayGuidelineName = "Set the product's default state at minimal materials consumption";
-                              break;
-                            case 6:
-                              displayGuidelineName = "Facilitate the user to reduce material consumption";
-                              break;
-                            default:
-                              break;
-                          }
                         }
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
-                            {displayGuidelineName}
+                            {guideline.name}
                             {guidelineLink !== "#" ? (
                               <Tooltip>
                                 <TooltipTrigger asChild>
