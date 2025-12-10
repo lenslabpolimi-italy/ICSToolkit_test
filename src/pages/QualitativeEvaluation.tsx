@@ -19,11 +19,6 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
     "Does the (system) product consume large amounts of natural resources/materials during use?",
     "Is the (system) product unable to adapt consumption to different types of use?"
   ],
-  '1.6': [
-    "Minimise the consumption of stationery goods and their packages?",
-    "Engage digital tools in designing, modelling and prototyping?",
-    "Engage digital tools for documentation, communication and presentation?"
-  ],
 
   '2.1': ["Is the (system) product and/or its packaging oversized in weight and/or volume?"],
   '2.2': [ // Combined 2.2 and 2.3 questions
@@ -140,12 +135,6 @@ const QualitativeEvaluation: React.FC = () => {
           return;
         }
       }
-      
-      // Skip 1.5 and 2.3 if they are combined with 1.4 and 2.2 respectively, 
-      // but ensure 1.6 is processed normally.
-      if (currentStrategyId === '1' && ss.id === '1.5') return;
-      if (currentStrategyId === '2' && ss.id === '2.3') return;
-
       subStrategyIdsToProcess.add(ss.id);
     });
 
