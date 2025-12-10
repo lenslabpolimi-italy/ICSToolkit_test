@@ -208,9 +208,8 @@ const EcoIdeasBoards: React.FC = () => {
                               displayGuidelineName = "Design variable material consumption systems for different operating requirements";
                               break;
                             case 4:
-                              displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
-                              // NEW: Add specific link for 1.1.4.5th (guidelineIndex 4)
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
+                              displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
                               break;
                             case 5:
                               displayGuidelineName = "Set the product's default state at minimal materials consumption";
@@ -248,6 +247,43 @@ const EcoIdeasBoards: React.FC = () => {
                     </ul>
                   </div>
                 ))}
+
+                {/* Injecting Sub-Strategy 1.6: Minimise material consumption during the product development phase */}
+                {strategyIndex === 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                      1.6. Minimise material consumption during the product development phase
+                    </h4>
+                    <ul className="list-none space-y-1">
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Use digital prototyping and simulation tools
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <a href="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/prototyping-IDEA2-english-scaled.png" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                          </TooltipTrigger>
+                          <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
+                            <img src="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/prototyping-IDEA2-english-scaled.png" alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                          </TooltipContent>
+                        </Tooltip>
+                      </li>
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Use rapid prototyping techniques (e.g., 3D printing) for functional testing
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <a href="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/3dprinting-IDEA2-english-scaled.png" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                          </TooltipTrigger>
+                          <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
+                            <img src="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/3dprinting-IDEA2-english-scaled.png" alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                          </TooltipContent>
+                        </Tooltip>
+                      </li>
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Use modular and reusable components for prototypes
+                        <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
 
               {/* Right Column for Eco-Ideas Board */}
