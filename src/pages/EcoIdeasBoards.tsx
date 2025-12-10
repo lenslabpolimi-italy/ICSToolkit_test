@@ -182,9 +182,9 @@ const EcoIdeasBoards: React.FC = () => {
                         } else if (isThirdGuidelineOf1_3) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/packapplique-english-scaled.png";
                         } else if (isFirstGuidelineOf1_4) {
-                          // REMOVED LINK: guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
+                          // Link removed in previous step
                         } else if (isFourthGuidelineOf1_4) {
-                          // REMOVED LINK: guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
+                          // Link removed in previous step
                         }
 
                         let displayGuidelineName = guideline.name;
@@ -194,7 +194,6 @@ const EcoIdeasBoards: React.FC = () => {
                           switch (guidelineIndex) {
                             case 0:
                               displayGuidelineName = "Design for more efficient consumption of operational materials";
-                              // REMOVED LINK: guidelineLink = "#";
                               break;
                             case 1:
                               displayGuidelineName = "Design for more efficient use of maintenance materials";
@@ -204,16 +203,18 @@ const EcoIdeasBoards: React.FC = () => {
                               break;
                             case 3:
                               displayGuidelineName = "Design variable material consumption systems for different operating requirements";
-                              // REMOVED LINK: guidelineLink = "#";
                               break;
                             case 4:
-                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
+                              // Target: 1.5.1 (index 4) - Remove link/text
+                              // guidelineLink was set here: guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
+                              guidelineLink = "#"; // Explicitly remove link
                               displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
                               break;
                             case 5:
                               displayGuidelineName = "Set the product's default state at minimal materials consumption";
                               break;
                             case 6:
+                              // Target: 1.5.3 (index 6) - Already no link, but ensure it stays that way
                               displayGuidelineName = "Facilitate the user to reduce material consumption";
                               break;
                             default:
