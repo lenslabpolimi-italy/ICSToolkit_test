@@ -256,7 +256,11 @@ const EcoIdeasBoards: React.FC = () => {
                     </h4>
                     <ul className="list-none space-y-1">
                       <li className="text-sm text-gray-600 font-roboto-condensed">
-                        Use digital prototyping and simulation tools
+                        Minimise the consumption of stationery goods and their packages
+                        <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                      </li>
+                      <li className="text-sm text-gray-600 font-roboto-condensed">
+                        Engage digital tools in designing, modelling and prototyping
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <a href="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/prototyping-IDEA2-english-scaled.png" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
@@ -267,18 +271,7 @@ const EcoIdeasBoards: React.FC = () => {
                         </Tooltip>
                       </li>
                       <li className="text-sm text-gray-600 font-roboto-condensed">
-                        Use rapid prototyping techniques (e.g., 3D printing) for functional testing
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <a href="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/3dprinting-IDEA2-english-scaled.png" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
-                          </TooltipTrigger>
-                          <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
-                            <img src="https://www.lenslab.polimi.it/wp-content/uploads/2025/07/3dprinting-IDEA2-english-scaled.png" alt="Example Preview" className="max-w-full h-auto rounded-md" />
-                          </TooltipContent>
-                        </Tooltip>
-                      </li>
-                      <li className="text-sm text-gray-600 font-roboto-condensed">
-                        Use modular and reusable components for prototypes
+                        Engage digital tools for documentation, communication and presentation
                         <a href="#" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                       </li>
                     </ul>
