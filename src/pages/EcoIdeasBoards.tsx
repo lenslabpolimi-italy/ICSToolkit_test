@@ -161,6 +161,9 @@ const EcoIdeasBoards: React.FC = () => {
                         const isFirstGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 0;
                         const isFourthGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 3;
 
+                        // Check for 1.1.1.7 (Strategy 1, SubStrategy 1.1, Guideline index 6)
+                        const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
+
                         let guidelineLink = "#";
                         if (isFirstOverallGuideline) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/ascensore-IDEA2-english-scaled.png";
@@ -230,7 +233,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
-                              !isSubStrategy1_1_4 && (
+                              !isSubStrategy1_1_4 && !isGuideline1_1_1_7 && (
                                 <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                               )
                             )}
