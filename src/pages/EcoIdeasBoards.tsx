@@ -155,6 +155,7 @@ const EcoIdeasBoards: React.FC = () => {
                         const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4;
                         const isSixthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 5;
                         const isFirstGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 0;
+                        const isSecondGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 1; // NEW: Check for 1.1.2.2
                         const isAvoidPackagingGuideline = guideline.name.toLowerCase().includes('avoid packaging');
                         const isSecondGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 1;
                         const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
@@ -219,6 +220,7 @@ const EcoIdeasBoards: React.FC = () => {
                         }
 
                         const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
+                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2; // Added 1.1.2.2 exclusion
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
@@ -233,7 +235,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 </TooltipContent>
                               </Tooltip>
                             ) : (
-                              !isSubStrategy1_1_4 && !isGuideline1_1_1_7 && (
+                              !shouldHideGenericExample && (
                                 <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                               )
                             )}
