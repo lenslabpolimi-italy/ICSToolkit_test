@@ -218,7 +218,8 @@ const EcoIdeasBoards: React.FC = () => {
                           }
                         }
 
-                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2;
+                        // Updated condition to hide generic EXAMPLE for 1st (index 0) and 4th (index 3) guidelines of 1.1.1
+                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline;
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
