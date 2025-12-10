@@ -19,6 +19,11 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
     "Does the (system) product consume large amounts of natural resources/materials during use?",
     "Is the (system) product unable to adapt consumption to different types of use?"
   ],
+  '1.6': [
+    "Are material resources consumed during the product development phase (e.g., prototyping, testing)?",
+    "Can digital tools or simulation replace physical prototyping to reduce material use?",
+    "Are there opportunities to reuse or recycle materials used in development?",
+  ],
 
   '2.1': ["Is the (system) product and/or its packaging oversized in weight and/or volume?"],
   '2.2': [ // Combined 2.2 and 2.3 questions
@@ -238,6 +243,10 @@ const QualitativeEvaluation: React.FC = () => {
                     return null;
                   }
 
+                  if (strategy.id === '2' && subStrategy.id === '2.3') {
+                    return null;
+                  }
+
                   if (strategy.id === '1' && subStrategy.id === '1.4' && !hasRendered1_4_1_5) {
                     hasRendered1_4_1_5 = true;
                     const subStrategy1_4_obj = strategy.subStrategies.find(ss => ss.id === '1.4');
@@ -302,10 +311,6 @@ const QualitativeEvaluation: React.FC = () => {
                         </div>
                       </div>
                     );
-                  }
-
-                  if (strategy.id === '2' && subStrategy.id === '2.3') {
-                    return null;
                   }
 
                   if (strategy.id === '2' && subStrategy.id === '2.2' && !hasRendered2_2_2_3) {

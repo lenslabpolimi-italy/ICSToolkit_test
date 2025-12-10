@@ -188,6 +188,13 @@ const EcoIdeasBoards: React.FC = () => {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
                         } else if (isFourthGuidelineOf1_4) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
+                        } else if (strategyIndex === 0 && subStrategy.id === '1.6') {
+                          // New 1.6 sub-strategy
+                          if (guidelineIndex === 0) {
+                            guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/prototyping-IDEA2-english-scaled.png";
+                          } else if (guidelineIndex === 1) {
+                            guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/simulation-IDEA2-english-scaled.png";
+                          }
                         }
 
                         let displayGuidelineName = guideline.name;
