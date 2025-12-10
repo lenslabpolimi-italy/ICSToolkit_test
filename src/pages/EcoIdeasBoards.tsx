@@ -155,7 +155,7 @@ const EcoIdeasBoards: React.FC = () => {
                         const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4;
                         const isSixthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 5;
                         const isFirstGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 0;
-                        const isSecondGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 1; // NEW: Check for 1.1.2.2
+                        const isSecondGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 1;
                         const isAvoidPackagingGuideline = guideline.name.toLowerCase().includes('avoid packaging');
                         const isSecondGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 1;
                         const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
@@ -194,7 +194,7 @@ const EcoIdeasBoards: React.FC = () => {
                         if (strategyIndex === 0 && subStrategyIndex === 3) { // For sub-strategy 1.1.4
                           switch (guidelineIndex) {
                             case 0:
-                              displayGuidelineName = "Design for more efficient consumption of operational materials e.S";
+                              displayGuidelineName = "Design for more efficient consumption of operational materials";
                               break;
                             case 1:
                               displayGuidelineName = "Design for more efficient use of maintenance materials";
@@ -203,10 +203,10 @@ const EcoIdeasBoards: React.FC = () => {
                               displayGuidelineName = "Engage digital support systems with dynamic configuration";
                               break;
                             case 3:
-                              displayGuidelineName = "Design variable material consumption systems for different operating requirements e.S";
+                              displayGuidelineName = "Design variable material consumption systems for different operating requirements";
                               break;
                             case 4:
-                              displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements e.S";
+                              displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
                               break;
                             case 5:
                               displayGuidelineName = "Set the product's default state at minimal materials consumption";
@@ -220,7 +220,7 @@ const EcoIdeasBoards: React.FC = () => {
                         }
 
                         const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
-                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2; // Added 1.1.2.2 exclusion
+                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2;
 
                         return (
                           <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
