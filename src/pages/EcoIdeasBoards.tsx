@@ -164,6 +164,7 @@ const EcoIdeasBoards: React.FC = () => {
                         
                         // Checks for Sub-Strategy 1.5 (assuming index 4)
                         const isFirstGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 0;
+                        const isSecondGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 1; // NEW check
                         const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 3;
 
                         // Check for 1.1.1.7 (Strategy 1, SubStrategy 1.1, Guideline index 6)
@@ -188,6 +189,8 @@ const EcoIdeasBoards: React.FC = () => {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
                         } else if (isFourthGuidelineOf1_4) {
                           guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
+                        } else if (isSecondGuidelineOf1_5) { // NEW: Specific link for 1.5, 2nd guideline
+                          guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCIX0JHC7LBRbsKsFDc_-TkARl69_Oi6zO4Sb_1ChTaSVs?e=vxBcDC";
                         }
 
                         let displayGuidelineName = guideline.name;
