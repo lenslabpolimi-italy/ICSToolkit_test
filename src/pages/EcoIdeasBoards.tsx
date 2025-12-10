@@ -191,7 +191,9 @@ const EcoIdeasBoards: React.FC = () => {
                         }
 
                         let displayGuidelineName = guideline.name;
-                        if (strategyIndex === 0 && subStrategyIndex === 3) { // For sub-strategy 1.1.4
+                        const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
+                        
+                        if (isSubStrategy1_1_4) { // For sub-strategy 1.1.4
                           switch (guidelineIndex) {
                             case 0:
                               displayGuidelineName = "Design for more efficient consumption of operational materials";
@@ -207,6 +209,8 @@ const EcoIdeasBoards: React.FC = () => {
                               break;
                             case 4:
                               displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
+                              // NEW: Add specific link for 1.1.4.5th (guidelineIndex 4)
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
                               break;
                             case 5:
                               displayGuidelineName = "Set the product's default state at minimal materials consumption";
@@ -219,7 +223,6 @@ const EcoIdeasBoards: React.FC = () => {
                           }
                         }
 
-                        const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
                         const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2;
 
                         return (
