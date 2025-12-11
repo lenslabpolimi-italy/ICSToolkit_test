@@ -71,7 +71,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Design products for collective use', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCrrfYgPcUiQ4Do0A18R_JKAaTtZe8EoijfIWSTKmmxylA?e=kgwIXl" },
       { name: 'Design for the efficient use of resources needed for operation', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDajyHxVz0ZQpKplgx7ZddMARl5fzV0OcZqn9yH6Ows9Rw?e=xVvsVH" },
       { name: 'Design for energy-efficient maintenance', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCSPK7htdTzQZNrNxY8vI2mAXoGAmFsI51TcqkaUvZqlJE?e=yCrDfH" },
-      { name: 'Design systems for consumption of passive energy sources', link: "#example-2.3.4" },
+      { name: 'Design systems for consumption of passive energy sources', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDaRHM256onSZsQG5h9baZCAZzksTw1cS2vpa36zPasZiY?e=fMfZvA" },
       { name: 'Adopt high-efficiency energy transformation systems', link: "#example-2.3.5" },
       { name: 'Design/adopt more efficient motors', link: "#example-2.3.6" },
       { name: 'Design/adopt highly efficient energy transmission systems', link: "#example-2.3.7" },
