@@ -90,7 +90,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Design dynamic energy consumption systems for differentiated operational stages', link: null },
       { name: 'Use sensors to adapt consumption to operational needs', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBXRcD83tbxToRSZ_mrJKLiAY4eW_FEaupX6_9pmhsG9-c?e=fWGES6" },
       { name: 'Incorporate auto switch-off mechanisms into products', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDPyoM-xOvQT7oooz8gnbBWAcRUW3TI62HY_srLVUO7tzg?e=7urhN8" },
-      { name: 'Program product default state at minimal energy consumption', link: "#example-2.4.5" },
+      { name: 'Program product default state at minimal energy consumption', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAWu3u185hwSKNFdH5KCbnkAV4KRIocHkyhuJlR2xhs4NM?e=bk9TxV" },
     ]
   },
   {
