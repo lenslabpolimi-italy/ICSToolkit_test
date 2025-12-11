@@ -21,12 +21,10 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
   ],
 
   '2.1': ["Is the (system) product and/or its packaging oversized in weight and/or volume?"],
-  '2.2': ["Is the (system) product oversized in weight and/or volume for transport/storage?"], // NEW 2.2
-  '2.3': [ // NEW 2.3
+  '2.2': [ // Combined 2.2 and 2.3 questions
     "Does the (system) product consume large amounts of energy? Does the (system) product fail to use the most efficient energy conversion and transfer technologies? Does the (system) product use low-efficiency insulation technology?",
+    "Is the (system) product not enabled to adapt energy consumption to different types of use?"
   ],
-  '2.4': ["Is the (system) product not enabled to adapt energy consumption to different types of use?"], // NEW 2.4
-  '2.5': ["Is energy consumption high during prototyping or design phases?"], // NEW 2.5
 
   '3.1': [
     "Are there any materials and/or additives in the product (system) that are recognized/classified as toxic/harmful and replaceable?",
@@ -124,16 +122,19 @@ const QualitativeEvaluation: React.FC = () => {
     const subStrategyIdsToProcess: Set<string> = new Set();
 
     currentStrategy.subStrategies.forEach(ss => {
-      // Special handling for combined sub-strategies 1.4/1.5
+      // Special handling for combined sub-strategies 1.4/1.5 and 2.2/2.3
       if (currentStrategyId === '1' && ss.id === '1.5') {
         if (currentStrategy.subStrategies.some(s => s.id === '1.4')) {
           subStrategyIdsToProcess.add('1.4'); // Only add 1.4, as 1.5 is combined with it
           return;
         }
       }
-      
-      // Strategy 2 no longer has combined sub-strategies.
-      
+      if (currentStrategyId === '2' && ss.id === '2.3') {
+        if (currentStrategy.subStrategies.some(s => s.id === '2.2')) {
+          subStrategyIdsToProcess.add('2.2'); // Only add 2.2, as 2.3 is combined with it
+          return;
+        }
+      }
       subStrategyIdsToProcess.add(ss.id);
     });
 
@@ -231,8 +232,8 @@ const QualitativeEvaluation: React.FC = () => {
             <div className="space-y-8">
               {(() => {
                 let hasRendered1_4_1_5 = false;
+                let hasRendered2_2_2_3 = false;
                 return strategy.subStrategies.map((subStrategy) => {
-                  // --- Strategy 1 Combination Logic (Keep) ---
                   if (strategy.id === '1' && subStrategy.id === '1.5') {
                     return null;
                   }
@@ -302,10 +303,77 @@ const QualitativeEvaluation: React.FC = () => {
                       </div>
                     );
                   }
-                  // --- End Strategy 1 Combination Logic ---
-                  
-                  // Default rendering for all other sub-strategies (including the new 2.2, 2.3, 2.4, 2.5)
-                  
+
+                  if (strategy.id === '2' && subStrategy.id === '2.3') {
+                    return null;
+                  }
+
+                  if (strategy.id === '2' && subStrategy.id === '2.2' && !hasRendered2_2_2_3) {
+                    hasRendered2_2_2_3 = true;
+                    const subStrategy2_2_obj = strategy.subStrategies.find(ss => ss.id === '2.2');
+                    const subStrategy2_3_obj = strategy.subStrategies.find(ss => ss.id === '2.3');
+
+                    if (!subStrategy2_2_obj || !subStrategy2_3_obj) return null;
+
+                    const combinedId = '2.2';
+                    const combinedGuidingQuestions = subStrategyGuidingQuestions[combinedId] || [
+                      `How do sub-strategies "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" apply to your product?`,
+                      "What are the main challenges and opportunities for these combined sub-strategies?",
+                      "Consider the environmental, social, and economic aspects related to both.",
+                    ];
+
+                    return (
+                      <div key="2.2-2.3-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                        <div className="flex justify-between items-center mb-4">
+                          <h4 className="text-xl font-palanquin font-medium text-app-header">
+                            {subStrategy2_2_obj.id}. {subStrategy2_2_obj.name}
+                            <br />
+                            {subStrategy2_3_obj.id}. {subStrategy2_3_obj.name}
+                          </h4>
+                          <div className="flex items-center gap-4">
+                            <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
+                              Sub-strategy Priority:
+                            </Label>
+                            <Select
+                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                            >
+                              <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                <SelectValue placeholder="Select Priority" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="High">High priority</SelectItem>
+                                <SelectItem value="Mid">Mid priority</SelectItem>
+                                <SelectItem value="Low">Low priority</SelectItem>
+                                <SelectItem value="None">No priority</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                            <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                              {combinedGuidingQuestions.map((q, idx) => (
+                                <li key={idx}>{q}</li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="flex-1">
+                            <Textarea
+                              placeholder={`Write your answers for "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" here...`}
+                              rows={6}
+                              className="w-full min-h-[150px]"
+                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
+                              onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
                     <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
                       <div className="flex justify-between items-center mb-4">
