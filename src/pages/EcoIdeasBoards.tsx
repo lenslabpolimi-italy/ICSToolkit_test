@@ -246,7 +246,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 </TooltipTrigger>
                                 <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
                                   {/* Check if the link is a placeholder or a real image link */}
-                                  {guideline.link.startsWith('#example') ? (
+                                  {(typeof guideline.link === 'string' && guideline.link.startsWith('#example')) ? (
                                     <div className="p-2 text-xs text-gray-700">Image example not available.</div>
                                   ) : (
                                     <img src={guideline.link} alt="Example Preview" className="max-w-full h-auto rounded-md" />
@@ -368,10 +368,10 @@ const EcoIdeasBoards: React.FC = () => {
                                     </TooltipTrigger>
                                     <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
                                       {/* Check if the link is a placeholder or a real image link */}
-                                      {guideline.link.startsWith('#example') ? (
+                                      {(typeof guidelineLink === 'string' && guidelineLink.startsWith('#example')) ? (
                                         <div className="p-2 text-xs text-gray-700">Image example not available.</div>
                                       ) : (
-                                        <img src={guideline.link} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                        <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
                                       )}
                                     </TooltipContent>
                                   </Tooltip>
