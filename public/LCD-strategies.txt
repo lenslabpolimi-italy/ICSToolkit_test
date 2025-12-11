@@ -1,123 +1,282 @@
-1.Minimising material consumption
-1.1.Minimise material consumption during pre-production and production
-Design for minimum material use
-Design for material efficiency
-Design for material substitution
-Design for material reduction
-Design for material optimization
-Design for material saving
-Design for material minimization
-1.2.Minimise material consumption during transportation and storage
-Design for minimum weight
-Design for minimum volume
-1.3.Minimise material consumption during packaging
+1.Minimising Materials Consumption
+
+1.1.Minimise material content of a product
+Dematerialise the product or some of its components
+Digitalise the product or some of its components
+Miniaturise
+Avoid over-sized dimensions
+Reduce thickness
+Apply ribbed structures to increase structural stiffness
+Avoid extra components with little functionality
+
+1.2.Minimise scraps and discards
+Select processes that reduce scraps and discarded materials during production
+Engage simulation systems to optimise transformation processes
+
+1.3.Minimise or avoid packaging
 Avoid packaging
-Design for minimum packaging material
-Design for reusable packaging
-1.4.Minimise material consumption during use
+Apply materials only where absolutely necessary
+Design the package to be part (or to become a part) of the product
+
+1.4.Minimise material consumption during usage
 Design for more efficient consumption of operational materials
+Design for more efficient supply of raw materials
 Design for more efficient use of maintenance materials
+Design systems for the consumption of passive materials
+Design for cascading recycling systems
+Facilitate the user to reduce material consumption
+Set the product’s default state at minimal materials consumption
+
+1.5.Adopt flexible material consumption systems (during use)
 Engage digital support systems with dynamic configuration
-Design variable material consumption systems for different operating requirements
-Use of sensors to adjust material consumption to operational requirements
-Set the product's default state at minimal materials consumption
-Facilitate the user to reduce material consumption
-1.5.Enable a variable consumption of materials, to follow demand fluctuations
-Design for variable material consumption systems for different operating requirements
-Use of sensors to adjust material consumption to operational requirements
-Set the product's default state at minimal materials consumption
-Facilitate the user to reduce material consumption
-1.6.Minimise material consumption during the product development phase
-Minimise the consumption of stationery goods and their packages
-Engage digital tools in designing, modelling and prototyping
-Engage digital tools for documentation, communication and presentation
+Design dynamic material consumption for different operational stages
+Engage sensors to adjust materials consumption according to differentiated operational stages
+Reduce resource consumption in the product’s default state
 
-2.Minimising energy consumption
-2.1.Minimise energy consumption during pre-production and production
-Design for minimum energy use in manufacturing
-Design for energy efficient processes
-Design for low temperature processes
-Design for low pressure processes
-Design for low speed processes
-2.2.Minimise energy consumption during transportation and storage
-Design for minimum weight for transport
-Design for minimum volume for transport
-Design for efficient storage
-2.3.Select the most efficient energy consumption systems during use
-Design for energy efficiency
-Design for efficient energy conversion
-Design for efficient energy transfer
-Design for efficient insulation
-2.4.Enable a variable consumption of energy, to follow demand fluctuations
-Design variable energy consumption systems for different operating requirements
-Use of sensors to adjust energy consumption to operational requirements
-Set the product's default state at minimal energy consumption
-Facilitate the user to reduce energy consumption
-2.5.Minimise energy consumption during product development
-Minimise the consumption of energy in prototyping
-Engage digital tools in designing, modelling and prototyping
-Engage digital tools for documentation, communication and presentation
+2.Minimising Energy Consumption
 
-3.Minimising toxic emissions
-3.1.Minimise toxic emissions during pre-production and production
-Are there any materials and/or additives in the product (system) that are recognized/classified as toxic/harmful and replaceable?
-Are there any manufacturing, assembly, or finishing processes in the product (system) that are recognized/classified as toxic/harmful and replaceable?
-Are there any materials and/or manufacturing processes in the packaging that are recognized/classified as toxic/harmful and replaceable?
-Does the product (system) adopt disposal processes that are recognized/classified as toxic/harmful and replaceable?
-3.2.Minimise toxic emissions during transportation and use
-Are transport systems used for the product (system) that utilize energy resources and/or release emissions recognized/classified as toxic/harmful, and are they replaceable?
-Does the product (system) in use adopt energy resources recognized/classified as toxic/harmful, and are they replaceable?
+2.1.Minimise energy consumption during transportation and storage
+Design compact products with high storage density
+Design concentrated products
+Equip products with on-site assembly
+Scale down the product weight
+Scale down the packaging weight
+Decentralise activities to reduce transportation volumes
+Select local material and energy sources
 
-4.Maximising use of renewable resources
-4.1.Maximise use of renewable materials
-Is the product (system) manufactured using depleting and/or less renewable materials?
-Is the packaging manufactured using depleting and/or less renewable materials?
-Are the product (system) or any potentially compostable parts made of non-biodegradable materials?
-4.2.Maximise use of renewable energy
-Is part of the energy consumed during use produced from depleting and/or non-renewable energy sources (e.g., fossil fuels)?
+2.2.Select the most efficient energy consumption systems during use
+Design products for collective use
+Design for energy-efficient operational stages
+Design for energy-efficient maintenance
+Design systems for consumption of passive energy sources
+Engage highly efficient energy conversion systems
+Design/engage highly efficient engines
+Design/engage highly efficient power transmission
+Use highly caulked materials and technical components
+Design for localised energy supply
+Scale down the weight of transportable goods
+Design energy recovery systems
+Design energy-saving systems
 
-5.Maximising product useful life
-5.1.Design for durability
-Does the product, or any of its components, have a short useful life?
-5.2.Design for ease of maintenance and repair
-Does the product, or any of its components, tend to become damaged, deteriorate, or break prematurely?
-5.3.Design for upgradability
-Does the product, or any of its components, tend to become technologically obsolete?
-5.4.Design for adaptability
-Is the product, or any of its components, difficult to store, maintain, repair, and/or upgrade?
-5.5.Design for sharing
-Is the product, or any of its components, single-use (excluding consumable products)?
-5.6.Design for multi-functionality
-Is the product, or any of its components, used individually when it could be shared?
-5.7.Design for emotional durability
-Does the product, or any of its components, tend to become culturally or aesthetically obsolete?
-5.8.Design for intensity of use
-Does the product, or any of its components, tend not to be used for extended periods?
+2.3.Enable a variable consumption of energy, to follow demand fluctuations
+Engage digital dynamic support systems
+Design dynamic energy consumption systems for differentiated operational stages
+Engage sensors to adjust consumption during differentiated operational stages
+Equip machinery with intelligent power-off utilities
+Programme product default state at minimal energy consumption
 
-6.Maximising material recycling and recovery
-6.1.Design for disassembly
-Does the (system) product generate large amounts of waste destined for landfill/incineration at the end of its life cycle?
-6.2.Design for material purity
-Do some/all pre-production and/or production wastes end up in landfill/incineration?
-6.3.Design for material identification
-Do some/all wastes produced during use end up in landfill/incineration?
-6.4.Design for recycling infrastructure
-Does part/all of the packaging end up in landfill/incineration?
-6.5.Design for material recovery
-No question founded
-6.6.Design for material reuse
-No question founded
-6.7.Design for material recycling
-No question founded
-6.8.Design for composting
-No question founded
+3.Minimising Resources Toxicity and Harmfulness
 
-7.Minimising environmental impact of the system
-7.1.Design for local production
-7.2.Design for local consumption
-7.3.Design for local distribution
-7.4.Design for local maintenance
-7.5.Design for local end-of-life
-7.6.Design for local resource use
-7.7.Design for local energy use
-7.8.Design for local water use
+3.1.Select nontoxic and harmless materials
+Avoid toxic or harmful materials for product components
+Minimise the hazard of toxic and harmful materials
+Avoid materials that emit toxic or harmful substances during pre-production
+Avoid additives that emit toxic or harmful substances
+Avoid technologies that process toxic and harmful materials
+Avoid toxic or harmful surface treatments
+Design products that do not consume toxic and harmful materials
+Avoid materials that emit toxic or harmful substances during usage
+Avoid materials that emit toxic or harmful substances during disposal
+
+3.2.Select nontoxic and harmless energy resources
+Select energy resources that reduce dangerous emissions during pre-production and production
+Select energy resources that reduce dangerous emissions during distribution
+Select energy resources that reduce dangerous emissions during usage
+Select energy resources that reduce dangerous residues and toxic and harmful waste
+
+4.Optimising Resources Renewability and Biocompatibility
+
+4.1.Select renewable and biocompatible materials
+Use renewable materials
+Avoid exhaustive materials
+Use residual materials of production processes
+Use retrieved components from disposed products
+Use recycled materials, alone or combined with primary materials
+Use biodegradable materials
+
+4.2.Select renewable and biocompatible energy resources
+Use renewable energy resources
+Engage the cascade approach
+Select energy resources with high second-order efficiency
+
+5.Product Lifespan Optimisation
+
+5.1.Design appropriate lifespan
+Design durable components, choosing materials and the appropriate ways to preserve performances in relationship with the foreseen usage conditions
+Design components with coextensive lifespan
+Design lifespan of replaceable components according to scheduled duration
+Select durable materials according to the product performance and lifespan
+Avoid selecting durable materials for temporary products or components
+
+5.2.Design for reliability
+Reduce overall number of components
+Simplify products
+Eliminate weak liaisons
+
+5.3.Facilitate upgrading and adaptability
+Enable and facilitate software upgrade
+Enable and facilitate hardware upgrade
+Design modular and dynamically configured products to facilitate their adaptability for changing environments
+Design multifunctional and dynamically configured products to facilitate their adaptability for changing cultural and physical individual backgrounds
+Design products that can be upgraded and adapted on-site
+Design complementary tools and documentation for product upgrade and adaptation
+
+5.4.Facilitate maintenance
+Simplify access and disassembly to components to be maintained
+Avoid narrow slits and holes to facilitate access for cleaning
+Pre-arrange and facilitate the substitution of short-lived components
+Equip the product with easily usable tools for maintenance
+Equip products with diagnostic and/or autodiagnostic systems for maintainable components
+Design products for easy on-site maintenance, enabling parts cleaning and/or replacement
+Design complementary maintenance tools and documentation
+Design products that need less maintenance
+
+5.5.Facilitate repairs
+Arrange and facilitate disassembly and re-attachment of easily damageable components
+Design components according to standards
+Equip products with automatic damage diagnostics system
+Design products for facilitated on-site repair
+Design complementary repair tools, materials and documentation
+
+5.6.Facilitate reuse
+Increase the resistance of easily damaged and expendable components
+Arrange and facilitate access and removal of retrievable components
+Design modular and replaceable components
+Design components according to standards to facilitate replacement
+Design reusable auxiliary parts
+Design refilling and reusable packaging
+Design products for secondary use
+
+5.7.Facilitate remanufacture
+Design and facilitate removal and substitution of easily expendable components
+Design structural parts that can be easily separated from external/visible ones
+Provide easier access to components to be remanufactured
+Calculate accurate tolerance parameters for easily expendable connections
+Design for excessive use of material for easily deteriorating surfaces
+
+5.8.Intensify Usage
+Design product services for a shared use
+Design multifunctional products with common substitutable components
+Design products with integrated functions
+Design for products or products parts on demand
+Design for products or products parts on availability
+
+6.Extending the Lifespan of Materials
+
+6.1.Adopt the cascade approach
+Arrange and facilitate recycling of materials in components with lower mechanical requirements
+Arrange and facilitate recycling of materials in components with lower aesthetical requirements
+Arrange and facilitate energy recovery from materials throughout combustion
+
+6.2.Select materials with most efficient recycling technologies
+Select materials that easily recover its original performance characteristics after recycling
+Avoid composite materials or, when necessary, choose easily recyclable ones
+Engage geometrical solutions like ribbing to increase polymer stiffness instead of reinforcing fibres
+Prefer thermoplastic polymers to thermosetting
+Prefer heat-proof thermoplastic polymers to fire-proof additives
+Design considering the secondary use of the materials once recycled
+
+6.3.Facilitate end-of-life collection and transportation
+Design in compliance with product retrieval system
+Minimise overall weight
+Minimise cluttering and improve stackability of discarded products
+Design for the compressibility of discarded products
+Provide the user with information about the disposing modalities of the product or its parts
+
+6.4.Material identification
+Codify different materials to facilitate their identification
+Provide additional information about the material’s age, number of times recycled in the past and additives used
+Indicate the existence of toxic or harmful materials
+Use standardised materials identification systems
+Arrange codifications in easily visible places
+Avoid codifying after component production stages
+
+6.5.Minimise the number of different incompatible materials
+Integrate functions to reduce the overall number of materials and components
+Monomaterial strategy: only one material per product or per sub-assembly
+Use only one material, but processed in sandwich structures
+Use compatible materials (that could be recycled together) within the product or sub-assembly
+For joining, use the same or compatible materials as in components (to be joined)
+
+6.6.Facilitate cleaning
+Avoid unnecessary coating procedures
+Avoid irremovable coating materials
+Facilitate removal of contaminants
+Use coating procedures that comply with coated materials
+Avoid adhesives or choose ones that comply with materials to be recycled
+Prefer the dyeing of internal polymers, rather than surface painting
+Avoid using additional materials for marking or codification
+Mark and codify materials during moulding
+Codify polymers using lasers
+
+6.7.Facilitate composting
+Select materials that degrade in the expected end-of-life environment
+Avoid combining non-degradable materials with products that are going to be composted
+Facilitate the separation of non-degradable materials
+
+6.8.Facilitate combustion
+Select high energy materials for products that are going to be incinerated
+Avoid materials that emit dangerous substances during incineration
+Avoid additives that emit dangerous substances during incineration
+Facilitate the separation of materials that would compromise the efficiency of combustion (with low-energy value)
+
+7.Facilitating Disassembly
+
+7.1.Reduce and facilitate operations of disassembly and separation - Overall architecture
+Prioritise the disassembly of toxic and dangerous components or materials
+Prioritise the disassembly of components or materials with higher economic value
+Prioritise the disassembly of more easily damageable components
+Prioritise the disassembly of the parts that are more subject to technological/aesthetic obsolescence
+Engage modular structures
+Divide the product into easily separable and manipulable sub-assemblies
+Minimise overall dimensions of the product
+Minimise hierarchically dependent connections between components
+Minimise different directions in the disassembly route of components and materials
+Increase the linearity of the disassembly route
+Engage a sandwich system of disassembly with central joining elements
+
+7.2.Reduce and facilitate operations of disassembly and separation - Shape of components and parts
+Avoid difficult-to-handle components
+Avoid asymmetrical components, unless required
+Design leaning surfaces and grabbing features in compliance with standards
+Arrange leaning surfaces around the product’s centre of gravity
+Design for easy centring on the component base
+
+7.3.Reduce and facilitate operations of disassembly and separation - Shape and accessibility of joints
+Avoid joining systems that require simultaneous interventions for opening
+Minimise the overall number of fasteners
+Minimise the overall number of different fastener types (that demand different tools)
+Avoid difficult-to-handle fasteners
+Design accessible and recognisable entrances for dismantling
+Design accessible and controllable dismantling points
+
+7.4.Engage reversible joining systems
+Employ two-way snapfits
+Employ joints that are opened without tools
+Employ joints that are opened with common tools
+Employ joints that are opened with special tools, when opening could be dangerous
+Design joints made of materials that become reversible only in determined conditions
+Use screws with hexagonal heads
+Prefer removable nuts and clips to self-tapping screws
+Use screws made of materials compatible with joint components, to avoid their separation before recycling
+Use self-tapping screws for polymers to avoid using metallic inserts
+
+7.5.Engage easily collapsible permanent joining systems
+Avoid rivets on incompatible materials
+Avoid staples on incompatible materials
+Avoid additional materials while welding
+Weld with compatible materials
+Prefer ultrasonic and vibration welding with polymers
+Avoid glueing with adhesives
+Employ easily removable adhesives
+
+7.6.Co-design special technologies and features for crushing separation
+Design thin areas to enable the taking off of incompatible inserts, by pressurised demolition
+Co-design cutting or breaking paths with appropriate separation technologies for incompatible materials separation
+Equip the product with a device to separate incompatible materials
+Employ joining elements that allow their chemical or physical destruction
+Make the breaking points easily accessible and recognisable
+Provide the products with information for the user about the characteristics of crushing separation.
+
+7.7.Use materials that are easily separable after being crushed
+7.8.Use additional parts that are easily separable after crushing of materials
