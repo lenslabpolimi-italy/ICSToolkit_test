@@ -72,7 +72,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Design for the efficient use of resources needed for operation', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDajyHxVz0ZQpKplgx7ZddMARl5fzV0OcZqn9yH6Ows9Rw?e=xVvsVH" },
       { name: 'Design for energy-efficient maintenance', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCSPK7htdTzQZNrNxY8vI2mAXoGAmFsI51TcqkaUvZqlJE?e=yCrDfH" },
       { name: 'Design systems for consumption of passive energy sources', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDaRHM256onSZsQG5h9baZCAZzksTw1cS2vpa36zPasZiY?e=fMfZvA" },
-      { name: 'Adopt high-efficiency energy transformation systems', link: "#example-2.3.5" },
+      { name: 'Adopt high-efficiency energy transformation systems', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDeT9QhokK5Rqqeg2pPMkHxAcfzhPgAoFWr96G4y3erq44?e=mHepzT" },
       { name: 'Design/adopt more efficient motors', link: "#example-2.3.6" },
       { name: 'Design/adopt highly efficient energy transmission systems', link: "#example-2.3.7" },
       { name: 'Use highly caulked materials and technical components', link: null },
