@@ -74,7 +74,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Design systems for consumption of passive energy sources', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDaRHM256onSZsQG5h9baZCAZzksTw1cS2vpa36zPasZiY?e=fMfZvA" },
       { name: 'Adopt high-efficiency energy transformation systems', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDeT9QhokK5Rqqeg2pPMkHxAcfzhPgAoFWr96G4y3erq44?e=mHepzT" },
       { name: 'Design/adopt more efficient motors', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCli5w-OfBOTbfefQwNpMuaAfzugwU85XPiJKby0MnMxzw?e=ONKpTE" },
-      { name: 'Design/adopt highly efficient energy transmission systems', link: "#example-2.3.7" },
+      { name: 'Design/adopt highly efficient energy transmission systems', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC1PKsX0L2NRr8aEeUKQcvSAZ3_52oQzxzytiRdJAKG2xU?e=JDP0Us" },
       { name: 'Use highly caulked materials and technical components', link: null },
       { name: 'Design systems with insulation or point resources', link: "#example-2.3.9" },
       { name: 'Scale down the weight of transportable goods', link: null },
