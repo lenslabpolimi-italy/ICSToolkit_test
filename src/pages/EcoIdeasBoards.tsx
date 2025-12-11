@@ -18,6 +18,92 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+// Define the structure for custom content display
+interface DisplayGuideline {
+  name: string;
+  link: string | null;
+}
+
+interface DisplaySubStrategy {
+  id: string;
+  name: string;
+  guidelines: DisplayGuideline[];
+}
+
+// Custom content for Strategy 2: Minimising Energy Consumption
+const strategy2DisplayContent: DisplaySubStrategy[] = [
+  {
+    id: '2.1',
+    name: 'Minimise energy consumption during pre-production and production',
+    guidelines: [
+      { name: 'Select materials with low energy intensity', link: null },
+      { name: 'Select processing technologies with the lowest energy consumption possible', link: null },
+      { name: 'Engage efficient machinery', link: null },
+      { name: 'Use heat emitted in certain processes for preheating other process flows', link: null },
+      { name: 'Engage pump and motor speed regulators with dynamic configuration', link: null },
+      { name: 'Equip the machinery with intelligent power-off utilities', link: null },
+      { name: 'Optimise the overall dimensions of the engines', link: null },
+      { name: 'Facilitate engine maintenance', link: null },
+      { name: 'Define accurately the tolerance parameters', link: null },
+      { name: 'Optimise the volumes of required real estate', link: null },
+      { name: 'Optimise stocktaking systems', link: null },
+      { name: 'Optimise transportation systems and scale down the weight and dimensions of all transportable materials and semi-products', link: null },
+      { name: 'Engage efficient general heating, illumination and ventilation in buildings', link: null },
+    ]
+  },
+  {
+    id: '2.2',
+    name: 'Minimise energy consumption during transportation and storage',
+    guidelines: [
+      { name: 'Design compact high-density storage products', link: "#example-2.2.1" },
+      { name: 'Design concentrated products', link: "#example-2.2.2" },
+      { name: 'Equip products with onsite assembly', link: "#example-2.2.3" },
+      { name: 'Scale down the product weight', link: null },
+      { name: 'Scale down the packaging weight', link: "#example-2.2.5" },
+      { name: 'Decentralise activities to reduce transportation volumes', link: "#example-2.2.6" },
+      { name: 'Select local material and energy sources', link: "#example-2.2.7" },
+    ]
+  },
+  {
+    id: '2.3',
+    name: 'Select the most efficient energy consumption systems during use',
+    guidelines: [
+      { name: 'Design products for collective use', link: "#example-2.3.1" },
+      { name: 'Design for the efficient use of resources needed for operation', link: "#example-2.3.2" },
+      { name: 'Design for energy-efficient maintenance', link: "#example-2.3.3" },
+      { name: 'Design systems for consumption of passive energy sources', link: "#example-2.3.4" },
+      { name: 'Adopt high-efficiency energy transformation systems', link: "#example-2.3.5" },
+      { name: 'Design/adopt more efficient motors', link: "#example-2.3.6" },
+      { name: 'Design/adopt highly efficient energy transmission systems', link: "#example-2.3.7" },
+      { name: 'Use highly caulked materials and technical components', link: null },
+      { name: 'Design systems with insulation or point resources', link: "#example-2.3.9" },
+      { name: 'Scale down the weight of transportable goods', link: null },
+      { name: 'Design energy recovery systems', link: "#example-2.3.11" },
+      { name: 'Design energy-saving systems', link: null },
+    ]
+  },
+  {
+    id: '2.4',
+    name: 'Enable a variable consumption of energy, to follow demand fluctuations',
+    guidelines: [
+      { name: 'product default state at minimal energy consumptions', link: null },
+      { name: 'Design dynamic energy consumption systems for differentiated operational stages', link: null },
+      { name: 'Use sensors to adapt consumption to operational needs', link: "#example-2.4.3" },
+      { name: 'Incorporate auto switch-off mechanisms into products', link: "#example-2.4.4" },
+      { name: 'Program product default state at minimal energy consumption', link: "#example-2.4.5" },
+    ]
+  },
+  {
+    id: '2.5',
+    name: 'Minimise energy consumption during product development',
+    guidelines: [
+      { name: 'Engage efficient workplace heating, illumination and ventilation', link: null },
+      { name: 'Engage digital tools for communicating with remote working sites', link: null },
+    ]
+  }
+];
+
+
 const EcoIdeasBoards: React.FC = () => {
   const { strategies, ecoIdeas, setEcoIdeas, qualitativeEvaluation, evaluationNotes, setEvaluationNotes } = useLcd();
   const [selectedStrategyId, setSelectedStrategyId] = useState(strategies[0]?.id || '');
@@ -142,118 +228,155 @@ const EcoIdeasBoards: React.FC = () => {
             <div className="relative flex min-h-[400px] p-8 rounded-lg bg-gray-50 overflow-hidden">
               {/* Left Column for Strategy Text and Eco-Ideas */}
               <div className="w-1/2 pr-8">
-                {strategy.subStrategies.map((subStrategy, subStrategyIndex) => (
-                  <div key={subStrategy.id} className="mb-6">
-                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
-                      {subStrategy.id}. {subStrategy.name}
-                    </h4>
-                    <ul className="list-none space-y-1">
-                      {subStrategy.guidelines.map((guideline, guidelineIndex) => {
-                        const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
-                        const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 1;
-                        const isFourthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 3;
-                        const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4;
-                        const isSixthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 5;
-                        const isFirstGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 0;
-                        const isSecondGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 1;
-                        const isAvoidPackagingGuideline = guideline.name.toLowerCase().includes('avoid packaging');
-                        const isSecondGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 1;
-                        const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
-                        const isFirstGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 0;
-                        const isFourthGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 3;
-                        
-                        // Checks for Sub-Strategy 1.5 (assuming index 4)
-                        const isFirstGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 0;
-                        const isSecondGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 1;
-                        const isThirdGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 2; // NEW check
-                        const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 3;
-
-                        // Check for 1.1.1.7 (Strategy 1, SubStrategy 1.1, Guideline index 6)
-                        const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
-
-                        let guidelineLink = "#";
-                        if (isSecondOverallGuideline) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
-                        } else if (isFifthOverallGuideline) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/microstratificata-IDEA2-english-scaled.png";
-                        } else if (isSixthOverallGuideline) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/tavolo-IDEA2-english-scaled.png";
-                        } else if (isFirstGuidelineOf1_2) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/staffa-IDEA2-english-scaled.png";
-                        } else if (isAvoidPackagingGuideline) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/imballaggio-IDEA2-english-scaled.png";
-                        } else if (isSecondGuidelineOf1_3) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/imballaggio2-IDEA2-english-scaled.png";
-                        } else if (isThirdGuidelineOf1_3) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/packapplique-english-scaled.png";
-                        } else if (isFirstGuidelineOf1_4) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
-                        } else if (isFourthGuidelineOf1_4) {
-                          guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
-                        } else if (isSecondGuidelineOf1_5) { // Specific link for 1.5, 2nd guideline
-                          guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCIX0JHC7LBRbsKsFDc_-TkARl69_Oi6zO4Sb_1ChTaSVs?e=vxBcDC";
-                        } else if (isThirdGuidelineOf1_5) { // Specific link for 1.5, 3rd guideline
-                          guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDWbopvW8MyR4zYOzEL_DEyAZh3kDtRqe8CgSudxzXQ2Qs?e=hTm5DP";
-                        }
-
-                        let displayGuidelineName = guideline.name;
-                        const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
-                        
-                        if (isSubStrategy1_1_4) { // For sub-strategy 1.1.4
-                          switch (guidelineIndex) {
-                            case 0:
-                              displayGuidelineName = "Design for more efficient consumption of operational materials";
-                              break;
-                            case 1:
-                              displayGuidelineName = "Design for more efficient use of maintenance materials";
-                              break;
-                            case 2:
-                              displayGuidelineName = "Engage digital support systems with dynamic configuration";
-                              break;
-                            case 3:
-                              displayGuidelineName = "Design variable material consumption systems for different operating requirements";
-                              break;
-                            case 4:
-                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
-                              displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
-                              break;
-                            case 5:
-                              displayGuidelineName = "Set the product's default state at minimal materials consumption";
-                              break;
-                            case 6:
-                              displayGuidelineName = "Facilitate the user to reduce material consumption";
-                              break;
-                            default:
-                              break;
-                          }
-                        }
-
-                        // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
-                        const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
-
-                        return (
-                          <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
-                            {displayGuidelineName}
-                            {guidelineLink !== "#" ? (
+                {strategy.id === '2' ? (
+                  // --- Custom rendering for Strategy 2: Minimising Energy Consumption ---
+                  strategy2DisplayContent.map((subStrategy) => (
+                    <div key={subStrategy.id} className="mb-6">
+                      <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                        {subStrategy.id}. {subStrategy.name}
+                      </h4>
+                      <ul className="list-none space-y-1">
+                        {subStrategy.guidelines.map((guideline, guidelineIndex) => (
+                          <li key={`${subStrategy.id}.${guidelineIndex + 1}`} className="text-sm text-gray-600 font-roboto-condensed">
+                            {guideline.name}
+                            {guideline.link ? (
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                                  <a href={guideline.link} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                                 </TooltipTrigger>
                                 <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
-                                  <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                  <div className="p-2 text-xs text-gray-700">Image example not available.</div>
                                 </TooltipContent>
                               </Tooltip>
-                            ) : (
-                              !shouldHideGenericExample && (
-                                <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
-                              )
-                            )}
+                            ) : null}
                           </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
+                        ))}
+                      </ul>
+                    </div>
+                  ))
+                ) : (
+                  // --- Existing rendering logic for Strategy 1 and default rendering for others ---
+                  strategy.subStrategies.map((subStrategy, subStrategyIndex) => {
+                    // Define variables used in the existing complex logic
+                    const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && 0 === 0;
+                    const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && 1 === 1;
+                    const isFourthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && 3 === 3;
+                    const isFirstGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && 0 === 0;
+                    const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && 3 === 3;
+                    const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && 6 === 6;
+                    const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
+
+                    return (
+                      <div key={subStrategy.id} className="mb-6">
+                        <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                          {subStrategy.id}. {subStrategy.name}
+                        </h4>
+                        <ul className="list-none space-y-1">
+                          {subStrategy.guidelines.map((guideline, guidelineIndex) => {
+                            let guidelineLink = "#";
+                            
+                            // Re-evaluate the index-based checks inside the loop for Strategy 1
+                            const isSecondOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 1;
+                            const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4;
+                            const isSixthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 5;
+                            const isFirstGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 0;
+                            const isAvoidPackagingGuideline = guideline.name.toLowerCase().includes('avoid packaging');
+                            const isSecondGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 1;
+                            const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
+                            const isFirstGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 0;
+                            const isFourthGuidelineOf1_4 = strategyIndex === 0 && subStrategyIndex === 3 && guidelineIndex === 3;
+                            const isSecondGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 1;
+                            const isThirdGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 2;
+                            const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 3;
+                            const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
+                            const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
+                            const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
+
+
+                            if (isSecondOverallGuideline) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
+                            } else if (isFifthOverallGuideline) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/microstratificata-IDEA2-english-scaled.png";
+                            } else if (isSixthOverallGuideline) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/tavolo-IDEA2-english-scaled.png";
+                            } else if (isFirstGuidelineOf1_2) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/staffa-IDEA2-english-scaled.png";
+                            } else if (isAvoidPackagingGuideline) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/imballaggio-IDEA2-english-scaled.png";
+                            } else if (isSecondGuidelineOf1_3) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/imballaggio2-IDEA2-english-scaled.png";
+                            } else if (isThirdGuidelineOf1_3) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/packapplique-english-scaled.png";
+                            } else if (isFirstGuidelineOf1_4) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/container-IDEA2-english-scaled.png";
+                            } else if (isFourthGuidelineOf1_4) {
+                              guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/pulsante-IDEA2-english-scaled.png";
+                            } else if (isSecondGuidelineOf1_5) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCIX0JHC7LBRbsKsFDc_-TkARl69_Oi6zO4Sb_1ChTaSVs?e=vxBcDC";
+                            } else if (isThirdGuidelineOf1_5) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDWbopvW8MyR4zYOzEL_DEyAZh3kDtRqe8CgSudxzXQ2Qs?e=hTm5DP";
+                            }
+
+                            let displayGuidelineName = guideline.name;
+                            
+                            // Logic for overriding displayGuidelineName for 1.1.4 (Strategy 1, SubStrategy 1.4)
+                            if (isSubStrategy1_1_4) { 
+                              switch (guidelineIndex) {
+                                case 0:
+                                  displayGuidelineName = "Design for more efficient consumption of operational materials";
+                                  break;
+                                case 1:
+                                  displayGuidelineName = "Design for more efficient use of maintenance materials";
+                                  break;
+                                case 2:
+                                  displayGuidelineName = "Engage digital support systems with dynamic configuration";
+                                  break;
+                                case 3:
+                                  displayGuidelineName = "Design variable material consumption systems for different operating requirements";
+                                  break;
+                                case 4:
+                                  guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lavatrcie-IDEA2-english-scaled.png";
+                                  displayGuidelineName = "Use of sensors to adjust material consumption to operational requirements";
+                                  break;
+                                case 5:
+                                  displayGuidelineName = "Set the product's default state at minimal materials consumption";
+                                  break;
+                                case 6:
+                                  displayGuidelineName = "Facilitate the user to reduce material consumption";
+                                  break;
+                                default:
+                                  break;
+                              }
+                            }
+
+                            // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
+                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
+
+                            return (
+                              <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
+                                {displayGuidelineName}
+                                {guidelineLink !== "#" ? (
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
+                                      <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                    </TooltipContent>
+                                  </Tooltip>
+                                ) : (
+                                  !shouldHideGenericExample && (
+                                    <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
+                                  )
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    );
+                  })
+                )}
 
                 {/* Injecting Sub-Strategy 1.6: Minimise material consumption during the product development phase */}
                 {strategyIndex === 0 && (
