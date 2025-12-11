@@ -89,7 +89,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'product default state at minimal energy consumptions', link: null },
       { name: 'Design dynamic energy consumption systems for differentiated operational stages', link: null },
       { name: 'Use sensors to adapt consumption to operational needs', link: "#example-2.4.3" },
-      { name: 'Incorporate auto switch-off mechanisms into products', link: "#example-2.4.4" },
+      { name: 'Incorporated auto switch-off mechanisms into products', link: "#example-2.4.4" },
       { name: 'Program product default state at minimal energy consumption', link: "#example-2.4.5" },
     ]
   },
@@ -280,6 +280,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isFifthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 4;
                             const isSixthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 5;
                             const isFirstGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 0;
+                            const isSecondGuidelineOf1_2 = strategyIndex === 0 && subStrategyIndex === 1 && guidelineIndex === 1; // <-- FIX: Added missing definition
                             const isAvoidPackagingGuideline = guideline.name.toLowerCase().includes('avoid packaging');
                             const isSecondGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 1;
                             const isThirdGuidelineOf1_3 = strategyIndex === 0 && subStrategyIndex === 2 && guidelineIndex === 2;
