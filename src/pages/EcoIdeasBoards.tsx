@@ -266,6 +266,26 @@ const EcoIdeasBoards: React.FC = () => {
                               }
                             }
                             
+                            // Custom guidelines for Strategy 2.1 (Minimise energy consumption during pre-production and production)
+                            if (strategy.id === '2' && subStrategy.id === '2.1') {
+                                switch (guidelineIndex) {
+                                    case 0: displayGuidelineName = "Select materials with low energy intensity"; break;
+                                    case 1: displayGuidelineName = "Select processing technologies with the lowest energy consumption possible"; break;
+                                    case 2: displayGuidelineName = "Engage efficient machinery"; break;
+                                    case 3: displayGuidelineName = "Use heat emitted in certain processes for preheating other process flows"; break;
+                                    case 4: displayGuidelineName = "Engage pump and motor speed regulators with dynamic configuration"; break;
+                                    case 5: displayGuidelineName = "Equip the machinery with intelligent power-off utilities"; break;
+                                    case 6: displayGuidelineName = "Optimise the overall dimensions of the engines"; break;
+                                    case 7: displayGuidelineName = "Facilitate engine maintenance"; break;
+                                    case 8: displayGuidelineName = "Define accurately the tolerance parameters"; break;
+                                    case 9: displayGuidelineName = "Optimise the volumes of required real estate"; break;
+                                    case 10: displayGuidelineName = "Optimise stocktaking systems"; break;
+                                    case 11: displayGuidelineName = "Optimise transportation systems and scale down the weight and dimensions of all transportable materials and semi-products"; break;
+                                    case 12: displayGuidelineName = "Engage efficient general heating, illumination and ventilation in buildings"; break;
+                                    default: break;
+                                }
+                            }
+
                             // Custom guidelines for Strategy 2.5 (Minimise energy consumption during product development)
                             if (strategy.id === '2' && subStrategy.id === '2.5') {
                                 switch (guidelineIndex) {
