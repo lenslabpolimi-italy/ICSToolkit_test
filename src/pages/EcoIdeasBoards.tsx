@@ -208,6 +208,9 @@ const EcoIdeasBoards: React.FC = () => {
 
                             // Check for 1.1.1.7 (Strategy 1, SubStrategy 1.1, Guideline index 6)
                             const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
+                            
+                            // NEW: Check for Sub-Strategy 2.1
+                            const isSubStrategy2_1 = strategy.id === '2' && subStrategy.id === '2.1';
 
                             let guidelineLink = "#";
                             if (isSecondOverallGuideline) {
@@ -267,7 +270,9 @@ const EcoIdeasBoards: React.FC = () => {
                             }
                             
                             // Custom guidelines for Strategy 2.1 (Minimise energy consumption during pre-production and production)
-                            if (strategy.id === '2' && subStrategy.id === '2.1') {
+                            if (isSubStrategy2_1) {
+                                // Clear guidelineLink for 2.1 guidelines
+                                guidelineLink = "#"; 
                                 switch (guidelineIndex) {
                                     case 0: displayGuidelineName = "Select materials with low energy intensity"; break;
                                     case 1: displayGuidelineName = "Select processing technologies with the lowest energy consumption possible"; break;
@@ -309,10 +314,13 @@ const EcoIdeasBoards: React.FC = () => {
                             // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
                             const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
 
+                            // Final check to determine if EXAMPLE link should be rendered
+                            const shouldRenderExample = guidelineLink !== "#" && !shouldHideGenericExample && !isSubStrategy2_1;
+
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                                 {displayGuidelineName}
-                                {guidelineLink !== "#" ? (
+                                {shouldRenderExample ? (
                                   <Tooltip>
                                     <TooltipTrigger asChild>
                                       <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
@@ -322,7 +330,7 @@ const EcoIdeasBoards: React.FC = () => {
                                     </TooltipContent>
                                   </Tooltip>
                                 ) : (
-                                  !shouldHideGenericExample && (
+                                  !shouldHideGenericExample && guidelineLink === "#" && (
                                     <a href={guidelineLink} className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                                   )
                                 )}
