@@ -68,7 +68,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
     id: '2.3',
     name: 'Select the most efficient energy consumption systems during use',
     guidelines: [
-      { name: 'Design products for collective use', link: "#example-2.3.1" },
+      { name: 'Design products for collective use', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCrrfYgPcUiQ4Do0A18R_JKAaTtZe8EoijfIWSTKmmxylA?e=kgwIXl" },
       { name: 'Design for the efficient use of resources needed for operation', link: "#example-2.3.2" },
       { name: 'Design for energy-efficient maintenance', link: "#example-2.3.3" },
       { name: 'Design systems for consumption of passive energy sources', link: "#example-2.3.4" },
