@@ -61,7 +61,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Scale down the product weight', link: null },
       { name: 'Scale down the packaging weight', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC1imMnLkhXQYexzkwKhx7MAdDhxg810bWB8mIkWy_V-Ys?e=QaSk7F" },
       { name: 'Decentralise activities to reduce transportation volumes', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAotoOuEmKlQYaTKXX0Ui0GAfoItUIGVn1CzlxL38zF224?e=Y83W7O" },
-      { name: 'Select local material and energy sources', link: "#example-2.2.7" },
+      { name: 'Select local material and energy sources', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAuquM69P2LQI71dOQPV5ZQATrqkowVN2C524PYGSnK57U?e=lgxTfk" },
     ]
   },
   {
@@ -368,10 +368,10 @@ const EcoIdeasBoards: React.FC = () => {
                                     </TooltipTrigger>
                                     <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
                                       {/* Check if the link is a placeholder or a real image link */}
-                                      {guidelineLink.startsWith('#example') ? (
+                                      {guideline.link.startsWith('#example') ? (
                                         <div className="p-2 text-xs text-gray-700">Image example not available.</div>
                                       ) : (
-                                        <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                        <img src={guideline.link} alt="Example Preview" className="max-w-full h-auto rounded-md" />
                                       )}
                                     </TooltipContent>
                                   </Tooltip>
