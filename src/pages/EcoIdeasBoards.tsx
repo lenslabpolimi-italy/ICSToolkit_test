@@ -55,7 +55,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
     id: '2.2',
     name: 'Minimise energy consumption during transportation and storage',
     guidelines: [
-      { name: 'Design compact high-density storage products', link: "#example-2.2.1" },
+      { name: 'Design compact high-density storage products', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQANW2Zuen8pT69n7Z33YlJ9AXOWgEAS2EDxaTEyGBJQiBI?e=pzqh0B" },
       { name: 'Design concentrated products', link: "#example-2.2.2" },
       { name: 'Equip products with onsite assembly', link: "#example-2.2.3" },
       { name: 'Scale down the product weight', link: null },
@@ -89,7 +89,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'product default state at minimal energy consumptions', link: null },
       { name: 'Design dynamic energy consumption systems for differentiated operational stages', link: null },
       { name: 'Use sensors to adapt consumption to operational needs', link: "#example-2.4.3" },
-      { name: 'Incorporated auto switch-off mechanisms into products', link: "#example-2.4.4" },
+      { name: 'Incorporate auto switch-off mechanisms into products', link: "#example-2.4.4" },
       { name: 'Program product default state at minimal energy consumption', link: "#example-2.4.5" },
     ]
   },
@@ -245,7 +245,12 @@ const EcoIdeasBoards: React.FC = () => {
                                   <a href={guideline.link} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                                 </TooltipTrigger>
                                 <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
-                                  <div className="p-2 text-xs text-gray-700">Image example not available.</div>
+                                  {/* Check if the link is a placeholder or a real image link */}
+                                  {guideline.link.startsWith('#example') ? (
+                                    <div className="p-2 text-xs text-gray-700">Image example not available.</div>
+                                  ) : (
+                                    <img src={guideline.link} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                  )}
                                 </TooltipContent>
                               </Tooltip>
                             ) : null}
@@ -362,7 +367,12 @@ const EcoIdeasBoards: React.FC = () => {
                                       <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
                                     </TooltipTrigger>
                                     <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
-                                      <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                      {/* Check if the link is a placeholder or a real image link */}
+                                      {guidelineLink.startsWith('#example') ? (
+                                        <div className="p-2 text-xs text-gray-700">Image example not available.</div>
+                                      ) : (
+                                        <img src={guidelineLink} alt="Example Preview" className="max-w-full h-auto rounded-md" />
+                                      )}
                                     </TooltipContent>
                                   </Tooltip>
                                 ) : (
