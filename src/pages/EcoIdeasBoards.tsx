@@ -57,7 +57,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
     guidelines: [
       { name: 'Design compact high-density storage products', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQANW2Zuen8pT69n7Z33YlJ9AXOWgEAS2EDxaTEyGBJQiBI?e=pzqh0B" },
       { name: 'Design concentrated products', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCBXNOA4sRFRI3ovhF3XQg9AY1ctSZs7OXPuQM_fQWbp30?e=8vkzEY" },
-      { name: 'Equip products with onsite assembly', link: "#example-2.2.3" },
+      { name: 'Equip products with onsite assembly', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAK1LM8RxXBQKuZo8qQwxptAU-Qazbb8S2ZEcbcF89gIqk?e=AypnSj" },
       { name: 'Scale down the product weight', link: null },
       { name: 'Scale down the packaging weight', link: "#example-2.2.5" },
       { name: 'Decentralise activities to reduce transportation volumes', link: "#example-2.2.6" },
