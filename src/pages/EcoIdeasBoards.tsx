@@ -60,7 +60,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Equip products with onsite assembly', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAK1LM8RxXBQKuZo8qQwxptAU-Qazbb8S2ZEcbcF89gIqk?e=AypnSj" },
       { name: 'Scale down the product weight', link: null },
       { name: 'Scale down the packaging weight', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC1imMnLkhXQYexzkwKhx7MAdDhxg810bWB8mIkWy_V-Ys?e=QaSk7F" },
-      { name: 'Decentralise activities to reduce transportation volumes', link: "#example-2.2.6" },
+      { name: 'Decentralise activities to reduce transportation volumes', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAotoOuEmKlQYaTKXX0Ui0GAfoItUIGVn1CzlxL38zF224?e=Y83W7O" },
       { name: 'Select local material and energy sources', link: "#example-2.2.7" },
     ]
   },
