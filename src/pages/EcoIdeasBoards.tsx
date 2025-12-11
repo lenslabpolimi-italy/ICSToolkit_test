@@ -70,7 +70,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
     guidelines: [
       { name: 'Design products for collective use', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCrrfYgPcUiQ4Do0A18R_JKAaTtZe8EoijfIWSTKmmxylA?e=kgwIXl" },
       { name: 'Design for the efficient use of resources needed for operation', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDajyHxVz0ZQpKplgx7ZddMARl5fzV0OcZqn9yH6Ows9Rw?e=xVvsVH" },
-      { name: 'Design for energy-efficient maintenance', link: "#example-2.3.3" },
+      { name: 'Design for energy-efficient maintenance', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCSPK7htdTzQZNrNxY8vI2mAXoGAmFsI51TcqkaUvZqlJE?e=yCrDfH" },
       { name: 'Design systems for consumption of passive energy sources', link: "#example-2.3.4" },
       { name: 'Adopt high-efficiency energy transformation systems', link: "#example-2.3.5" },
       { name: 'Design/adopt more efficient motors', link: "#example-2.3.6" },
