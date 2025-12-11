@@ -76,7 +76,7 @@ const strategy2DisplayContent: DisplaySubStrategy[] = [
       { name: 'Design/adopt more efficient motors', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCli5w-OfBOTbfefQwNpMuaAfzugwU85XPiJKby0MnMxzw?e=ONKpTE" },
       { name: 'Design/adopt highly efficient energy transmission systems', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC1PKsX0L2NRr8aEeUKQcvSAZ3_52oQzxzytiRdJAKG2xU?e=JDP0Us" },
       { name: 'Use highly caulked materials and technical components', link: null },
-      { name: 'Design systems with insulation or point resources', link: "#example-2.3.9" },
+      { name: 'Design systems with insulation or point resources', link: "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBqhy7VVSepSbt3qPOAKLsrAcJa4dHVOVLc-WpCGn3Vpqo?e=sskHL4" },
       { name: 'Scale down the weight of transportable goods', link: null },
       { name: 'Design energy recovery systems', link: "#example-2.3.11" },
       { name: 'Design energy-saving systems', link: null },
