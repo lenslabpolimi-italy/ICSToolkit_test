@@ -298,13 +298,23 @@ const EcoIdeasBoards: React.FC = () => {
                             const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 3;
                             const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
                             const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
-                            const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
+                            // const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3; // Already defined above
 
                             // NEW: Logic for Strategy 3
                             const isGuideline3_1_1 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 0;
+                            const isGuideline3_1_2 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 1;
+                            const isGuideline3_1_5 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 4;
+                            const isGuideline3_1_7 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 6;
+                            const isGuideline3_1_8 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 7;
+                            const isGuideline3_1_9 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 8;
+
+                            const shouldHideExample3_1 = isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9;
+
 
                             if (isGuideline3_1_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBpk-nIBgQ9QZhYKveyBLBiAVNOLwJ_3Cn3kYrgUQmuzgs?e=5CZb0I";
+                            } else if (shouldHideExample3_1) {
+                              guidelineLink = "#"; // Explicitly set to # to ensure no link is shown
                             } else if (isSecondOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
                             } else if (isFifthOverallGuideline) {
@@ -361,8 +371,8 @@ const EcoIdeasBoards: React.FC = () => {
                               }
                             }
 
-                            // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
-                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
+                            // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4, AND the new 3.1 guidelines
+                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5 || shouldHideExample3_1;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
