@@ -303,6 +303,7 @@ const EcoIdeasBoards: React.FC = () => {
                             // NEW: Logic for Strategy 3
                             const isGuideline3_1_1 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 0;
                             const isGuideline3_1_2 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 1;
+                            const isGuideline3_1_3 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 2; // NEW: 3.1.3
                             const isGuideline3_1_5 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 4;
                             const isGuideline3_1_7 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 6;
                             const isGuideline3_1_8 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 7;
@@ -313,6 +314,8 @@ const EcoIdeasBoards: React.FC = () => {
 
                             if (isGuideline3_1_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBpk-nIBgQ9QZhYKveyBLBiAVNOLwJ_3Cn3kYrgUQmuzgs?e=5CZb0I";
+                            } else if (isGuideline3_1_3) { // NEW: Add link for 3.1.3
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBo62_XAy94QIcXYOmIk9C_AVtZOTOqwEbuPshfRENbWxI?e=xLSJQ3";
                             } else if (shouldHideExample3_1) {
                               guidelineLink = "#"; // Explicitly set to # to ensure no link is shown
                             } else if (isSecondOverallGuideline) {
