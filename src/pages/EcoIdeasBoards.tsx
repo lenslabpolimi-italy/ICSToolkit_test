@@ -333,7 +333,15 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline4_1_6 = guidelineId === '4.1.6';
                             const isGuideline4_2_3 = guidelineId === '4.2.3';
                             const isGuideline4_2_1 = guidelineId === '4.2.1';
-                            const isGuideline4_2_2 = guidelineId === '4.2.2'; // ADDED
+                            const isGuideline4_2_2 = guidelineId === '4.2.2';
+                            
+                            // --- New logic for Strategy 5 exclusions (Requested to delete example text) ---
+                            const isGuideline5_1_3 = guidelineId === '5.1.3';
+                            const isGuideline5_2_1 = guidelineId === '5.2.1';
+                            const isGuideline5_2_2 = guidelineId === '5.2.2';
+                            const isGuideline5_2_3 = guidelineId === '5.2.3';
+                            const isGuideline5_3_1 = guidelineId === '5.3.1';
+                            const isGuideline5_3_8 = guidelineId === '5.3.8';
                             // --- End new logic ---
 
 
@@ -386,7 +394,7 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCZukUQN-dLTJAWS2rjgff_AcsjDyimmSYnisqfIWpG_PA?e=RnbTbh";
                             } else if (isGuideline4_2_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCYl_JeL614SYH6ksj1RQWSAaMTi13bOika-igKyFB62bQ?e=8BEpDk";
-                            } else if (isGuideline4_2_2) { // NEW
+                            } else if (isGuideline4_2_2) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCCaGtbC4aWRLqihpvlJb6LAdHx9aGwpdcRBwFsFEMHMJQ?e=TyOSW8";
                             }
                             // --- END Specific links ---
@@ -429,7 +437,9 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 ||
                                 isGuideline3_2_2 || isGuideline3_2_4 ||
                                 // Strategy 4 exclusions (requested to delete example text)
-                                isGuideline4_1_2 || isGuideline4_1_6 || isGuideline4_2_3;
+                                isGuideline4_1_2 || isGuideline4_1_6 || isGuideline4_2_3 ||
+                                // Strategy 5 exclusions (requested to delete example text)
+                                isGuideline5_1_3 || isGuideline5_2_1 || isGuideline5_2_2 || isGuideline5_2_3 || isGuideline5_3_1 || isGuideline5_3_8;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
