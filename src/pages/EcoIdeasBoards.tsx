@@ -302,11 +302,6 @@ const EcoIdeasBoards: React.FC = () => {
                             const isFourthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 3; // 1.1.1.4
                             const isFirstGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 0; // 1.1.5.1
 
-                            // --- New logic for Strategy 3 exclusions ---
-                            const isStrategy3 = strategy.id === '3';
-                            const isSubStrategy3_1 = isStrategy3 && subStrategy.id === '3.1';
-                            const isSubStrategy3_2 = isStrategy3 && subStrategy.id === '3.2';
-
                             // Use guideline.id for robust checking
                             const guidelineId = guideline.id;
                             const isGuideline3_1_1 = guidelineId === '3.1.1';
@@ -336,7 +331,8 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline4_2_2 = guidelineId === '4.2.2';
                             
                             // --- New logic for Strategy 5 exclusions (Requested to delete example text) ---
-                            const isGuideline5_1_1 = guidelineId === '5.1.1'; // NEW
+                            const isGuideline5_1_1 = guidelineId === '5.1.1';
+                            const isGuideline5_1_2 = guidelineId === '5.1.2'; // NEW
                             const isGuideline5_1_3 = guidelineId === '5.1.3';
                             const isGuideline5_2_1 = guidelineId === '5.2.1';
                             const isGuideline5_2_2 = guidelineId === '5.2.2';
@@ -401,6 +397,8 @@ const EcoIdeasBoards: React.FC = () => {
                             // --- Specific links for Strategy 5 ---
                             if (isGuideline5_1_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBrdW2sgXEJT4CczjqdyO2nAam5aYDOnFBLMxKQkAVbuZA?e=eB1gn9";
+                            } else if (isGuideline5_1_2) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCsAxZXYthZRr3UFs-Hlxh2AWfgTLuvA5fcboRqs3sG3nE?e=HPb6fj";
                             }
                             // --- END Specific links ---
 
