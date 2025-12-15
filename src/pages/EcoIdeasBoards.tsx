@@ -314,11 +314,12 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline3_1_3 = guidelineId === '3.1.3';
                             const isGuideline3_1_4 = guidelineId === '3.1.4';
                             const isGuideline3_1_5 = guidelineId === '3.1.5';
-                            const isGuideline3_1_6 = guidelineId === '3.1.6'; // NEW
+                            const isGuideline3_1_6 = guidelineId === '3.1.6';
                             const isGuideline3_1_7 = guidelineId === '3.1.7';
                             const isGuideline3_1_8 = guidelineId === '3.1.8';
                             const isGuideline3_1_9 = guidelineId === '3.1.9';
-
+                            
+                            const isGuideline3_2_1 = guidelineId === '3.2.1'; // NEW
                             const isGuideline3_2_2 = guidelineId === '3.2.2';
                             const isGuideline3_2_4 = guidelineId === '3.2.4';
                             // --- End new logic ---
@@ -355,8 +356,10 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBo62_XAy94QIcXYOmIk9C_AVtZOTOqwEbuPshfRENbWxI?e=tYzv6i";
                             } else if (isGuideline3_1_4) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-HOyfk4tOQ67yD8nzvevRAWbik8kOTFSKRRRYrVA81ng?e=xUQqQT";
-                            } else if (isGuideline3_1_6) { // NEW
+                            } else if (isGuideline3_1_6) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDlWeCcgMNvQKCJeWGJXeALAWbk23FdXk_RadOT1wQpcTo?e=2eDu8h";
+                            } else if (isGuideline3_2_1) { // NEW
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLZMo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=jTcTs5";
                             }
                             // --- END Specific links ---
 
