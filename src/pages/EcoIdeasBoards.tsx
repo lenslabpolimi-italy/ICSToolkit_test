@@ -370,7 +370,8 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline5_6_3 = guidelineId === '5.6.3';
                             const isGuideline5_6_4 = guidelineId === '5.6.4';
                             const isGuideline5_6_5 = guidelineId === '5.6.5';
-                            const isGuideline5_6_6 = guidelineId === '5.6.6'; // NEW
+                            const isGuideline5_6_6 = guidelineId === '5.6.6';
+                            const isGuideline5_6_7 = guidelineId === '5.6.7'; // NEW
                             // --- End new logic ---
 
 
@@ -463,8 +464,10 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDy6zjs5DHfQpVeBTMaGTE1Ac3G2j0qx-Rv7t4c52P-wRM?e=KN1Sdm";
                             } else if (isGuideline5_6_3) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAzUK9oXI4WT4e15-KyOtcnAap43JgnsVtb6yUOJgPGzt0?e=9FZGkb";
-                            } else if (isGuideline5_6_6) { // NEW CONDITION
+                            } else if (isGuideline5_6_6) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDCTOGzh3xdRb0AhzkI8YLxAUtVOK51UhAkPuq3NVY0qKM?e=dpLPvM";
+                            } else if (isGuideline5_6_7) { // NEW CONDITION
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQA3YhrQmBXWR7rUx9lgKx9zAbs3ztdR_kGC3b_hi5UVbKA?e=TsPVcu";
                             }
                             // --- END Specific links ---
 
@@ -514,7 +517,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 // New 5.5 exclusions
                                 isGuideline5_5_2 || isGuideline5_5_4 || isGuideline5_5_5 ||
                                 // New 5.6 exclusions
-                                isGuideline5_6_1 || isGuideline5_6_4 || isGuideline5_6_5;
+                                isGuideline5_6_1 || isGuideline5_6_4 || isGuideline5_6_5 || isGuideline5_6_6;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
