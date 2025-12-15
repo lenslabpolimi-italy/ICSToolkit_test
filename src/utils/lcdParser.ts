@@ -12,6 +12,13 @@ export async function parseLcdStrategies(filePath: string): Promise<Strategy[]> 
     const strategies: Strategy[] = [];
     let currentStrategy: Strategy | null = null;
     let currentSubStrategy: SubStrategy | null = null;
+    let guidelineRawIndex = 0; // Tracks the raw index of guidelines within the current sub-strategy
+
+    // Guidelines to exclude by their 1-based raw index under sub-strategy 3.1 and 3.2
+    const exclusionMap: { [subStrategyId: string]: number[] } = {
+      '3.1': [2, 5, 7, 8, 9],
+      '3.2': [2, 4, 5, 7, 8, 9]
+    };
 
     lines.forEach(line => {
       if (line.match(/^\d+\./) && !line.match(/^\d+\.\d+\./)) {
@@ -24,6 +31,7 @@ export async function parseLcdStrategies(filePath: string): Promise<Strategy[]> 
         };
         strategies.push(currentStrategy);
         currentSubStrategy = null; // Reset sub-strategy
+        guidelineRawIndex = 0; // Reset raw index counter
       } else if (line.match(/^\d+\.\d+\./)) {
         // This is a sub-strategy (e.g., "1.1.Sub-strategy name")
         if (currentStrategy) {
@@ -37,13 +45,22 @@ export async function parseLcdStrategies(filePath: string): Promise<Strategy[]> 
               guidelines: [],
             };
             currentStrategy.subStrategies.push(currentSubStrategy);
+            guidelineRawIndex = 0; // Reset raw index counter for new sub-strategy
           }
         }
       } else if (line.match(/^[A-Za-z]/)) {
         // This is a guideline
         if (currentSubStrategy) {
+          guidelineRawIndex++; // Increment raw index
+
+          // Check for exclusion based on raw index
+          if (exclusionMap[currentSubStrategy.id] && exclusionMap[currentSubStrategy.id].includes(guidelineRawIndex)) {
+            // Skip this guideline
+            return;
+          }
+
           const guideline: Guideline = {
-            id: `${currentSubStrategy.id}.${currentSubStrategy.guidelines.length + 1}`, // Generate a simple ID
+            id: `${currentSubStrategy.id}.${currentSubStrategy.guidelines.length + 1}`, // Generate a simple ID based on current length
             name: line.trim(),
           };
           currentSubStrategy.guidelines.push(guideline);
