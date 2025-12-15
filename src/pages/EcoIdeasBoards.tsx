@@ -308,8 +308,9 @@ const EcoIdeasBoards: React.FC = () => {
                             const isSubStrategy3_2 = isStrategy3 && subStrategy.id === '3.2';
 
                             // Guidelines to hide generic EXAMPLE for Strategy 3 (0-indexed)
-                            const isGuideline3_1_1 = isSubStrategy3_1 && guidelineIndex === 0; // NEW: 3.1.1
-                            const isGuideline3_1_2 = isSubStrategy3_1 && guidelineIndex === 1; // 3.1.2
+                            const isGuideline3_1_1 = isSubStrategy3_1 && guidelineIndex === 0; // 3.1.1
+                            const isGuideline3_1_3 = isSubStrategy3_1 && guidelineIndex === 1; // 3.1.3 (Index 1 after 3.1.2 exclusion)
+                            const isGuideline3_1_2 = isSubStrategy3_1 && guidelineIndex === 1; // 3.1.2 (Original index, used for hiding generic example)
                             const isGuideline3_1_5 = isSubStrategy3_1 && guidelineIndex === 4; // 3.1.5
                             const isGuideline3_1_7 = isSubStrategy3_1 && guidelineIndex === 6; // 3.1.7
                             const isGuideline3_1_8 = isSubStrategy3_1 && guidelineIndex === 7; // 3.1.8
@@ -344,9 +345,11 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDWbopvW8MyR4zYOzEL_DEyAZh3kDtRqe8CgSudxzXQ2Qs?e=hTm5DP";
                             }
                             
-                            // --- NEW: Add link for 3.1.1 ---
+                            // --- NEW: Add link for 3.1.1 and 3.1.3 ---
                             if (isGuideline3_1_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBpk-nIBgQ9QZhYKveyBLBiAVNOLwJ_3Cn3kYrgUQmuzgs?e=INj5Wj";
+                            } else if (isGuideline3_1_3) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBo62_XAy94QIcXYOmIk9C_AVtZOTOqwEbuPshfRENbWxI?e=A0RFLg";
                             }
                             // --- END NEW ---
 
