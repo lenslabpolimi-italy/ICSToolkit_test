@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } => 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -336,7 +336,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline5_1_3 = guidelineId === '5.1.3';
                             const isGuideline5_1_4 = guidelineId === '5.1.4';
                             const isGuideline5_1_5 = guidelineId === '5.1.5';
-                            const isGuideline5_1_6 = guidelineId === '5.1.6'; // ADDED
+                            const isGuideline5_1_6 = guidelineId === '5.1.6';
                             const isGuideline5_2_1 = guidelineId === '5.2.1';
                             const isGuideline5_2_2 = guidelineId === '5.2.2';
                             const isGuideline5_2_3 = guidelineId === '5.2.3';
@@ -405,7 +405,7 @@ const EcoIdeasBoards: React.FC = () => {
                             } else if (isGuideline5_1_4) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAt7nKQmYm6R4noAJhTNKWPAehv5s5P2gy1Hh9DGEnBSmE?e=Cy1ooV";
                             } else if (isGuideline5_1_5) {
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDdVIeg_cQJT57w3qbXvMedAYXGE8vRVbac77CYAPsU4iI?e=hPL6rv";
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDmCPFebfbISayBCzcEkWkXAUWgoAqI2_VPLFqZyDUrK64?e=gS96eh"; // UPDATED LINK
                             } else if (isGuideline5_1_6) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDmCPFebfbISayBCzcEkWkXAUWgoAqI2_VPLFqZyDUrK64?e=COG7Qa";
                             }
