@@ -270,6 +270,8 @@ const EcoIdeasBoards: React.FC = () => {
                     const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && 3 === 3;
                     const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && 6 === 6;
                     const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
+                    const isStrategy3 = strategy.id === '3';
+                    const isSubStrategy3_1 = subStrategy.id === '3.1';
 
                     return (
                       <div key={subStrategy.id} className="mb-6">
@@ -298,8 +300,12 @@ const EcoIdeasBoards: React.FC = () => {
                             const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
                             const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
 
+                            // NEW: Logic for Strategy 3
+                            const isGuideline3_1_1 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 0;
 
-                            if (isSecondOverallGuideline) {
+                            if (isGuideline3_1_1) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBpk-nIBgQ9QZhYKveyBLBiAVNOLwJ_3Cn3kYrgUQmuzgs?e=5CZb0I";
+                            } else if (isSecondOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
                             } else if (isFifthOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/microstratificata-IDEA2-english-scaled.png";
@@ -361,7 +367,7 @@ const EcoIdeasBoards: React.FC = () => {
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                                 {displayGuidelineName}
-                                {guidelineLink !== "#" ? (
+                                {guidelineLink !== "#" && !shouldHideGenericExample ? (
                                   <Tooltip>
                                     <TooltipTrigger asChild>
                                       <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
