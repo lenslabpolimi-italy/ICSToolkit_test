@@ -307,17 +307,18 @@ const EcoIdeasBoards: React.FC = () => {
                             const isSubStrategy3_1 = isStrategy3 && subStrategy.id === '3.1';
                             const isSubStrategy3_2 = isStrategy3 && subStrategy.id === '3.2';
 
-                            // Guidelines to hide generic EXAMPLE for Strategy 3 (0-indexed)
-                            const isGuideline3_1_1 = isSubStrategy3_1 && guidelineIndex === 0; // 3.1.1
-                            const isGuideline3_1_3 = isSubStrategy3_1 && guidelineIndex === 1; // 3.1.3 (Index 1 after 3.1.2 exclusion)
-                            const isGuideline3_1_2 = isSubStrategy3_1 && guidelineIndex === 1; // 3.1.2 (Original index, used for hiding generic example)
-                            const isGuideline3_1_5 = isSubStrategy3_1 && guidelineIndex === 4; // 3.1.5
-                            const isGuideline3_1_7 = isSubStrategy3_1 && guidelineIndex === 6; // 3.1.7
-                            const isGuideline3_1_8 = isSubStrategy3_1 && guidelineIndex === 7; // 3.1.8
-                            const isGuideline3_1_9 = isSubStrategy3_1 && guidelineIndex === 8; // 3.1.9
+                            // Use guideline.id for robust checking
+                            const guidelineId = guideline.id;
+                            const isGuideline3_1_1 = guidelineId === '3.1.1';
+                            const isGuideline3_1_2 = guidelineId === '3.1.2';
+                            const isGuideline3_1_3 = guidelineId === '3.1.3';
+                            const isGuideline3_1_5 = guidelineId === '3.1.5';
+                            const isGuideline3_1_7 = guidelineId === '3.1.7';
+                            const isGuideline3_1_8 = guidelineId === '3.1.8';
+                            const isGuideline3_1_9 = guidelineId === '3.1.9';
 
-                            const isGuideline3_2_2 = isSubStrategy3_2 && guidelineIndex === 1; // 3.2.2
-                            const isGuideline3_2_4 = isSubStrategy3_2 && guidelineIndex === 3; // 3.2.4
+                            const isGuideline3_2_2 = guidelineId === '3.2.2';
+                            const isGuideline3_2_4 = guidelineId === '3.2.4';
                             // --- End new logic ---
 
 
@@ -345,13 +346,13 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDWbopvW8MyR4zYOzEL_DEyAZh3kDtRqe8CgSudxzXQ2Qs?e=hTm5DP";
                             }
                             
-                            // --- NEW: Add link for 3.1.1 and 3.1.3 ---
+                            // --- Specific links for Strategy 3 ---
                             if (isGuideline3_1_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBpk-nIBgQ9QZhYKveyBLBiAVNOLwJ_3Cn3kYrgUQmuzgs?e=INj5Wj";
                             } else if (isGuideline3_1_3) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBo62_XAy94QIcXYOmIk9C_AVtZOTOqwEbuPshfRENbWxI?e=A0RFLg";
                             }
-                            // --- END NEW ---
+                            // --- END Specific links ---
 
                             let displayGuidelineName = guideline.name;
                             
@@ -385,9 +386,9 @@ const EcoIdeasBoards: React.FC = () => {
                               }
                             }
 
-                            // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
+                            // Updated condition to hide generic EXAMPLE
                             const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5 ||
-                                // Add Strategy 3 exclusions
+                                // Strategy 3 exclusions (using robust ID checks)
                                 isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 ||
                                 isGuideline3_2_2 || isGuideline3_2_4;
 
