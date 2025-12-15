@@ -315,6 +315,7 @@ const EcoIdeasBoards: React.FC = () => {
                             // NEW: Logic for Strategy 3.2
                             const isGuideline3_2_1 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 0; // NEW: 3.2.1
                             const isGuideline3_2_2 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 1;
+                            const isGuideline3_2_3 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 2; // NEW: 3.2.3
                             const isGuideline3_2_4 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 3;
 
                             const shouldHideExample3_1 = isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 || isGuideline3_2_2 || isGuideline3_2_4; // UPDATED to include 3.2.2 and 3.2.4
@@ -330,6 +331,8 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDlWeCcgMNvQKCJeWGJXeALAWbk23FdXk_RadOT1wQpcTo?e=S3BM2y";
                             } else if (isGuideline3_2_1) { // Link for 3.2.1
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLZMo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=mddayN";
+                            } else if (isGuideline3_2_3) { // Link for 3.2.3
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-27MpTAChRZX0otQQkXvsARSHPy3XkuHMB2ia4GqSslc?e=O239C4";
                             } else if (shouldHideExample3_1) {
                               guidelineLink = "#"; // Explicitly set to # to ensure no link is shown
                             } else if (isSecondOverallGuideline) {
