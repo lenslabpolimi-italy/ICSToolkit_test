@@ -298,6 +298,26 @@ const EcoIdeasBoards: React.FC = () => {
                             const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
                             const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
 
+                            // Define missing Strategy 1 variables used in shouldHideGenericExample
+                            const isFourthOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 3; // 1.1.1.4
+                            const isFirstGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 0; // 1.1.5.1
+
+                            // --- New logic for Strategy 3 exclusions ---
+                            const isStrategy3 = strategy.id === '3';
+                            const isSubStrategy3_1 = isStrategy3 && subStrategy.id === '3.1';
+                            const isSubStrategy3_2 = isStrategy3 && subStrategy.id === '3.2';
+
+                            // Guidelines to hide generic EXAMPLE for Strategy 3 (0-indexed)
+                            const isGuideline3_1_2 = isSubStrategy3_1 && guidelineIndex === 1; // 3.1.2
+                            const isGuideline3_1_5 = isSubStrategy3_1 && guidelineIndex === 4; // 3.1.5
+                            const isGuideline3_1_7 = isSubStrategy3_1 && guidelineIndex === 6; // 3.1.7
+                            const isGuideline3_1_8 = isSubStrategy3_1 && guidelineIndex === 7; // 3.1.8
+                            const isGuideline3_1_9 = isSubStrategy3_1 && guidelineIndex === 8; // 3.1.9
+
+                            const isGuideline3_2_2 = isSubStrategy3_2 && guidelineIndex === 1; // 3.2.2
+                            const isGuideline3_2_4 = isSubStrategy3_2 && guidelineIndex === 3; // 3.2.4
+                            // --- End new logic ---
+
 
                             if (isSecondOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
@@ -356,7 +376,10 @@ const EcoIdeasBoards: React.FC = () => {
                             }
 
                             // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
-                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
+                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5 ||
+                                // Add Strategy 3 exclusions
+                                isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 ||
+                                isGuideline3_2_2 || isGuideline3_2_4;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
