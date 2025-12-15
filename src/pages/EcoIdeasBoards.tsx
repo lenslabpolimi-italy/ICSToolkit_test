@@ -334,7 +334,8 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline5_1_1 = guidelineId === '5.1.1';
                             const isGuideline5_1_2 = guidelineId === '5.1.2';
                             const isGuideline5_1_3 = guidelineId === '5.1.3';
-                            const isGuideline5_1_4 = guidelineId === '5.1.4'; // NEW
+                            const isGuideline5_1_4 = guidelineId === '5.1.4';
+                            const isGuideline5_1_5 = guidelineId === '5.1.5'; // NEW
                             const isGuideline5_2_1 = guidelineId === '5.2.1';
                             const isGuideline5_2_2 = guidelineId === '5.2.2';
                             const isGuideline5_2_3 = guidelineId === '5.2.3';
@@ -402,6 +403,8 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCsAxZXYthZRr3UFs-Hlxh2AWfgTLuvA5fcboRqs3sG3nE?e=HPb6fj";
                             } else if (isGuideline5_1_4) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAt7nKQmYm6R4noAJhTNKWPAehv5s5P2gy1Hh9DGEnBSmE?e=Cy1ooV";
+                            } else if (isGuideline5_1_5) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDdVIeg_cQJT57w3qbXvMedAYXGE8vRVbac77CYAPsU4iI?e=hPL6rv";
                             }
                             // --- END Specific links ---
 
