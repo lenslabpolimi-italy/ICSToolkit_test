@@ -270,9 +270,6 @@ const EcoIdeasBoards: React.FC = () => {
                     const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && 3 === 3;
                     const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && 6 === 6;
                     const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
-                    const isStrategy3 = strategy.id === '3';
-                    const isSubStrategy3_1 = subStrategy.id === '3.1';
-                    const isSubStrategy3_2 = subStrategy.id === '3.2';
 
                     return (
                       <div key={subStrategy.id} className="mb-6">
@@ -299,43 +296,10 @@ const EcoIdeasBoards: React.FC = () => {
                             const isFourthGuidelineOf1_5 = strategyIndex === 0 && subStrategyIndex === 4 && guidelineIndex === 3;
                             const isGuideline1_1_1_7 = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 6;
                             const isFirstOverallGuideline = strategyIndex === 0 && subStrategyIndex === 0 && guidelineIndex === 0;
-                            // const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3; // Already defined above
-
-                            // NEW: Logic for Strategy 3
-                            const isGuideline3_1_1 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 0;
-                            const isGuideline3_1_2 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 1;
-                            const isGuideline3_1_3 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 2; // NEW: 3.1.3
-                            const isGuideline3_1_4 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 3; // NEW: 3.1.4
-                            const isGuideline3_1_5 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 4;
-                            const isGuideline3_1_6 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 5; // NEW: 3.1.6
-                            const isGuideline3_1_7 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 6;
-                            const isGuideline3_1_8 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 7;
-                            const isGuideline3_1_9 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 8;
-
-                            // NEW: Logic for Strategy 3.2
-                            const isGuideline3_2_1 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 0; // NEW: 3.2.1
-                            const isGuideline3_2_2 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 1;
-                            const isGuideline3_2_3 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 2; // NEW: 3.2.3
-                            const isGuideline3_2_4 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 3;
-
-                            const shouldHideExample3_1 = isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 || isGuideline3_2_2 || isGuideline3_2_4; // UPDATED to include 3.2.2 and 3.2.4
+                            const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
 
 
-                            if (isGuideline3_1_1) {
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBpk-nIBgQ9QZhYKveyBLBiAVNOLwJ_3Cn3kYrgUQmuzgs?e=5CZb0I";
-                            } else if (isGuideline3_1_3) { // Link for 3.1.3
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBo62_XAy94QIcXYOmIk9C_AVtZOTOqwEbuPshfRENbWxI?e=xLSJQ3";
-                            } else if (isGuideline3_1_4) { // Link for 3.1.4
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-HOyfk4tOQ67yD8nzvevRAWbik8kOTFSKRRRYrVA81ng?e=J9wvRu";
-                            } else if (isGuideline3_1_6) { // Link for 3.1.6
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDlWeCcgMNvQKCJeWGJXeALAWbk23FdXk_RadOT1wQpcTo?e=S3BM2y";
-                            } else if (isGuideline3_2_1) { // Link for 3.2.1
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLZMo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=mddayN";
-                            } else if (isGuideline3_2_3) { // Link for 3.2.3
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-27MpTAChRZX0otQQkXvsARSHPy3XkuHMB2ia4GqSslc?e=O239C4";
-                            } else if (shouldHideExample3_1) {
-                              guidelineLink = "#"; // Explicitly set to # to ensure no link is shown
-                            } else if (isSecondOverallGuideline) {
+                            if (isSecondOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
                             } else if (isFifthOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/microstratificata-IDEA2-english-scaled.png";
@@ -391,13 +355,13 @@ const EcoIdeasBoards: React.FC = () => {
                               }
                             }
 
-                            // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4, AND the new 3.1 guidelines
-                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5 || shouldHideExample3_1;
+                            // Updated condition to hide generic EXAMPLE for 1.1.1.1, 1.1.1.4, 1.1.1.7, 1.1.2.2, and 1.1.5.1, 1.1.5.4
+                            const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
                                 {displayGuidelineName}
-                                {guidelineLink !== "#" && !shouldHideGenericExample ? (
+                                {guidelineLink !== "#" ? (
                                   <Tooltip>
                                     <TooltipTrigger asChild>
                                       <a href={guidelineLink} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold">EXAMPLE</a>
