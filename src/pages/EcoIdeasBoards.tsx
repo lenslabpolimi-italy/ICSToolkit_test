@@ -358,7 +358,10 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline5_4_8 = guidelineId === '5.4.8';
                             
                             // New definitions for 5.5.x
-                            const isGuideline5_5_1 = guidelineId === '5.5.1'; // NEW
+                            const isGuideline5_5_1 = guidelineId === '5.5.1';
+                            const isGuideline5_5_2 = guidelineId === '5.5.2'; // NEW
+                            const isGuideline5_5_4 = guidelineId === '5.5.4'; // NEW
+                            const isGuideline5_5_5 = guidelineId === '5.5.5'; // NEW
                             // --- End new logic ---
 
 
@@ -444,7 +447,7 @@ const EcoIdeasBoards: React.FC = () => {
                             } else if (isGuideline5_4_7) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBP4nnrBEeRQonEBC_fDpVLAcah0B93RGaIXwsF5yxBFMI?e=HcX4qt";
                             } else if (isGuideline5_5_1) {
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDr-OXksnLjS5af-cmJ648RAaAQ9vDQfF2ZkwxuMF-ZOB8?e=DhsCje"; // NEW LINK
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDr-OXksnLjS5af-cmJ648RAaAQ9vDQfF2ZkwxuMF-ZOB8?e=DhsCje";
                             }
                             // --- END Specific links ---
 
@@ -490,7 +493,9 @@ const EcoIdeasBoards: React.FC = () => {
                                 // Strategy 5 exclusions (requested to delete example text)
                                 isGuideline5_1_3 || isGuideline5_2_1 || isGuideline5_2_2 || isGuideline5_2_3 || isGuideline5_3_1 || isGuideline5_3_8 ||
                                 // New 5.4 exclusions
-                                isGuideline5_4_2 || isGuideline5_4_4 || isGuideline5_4_8;
+                                isGuideline5_4_2 || isGuideline5_4_4 || isGuideline5_4_8 ||
+                                // New 5.5 exclusions
+                                isGuideline5_5_2 || isGuideline5_5_4 || isGuideline5_5_5;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
