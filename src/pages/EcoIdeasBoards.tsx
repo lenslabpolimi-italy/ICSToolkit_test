@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } => 'react';
+import React, { useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
