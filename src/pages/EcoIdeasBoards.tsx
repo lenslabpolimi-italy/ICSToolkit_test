@@ -311,7 +311,12 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline3_1_8 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 7;
                             const isGuideline3_1_9 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 8;
 
-                            const shouldHideExample3_1 = isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9;
+                            // NEW: Logic for Strategy 3.2
+                            const isSubStrategy3_2 = subStrategy.id === '3.2';
+                            const isGuideline3_2_2 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 1;
+                            const isGuideline3_2_4 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 3;
+
+                            const shouldHideExample3_1 = isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 || isGuideline3_2_2 || isGuideline3_2_4; // UPDATED to include 3.2.2 and 3.2.4
 
 
                             if (isGuideline3_1_1) {
