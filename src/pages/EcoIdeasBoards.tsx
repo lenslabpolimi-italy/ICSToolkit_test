@@ -321,8 +321,13 @@ const EcoIdeasBoards: React.FC = () => {
                             
                             const isGuideline3_2_1 = guidelineId === '3.2.1';
                             const isGuideline3_2_2 = guidelineId === '3.2.2';
-                            const isGuideline3_2_3 = guidelineId === '3.2.3'; // NEW
+                            const isGuideline3_2_3 = guidelineId === '3.2.3';
                             const isGuideline3_2_4 = guidelineId === '3.2.4';
+                            
+                            // --- New logic for Strategy 4 exclusions (Requested to delete example text) ---
+                            const isGuideline4_1_2 = guidelineId === '4.1.2';
+                            const isGuideline4_1_6 = guidelineId === '4.1.6';
+                            const isGuideline4_2_3 = guidelineId === '4.2.3';
                             // --- End new logic ---
 
 
@@ -361,7 +366,7 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDlWeCcgMNvQKCJeWGJXeALAWbk23FdXk_RadOT1wQpcTo?e=2eDu8h";
                             } else if (isGuideline3_2_1) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLZMo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=jTcTs5";
-                            } else if (isGuideline3_2_3) { // NEW
+                            } else if (isGuideline3_2_3) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-27MpTAChRZX0otQQkXvsARSHPy3XkuHMB2ia4GqSslc?e=YMyN2t";
                             }
                             // --- END Specific links ---
@@ -402,7 +407,9 @@ const EcoIdeasBoards: React.FC = () => {
                             const shouldHideGenericExample = isSubStrategy1_1_4 || isGuideline1_1_1_7 || isSecondGuidelineOf1_2 || isFirstOverallGuideline || isFourthOverallGuideline || isFirstGuidelineOf1_5 || isFourthGuidelineOf1_5 ||
                                 // Strategy 3 exclusions (using robust ID checks)
                                 isGuideline3_1_2 || isGuideline3_1_5 || isGuideline3_1_7 || isGuideline3_1_8 || isGuideline3_1_9 ||
-                                isGuideline3_2_2 || isGuideline3_2_4;
+                                isGuideline3_2_2 || isGuideline3_2_4 ||
+                                // Strategy 4 exclusions (requested to delete example text)
+                                isGuideline4_1_2 || isGuideline4_1_6 || isGuideline4_2_3;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
