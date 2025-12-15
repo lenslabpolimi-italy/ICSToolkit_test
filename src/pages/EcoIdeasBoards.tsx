@@ -272,6 +272,7 @@ const EcoIdeasBoards: React.FC = () => {
                     const isSubStrategy1_1_4 = strategyIndex === 0 && subStrategyIndex === 3;
                     const isStrategy3 = strategy.id === '3';
                     const isSubStrategy3_1 = subStrategy.id === '3.1';
+                    const isSubStrategy3_2 = subStrategy.id === '3.2';
 
                     return (
                       <div key={subStrategy.id} className="mb-6">
@@ -312,7 +313,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline3_1_9 = isStrategy3 && isSubStrategy3_1 && guidelineIndex === 8;
 
                             // NEW: Logic for Strategy 3.2
-                            const isSubStrategy3_2 = subStrategy.id === '3.2';
+                            const isGuideline3_2_1 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 0; // NEW: 3.2.1
                             const isGuideline3_2_2 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 1;
                             const isGuideline3_2_4 = isStrategy3 && isSubStrategy3_2 && guidelineIndex === 3;
 
@@ -327,6 +328,8 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-HOyfk4tOQ67yD8nzvevRAWbik8kOTFSKRRRYrVA81ng?e=J9wvRu";
                             } else if (isGuideline3_1_6) { // Link for 3.1.6
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDlWeCcgMNvQKCJeWGJXeALAWbk23FdXk_RadOT1wQpcTo?e=S3BM2y";
+                            } else if (isGuideline3_2_1) { // Link for 3.2.1
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLZMo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=mddayN";
                             } else if (shouldHideExample3_1) {
                               guidelineLink = "#"; // Explicitly set to # to ensure no link is shown
                             } else if (isSecondOverallGuideline) {
