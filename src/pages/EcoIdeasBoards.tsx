@@ -336,6 +336,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline4_2_2 = guidelineId === '4.2.2';
                             
                             // --- New logic for Strategy 5 exclusions (Requested to delete example text) ---
+                            const isGuideline5_1_1 = guidelineId === '5.1.1'; // NEW
                             const isGuideline5_1_3 = guidelineId === '5.1.3';
                             const isGuideline5_2_1 = guidelineId === '5.2.1';
                             const isGuideline5_2_2 = guidelineId === '5.2.2';
@@ -396,6 +397,10 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCYl_JeL614SYH6ksj1RQWSAaMTi13bOika-igKyFB62bQ?e=8BEpDk";
                             } else if (isGuideline4_2_2) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCCaGtbC4aWRLqihpvlJb6LAdHx9aGwpdcRBwFsFEMHMJQ?e=TyOSW8";
+                            }
+                            // --- Specific links for Strategy 5 ---
+                            if (isGuideline5_1_1) {
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBrdW2sgXEJT4CczjqdyO2nAam5aYDOnFBLMxKQkAVbuZA?e=eB1gn9";
                             }
                             // --- END Specific links ---
 
