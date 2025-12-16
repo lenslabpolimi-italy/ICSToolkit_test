@@ -379,6 +379,13 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline5_7_3 = guidelineId === '5.7.3';
                             const isGuideline5_7_4 = guidelineId === '5.7.4';
                             const isGuideline5_7_5 = guidelineId === '5.7.5';
+
+                            // New definitions for 5.8.x
+                            const isGuideline5_8_1 = guidelineId === '5.8.1';
+                            const isGuideline5_8_2 = guidelineId === '5.8.2';
+                            const isGuideline5_8_3 = guidelineId === '5.8.3';
+                            const isGuideline5_8_4 = guidelineId === '5.8.4';
+                            const isGuideline5_8_5 = guidelineId === '5.8.5';
                             // --- End new logic ---
 
 
@@ -526,7 +533,9 @@ const EcoIdeasBoards: React.FC = () => {
                                 // New 5.6 exclusions (5.6.6 and 5.6.7 have links now, so they are removed from exclusion)
                                 isGuideline5_6_1 || isGuideline5_6_4 || isGuideline5_6_5 ||
                                 // New 5.7 exclusions (requested by user)
-                                isGuideline5_7_1 || isGuideline5_7_2 || isGuideline5_7_3 || isGuideline5_7_4 || isGuideline5_7_5;
+                                isGuideline5_7_1 || isGuideline5_7_2 || isGuideline5_7_3 || isGuideline5_7_4 || isGuideline5_7_5 ||
+                                // New 5.8 exclusions (requested by user)
+                                isGuideline5_8_2 || isGuideline5_8_4;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
