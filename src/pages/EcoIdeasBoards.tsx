@@ -400,6 +400,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline6_3_1 = guidelineId === '6.3.1';
                             const isGuideline6_3_2 = guidelineId === '6.3.2';
                             const isGuideline6_3_3 = guidelineId === '6.3.3';
+                            const isGuideline6_3_4 = guidelineId === '6.3.4'; // NEW: Added 6.3.4 for specific link logic below
                             const isGuideline6_4_1 = guidelineId === '6.4.1';
                             const isGuideline6_4_2 = guidelineId === '6.4.2';
                             const isGuideline6_4_3 = guidelineId === '6.4.3';
@@ -511,6 +512,8 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDH4aEDlYr8Q5wtxzq4w6IWAfvv8qLCzU_y92sytOrHKCg?e=ebN98g";
                             } else if (isGuideline5_8_5) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBRDJp7KCfPT4QARjEX_CZgAYcWgjHXZ2V-lhCYuidXiFk?e=gJ870H";
+                            } else if (isGuideline6_3_4) { // NEW: Added link for 6.3.4
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD35MUXqaAWT6PGW5Y6rhikAeDDb4mFPa-FhCkwpWbhq_g?e=9KipIk";
                             }
                             // --- END Specific links ---
 
