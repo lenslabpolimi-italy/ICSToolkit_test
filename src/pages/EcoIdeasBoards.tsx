@@ -425,17 +425,51 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline6_6_8 = guidelineId === '6.6.8';
                             const isGuideline6_6_9 = guidelineId === '6.6.9';
 
-                            // NEW: Strategy 6.7 exclusions
+                            // Strategy 6.7 exclusions
                             const isGuideline6_7_1 = guidelineId === '6.7.1';
                             const isGuideline6_7_2 = guidelineId === '6.7.2';
                             const isGuideline6_7_3 = guidelineId === '6.7.3';
 
-                            // NEW: Strategy 6.8 exclusions
+                            // Strategy 6.8 exclusions
                             const isGuideline6_8_1 = guidelineId === '6.8.1';
                             const isGuideline6_8_2 = guidelineId === '6.8.2';
                             const isGuideline6_8_3 = guidelineId === '6.8.3';
                             const isGuideline6_8_4 = guidelineId === '6.8.4';
                             // --- End Strategy 6 exclusions ---
+
+                            // NEW: Strategy 7 exclusions
+                            const isGuideline7_1_1 = guidelineId === '7.1.1';
+                            const isGuideline7_1_2 = guidelineId === '7.1.2';
+                            const isGuideline7_1_3 = guidelineId === '7.1.3';
+                            const isGuideline7_1_4 = guidelineId === '7.1.4';
+                            const isGuideline7_1_5 = guidelineId === '7.1.5';
+                            const isGuideline7_1_6 = guidelineId === '7.1.6'; // Exception
+                            const isGuideline7_1_7 = guidelineId === '7.1.7';
+                            const isGuideline7_1_8 = guidelineId === '7.1.8';
+
+                            const isGuideline7_2_1 = guidelineId === '7.2.1';
+                            const isGuideline7_2_2 = guidelineId === '7.2.2';
+                            const isGuideline7_2_3 = guidelineId === '7.2.3';
+                            const isGuideline7_2_4 = guidelineId === '7.2.4';
+
+                            const isGuideline7_3_1 = guidelineId === '7.3.1';
+                            const isGuideline7_3_2 = guidelineId === '7.3.2'; // Exception
+                            const isGuideline7_3_3 = guidelineId === '7.3.3';
+                            const isGuideline7_3_4 = guidelineId === '7.3.4';
+                            const isGuideline7_3_5 = guidelineId === '7.3.5';
+
+                            const isGuideline7_4_1 = guidelineId === '7.4.1'; // Exception
+                            const isGuideline7_4_2 = guidelineId === '7.4.2'; // Exception
+                            const isGuideline7_4_3 = guidelineId === '7.4.3';
+                            const isGuideline7_4_4 = guidelineId === '7.4.4'; // Exception
+                            const isGuideline7_4_5 = guidelineId === '7.4.5';
+
+                            const isGuideline7_5_1 = guidelineId === '7.5.1';
+                            const isGuideline7_5_2 = guidelineId === '7.5.2';
+                            const isGuideline7_5_3 = guidelineId === '7.5.3';
+                            const isGuideline7_5_4 = guidelineId === '7.5.4';
+                            const isGuideline7_5_5 = guidelineId === '7.5.5';
+                            const isGuideline7_5_6 = guidelineId === '7.5.6';
 
 
                             if (isSecondOverallGuideline) {
@@ -548,6 +582,18 @@ const EcoIdeasBoards: React.FC = () => {
                             } else if (isGuideline6_6_6) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC1rUTn0ueTSpXAMYmfL1BjARRghO7ShMVZtGzgzaIMkjQ?e=5cPyct";
                             }
+                            // --- NEW Specific links for Strategy 7 exceptions ---
+                            else if (isGuideline7_1_6) {
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=716";
+                            } else if (isGuideline7_3_2) {
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=732";
+                            } else if (isGuideline7_4_1) {
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=741";
+                            } else if (isGuideline7_4_2) {
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=742";
+                            } else if (isGuideline7_4_4) {
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=744";
+                            }
                             // --- END Specific links ---
 
                             let displayGuidelineName = guideline.name;
@@ -609,10 +655,16 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline6_5_1 || isGuideline6_5_4 || isGuideline6_5_5 ||
                                 // Strategy 6.6 exclusions
                                 isGuideline6_6_1 || isGuideline6_6_2 || isGuideline6_6_3 || isGuideline6_6_4 || isGuideline6_6_5 || isGuideline6_6_7 || isGuideline6_6_8 || isGuideline6_6_9 ||
-                                // NEW: Strategy 6.7 exclusions
+                                // Strategy 6.7 exclusions
                                 isGuideline6_7_1 || isGuideline6_7_2 || isGuideline6_7_3 ||
-                                // NEW: Strategy 6.8 exclusions
-                                isGuideline6_8_1 || isGuideline6_8_2 || isGuideline6_8_3 || isGuideline6_8_4;
+                                // Strategy 6.8 exclusions
+                                isGuideline6_8_1 || isGuideline6_8_2 || isGuideline6_8_3 || isGuideline6_8_4 ||
+                                // NEW: Strategy 7 exclusions (excluding 7.1.6, 7.3.2, 7.4.1, 7.4.2, 7.4.4)
+                                isGuideline7_1_1 || isGuideline7_1_2 || isGuideline7_1_3 || isGuideline7_1_4 || isGuideline7_1_5 || isGuideline7_1_7 || isGuideline7_1_8 ||
+                                isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 ||
+                                isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 ||
+                                isGuideline7_4_3 || isGuideline7_4_5 ||
+                                isGuideline7_5_1 || isGuideline7_5_2 || isGuideline7_5_3 || isGuideline7_5_4 || isGuideline7_5_5 || isGuideline7_5_6;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
