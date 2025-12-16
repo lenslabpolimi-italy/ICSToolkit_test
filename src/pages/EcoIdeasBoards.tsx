@@ -461,6 +461,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline7_3_3 = guidelineId === '7.3.3';
                             const isGuideline7_3_4 = guidelineId === '7.3.4';
                             const isGuideline7_3_5 = guidelineId === '7.3.5';
+                            const isGuideline7_3_6 = guidelineId === '7.3.6'; // NEW exclusion
 
                             const isGuideline7_4_1 = guidelineId === '7.4.1'; // Exception
                             const isGuideline7_4_2 = guidelineId === '7.4.2'; // Exception
@@ -590,7 +591,7 @@ const EcoIdeasBoards: React.FC = () => {
                             else if (isGuideline7_1_6) {
                                 guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=716";
                             } else if (isGuideline7_3_2) {
-                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDjZU7BuAFeQKN1ruF1Q34mAV6sJh5qh3uqfwCndKOS6J0?e=ZNstIm"; // UPDATED LINK
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDjZU7BuAFeQKN1ruF1Q34mAV6sJh5qh3uqfwCndKOS6J0?e=ZNstIm";
                             } else if (isGuideline7_4_1) {
                                 guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=741";
                             } else if (isGuideline7_4_2) {
@@ -667,7 +668,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline7_1_1 || isGuideline7_1_2 || isGuideline7_1_3 || isGuideline7_1_4 || isGuideline7_1_5 || isGuideline7_1_7 || isGuideline7_1_8 ||
                                 isGuideline7_1_9 || isGuideline7_1_10 || isGuideline7_1_11 ||
                                 isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 || isGuideline7_2_5 ||
-                                isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 ||
+                                isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 || isGuideline7_3_6 ||
                                 isGuideline7_4_3 || isGuideline7_4_5 ||
                                 isGuideline7_5_1 || isGuideline7_5_2 || isGuideline7_5_3 || isGuideline7_5_4 || isGuideline7_5_5 || isGuideline7_5_6;
 
