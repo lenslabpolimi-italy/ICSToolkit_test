@@ -319,7 +319,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline3_2_3 = guidelineId === '3.2.3';
                             const isGuideline3_2_4 = guidelineId === '3.2.4';
                             
-                            // --- New logic for Strategy 4 exclusions (Requested to delete example text) ---
+                            // --- Strategy 4 exclusions ---
                             const isGuideline4_1_1 = guidelineId === '4.1.1';
                             const isGuideline4_1_2 = guidelineId === '4.1.2';
                             const isGuideline4_1_3 = guidelineId === '4.1.3';
@@ -330,7 +330,7 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline4_2_1 = guidelineId === '4.2.1';
                             const isGuideline4_2_2 = guidelineId === '4.2.2';
                             
-                            // --- New logic for Strategy 5 exclusions (Requested to delete example text) ---
+                            // --- Strategy 5 exclusions ---
                             const isGuideline5_1_1 = guidelineId === '5.1.1';
                             const isGuideline5_1_2 = guidelineId === '5.1.2';
                             const isGuideline5_1_3 = guidelineId === '5.1.3';
@@ -386,7 +386,30 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline5_8_3 = guidelineId === '5.8.3';
                             const isGuideline5_8_4 = guidelineId === '5.8.4';
                             const isGuideline5_8_5 = guidelineId === '5.8.5';
-                            // --- End new logic ---
+                            
+                            // --- Strategy 6 exclusions (Requested by user) ---
+                            const isGuideline6_1_1 = guidelineId === '6.1.1';
+                            const isGuideline6_1_2 = guidelineId === '6.1.2';
+                            const isGuideline6_1_3 = guidelineId === '6.1.3';
+                            const isGuideline6_2_1 = guidelineId === '6.2.1';
+                            const isGuideline6_2_2 = guidelineId === '6.2.2';
+                            const isGuideline6_2_3 = guidelineId === '6.2.3';
+                            const isGuideline6_2_4 = guidelineId === '6.2.4';
+                            const isGuideline6_2_5 = guidelineId === '6.2.5';
+                            const isGuideline6_2_6 = guidelineId === '6.2.6';
+                            const isGuideline6_3_1 = guidelineId === '6.3.1';
+                            const isGuideline6_3_2 = guidelineId === '6.3.2';
+                            const isGuideline6_3_3 = guidelineId === '6.3.3';
+                            const isGuideline6_4_1 = guidelineId === '6.4.1';
+                            const isGuideline6_4_2 = guidelineId === '6.4.2';
+                            const isGuideline6_4_3 = guidelineId === '6.4.3';
+                            const isGuideline6_4_4 = guidelineId === '6.4.4';
+                            const isGuideline6_4_5 = guidelineId === '6.4.5';
+                            const isGuideline6_4_6 = guidelineId === '6.4.6';
+                            const isGuideline6_5_1 = guidelineId === '6.5.1';
+                            const isGuideline6_5_4 = guidelineId === '6.5.4';
+                            const isGuideline6_5_5 = guidelineId === '6.5.5';
+                            // --- End Strategy 6 exclusions ---
 
 
                             if (isSecondOverallGuideline) {
@@ -486,7 +509,7 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAu6fFYHOjkRZZo_L7zxu_3AZzF3mbZVgU83T1i1skoAO0?e=1feoFL";
                             } else if (isGuideline5_8_3) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDH4aEDlYr8Q5wtxzq4w6IWAfvv8qLCzU_y92sytOrHKCg?e=ebN98g";
-                            } else if (isGuideline5_8_5) { // NEW: Added link for 5.8.5
+                            } else if (isGuideline5_8_5) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBRDJp7KCfPT4QARjEX_CZgAYcWgjHXZ2V-lhCYuidXiFk?e=gJ870H";
                             }
                             // --- END Specific links ---
@@ -541,7 +564,13 @@ const EcoIdeasBoards: React.FC = () => {
                                 // New 5.7 exclusions (requested by user)
                                 isGuideline5_7_1 || isGuideline5_7_2 || isGuideline5_7_3 || isGuideline5_7_4 || isGuideline5_7_5 ||
                                 // New 5.8 exclusions (requested by user)
-                                isGuideline5_8_2 || isGuideline5_8_4;
+                                isGuideline5_8_2 || isGuideline5_8_4 ||
+                                // Strategy 6 exclusions (requested by user)
+                                isGuideline6_1_1 || isGuideline6_1_2 || isGuideline6_1_3 ||
+                                isGuideline6_2_1 || isGuideline6_2_2 || isGuideline6_2_3 || isGuideline6_2_4 || isGuideline6_2_5 || isGuideline6_2_6 ||
+                                isGuideline6_3_1 || isGuideline6_3_2 || isGuideline6_3_3 ||
+                                isGuideline6_4_1 || isGuideline6_4_2 || isGuideline6_4_3 || isGuideline6_4_4 || isGuideline6_4_5 || isGuideline6_4_6 ||
+                                isGuideline6_5_1 || isGuideline6_5_4 || isGuideline6_5_5;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
