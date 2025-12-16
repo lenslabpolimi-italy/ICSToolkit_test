@@ -414,16 +414,27 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline6_5_4 = guidelineId === '6.5.4';
                             const isGuideline6_5_5 = guidelineId === '6.5.5';
                             
-                            // NEW: Strategy 6.6 exclusions
+                            // Strategy 6.6 exclusions
                             const isGuideline6_6_1 = guidelineId === '6.6.1';
                             const isGuideline6_6_2 = guidelineId === '6.6.2';
                             const isGuideline6_6_3 = guidelineId === '6.6.3';
                             const isGuideline6_6_4 = guidelineId === '6.6.4';
                             const isGuideline6_6_5 = guidelineId === '6.6.5';
-                            const isGuideline6_6_6 = guidelineId === '6.6.6'; // NEW: Added 6.6.6 for specific link logic below
+                            const isGuideline6_6_6 = guidelineId === '6.6.6';
                             const isGuideline6_6_7 = guidelineId === '6.6.7';
                             const isGuideline6_6_8 = guidelineId === '6.6.8';
                             const isGuideline6_6_9 = guidelineId === '6.6.9';
+
+                            // NEW: Strategy 6.7 exclusions
+                            const isGuideline6_7_1 = guidelineId === '6.7.1';
+                            const isGuideline6_7_2 = guidelineId === '6.7.2';
+                            const isGuideline6_7_3 = guidelineId === '6.7.3';
+
+                            // NEW: Strategy 6.8 exclusions
+                            const isGuideline6_8_1 = guidelineId === '6.8.1';
+                            const isGuideline6_8_2 = guidelineId === '6.8.2';
+                            const isGuideline6_8_3 = guidelineId === '6.8.3';
+                            const isGuideline6_8_4 = guidelineId === '6.8.4';
                             // --- End Strategy 6 exclusions ---
 
 
@@ -534,7 +545,7 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAa94LLSAx0RbyJHjNbm6isARgY3FczUI2e6L7VQyZ7lHg?e=hBmzsu";
                             } else if (isGuideline6_5_3) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCPfAsniIslQKGt7lEyh4fUAdApS7BHu5tMZJ0coxB2pHE?e=rMMuVJ";
-                            } else if (isGuideline6_6_6) { // NEW: Added link for 6.6.6
+                            } else if (isGuideline6_6_6) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC1rUTn0ueTSpXAMYmfL1BjARRghO7ShMVZtGzgzaIMkjQ?e=5cPyct";
                             }
                             // --- END Specific links ---
@@ -596,8 +607,12 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline6_3_1 || isGuideline6_3_2 || isGuideline6_3_3 ||
                                 isGuideline6_4_1 || isGuideline6_4_2 || isGuideline6_4_3 || isGuideline6_4_4 || isGuideline6_4_5 || isGuideline6_4_6 ||
                                 isGuideline6_5_1 || isGuideline6_5_4 || isGuideline6_5_5 ||
-                                // NEW: Strategy 6.6 exclusions
-                                isGuideline6_6_1 || isGuideline6_6_2 || isGuideline6_6_3 || isGuideline6_6_4 || isGuideline6_6_5 || isGuideline6_6_7 || isGuideline6_6_8 || isGuideline6_6_9;
+                                // Strategy 6.6 exclusions
+                                isGuideline6_6_1 || isGuideline6_6_2 || isGuideline6_6_3 || isGuideline6_6_4 || isGuideline6_6_5 || isGuideline6_6_7 || isGuideline6_6_8 || isGuideline6_6_9 ||
+                                // NEW: Strategy 6.7 exclusions
+                                isGuideline6_7_1 || isGuideline6_7_2 || isGuideline6_7_3 ||
+                                // NEW: Strategy 6.8 exclusions
+                                isGuideline6_8_1 || isGuideline6_8_2 || isGuideline6_8_3 || isGuideline6_8_4;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
