@@ -446,6 +446,9 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline7_1_6 = guidelineId === '7.1.6'; // Exception
                             const isGuideline7_1_7 = guidelineId === '7.1.7';
                             const isGuideline7_1_8 = guidelineId === '7.1.8';
+                            const isGuideline7_1_9 = guidelineId === '7.1.9'; // NEW exclusion
+                            const isGuideline7_1_10 = guidelineId === '7.1.10'; // NEW exclusion
+                            const isGuideline7_1_11 = guidelineId === '7.1.11'; // NEW exclusion
 
                             const isGuideline7_2_1 = guidelineId === '7.2.1';
                             const isGuideline7_2_2 = guidelineId === '7.2.2';
@@ -661,6 +664,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline6_8_1 || isGuideline6_8_2 || isGuideline6_8_3 || isGuideline6_8_4 ||
                                 // NEW: Strategy 7 exclusions (excluding 7.1.6, 7.3.2, 7.4.1, 7.4.2, 7.4.4)
                                 isGuideline7_1_1 || isGuideline7_1_2 || isGuideline7_1_3 || isGuideline7_1_4 || isGuideline7_1_5 || isGuideline7_1_7 || isGuideline7_1_8 ||
+                                isGuideline7_1_9 || isGuideline7_1_10 || isGuideline7_1_11 || // Added new exclusions
                                 isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 ||
                                 isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 ||
                                 isGuideline7_4_3 || isGuideline7_4_5 ||
