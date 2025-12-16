@@ -276,6 +276,30 @@ const EcoIdeasBoards: React.FC = () => {
                         <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
                           {subStrategy.id}. {subStrategy.name}
                         </h4>
+                        {/* Custom Example for Sub-Strategy 7.8 */}
+                        {subStrategy.id === '7.8' && (
+                            <div className="mt-2 mb-2">
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <a 
+                                            href="https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCYgD00RWopT4_OmeHsuKtyAYEmL0-Zu1La_gkr4_M40Ko?e=bSQ7bY" 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="text-orange-500 hover:underline ml-2 text-sm font-roboto-condensed font-bold"
+                                        >
+                                            EXAMPLE
+                                        </a>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="p-0 border-none shadow-lg max-w-xs">
+                                        <img 
+                                            src="https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQCYgD00RWopT4_OmeHsuKtyAYEmL0-Zu1La_gkr4_M40Ko?e=bSQ7bY" 
+                                            alt="Example Preview" 
+                                            className="max-w-full h-auto rounded-md" 
+                                        />
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
+                        )}
                         <ul className="list-none space-y-1">
                           {subStrategy.guidelines.map((guideline, guidelineIndex) => {
                             let guidelineLink = "#";
