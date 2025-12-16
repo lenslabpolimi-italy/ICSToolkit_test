@@ -468,6 +468,11 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline7_4_3 = guidelineId === '7.4.3';
                             const isGuideline7_4_4 = guidelineId === '7.4.4'; // Exception
                             const isGuideline7_4_5 = guidelineId === '7.4.5';
+                            // NEW definitions for 7.4.x
+                            const isGuideline7_4_6 = guidelineId === '7.4.6';
+                            const isGuideline7_4_7 = guidelineId === '7.4.7';
+                            const isGuideline7_4_8 = guidelineId === '7.4.8';
+                            const isGuideline7_4_9 = guidelineId === '7.4.9';
 
                             const isGuideline7_5_1 = guidelineId === '7.5.1';
                             const isGuideline7_5_2 = guidelineId === '7.5.2';
@@ -597,7 +602,8 @@ const EcoIdeasBoards: React.FC = () => {
                             } else if (isGuideline7_4_2) {
                                 guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=742";
                             } else if (isGuideline7_4_4) {
-                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=744";
+                                // Removed specific link for 7.4.4 as requested
+                                guidelineLink = "#";
                             }
                             // --- END Specific links ---
 
@@ -669,7 +675,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline7_1_9 || isGuideline7_1_10 || isGuideline7_1_11 ||
                                 isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 || isGuideline7_2_5 ||
                                 isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 || isGuideline7_3_6 ||
-                                isGuideline7_4_3 || isGuideline7_4_5 ||
+                                isGuideline7_4_3 || isGuideline7_4_5 || isGuideline7_4_6 || isGuideline7_4_7 || isGuideline7_4_8 || isGuideline7_4_9 ||
                                 isGuideline7_5_1 || isGuideline7_5_2 || isGuideline7_5_3 || isGuideline7_5_4 || isGuideline7_5_5 || isGuideline7_5_6;
 
                             return (
