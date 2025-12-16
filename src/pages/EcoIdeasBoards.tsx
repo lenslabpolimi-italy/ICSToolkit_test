@@ -482,6 +482,14 @@ const EcoIdeasBoards: React.FC = () => {
                             const isGuideline7_5_6 = guidelineId === '7.5.6';
                             const isGuideline7_5_7 = guidelineId === '7.5.7'; // Added 7.5.7 definition
 
+                            // NEW definitions for 7.6.x
+                            const isGuideline7_6_1 = guidelineId === '7.6.1';
+                            const isGuideline7_6_2 = guidelineId === '7.6.2';
+                            const isGuideline7_6_3 = guidelineId === '7.6.3';
+                            const isGuideline7_6_4 = guidelineId === '7.6.4';
+                            const isGuideline7_6_5 = guidelineId === '7.6.5';
+                            const isGuideline7_6_6 = guidelineId === '7.6.6';
+
 
                             if (isSecondOverallGuideline) {
                               guidelineLink = "https://www.lenslab.polimi.it/wp-content/uploads/2025/07/lettore-IDEA2-english-scaled.png";
@@ -678,7 +686,9 @@ const EcoIdeasBoards: React.FC = () => {
                                 isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 || isGuideline7_2_5 ||
                                 isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 || isGuideline7_3_6 ||
                                 isGuideline7_4_3 || isGuideline7_4_4 || isGuideline7_4_6 || isGuideline7_4_7 || isGuideline7_4_8 || isGuideline7_4_9 ||
-                                isGuideline7_5_1 || isGuideline7_5_2 || isGuideline7_5_3 || isGuideline7_5_4 || isGuideline7_5_5 || isGuideline7_5_6 || isGuideline7_5_7;
+                                isGuideline7_5_1 || isGuideline7_5_2 || isGuideline7_5_3 || isGuideline7_5_4 || isGuideline7_5_5 || isGuideline7_5_6 || isGuideline7_5_7 ||
+                                // New 7.6 exclusions
+                                isGuideline7_6_1 || isGuideline7_6_2 || isGuideline7_6_3 || isGuideline7_6_4 || isGuideline7_6_5 || isGuideline7_6_6;
 
                             return (
                               <li key={guideline.id} className="text-sm text-gray-600 font-roboto-condensed">
