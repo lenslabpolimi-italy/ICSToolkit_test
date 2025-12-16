@@ -590,7 +590,7 @@ const EcoIdeasBoards: React.FC = () => {
                             else if (isGuideline7_1_6) {
                                 guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=716";
                             } else if (isGuideline7_3_2) {
-                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=732";
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDjZU7BuAFeQKN1ruF1Q34mAV6sJh5qh3uqfwCndKOS6J0?e=ZNstIm"; // UPDATED LINK
                             } else if (isGuideline7_4_1) {
                                 guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=741";
                             } else if (isGuideline7_4_2) {
@@ -666,7 +666,7 @@ const EcoIdeasBoards: React.FC = () => {
                                 // NEW: Strategy 7 exclusions (excluding 7.1.6, 7.3.2, 7.4.1, 7.4.2, 7.4.4)
                                 isGuideline7_1_1 || isGuideline7_1_2 || isGuideline7_1_3 || isGuideline7_1_4 || isGuideline7_1_5 || isGuideline7_1_7 || isGuideline7_1_8 ||
                                 isGuideline7_1_9 || isGuideline7_1_10 || isGuideline7_1_11 ||
-                                isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 || isGuideline7_2_5 || // Added 7.2.5
+                                isGuideline7_2_1 || isGuideline7_2_2 || isGuideline7_2_3 || isGuideline7_2_4 || isGuideline7_2_5 ||
                                 isGuideline7_3_1 || isGuideline7_3_3 || isGuideline7_3_4 || isGuideline7_3_5 ||
                                 isGuideline7_4_3 || isGuideline7_4_5 ||
                                 isGuideline7_5_1 || isGuideline7_5_2 || isGuideline7_5_3 || isGuideline7_5_4 || isGuideline7_5_5 || isGuideline7_5_6;
