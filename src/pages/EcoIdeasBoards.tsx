@@ -557,9 +557,6 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQBrdW2sgXEJT4CczjqdyO2nAam5aYDOnFBLMxKQkAVbuZA?e=6wnboN";
                             } else if (isGuideline5_4_3) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDcaKciarAnQ5afoWKyoKEIAV_Ru-3dAlNf4bMAc5qch7g?e=4EIKxD";
-                            } else if (isGuideline5_4_5) {
-                              // Corrected link for 7.4.5
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQClbYhass7PTaOfqOODqoQCAd4vBDN19CCvMOsFlI7pn-k?e=TBkR3o";
                             } else if (isGuideline5_4_6) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQA5jHC_k2pUS5fod0rCnvLDAYIx2Jnage6IY8PDEC4PKWI?e=8SUQ0o";
                             } else if (isGuideline5_4_7) {
@@ -604,6 +601,9 @@ const EcoIdeasBoards: React.FC = () => {
                                 guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQB637fqdHCTR5eCbRadSeVGAW_lQyPeaW0yjzyyrl4ne20?e=742";
                             } else if (isGuideline7_4_4) {
                                 guidelineLink = "#";
+                            } else if (isGuideline7_4_5) {
+                                // Correct link for 7.4.5
+                                guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQClbYhass7PTaOfqOODqoQCAd4vBDN19CCvMOsFlI7pn-k?e=TBkR3o";
                             }
                             // --- END Specific links ---
 
@@ -649,7 +649,8 @@ const EcoIdeasBoards: React.FC = () => {
                                 // Strategy 5 exclusions (requested to delete example text)
                                 isGuideline5_1_3 || isGuideline5_2_1 || isGuideline5_2_2 || isGuideline5_2_3 || isGuideline5_3_1 || isGuideline5_3_8 ||
                                 // New 5.4 exclusions
-                                isGuideline5_4_2 || isGuideline5_4_4 || isGuideline5_4_8 ||
+                                isGuideline5_4_2 || isGuideline5_4_4 || isGuideline5_4_5 || // 5.4.5 is now excluded as it should not have a specific link
+                                isGuideline5_4_8 ||
                                 // New 5.5 exclusions
                                 isGuideline5_5_2 || isGuideline5_5_4 || isGuideline5_5_5 ||
                                 // New 5.6 exclusions (5.6.6 and 5.6.7 have links now, so they are removed from exclusion)
