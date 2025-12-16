@@ -482,8 +482,10 @@ const EcoIdeasBoards: React.FC = () => {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDCTOGzh3xdRb0AhzkI8YLxAUtVOK51UhAkPuq3NVY0qKM?e=dpLPvM";
                             } else if (isGuideline5_6_7) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQA3YhrQmBXWR7rUx9lgKx9zAbs3ztdR_kGC3b_hi5UVbKA?e=TsPVcu";
-                            } else if (isGuideline5_8_1) { // NEW: Added link for 5.8.1
+                            } else if (isGuideline5_8_1) { 
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQAu6fFYHOjkRZZo_L7zxu_3AZzF3mbZVgU83T1i1skoAO0?e=1feoFL";
+                            } else if (isGuideline5_8_3) { // NEW: Added link for 5.8.3
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDH4aEDlYr8Q5wtxzq4w6IWAfvv8qLCzU_y92sytOrHKCg?e=ebN98g";
                             }
                             // --- END Specific links ---
 
