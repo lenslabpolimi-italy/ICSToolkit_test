@@ -169,14 +169,15 @@ const EvaluationRadar: React.FC = () => {
     fullMark: 4, // Max score for Excellent
   }));
 
-  // Determine if both concepts are *completely* evaluated (all strategies have score > 0)
-  const allStrategiesEvaluatedA = strategiesForRadar.every(strategy =>
+  // Determine if at least 2 strategies have been evaluated (score > 0) for both concepts.
+  const evaluatedStrategiesA = strategiesForRadar.filter(strategy =>
     (radarChartData.A[strategy.id] || 0) > 0
-  );
-  const allStrategiesEvaluatedB = strategiesForRadar.every(strategy =>
+  ).length;
+  const evaluatedStrategiesB = strategiesForRadar.filter(strategy =>
     (radarChartData.B[strategy.id] || 0) > 0
-  );
-  const isImprovementRadarActive = allStrategiesEvaluatedA && allStrategiesEvaluatedB;
+  ).length;
+
+  const isImprovementRadarActive = evaluatedStrategiesA >= 2 && evaluatedStrategiesB >= 2;
 
   // Handlers for radarEcoIdeas
   const handleRadarEcoIdeaDragStop = (id: string, x: number, y: number) => {
@@ -222,7 +223,7 @@ const EvaluationRadar: React.FC = () => {
 
   const handleImprovementRadarClick = () => {
     if (!isImprovementRadarActive) {
-      toast.info("Please complete the evaluation for both Concept A and Concept B to activate the Improvement Radar.");
+      toast.info("Please evaluate at least 2 strategies for both Concept A and Concept B to activate the Improvement Radar.");
     } else {
       navigate('/improvement-radar'); // Navigate to the new Improvement Radar page
     }
