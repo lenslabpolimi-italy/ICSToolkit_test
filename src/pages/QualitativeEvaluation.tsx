@@ -182,7 +182,7 @@ const QualitativeEvaluation: React.FC = () => {
                 value={strategy.id}
                 className={cn(
                   "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
-                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500"
+                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500 pointer-events-none"
                 )}
               >
                 <span className="mb-1">
@@ -206,7 +206,7 @@ const QualitativeEvaluation: React.FC = () => {
                     {triggerContent}
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs text-sm font-roboto-condensed">
-                    <p>This is a supporting strategy that can inherit the priority of strategy 5 or 6, depending on what disassembly is used for.</p>
+                    <p>This is a supporting strategy. Its priority is inherited from Strategy 5 (Design for Extended Life) or Strategy 6 (Design for End-of-Life), depending on whether disassembly is used for repair/reuse or recycling/recovery.</p>
                   </TooltipContent>
                 </Tooltip>
               );
@@ -222,12 +222,7 @@ const QualitativeEvaluation: React.FC = () => {
                 <h3 className="text-xl font-palanquin font-semibold text-gray-600 mb-4">
                   Strategy 7: Design for Disassembly (Supporting Strategy)
                 </h3>
-                <p className="text-app-body-text">
-                  This is a supporting strategy. Its priority is inherited from Strategy 5 (Design for Extended Life) or Strategy 6 (Design for End-of-Life), depending on whether disassembly is used for repair/reuse or recycling/recovery.
-                </p>
-                <p className="text-app-body-text mt-2">
-                  No qualitative evaluation is required here.
-                </p>
+                {/* Content removed as requested */}
               </div>
             ) : (
               <>
