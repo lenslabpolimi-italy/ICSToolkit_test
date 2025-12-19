@@ -196,42 +196,44 @@ const QualitativeEvaluation: React.FC = () => {
               <h3 className="text-2xl font-palanquin font-semibold text-app-header">
                 {strategy.id}. {strategy.name}
               </h3>
-              <div className="flex items-center gap-4">
-                <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
-                {['1', '2', '3', '4'].includes(strategy.id) ? (
-                  <Select
-                    value={calculateHighestSubStrategyPriority(strategy.id)}
-                  >
-                    <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]" disabled>
-                      <SelectValue placeholder="Calculated Priority" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="High">High priority</SelectItem>
-                      <SelectItem value="Mid">Mid priority</SelectItem>
-                      <SelectItem value="Low">Low priority</SelectItem>
-                      <SelectItem value="None">No priority</SelectItem>
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <Select
-                    value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
-                    onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
-                      ...prev,
-                      [strategy.id]: { ...prev[strategy.id], priority: value }
-                    }))}
-                  >
-                    <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
-                      <SelectValue placeholder="Select Priority" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="High">High priority</SelectItem>
-                      <SelectItem value="Mid">Mid priority</SelectItem>
-                      <SelectItem value="Low">Low priority</SelectItem>
-                      <SelectItem value="None">No priority</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              </div>
+              {strategy.id !== '7' && (
+                <div className="flex items-center gap-4">
+                  <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
+                  {['1', '2', '3', '4'].includes(strategy.id) ? (
+                    <Select
+                      value={calculateHighestSubStrategyPriority(strategy.id)}
+                    >
+                      <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]" disabled>
+                        <SelectValue placeholder="Calculated Priority" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="High">High priority</SelectItem>
+                        <SelectItem value="Mid">Mid priority</SelectItem>
+                        <SelectItem value="Low">Low priority</SelectItem>
+                        <SelectItem value="None">No priority</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <Select
+                      value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
+                      onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
+                        ...prev,
+                        [strategy.id]: { ...prev[strategy.id], priority: value }
+                      }))}
+                    >
+                      <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
+                        <SelectValue placeholder="Select Priority" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="High">High priority</SelectItem>
+                        <SelectItem value="Mid">Mid priority</SelectItem>
+                        <SelectItem value="Low">Low priority</SelectItem>
+                        <SelectItem value="None">No priority</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="space-y-8">
