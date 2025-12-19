@@ -180,10 +180,11 @@ const QualitativeEvaluation: React.FC = () => {
               <TabsTrigger
                 key={strategy.id}
                 value={strategy.id}
-                disabled={isStrategy7} // Disable the trigger for Strategy 7
+                // Removed 'disabled' prop
+                onClick={isStrategy7 ? (e) => e.preventDefault() : undefined} // Prevent default click action for Strategy 7
                 className={cn(
                   "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
-                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500 disabled:opacity-100 disabled:cursor-default" // Ensure disabled state doesn't hide it completely
+                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500 cursor-default" // Added cursor-default for visual feedback
                 )}
               >
                 <span className="mb-1">
@@ -204,7 +205,7 @@ const QualitativeEvaluation: React.FC = () => {
               return (
                 <Tooltip key={strategy.id}>
                   <TooltipTrigger asChild>
-                    {/* Wrap the disabled trigger in a div/span if the tooltip stops working, but Radix usually handles this */}
+                    {/* TooltipTrigger wraps the TabsTrigger, which now prevents click via onClick handler */}
                     {triggerContent}
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs text-sm font-roboto-condensed">
