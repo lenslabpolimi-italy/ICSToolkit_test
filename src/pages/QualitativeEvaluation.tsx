@@ -10,6 +10,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { PriorityLevel } from '@/types/lcd';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const subStrategyGuidingQuestions: { [key: string]: string[] } = {
   '1.1': ["Is the (system) product highly material-intensive (oversized)? If the (system) product is a means of transport or requires transport during use, is it oversized?"],
@@ -169,19 +174,21 @@ const QualitativeEvaluation: React.FC = () => {
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch"> {/* Adjusted grid-cols for 7 strategies */}
           {strategiesForQualitativeEvaluation.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
-            return (
+            const isStrategy7 = strategy.id === '7';
+
+            const triggerContent = (
               <TabsTrigger
                 key={strategy.id}
                 value={strategy.id}
                 className={cn(
                   "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
-                  strategy.id === '7' && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500"
+                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500"
                 )}
               >
                 <span className="mb-1">
                   {strategy.id}. {strategy.name}
                 </span>
-                {strategy.id !== '7' && (
+                {!isStrategy7 && (
                   <span className={cn(
                     "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
                     classes
@@ -191,6 +198,21 @@ const QualitativeEvaluation: React.FC = () => {
                 )}
               </TabsTrigger>
             );
+
+            if (isStrategy7) {
+              return (
+                <Tooltip key={strategy.id}>
+                  <TooltipTrigger asChild>
+                    {triggerContent}
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs text-sm font-roboto-condensed">
+                    <p>This is a supporting strategy that can inherit the priority of strategy 5 or 6, depending on what disassembly is used for.</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            }
+
+            return triggerContent;
           })}
         </TabsList>
         {strategiesForQualitativeEvaluation.map((strategy) => (
