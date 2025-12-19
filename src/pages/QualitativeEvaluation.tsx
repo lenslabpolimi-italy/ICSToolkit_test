@@ -15,6 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { showError } from '@/utils/toast'; // Import toast utility
 
 const subStrategyGuidingQuestions: { [key: string]: string[] } = {
   '1.1': ["Is the (system) product highly material-intensive (oversized)? If the (system) product is a means of transport or requires transport during use, is it oversized?"],
@@ -93,12 +94,13 @@ const QualitativeEvaluation: React.FC = () => {
     }
   }, [strategiesForQualitativeEvaluation, selectedStrategyTab]);
 
-  // Handler to prevent switching to Strategy 7
+  // Handler to prevent switching to Strategy 7 and show a message
   const handleTabChange = (newTabId: string) => {
     if (newTabId !== '7') {
       setSelectedStrategyTab(newTabId);
+    } else {
+      showError("Strategy 7 is a supporting strategy and does not have its own evaluation content here.");
     }
-    // If newTabId is '7', we do nothing, preventing the tab switch.
   };
 
   const handlePriorityChange = (strategyId: string, subStrategyId: string, value: PriorityLevel) => {
