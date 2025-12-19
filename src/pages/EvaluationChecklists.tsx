@@ -323,33 +323,31 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (
               <div key={strategy.id} className="border-t pt-6">
-                <div className="flex flex-col mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    {/* Modified structure for Simplified view to allow priority tag to wrap */}
-                    <div className="flex flex-col items-start">
-                      <h3 className="text-xl font-palanquin font-semibold text-app-header">
-                        {strategy.id}. {strategy.name}
-                      </h3>
-                      <span className={cn(
-                        "text-xs font-roboto-condensed px-1 rounded-sm mt-1", // Added mt-1 for spacing
-                        classes
-                      )}>
-                        {displayText}
-                      </span>
-                    </div>
-                    {renderEvaluationSelectors(
-                      'strategy',
-                      strategy.id,
-                      evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
-                    )}
+                <div className="flex justify-between items-center mb-2">
+                  {/* Modified structure for Simplified view to place priority tag inline */}
+                  <div className="flex items-center gap-2">
+                    <span className={cn(
+                      "text-xs font-roboto-condensed px-1 rounded-sm",
+                      classes
+                    )}>
+                      {displayText}
+                    </span>
+                    <h3 className="text-xl font-palanquin font-semibold text-app-header">
+                      {strategy.id}. {strategy.name}
+                    </h3>
                   </div>
-                  <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
-                    {strategy.subStrategies.map(subStrategy => (
-                      <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
-                        {subStrategy.id}. {subStrategy.name}
-                      </p>
-                    ))}
-                  </div>
+                  {renderEvaluationSelectors(
+                    'strategy',
+                    strategy.id,
+                    evaluationChecklists[selectedConcept]?.strategies[strategy.id] || 'N/A'
+                  )}
+                </div>
+                <div className="pl-4 text-sm text-gray-600 font-roboto-condensed">
+                  {strategy.subStrategies.map(subStrategy => (
+                    <p key={subStrategy.id} className="mb-1 font-palanquin font-bold">
+                      {subStrategy.id}. {subStrategy.name}
+                    </p>
+                  ))}
                 </div>
               </div>
             );
