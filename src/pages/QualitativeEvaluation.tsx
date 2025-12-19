@@ -99,7 +99,7 @@ const QualitativeEvaluation: React.FC = () => {
     if (newTabId !== '7') {
       setSelectedStrategyTab(newTabId);
     } else {
-      showError("Strategy 7 is a supporting strategy and does not have its own evaluation content here.");
+      showError("This is a supporting strategy that can inherit the priority of strategy 5 or 6, depending on what disassembly is used for.");
     }
   };
 
