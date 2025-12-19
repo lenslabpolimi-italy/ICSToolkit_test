@@ -217,91 +217,222 @@ const QualitativeEvaluation: React.FC = () => {
         </TabsList>
         {strategiesForQualitativeEvaluation.map((strategy) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
-            <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-palanquin font-semibold text-app-header">
-                {strategy.id}. {strategy.name}
-              </h3>
-              {strategy.id !== '7' && (
-                <div className="flex items-center gap-4">
-                  <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
-                  {['1', '2', '3', '4'].includes(strategy.id) ? (
-                    <Select
-                      value={calculateHighestSubStrategyPriority(strategy.id)}
-                    >
-                      <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]" disabled>
-                        <SelectValue placeholder="Calculated Priority" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="High">High priority</SelectItem>
-                        <SelectItem value="Mid">Mid priority</SelectItem>
-                        <SelectItem value="Low">Low priority</SelectItem>
-                        <SelectItem value="None">No priority</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <Select
-                      value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
-                      onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
-                        ...prev,
-                        [strategy.id]: { ...prev[strategy.id], priority: value }
-                      }))}
-                    >
-                      <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
-                        <SelectValue placeholder="Select Priority" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="High">High priority</SelectItem>
-                        <SelectItem value="Mid">Mid priority</SelectItem>
-                        <SelectItem value="Low">Low priority</SelectItem>
-                        <SelectItem value="None">No priority</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+            {strategy.id === '7' ? (
+              <div className="p-8 bg-gray-50 border border-gray-200 rounded-lg text-center">
+                <h3 className="text-xl font-palanquin font-semibold text-gray-600 mb-4">
+                  Strategy 7: Design for Disassembly (Supporting Strategy)
+                </h3>
+                <p className="text-app-body-text">
+                  This is a supporting strategy. Its priority is inherited from Strategy 5 (Design for Extended Life) or Strategy 6 (Design for End-of-Life), depending on whether disassembly is used for repair/reuse or recycling/recovery.
+                </p>
+                <p className="text-app-body-text mt-2">
+                  No qualitative evaluation is required here.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="flex justify-between items-center mb-8">
+                  <h3 className="text-2xl font-palanquin font-semibold text-app-header">
+                    {strategy.id}. {strategy.name}
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    <Label htmlFor={`strategy-priority-${strategy.id}`} className="text-app-body-text">Strategy Priority:</Label>
+                    {['1', '2', '3', '4'].includes(strategy.id) ? (
+                      <Select
+                        value={calculateHighestSubStrategyPriority(strategy.id)}
+                      >
+                        <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]" disabled>
+                          <SelectValue placeholder="Calculated Priority" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="High">High priority</SelectItem>
+                          <SelectItem value="Mid">Mid priority</SelectItem>
+                          <SelectItem value="Low">Low priority</SelectItem>
+                          <SelectItem value="None">No priority</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Select
+                        value={qualitativeEvaluation[strategy.id]?.priority || 'None'}
+                        onValueChange={(value: PriorityLevel) => setQualitativeEvaluation(prev => ({
+                          ...prev,
+                          [strategy.id]: { ...prev[strategy.id], priority: value }
+                        }))}
+                      >
+                        <SelectTrigger id={`strategy-priority-${strategy.id}`} className="w-[180px]">
+                          <SelectValue placeholder="Select Priority" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="High">High priority</SelectItem>
+                          <SelectItem value="Mid">Mid priority</SelectItem>
+                          <SelectItem value="Low">Low priority</SelectItem>
+                          <SelectItem value="None">No priority</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
 
-            <div className="space-y-8">
-              {(() => {
-                let hasRendered1_4_1_5 = false;
-                let hasRendered2_2_2_3 = false;
-                return strategy.subStrategies.map((subStrategy) => {
-                  if (strategy.id === '1' && subStrategy.id === '1.5') {
-                    return null;
-                  }
+                <div className="space-y-8">
+                  {(() => {
+                    let hasRendered1_4_1_5 = false;
+                    let hasRendered2_2_2_3 = false;
+                    return strategy.subStrategies.map((subStrategy) => {
+                      if (strategy.id === '1' && subStrategy.id === '1.5') {
+                        return null;
+                      }
 
-                  if (strategy.id === '1' && subStrategy.id === '1.4' && !hasRendered1_4_1_5) {
-                    hasRendered1_4_1_5 = true;
-                    const subStrategy1_4_obj = strategy.subStrategies.find(ss => ss.id === '1.4');
-                    const subStrategy1_5_obj = strategy.subStrategies.find(ss => ss.id === '1.5');
+                      if (strategy.id === '1' && subStrategy.id === '1.4' && !hasRendered1_4_1_5) {
+                        hasRendered1_4_1_5 = true;
+                        const subStrategy1_4_obj = strategy.subStrategies.find(ss => ss.id === '1.4');
+                        const subStrategy1_5_obj = strategy.subStrategies.find(ss => ss.id === '1.5');
 
-                    if (!subStrategy1_4_obj || !subStrategy1_5_obj) return null;
+                        if (!subStrategy1_4_obj || !subStrategy1_5_obj) return null;
 
-                    const combinedId = '1.4';
-                    const combinedGuidingQuestions = subStrategyGuidingQuestions[combinedId] || [
-                      `How do sub-strategies "${subStrategy1_4_obj.name}" and "${subStrategy1_5_obj.name}" apply to your product?`,
-                      "What are the main challenges and opportunities for these combined sub-strategies?",
-                      "Consider the environmental, social, and economic aspects related to both.",
-                    ];
+                        const combinedId = '1.4';
+                        const combinedGuidingQuestions = subStrategyGuidingQuestions[combinedId] || [
+                          `How do sub-strategies "${subStrategy1_4_obj.name}" and "${subStrategy1_5_obj.name}" apply to your product?`,
+                          "What are the main challenges and opportunities for these combined sub-strategies?",
+                          "Consider the environmental, social, and economic aspects related to both.",
+                        ];
 
-                    return (
-                      <div key="1.4-1.5-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
-                        <div className="flex justify-between items-center mb-4">
-                          <h4 className="text-xl font-palanquin font-medium text-app-header">
-                            {subStrategy1_4_obj.id}. {subStrategy1_4_obj.name}
-                            <br />
-                            {subStrategy1_5_obj.id}. {subStrategy1_5_obj.name}
-                          </h4>
-                          {strategy.id !== '7' && (
+                        return (
+                          <div key="1.4-1.5-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                            <div className="flex justify-between items-center mb-4">
+                              <h4 className="text-xl font-palanquin font-medium text-app-header">
+                                {subStrategy1_4_obj.id}. {subStrategy1_4_obj.name}
+                                <br />
+                                {subStrategy1_5_obj.id}. {subStrategy1_5_obj.name}
+                              </h4>
+                              <div className="flex items-center gap-4">
+                                <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
+                                  Sub-strategy Priority:
+                                </Label>
+                                <Select
+                                  value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                                  onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                                >
+                                  <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                    <SelectValue placeholder="Select Priority" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="High">High priority</SelectItem>
+                                    <SelectItem value="Mid">Mid priority</SelectItem>
+                                    <SelectItem value="Low">Low priority</SelectItem>
+                                    <SelectItem value="None">No priority</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                                <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                                  {combinedGuidingQuestions.map((q, idx) => (
+                                    <li key={idx}>{q}</li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="flex-1">
+                                <Textarea
+                                  placeholder={`Write your answers for "${subStrategy1_4_obj.name}" and "${subStrategy1_5_obj.name}" here...`}
+                                  rows={6}
+                                  className="w-full min-h-[150px]"
+                                  value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
+                                  onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      if (strategy.id === '2' && subStrategy.id === '2.3') {
+                        return null;
+                      }
+
+                      if (strategy.id === '2' && subStrategy.id === '2.2' && !hasRendered2_2_2_3) {
+                        hasRendered2_2_2_3 = true;
+                        const subStrategy2_2_obj = strategy.subStrategies.find(ss => ss.id === '2.2');
+                        const subStrategy2_3_obj = strategy.subStrategies.find(ss => ss.id === '2.3');
+
+                        if (!subStrategy2_2_obj || !subStrategy2_3_obj) return null;
+
+                        const combinedId = '2.2';
+                        const combinedGuidingQuestions = subStrategyGuidingQuestions[combinedId] || [
+                          `How do sub-strategies "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" apply to your product?`,
+                          "What are the main challenges and opportunities for these combined sub-strategies?",
+                          "Consider the environmental, social, and economic aspects related to both.",
+                        ];
+
+                        return (
+                          <div key="2.2-2.3-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                            <div className="flex justify-between items-center mb-4">
+                              <h4 className="text-xl font-palanquin font-medium text-app-header">
+                                {subStrategy2_2_obj.id}. {subStrategy2_2_obj.name}
+                                <br />
+                                {subStrategy2_3_obj.id}. {subStrategy2_3_obj.name}
+                              </h4>
+                              <div className="flex items-center gap-4">
+                                <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
+                                  Sub-strategy Priority:
+                                </Label>
+                                <Select
+                                  value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                                  onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                                >
+                                  <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                    <SelectValue placeholder="Select Priority" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="High">High priority</SelectItem>
+                                    <SelectItem value="Mid">Mid priority</SelectItem>
+                                    <SelectItem value="Low">Low priority</SelectItem>
+                                    <SelectItem value="None">No priority</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                                <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                                  {combinedGuidingQuestions.map((q, idx) => (
+                                    <li key={idx}>{q}</li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="flex-1">
+                                <Textarea
+                                  placeholder={`Write your answers for "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" here...`}
+                                  rows={6}
+                                  className="w-full min-h-[150px]"
+                                  value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
+                                  onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
+                          <div className="flex justify-between items-center mb-4">
+                            <h4 className="text-xl font-palanquin font-medium text-app-header">
+                              {subStrategy.id}. {subStrategy.name}
+                            </h4>
                             <div className="flex items-center gap-4">
-                              <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
+                              <Label htmlFor={`sub-strategy-priority-${subStrategy.id}`} className="text-app-body-text">
                                 Sub-strategy Priority:
                               </Label>
                               <Select
-                                value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
-                                onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                                value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None'}
+                                onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, subStrategy.id, value)}
                               >
-                                <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                <SelectTrigger id={`sub-strategy-priority-${subStrategy.id}`} className="w-[180px]">
                                   <SelectValue placeholder="Select Priority" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -312,161 +443,38 @@ const QualitativeEvaluation: React.FC = () => {
                                 </SelectContent>
                               </Select>
                             </div>
-                          )}
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
-                            <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
-                              {combinedGuidingQuestions.map((q, idx) => (
-                                <li key={idx}>{q}</li>
-                              ))}
-                            </ul>
                           </div>
 
-                          <div className="flex-1">
-                            <Textarea
-                              placeholder={`Write your answers for "${subStrategy1_4_obj.name}" and "${subStrategy1_5_obj.name}" here...`}
-                              rows={6}
-                              className="w-full min-h-[150px]"
-                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
-                              onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  if (strategy.id === '2' && subStrategy.id === '2.3') {
-                    return null;
-                  }
-
-                  if (strategy.id === '2' && subStrategy.id === '2.2' && !hasRendered2_2_2_3) {
-                    hasRendered2_2_2_3 = true;
-                    const subStrategy2_2_obj = strategy.subStrategies.find(ss => ss.id === '2.2');
-                    const subStrategy2_3_obj = strategy.subStrategies.find(ss => ss.id === '2.3');
-
-                    if (!subStrategy2_2_obj || !subStrategy2_3_obj) return null;
-
-                    const combinedId = '2.2';
-                    const combinedGuidingQuestions = subStrategyGuidingQuestions[combinedId] || [
-                      `How do sub-strategies "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" apply to your product?`,
-                      "What are the main challenges and opportunities for these combined sub-strategies?",
-                      "Consider the environmental, social, and economic aspects related to both.",
-                    ];
-
-                    return (
-                      <div key="2.2-2.3-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
-                        <div className="flex justify-between items-center mb-4">
-                          <h4 className="text-xl font-palanquin font-medium text-app-header">
-                            {subStrategy2_2_obj.id}. {subStrategy2_2_obj.name}
-                            <br />
-                            {subStrategy2_3_obj.id}. {subStrategy2_3_obj.name}
-                          </h4>
-                          {strategy.id !== '7' && (
-                            <div className="flex items-center gap-4">
-                              <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
-                                Sub-strategy Priority:
-                              </Label>
-                              <Select
-                                value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
-                                onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
-                              >
-                                <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
-                                  <SelectValue placeholder="Select Priority" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="High">High priority</SelectItem>
-                                  <SelectItem value="Mid">Mid priority</SelectItem>
-                                  <SelectItem value="Low">Low priority</SelectItem>
-                                  <SelectItem value="None">No priority</SelectItem>
-                                </SelectContent>
-                              </Select>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                              <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                                {(subStrategyGuidingQuestions[subStrategy.id] || [
+                                  `How does sub-strategy "${subStrategy.name}" apply to your product?`,
+                                  "What are the main challenges and opportunities for this sub-strategy?",
+                                  "Consider the environmental, social, and economic aspects.",
+                                ]).map((q, idx) => (
+                                  <li key={idx}>{q}</li>
+                                ))}
+                              </ul>
                             </div>
-                          )}
-                        </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
-                            <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
-                              {combinedGuidingQuestions.map((q, idx) => (
-                                <li key={idx}>{q}</li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          <div className="flex-1">
-                            <Textarea
-                              placeholder={`Write your answers for "${subStrategy2_2_obj.name}" and "${subStrategy2_3_obj.name}" here...`}
-                              rows={6}
-                              className="w-full min-h-[150px]"
-                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
-                              onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
-                            />
+                            <div className="flex-1">
+                              <Textarea
+                                placeholder={`Write your answers for "${subStrategy.name}" here...`}
+                                rows={6}
+                                className="w-full min-h-[150px]"
+                                value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.answer || ''}
+                                onChange={(e) => handleAnswerChange(strategy.id, subStrategy.id, e.target.value)}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={subStrategy.id} className="border-t pt-6 first:border-t-0 first:pt-0">
-                      <div className="flex justify-between items-center mb-4">
-                        <h4 className="text-xl font-palanquin font-medium text-app-header">
-                          {subStrategy.id}. {subStrategy.name}
-                        </h4>
-                        {strategy.id !== '7' && (
-                          <div className="flex items-center gap-4">
-                            <Label htmlFor={`sub-strategy-priority-${subStrategy.id}`} className="text-app-body-text">
-                              Sub-strategy Priority:
-                            </Label>
-                            <Select
-                              value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None'}
-                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, subStrategy.id, value)}
-                            >
-                              <SelectTrigger id={`sub-strategy-priority-${subStrategy.id}`} className="w-[180px]">
-                                <SelectValue placeholder="Select Priority" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="High">High priority</SelectItem>
-                                <SelectItem value="Mid">Mid priority</SelectItem>
-                                <SelectItem value="Low">Low priority</SelectItem>
-                                <SelectItem value="None">No priority</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
-                          <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
-                            {(subStrategyGuidingQuestions[subStrategy.id] || [
-                              `How does sub-strategy "${subStrategy.name}" apply to your product?`,
-                              "What are the main challenges and opportunities for this sub-strategy?",
-                              "Consider the environmental, social, and economic aspects.",
-                            ]).map((q, idx) => (
-                              <li key={idx}>{q}</li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div className="flex-1">
-                          <Textarea
-                            placeholder={`Write your answers for "${subStrategy.name}" here...`}
-                            rows={6}
-                            className="w-full min-h-[150px]"
-                            value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.answer || ''}
-                            onChange={(e) => handleAnswerChange(strategy.id, subStrategy.id, e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
-            </div>
+                      );
+                    });
+                  })()}
+                </div>
+              </>
+            )}
           </TabsContent>
         ))}
       </Tabs>
