@@ -200,6 +200,8 @@ const EcoIdeasBoards: React.FC = () => {
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
           {strategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
+            const isStrategy7 = strategy.id === '7';
+
             return (
               <TabsTrigger
                 key={strategy.id}
@@ -211,12 +213,14 @@ const EcoIdeasBoards: React.FC = () => {
                 <span className="mb-1">
                   {strategy.id}. {strategy.name}
                 </span>
-                <span className={cn(
-                  "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
-                  classes
-                )}>
-                  {displayText}
-                </span>
+                {!isStrategy7 && ( // Hide priority tag for Strategy 7
+                  <span className={cn(
+                    "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
+                    classes
+                  )}>
+                    {displayText}
+                  </span>
+                )}
               </TabsTrigger>
             );
           })}
@@ -549,7 +553,7 @@ const EcoIdeasBoards: React.FC = () => {
                             } else if (isGuideline3_1_6) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQDlWeCcgMNvQKCJeWGJXeALAWbk23FdXk_RadOT1wQpcTo?e=2eDu8h";
                             } else if (isGuideline3_2_1) {
-                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLZMo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=jTcTs5";
+                              guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQD48LzQXx2dTKXRLSZo_sGBAZS8MWobdMxwnNwrJRq6EhI?e=jTcTs5";
                             } else if (isGuideline3_2_3) {
                               guidelineLink = "https://polimi365-my.sharepoint.com/:i:/g/personal/10004374_polimi_it/IQC-27MpTAChRZX0otQQkXvsARSHPy3XkuHMB2ia4GqSslc?e=YMyN2t";
                             }

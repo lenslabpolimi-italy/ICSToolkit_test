@@ -321,17 +321,21 @@ const EvaluationChecklists: React.FC = () => {
         <div className="space-y-8 pt-4">
           {allStrategies.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
+            const isStrategy7 = strategy.id === '7';
+
             return (
               <div key={strategy.id} className="border-t pt-6">
                 <div className="flex justify-between items-center mb-2">
                   {/* Modified structure for Simplified view to place priority tag inline */}
                   <div className="flex items-center gap-2">
-                    <span className={cn(
-                      "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal
-                      classes
-                    )}>
-                      {displayText}
-                    </span>
+                    {!isStrategy7 && ( // Conditional rendering for Strategy 7
+                      <span className={cn(
+                        "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal
+                        classes
+                      )}>
+                        {displayText}
+                      </span>
+                    )}
                     <h3 className="text-xl font-palanquin font-semibold text-app-header">
                       {strategy.id}. {strategy.name}
                     </h3>
@@ -361,18 +365,21 @@ const EvaluationChecklists: React.FC = () => {
             );
             const calculatedStrategyAverage = calculateAggregateEvaluation(subStrategyEvals);
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
+            const isStrategy7 = strategy.id === '7';
 
             return (
               <div key={strategy.id} className="border-t pt-6">
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
-                      <span className={cn(
-                        "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal here
-                        classes
-                      )}>
-                        {displayText}
-                      </span>
+                      {!isStrategy7 && ( // Conditional rendering for Strategy 7
+                        <span className={cn(
+                          "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal here
+                          classes
+                        )}>
+                          {displayText}
+                        </span>
+                      )}
                       {strategy.id}. {strategy.name}
                     </h3>
                   </div>
@@ -400,6 +407,8 @@ const EvaluationChecklists: React.FC = () => {
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {allStrategies.map((strategy) => {
               const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
+              const isStrategy7 = strategy.id === '7';
+
               return (
                 <TabsTrigger
                   key={strategy.id}
@@ -411,12 +420,14 @@ const EvaluationChecklists: React.FC = () => {
                   <span className="mb-1">
                     {strategy.id}. {strategy.name}
                   </span>
-                  <span className={cn(
-                    "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
-                    classes
-                  )}>
-                    {displayText}
-                  </span>
+                  {!isStrategy7 && ( // Conditional rendering for Strategy 7
+                    <span className={cn(
+                      "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
+                      classes
+                    )}>
+                      {displayText}
+                    </span>
+                  )}
                 </TabsTrigger>
               );
             })}
