@@ -327,7 +327,7 @@ const EvaluationChecklists: React.FC = () => {
                   {/* Modified structure for Simplified view to place priority tag inline */}
                   <div className="flex items-center gap-2">
                     <span className={cn(
-                      "text-xs font-roboto-condensed px-1 rounded-sm",
+                      "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal
                       classes
                     )}>
                       {displayText}
@@ -368,7 +368,7 @@ const EvaluationChecklists: React.FC = () => {
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
                       <span className={cn(
-                        "text-xs font-roboto-condensed px-1 rounded-sm",
+                        "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal here
                         classes
                       )}>
                         {displayText}
