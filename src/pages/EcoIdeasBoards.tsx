@@ -236,7 +236,7 @@ const EcoIdeasBoards: React.FC = () => {
                   // --- Custom rendering for Strategy 2: Minimising Energy Consumption ---
                   strategy2DisplayContent.map((subStrategy) => (
                     <div key={subStrategy.id} className="mb-6">
-                      <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                      <h4 className="text-xl font-palanquin font-semibold text-gray-700 mb-2">
                         {subStrategy.id}. {subStrategy.name}
                       </h4>
                       <ul className="list-none space-y-1">
@@ -277,7 +277,7 @@ const EcoIdeasBoards: React.FC = () => {
 
                     return (
                       <div key={subStrategy.id} className="mb-6">
-                        <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                        <h4 className="text-xl font-palanquin font-semibold text-gray-700 mb-2">
                           {subStrategy.id}. {subStrategy.name}
                         </h4>
                         {/* Custom Example for Sub-Strategy 7.8 */}
@@ -752,7 +752,7 @@ const EcoIdeasBoards: React.FC = () => {
                 {/* Injecting Sub-Strategy 1.6: Minimise material consumption during the product development phase */}
                 {strategyIndex === 0 && (
                   <div className="mb-6">
-                    <h4 className="text-xl font-palanquin font-semibold text-app-header mb-2">
+                    <h4 className="text-xl font-palanquin font-semibold text-gray-700 mb-2">
                       1.6. Minimise material consumption during the product development phase
                     </h4>
                     <ul className="list-none space-y-1">
