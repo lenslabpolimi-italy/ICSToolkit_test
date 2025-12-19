@@ -206,7 +206,7 @@ const QualitativeEvaluation: React.FC = () => {
                     {triggerContent}
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs text-sm font-roboto-condensed">
-                    <p>This is a supporting strategy. Its priority is inherited from Strategy 5 (Design for Extended Life) or Strategy 6 (Design for End-of-Life), depending on whether disassembly is used for repair/reuse or recycling/recovery.</p>
+                    <p>This is a supporting strategy that can inherit the priority of strategy 5 or 6, depending on what disassembly is used for</p>
                   </TooltipContent>
                 </Tooltip>
               );
@@ -222,7 +222,6 @@ const QualitativeEvaluation: React.FC = () => {
                 <h3 className="text-xl font-palanquin font-semibold text-gray-600 mb-4">
                   Strategy 7: Design for Disassembly (Supporting Strategy)
                 </h3>
-                {/* Content removed as requested */}
               </div>
             ) : (
               <>
