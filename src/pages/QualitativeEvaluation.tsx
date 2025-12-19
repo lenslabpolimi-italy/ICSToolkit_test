@@ -80,6 +80,27 @@ const subStrategyGuidingQuestions: { [key: string]: string[] } = {
 const QualitativeEvaluation: React.FC = () => {
   const { strategies, qualitativeEvaluation, setQualitativeEvaluation } = useLcd();
 
+  // Use all strategies, no filtering
+  const strategiesForQualitativeEvaluation = strategies;
+  
+  // 1. Introduce state for the active tab
+  const [selectedStrategyTab, setSelectedStrategyTab] = React.useState(strategiesForQualitativeEvaluation[0]?.id || '1');
+
+  // Ensure initial state is set correctly after strategies load
+  React.useEffect(() => {
+    if (strategiesForQualitativeEvaluation.length > 0 && !selectedStrategyTab) {
+      setSelectedStrategyTab(strategiesForQualitativeEvaluation[0].id);
+    }
+  }, [strategiesForQualitativeEvaluation, selectedStrategyTab]);
+
+  // Handler to prevent switching to Strategy 7
+  const handleTabChange = (newTabId: string) => {
+    if (newTabId !== '7') {
+      setSelectedStrategyTab(newTabId);
+    }
+    // If newTabId is '7', we do nothing, preventing the tab switch.
+  };
+
   const handlePriorityChange = (strategyId: string, subStrategyId: string, value: PriorityLevel) => {
     setQualitativeEvaluation(prev => {
       const newEvaluation = { ...prev };
@@ -160,8 +181,6 @@ const QualitativeEvaluation: React.FC = () => {
     return highestPriority;
   };
 
-  // Use all strategies, no filtering
-  const strategiesForQualitativeEvaluation = strategies;
 
   return (
     <div className="p-6 pb-20 bg-white rounded-lg shadow-md relative font-roboto">
@@ -170,7 +189,7 @@ const QualitativeEvaluation: React.FC = () => {
         Define the priority level for each LCD strategy and sub-strategy, and answer guiding questions to elaborate on your choices.
       </p>
 
-      <Tabs defaultValue={strategiesForQualitativeEvaluation[0]?.id || "no-strategies"} className="w-full">
+      <Tabs value={selectedStrategyTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch"> {/* Adjusted grid-cols for 7 strategies */}
           {strategiesForQualitativeEvaluation.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
@@ -180,11 +199,10 @@ const QualitativeEvaluation: React.FC = () => {
               <TabsTrigger
                 key={strategy.id}
                 value={strategy.id}
-                // Removed 'disabled' prop
-                onClick={isStrategy7 ? (e) => e.preventDefault() : undefined} // Prevent default click action for Strategy 7
+                // Removed onClick handler as onValueChange handles the logic
                 className={cn(
                   "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
-                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500 cursor-default" // Added cursor-default for visual feedback
+                  isStrategy7 && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500" // Removed cursor-default
                 )}
               >
                 <span className="mb-1">
@@ -205,7 +223,7 @@ const QualitativeEvaluation: React.FC = () => {
               return (
                 <Tooltip key={strategy.id}>
                   <TooltipTrigger asChild>
-                    {/* TooltipTrigger wraps the TabsTrigger, which now prevents click via onClick handler */}
+                    {/* TooltipTrigger wraps the TabsTrigger */}
                     {triggerContent}
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs text-sm font-roboto-condensed">
