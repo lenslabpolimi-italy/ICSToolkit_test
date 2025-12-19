@@ -292,6 +292,67 @@ const QualitativeEvaluation: React.FC = () => {
                   {(() => {
                     let hasRendered1_4_1_5 = false;
                     let hasRendered2_2_2_3 = false;
+
+                    // Special handling for Strategy 6: Combine all sub-strategies into one input block
+                    if (strategy.id === '6') {
+                        const combinedId = '6.1'; // Use 6.1 as the key for storing the combined answer
+                        
+                        // Collect all sub-strategy names and IDs for display
+                        const subStrategyDetails = strategy.subStrategies.map(ss => ({
+                            id: ss.id,
+                            name: ss.name
+                        }));
+
+                        // Collect all guiding questions
+                        const combinedGuidingQuestions: string[] = [];
+                        strategy.subStrategies.forEach(ss => {
+                            const questions = subStrategyGuidingQuestions[ss.id] || [
+                                `How does sub-strategy "${ss.name}" apply to your product?`,
+                                "What are the main challenges and opportunities for this sub-strategy?",
+                                "Consider the environmental, social, and economic aspects.",
+                            ];
+                            // Prepend the sub-strategy ID to the question for clarity
+                            questions.forEach(q => combinedGuidingQuestions.push(`${ss.id}: ${q}`));
+                        });
+
+                        return (
+                            <div key="6-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
+                                <div className="mb-4">
+                                    <h4 className="text-xl font-palanquin font-medium text-app-header space-y-1">
+                                        {/* List all sub-strategies */}
+                                        {subStrategyDetails.map(detail => (
+                                            <div key={detail.id}>
+                                                {detail.id}. {detail.name}
+                                            </div>
+                                        ))}
+                                    </h4>
+                                    {/* Sub-strategy priority box is intentionally removed */}
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
+                                        <p className="font-semibold mb-2 text-app-header">Guiding Questions for Strategy 6:</p>
+                                        <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                                            {combinedGuidingQuestions.map((q, idx) => (
+                                                <li key={idx}>{q}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    <div className="flex-1">
+                                        <Textarea
+                                            placeholder={`Write your combined answers for Strategy 6: ${strategy.name} here...`}
+                                            rows={10}
+                                            className="w-full min-h-[200px]"
+                                            value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
+                                            onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    }
+                    
                     return strategy.subStrategies.map((subStrategy) => {
                       if (strategy.id === '1' && subStrategy.id === '1.5') {
                         return null;
