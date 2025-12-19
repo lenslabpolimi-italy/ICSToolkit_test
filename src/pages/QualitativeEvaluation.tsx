@@ -338,7 +338,7 @@ const QualitativeEvaluation: React.FC = () => {
                                         </h4>
                                         
                                         <div className="bg-orange-50 p-4 rounded-md border border-orange-200 flex-grow">
-                                            <p className="font-semibold mb-2 text-app-header">Guiding Questions for Strategy 6:</p>
+                                            {/* Removed: <p className="font-semibold mb-2 text-app-header">Guiding Questions for Strategy 6:</p> */}
                                             <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
                                                 {combinedGuidingQuestions.map((q, idx) => (
                                                     <li key={idx}>{q}</li>
