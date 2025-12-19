@@ -311,8 +311,14 @@ const QualitativeEvaluation: React.FC = () => {
                                 "What are the main challenges and opportunities for this sub-strategy?",
                                 "Consider the environmental, social, and economic aspects.",
                             ];
-                            // Prepend the sub-strategy ID to the question for clarity
-                            questions.forEach(q => combinedGuidingQuestions.push(`${ss.id}: ${q}`));
+                            
+                            questions.forEach(q => {
+                                // Filter out questions that are explicitly marked as 'No question founded'
+                                if (q !== "No question founded") {
+                                    // Add the question without the sub-strategy ID prefix
+                                    combinedGuidingQuestions.push(q);
+                                }
+                            });
                         });
 
                         return (
