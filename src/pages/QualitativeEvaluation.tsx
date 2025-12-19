@@ -180,12 +180,14 @@ const QualitativeEvaluation: React.FC = () => {
                 <span className="mb-1">
                   {strategy.id}. {strategy.name}
                 </span>
-                <span className={cn(
-                  "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
-                  classes
-                )}>
-                  {displayText}
-                </span>
+                {strategy.id !== '7' && (
+                  <span className={cn(
+                    "absolute bottom-1.5 text-xs font-roboto-condensed px-1 rounded-sm",
+                    classes
+                  )}>
+                    {displayText}
+                  </span>
+                )}
               </TabsTrigger>
             );
           })}
@@ -267,25 +269,27 @@ const QualitativeEvaluation: React.FC = () => {
                             <br />
                             {subStrategy1_5_obj.id}. {subStrategy1_5_obj.name}
                           </h4>
-                          <div className="flex items-center gap-4">
-                            <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
-                              Sub-strategy Priority:
-                            </Label>
-                            <Select
-                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
-                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
-                            >
-                              <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
-                                <SelectValue placeholder="Select Priority" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="High">High priority</SelectItem>
-                                <SelectItem value="Mid">Mid priority</SelectItem>
-                                <SelectItem value="Low">Low priority</SelectItem>
-                                <SelectItem value="None">No priority</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
+                          {strategy.id !== '7' && (
+                            <div className="flex items-center gap-4">
+                              <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
+                                Sub-strategy Priority:
+                              </Label>
+                              <Select
+                                value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                                onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                              >
+                                <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                  <SelectValue placeholder="Select Priority" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="High">High priority</SelectItem>
+                                  <SelectItem value="Mid">Mid priority</SelectItem>
+                                  <SelectItem value="Low">Low priority</SelectItem>
+                                  <SelectItem value="None">No priority</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -337,25 +341,27 @@ const QualitativeEvaluation: React.FC = () => {
                             <br />
                             {subStrategy2_3_obj.id}. {subStrategy2_3_obj.name}
                           </h4>
-                          <div className="flex items-center gap-4">
-                            <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
-                              Sub-strategy Priority:
-                            </Label>
-                            <Select
-                              value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
-                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
-                            >
-                              <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
-                                <SelectValue placeholder="Select Priority" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="High">High priority</SelectItem>
-                                <SelectItem value="Mid">Mid priority</SelectItem>
-                                <SelectItem value="Low">Low priority</SelectItem>
-                                <SelectItem value="None">No priority</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
+                          {strategy.id !== '7' && (
+                            <div className="flex items-center gap-4">
+                              <Label htmlFor={`sub-strategy-priority-${combinedId}`} className="text-app-body-text">
+                                Sub-strategy Priority:
+                              </Label>
+                              <Select
+                                value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.priority || 'None'}
+                                onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, combinedId, value)}
+                              >
+                                <SelectTrigger id={`sub-strategy-priority-${combinedId}`} className="w-[180px]">
+                                  <SelectValue placeholder="Select Priority" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="High">High priority</SelectItem>
+                                  <SelectItem value="Mid">Mid priority</SelectItem>
+                                  <SelectItem value="Low">Low priority</SelectItem>
+                                  <SelectItem value="None">No priority</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          )}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -387,25 +393,27 @@ const QualitativeEvaluation: React.FC = () => {
                         <h4 className="text-xl font-palanquin font-medium text-app-header">
                           {subStrategy.id}. {subStrategy.name}
                         </h4>
-                        <div className="flex items-center gap-4">
-                          <Label htmlFor={`sub-strategy-priority-${subStrategy.id}`} className="text-app-body-text">
-                            Sub-strategy Priority:
-                          </Label>
-                          <Select
-                            value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None'}
-                            onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, subStrategy.id, value)}
-                          >
-                            <SelectTrigger id={`sub-strategy-priority-${subStrategy.id}`} className="w-[180px]">
-                              <SelectValue placeholder="Select Priority" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="High">High priority</SelectItem>
-                              <SelectItem value="Mid">Mid priority</SelectItem>
-                              <SelectItem value="Low">Low priority</SelectItem>
-                              <SelectItem value="None">No priority</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
+                        {strategy.id !== '7' && (
+                          <div className="flex items-center gap-4">
+                            <Label htmlFor={`sub-strategy-priority-${subStrategy.id}`} className="text-app-body-text">
+                              Sub-strategy Priority:
+                            </Label>
+                            <Select
+                              value={qualitativeEvaluation[strategy.id]?.subStrategies[subStrategy.id]?.priority || 'None'}
+                              onValueChange={(value: PriorityLevel) => handlePriorityChange(strategy.id, subStrategy.id, value)}
+                            >
+                              <SelectTrigger id={`sub-strategy-priority-${subStrategy.id}`} className="w-[180px]">
+                                <SelectValue placeholder="Select Priority" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="High">High priority</SelectItem>
+                                <SelectItem value="Mid">Mid priority</SelectItem>
+                                <SelectItem value="Low">Low priority</SelectItem>
+                                <SelectItem value="None">No priority</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        )}
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
