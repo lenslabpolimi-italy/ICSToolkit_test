@@ -218,16 +218,8 @@ const QualitativeEvaluation: React.FC = () => {
         {strategiesForQualitativeEvaluation.map((strategy) => (
           <TabsContent key={strategy.id} value={strategy.id} className="mt-6 pt-4">
             {strategy.id === '7' ? (
-              <div className="p-8 bg-gray-50 border border-gray-200 rounded-lg text-center">
-                <h3 className="text-xl font-palanquin font-semibold text-gray-600 mb-4">
-                  Strategy 7: Design for Disassembly (Supporting Strategy)
-                </h3>
-                <p className="text-app-body-text">
-                  This is a supporting strategy. Its priority is inherited from Strategy 5 (Design for Extended Life) or Strategy 6 (Design for End-of-Life), depending on whether disassembly is used for repair/reuse or recycling/recovery.
-                </p>
-                <p className="text-app-body-text mt-2">
-                  No qualitative evaluation is required here.
-                </p>
+              <div className="p-8 bg-gray-50 border border-gray-200 rounded-lg text-center min-h-[300px] flex items-center justify-center">
+                {/* Content removed, relying on tooltip */}
               </div>
             ) : (
               <>
