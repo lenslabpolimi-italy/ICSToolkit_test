@@ -116,6 +116,11 @@ const QualitativeEvaluation: React.FC = () => {
     const currentStrategy = strategies.find(s => s.id === currentStrategyId);
     if (!currentStrategy) return 'None';
 
+    // If it's Strategy 5, 6, or 7, use the direct strategy priority
+    if (['5', '6', '7'].includes(currentStrategyId)) {
+      return qualitativeEvaluation[currentStrategyId]?.priority || 'None';
+    }
+
     let highestPriority: PriorityLevel = 'None';
     let highestScore = 0;
 
@@ -150,8 +155,8 @@ const QualitativeEvaluation: React.FC = () => {
     return highestPriority;
   };
 
-  // Filter out Strategy 7 for display on this page
-  const strategiesForQualitativeEvaluation = strategies.filter(s => s.id !== '7');
+  // Use all strategies, no filtering
+  const strategiesForQualitativeEvaluation = strategies;
 
   return (
     <div className="p-6 pb-20 bg-white rounded-lg shadow-md relative font-roboto">
@@ -161,7 +166,7 @@ const QualitativeEvaluation: React.FC = () => {
       </p>
 
       <Tabs defaultValue={strategiesForQualitativeEvaluation[0]?.id || "no-strategies"} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6 h-auto p-2 items-stretch"> {/* Adjusted grid-cols for 6 strategies */}
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch"> {/* Adjusted grid-cols for 7 strategies */}
           {strategiesForQualitativeEvaluation.map((strategy) => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             return (

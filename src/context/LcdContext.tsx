@@ -90,19 +90,22 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
       const initialRadar: RadarChartData = { A: {}, B: {} };
       const initialInsights: { [strategyId: string]: string } = {};
 
-      // Filter out Strategy 7 for these initializations
-      const strategiesForRadarAndQualitative = parsedStrategies.filter(s => s.id !== '7');
-
-      strategiesForRadarAndQualitative.forEach(strategy => {
+      // Include all strategies for Qualitative Evaluation initialization
+      parsedStrategies.forEach(strategy => {
         initialQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
         strategy.subStrategies.forEach(sub => {
           initialQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
         });
+      });
+      setQualitativeEvaluation(initialQualitative);
+
+      // Filter out Strategy 7 for Radar initialization
+      const strategiesForRadar = parsedStrategies.filter(s => s.id !== '7');
+      strategiesForRadar.forEach(strategy => {
         initialRadar.A[strategy.id] = 0; // Default to Poor
         initialRadar.B[strategy.id] = 0; // Default to Poor
         initialInsights[strategy.id] = '';
       });
-      setQualitativeEvaluation(initialQualitative);
       setRadarChartData(initialRadar);
       setRadarInsights(initialInsights);
     };
@@ -175,8 +178,8 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
         break;
       case 'qualitativeEvaluation':
         const resetQualitative: QualitativeEvaluationData = {};
-        // Filter out Strategy 7 for reset
-        strategies.filter(s => s.id !== '7').forEach(strategy => {
+        // Include all strategies for reset
+        strategies.forEach(strategy => {
           resetQualitative[strategy.id] = { priority: 'None', subStrategies: {} };
           strategy.subStrategies.forEach(sub => {
             resetQualitative[strategy.id].subStrategies[sub.id] = { priority: 'None', answer: '' };
@@ -193,7 +196,7 @@ export const LcdProvider = ({ children }: { children: ReactNode }) => {
       case 'radarChart':
         const resetRadar: RadarChartData = { A: {}, B: {} };
         const resetInsights: { [strategyId: string]: string } = {};
-        // Filter out Strategy 7 for reset
+        // Filter out Strategy 7 for radar reset
         strategies.filter(s => s.id !== '7').forEach(strategy => {
           resetRadar.A[strategy.id] = 0;
           resetRadar.B[strategy.id] = 0;
