@@ -42,6 +42,15 @@ const EvaluationChecklists: React.FC = () => {
     }));
   };
 
+  // NEW: Handler to prevent switching to Strategy 7 in Detailed view
+  const handleStrategyTabChange = (newTabId: string) => {
+    if (newTabId !== '7') {
+      setSelectedStrategyTab(newTabId);
+    } else {
+      toast.info("Strategy 7 is a supporting strategy and does not require direct evaluation here.");
+    }
+  };
+
   const handleEvaluationChange = (
     type: 'strategy' | 'subStrategy' | 'guideline',
     id: string,
@@ -154,15 +163,18 @@ const EvaluationChecklists: React.FC = () => {
 
     if (!currentConceptData) return 0;
 
+    // Strategy 7 is excluded from evaluation count
+    const strategiesForCount = allStrategies.filter(s => s.id !== '7');
+
     if (currentChecklistLevel === 'Simplified') {
-      totalItems = allStrategies.length;
-      allStrategies.forEach(strategy => {
+      totalItems = strategiesForCount.length;
+      strategiesForCount.forEach(strategy => {
         if (currentConceptData.strategies[strategy.id] && currentConceptData.strategies[strategy.id] !== 'N/A') {
           completedItems++;
         }
       });
     } else if (currentChecklistLevel === 'Normal') {
-      allStrategies.forEach(strategy => {
+      strategiesForCount.forEach(strategy => {
         strategy.subStrategies.forEach(subStrategy => {
           totalItems++;
           if (currentConceptData.subStrategies[subStrategy.id] && currentConceptData.subStrategies[subStrategy.id] !== 'N/A') {
@@ -171,7 +183,7 @@ const EvaluationChecklists: React.FC = () => {
         });
       });
     } else if (currentChecklistLevel === 'Detailed') {
-      allStrategies.forEach(strategy => {
+      strategiesForCount.forEach(strategy => {
         strategy.subStrategies.forEach(subStrategy => {
           subStrategy.guidelines.forEach(guideline => {
             totalItems++;
@@ -323,19 +335,19 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             const isStrategy7 = strategy.id === '7';
 
+            if (isStrategy7) return null; // Hide Strategy 7 evaluation entirely
+
             return (
               <div key={strategy.id} className="border-t pt-6">
                 <div className="flex justify-between items-center mb-2">
                   {/* Modified structure for Simplified view to place priority tag inline */}
                   <div className="flex items-center gap-2">
-                    {!isStrategy7 && ( // Conditional rendering for Strategy 7
-                      <span className={cn(
-                        "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal
-                        classes
-                      )}>
-                        {displayText}
-                      </span>
-                    )}
+                    <span className={cn(
+                      "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal
+                      classes
+                    )}>
+                      {displayText}
+                    </span>
                     <h3 className="text-xl font-palanquin font-semibold text-app-header">
                       {strategy.id}. {strategy.name}
                     </h3>
@@ -367,19 +379,19 @@ const EvaluationChecklists: React.FC = () => {
             const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
             const isStrategy7 = strategy.id === '7';
 
+            if (isStrategy7) return null; // Hide Strategy 7 evaluation entirely
+
             return (
               <div key={strategy.id} className="border-t pt-6">
                 <div className="flex flex-col mb-4">
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-palanquin font-semibold text-app-header flex items-center gap-2">
-                      {!isStrategy7 && ( // Conditional rendering for Strategy 7
-                        <span className={cn(
-                          "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal here
-                          classes
-                        )}>
-                          {displayText}
-                        </span>
-                      )}
+                      <span className={cn(
+                        "text-xs font-roboto-condensed px-1 rounded-sm font-normal", // Added font-normal here
+                        classes
+                      )}>
+                        {displayText}
+                      </span>
                       {strategy.id}. {strategy.name}
                     </h3>
                   </div>
@@ -403,7 +415,7 @@ const EvaluationChecklists: React.FC = () => {
           })}
         </div>
       ) : ( // Detailed level
-        <Tabs value={selectedStrategyTab} onValueChange={setSelectedStrategyTab} className="w-full">
+        <Tabs value={selectedStrategyTab} onValueChange={handleStrategyTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 h-auto p-2 items-stretch">
             {allStrategies.map((strategy) => {
               const { displayText, classes } = getPriorityTagClasses(getStrategyPriorityForDisplay(strategy, qualitativeEvaluation));
@@ -432,7 +444,7 @@ const EvaluationChecklists: React.FC = () => {
               );
             })}
           </TabsList>
-          {currentStrategy && (
+          {currentStrategy && currentStrategy.id !== '7' ? (
             <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-palanquin font-semibold text-app-header">
@@ -465,7 +477,13 @@ const EvaluationChecklists: React.FC = () => {
                 ))}
               </div>
             </TabsContent>
-          )}
+          ) : currentStrategy && currentStrategy.id === '7' ? (
+            <TabsContent value={currentStrategy.id} className="mt-6 pt-4">
+                <div className="p-8 bg-gray-50 border border-gray-200 rounded-lg text-center min-h-[300px] flex items-center justify-center">
+                    <p className="text-lg text-gray-500 font-roboto-condensed">Strategy 7 is a supporting strategy and does not require direct evaluation in the checklists.</p>
+                </div>
+            </TabsContent>
+          ) : null}
         </Tabs>
       )}
 
@@ -484,7 +502,7 @@ const EvaluationChecklists: React.FC = () => {
       <FloatingAddNoteButton
         onClick={() => setIsAddNoteDialogOpen(true)}
         conceptType={selectedConcept}
-        disabled={!selectedStrategyTab}
+        disabled={!selectedStrategyTab || selectedStrategyTab === '7'} // Disable if Strategy 7 is selected
       />
 
       {/* Add Note Dialog */}
