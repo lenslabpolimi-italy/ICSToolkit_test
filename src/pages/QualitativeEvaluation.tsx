@@ -323,33 +323,36 @@ const QualitativeEvaluation: React.FC = () => {
 
                         return (
                             <div key="6-combined" className="border-t pt-6 first:border-t-0 first:pt-0">
-                                <div className="mb-4">
-                                    <h4 className="text-xl font-palanquin font-medium text-app-header space-y-1">
-                                        {/* List all sub-strategies */}
-                                        {subStrategyDetails.map(detail => (
-                                            <div key={detail.id}>
-                                                {detail.id}. {detail.name}
-                                            </div>
-                                        ))}
-                                    </h4>
-                                    {/* Sub-strategy priority box is intentionally removed */}
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
-                                        <p className="font-semibold mb-2 text-app-header">Guiding Questions for Strategy 6:</p>
-                                        <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
-                                            {combinedGuidingQuestions.map((q, idx) => (
-                                                <li key={idx}>{q}</li>
+                                {/* Restructured grid to include h4 in the left column and use items-stretch */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
+                                    
+                                    {/* Left Column: Sub-strategy names + Guiding Questions */}
+                                    <div className="flex flex-col space-y-4">
+                                        <h4 className="text-xl font-palanquin font-medium text-app-header space-y-1">
+                                            {/* List all sub-strategies */}
+                                            {subStrategyDetails.map(detail => (
+                                                <div key={detail.id}>
+                                                    {detail.id}. {detail.name}
+                                                </div>
                                             ))}
-                                        </ul>
+                                        </h4>
+                                        
+                                        <div className="bg-orange-50 p-4 rounded-md border border-orange-200 flex-grow">
+                                            <p className="font-semibold mb-2 text-app-header">Guiding Questions for Strategy 6:</p>
+                                            <ul className="list-disc list-inside text-app-body-text text-sm space-y-1">
+                                                {combinedGuidingQuestions.map((q, idx) => (
+                                                    <li key={idx}>{q}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </div>
 
-                                    <div className="flex-1">
+                                    {/* Right Column: Textarea, now stretching to fill height */}
+                                    <div className="flex-1 flex flex-col">
                                         <Textarea
                                             placeholder={`Write your combined answers for Strategy 6: ${strategy.name} here...`}
                                             rows={10}
-                                            className="w-full min-h-[200px]"
+                                            className="w-full h-full min-h-[200px]" // Changed class to h-full to stretch
                                             value={qualitativeEvaluation[strategy.id]?.subStrategies[combinedId]?.answer || ''}
                                             onChange={(e) => handleAnswerChange(strategy.id, combinedId, e.target.value)}
                                         />
