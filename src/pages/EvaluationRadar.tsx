@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import WipeContentButton from '@/components/WipeContentButton';
 import { useLcd } from '@/context/LcdContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { EvaluationLevel, Strategy } from '@/types/lcd';
+import { ChecklistLevel, EvaluationLevel, Strategy } from '@/types/lcd';
 import { getStrategyPriorityForDisplay, getPriorityTagClasses } from '@/utils/lcdUtils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -12,7 +12,9 @@ import StrategyInsightBox from '@/components/StrategyInsightBox';
 import StickyNote from '@/components/StickyNote';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom'; // NEW import for navigation
+import { useNavigate } from 'react-router-dom';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 // Custom tick component for the PolarRadiusAxis
 const CustomRadiusTick = ({ x, y, payload }: any) => {
@@ -84,7 +86,8 @@ const EvaluationRadar: React.FC = () => {
     deleteEcoIdea,
   } = useLcd();
 
-  const navigate = useNavigate(); // Initialize navigate hook
+  const navigate = useNavigate();
+  const [radarLevel, setRadarLevel] = useState<ChecklistLevel>('Simplified'); // New state for radar calculation level
 
   // Filter strategies to exclude Strategy 7 for radar display
   const strategiesForRadar = strategies.filter(s => s.id !== '7');
@@ -101,8 +104,8 @@ const EvaluationRadar: React.FC = () => {
     'No': 1,
   };
 
-  // Function to calculate the average evaluation for a strategy
-  const calculateStrategyAverage = (concept: 'A' | 'B', strategyId: string): number => {
+  // Function to calculate the average evaluation for a strategy, using the selected level
+  const calculateStrategyAverage = (concept: 'A' | 'B', strategyId: string, level: ChecklistLevel): number => {
     const conceptChecklists = evaluationChecklists[concept];
     if (!conceptChecklists) return 0;
 
@@ -112,18 +115,18 @@ const EvaluationRadar: React.FC = () => {
     let totalScore = 0;
     let count = 0;
 
-    if (conceptChecklists.level === 'Simplified') {
+    if (level === 'Simplified') {
       const evalLevel = conceptChecklists.strategies[strategyId] || 'N/A';
       totalScore += evaluationToScore[evalLevel];
       count = 1;
-    } else if (conceptChecklists.level === 'Normal') {
+    } else if (level === 'Normal') {
       const subStrategyEvals = strategy.subStrategies.map(ss => conceptChecklists.subStrategies[ss.id] || 'N/A');
       const validScores = subStrategyEvals.map(e => evaluationToScore[e]).filter(s => s > 0);
       if (validScores.length > 0) {
         totalScore = validScores.reduce((sum, score) => sum + score, 0);
         count = validScores.length;
       }
-    } else if (conceptChecklists.level === 'Detailed') {
+    } else if (level === 'Detailed') {
       let guidelineScores: number[] = [];
       strategy.subStrategies.forEach(subStrategy => {
         subStrategy.guidelines.forEach(guideline => {
@@ -149,15 +152,15 @@ const EvaluationRadar: React.FC = () => {
 
     // Calculate averages only for strategies to be displayed on radar
     strategiesForRadar.forEach(strategy => {
-      newRadarDataA[strategy.id] = calculateStrategyAverage('A', strategy.id);
-      newRadarDataB[strategy.id] = calculateStrategyAverage('B', strategy.id);
+      newRadarDataA[strategy.id] = calculateStrategyAverage('A', strategy.id, radarLevel);
+      newRadarDataB[strategy.id] = calculateStrategyAverage('B', strategy.id, radarLevel);
     });
 
     setRadarChartData({
       A: newRadarDataA,
       B: newRadarDataB,
     });
-  }, [evaluationChecklists, strategies, setRadarChartData]); // Depend on original strategies to ensure all checklists are processed
+  }, [evaluationChecklists, strategies, setRadarChartData, radarLevel]); // Added radarLevel dependency
 
   const data = strategiesForRadar.map(strategy => ({
     strategyName: `${strategy.id}. ${strategy.name}`,
@@ -235,6 +238,26 @@ const EvaluationRadar: React.FC = () => {
       <p className="text-app-body-text mb-8">
         Below, you'll find the insights you've written for each strategy.
       </p>
+
+      {/* NEW: Radar Level Selector */}
+      <div className="flex items-center gap-4 mb-8">
+        <Label htmlFor="radar-level" className="text-xl font-palanquin font-semibold text-app-header">
+            Radar Calculation Level:
+        </Label>
+        <Select
+            value={radarLevel}
+            onValueChange={(value: ChecklistLevel) => setRadarLevel(value)}
+        >
+            <SelectTrigger id="radar-level" className="w-[180px]">
+                <SelectValue placeholder="Select Level" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="Simplified">Simplified</SelectItem>
+                <SelectItem value="Normal">Normal</SelectItem>
+                <SelectItem value="Detailed">Detailed</SelectItem>
+            </SelectContent>
+        </Select>
+      </div>
 
       <div className="mb-8 flex justify-end gap-4">
         <div onClick={handleImprovementRadarClick} className={!isImprovementRadarActive ? "cursor-not-allowed" : ""}>
