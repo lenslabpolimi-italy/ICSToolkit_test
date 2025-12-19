@@ -175,6 +175,7 @@ const QualitativeEvaluation: React.FC = () => {
                 value={strategy.id}
                 className={cn(
                   "whitespace-normal h-auto font-roboto-condensed flex flex-col items-center justify-center text-center relative pt-3 pb-5",
+                  strategy.id === '7' && "text-gray-400 data-[state=active]:text-gray-500 data-[state=active]:bg-gray-100 hover:text-gray-500"
                 )}
               >
                 <span className="mb-1">
